@@ -118,8 +118,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
     }
   }
 
-  /// Edycja: trening/mecz z dziennika - pełny formularz; trening klubowy -
-  /// tylko ocena; notatki i treningi z planu - tytuł, data, godzina, opis.
+  /// Jeden formularz dla nowych i istniejących treningów oraz meczów.
+  /// Edycja wpisu dziennika używa jego oryginalnego formularza.
   Future<void> _edit(EventItem e) async {
     Widget? page;
     if (e.type == 'club_training' && e.source == 'club') {
@@ -132,6 +132,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
       if (m != null) page = LogMatchScreen(editing: m);
     }
     page ??= AddEventScreen(editing: e, initialType: e.type);
+    // Jedynym wyjątkiem jest trening klubowy generowany z profilu.
     if (!mounted) return;
     await pushModal<bool>(context, page);
     if (mounted) _events.refetch();
