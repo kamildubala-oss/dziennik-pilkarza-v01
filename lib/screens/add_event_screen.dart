@@ -24,9 +24,13 @@ String _typeLabel(String t) {
 
 /// Modal "Nowe wydarzenie" (kalendarz).
 class AddEventScreen extends StatefulWidget {
-  const AddEventScreen({super.key, this.initialDate, this.editing});
+  const AddEventScreen({super.key, this.initialDate, this.editing, this.initialType = 'training', this.isPlanned = true});
 
   final String? initialDate;
+  /// Typ wybrany przez przycisk otwierający formularz.
+  final String initialType;
+  /// Kalendarz planuje aktywność, dziennik zapisuje wykonaną.
+  final bool isPlanned;
 
   /// Edytowane wydarzenie bez wpisu w dzienniku (notatka, trening z planu).
   final EventItem? editing;
@@ -47,7 +51,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
   late final TextEditingController _description =
       TextEditingController(text: _e?.description ?? '');
 
-  late String _type = _e?.type ?? 'training';
+  late String _type = _e?.type ?? widget.initialType;
   bool _saving = false;
 
   @override
@@ -121,23 +125,23 @@ class _AddEventScreenState extends State<AddEventScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Formularze treningu i meczu pozostają pełne także podczas planowania.
-    // isPlanned zapisuje WYŁĄCZNIE wydarzenie kalendarza.
+    // Te same formularze obsługują kalendarz (plan) i dziennik (wykonanie).
+    // isPlanned określa, czy zapisujemy plan czy zrealizowaną aktywność.
     if (_e == null && (_type == 'training' || _type == 'club_training')) {
       return LogSessionScreen(
         key: ValueKey<String>(_type),
         kind: _type,
         initialDate: _date.text,
-        title: 'Zaplanuj trening',
+        title: widget.isPlanned ? 'Zaplanuj trening' : 'Zapisz trening',
         header: _typeSelector(),
-        isPlanned: true,
+        isPlanned: widget.isPlanned,
       );
     }
     if (_e == null && _type == 'match') {
       return LogMatchScreen(
         key: const ValueKey<String>('match'),
         initialDate: _date.text,
-        title: 'Zaplanuj mecz',
+        title: widget.isPlanned ? 'Zaplanuj mecz' : 'Zapisz mecz',
         header: _typeSelector(),
         isPlanned: true,
       );
