@@ -424,9 +424,6 @@ class Api {
         title: kind == 'club_training' ? 'Trening klubowy: ${focuses.join(', ')}' : 'Trening: ${focuses.join(', ')}',
         details: <String, dynamic>{'focus': focuses.join(', '), 'focuses': focuses, 'duration_min': durationMin, 'intensity': intensity, 'rating': rating, 'went_well': wentWell, 'to_improve': toImprove, 'notes': notes},
         description: planDetails,
-        focus: focuses.join(', '),
-        durationMin: durationMin,
-        intensity: intensity,
       );
       return Training.fromJson(doc);
     }
@@ -829,7 +826,6 @@ class Api {
         title: opponent.trim().isEmpty ? 'Mecz' : 'Mecz z $opponent',
         details: <String, dynamic>{'opponent': opponent, 'result': result, 'minutes_played': minutesPlayed, 'goals': goals, 'assists': assists, 'rating': rating, 'went_well': wentWell, 'to_improve': toImprove, 'notes': notes},
         description: planDetails,
-        durationMin: minutesPlayed,
       );
       return MatchEntry.fromJson(doc);
     }
@@ -838,7 +834,7 @@ class Api {
       items.add(doc);
       await LocalDb.saveList('matches', items);
       final linked = _eventForMatch(doc);
-      if (isPlanned) linked['done'] = false;
+      linked['done'] = true;
       if (plannedEventId != null && plannedEventId.isNotEmpty) {
         final events = await LocalDb.list('events');
         final idx = events.indexWhere((e) => e['id'] == plannedEventId);
