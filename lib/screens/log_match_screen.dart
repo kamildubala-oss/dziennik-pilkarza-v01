@@ -15,11 +15,13 @@ class LogMatchScreen extends StatefulWidget {
     this.header,
     this.plannedEventId,
     this.editing,
+    this.editingEvent,
     this.isPlanned = false,
   });
 
   /// Edytowany mecz (tryb edycji). Gdy null - nowy wpis.
   final MatchEntry? editing;
+  final EventItem? editingEvent;
 
   /// Zaplanowany mecz z kalendarza, który właśnie się odbył.
   final String? plannedEventId;
@@ -43,7 +45,7 @@ class LogMatchScreen extends StatefulWidget {
 class _LogMatchScreenState extends State<LogMatchScreen> {
   late final MatchEntry? _e = widget.editing;
   late final TextEditingController _date = TextEditingController(
-    text: _e != null ? first10(_e.date) : (widget.initialDate ?? todayIso()),
+    text: _e != null ? first10(_e.date) : (widget.editingEvent?.date ?? widget.initialDate ?? todayIso()),
   );
   late final TextEditingController _opponent =
       TextEditingController(text: _e?.opponent ?? '');
@@ -85,6 +87,18 @@ class _LogMatchScreenState extends State<LogMatchScreen> {
     if (_saving) return;
     setState(() => _saving = true);
     try {
+      if (widget.editingEvent != null) {
+        final event = widget.editingEvent!;
+        await Api.updateEvent(event.id,
+          date: _date.text,
+          time: event.time,
+          title: _opponent.text.trim().isEmpty ? 'Mecz' : 'Mecz z ${_opponent.text.trim()}',
+          description: 'Rywal: ${_opponent.text} · Minuty: ${_minutes.text}',
+          details: <String, dynamic>{'opponent': _opponent.text, 'result': _result.text, 'duration_min': _num(_minutes), 'minutes_played': _num(_minutes), 'goals': _num(_goals), 'assists': _num(_assists), 'rating': _rating, 'went_well': _wentWell.text, 'to_improve': _toImprove.text, 'notes': _notes.text},
+        );
+        if (mounted) Navigator.of(context).pop(true);
+        return;
+      }
       final e = _e;
       if (e != null) {
         await Api.updateMatch(
