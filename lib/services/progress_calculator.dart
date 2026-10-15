@@ -6,22 +6,37 @@ import '../utils.dart';
 /// Seria kończy się w ostatnim dniu, w którym zapisano aktywność,
 /// więc wprowadzenie zaległych wpisów też daje poprawny wynik.
 class StreakService {
-  static int calculate(Iterable<String> dates) {
-    final unique = dates.where((d) => d.length >= 10).map((d) => d.substring(0, 10)).toSet();
-    if (unique.isEmpty) return 0;
-    final latest = unique.reduce((a, b) => a.compareTo(b) > 0 ? a : b);
-    final end = DateTime.tryParse(latest);
-    if (end == null) return 0;
-    var streak = 0;
-    for (var i = 0; i < unique.length; i++) {
-      final d = DateTime(end.year, end.month, end.day - i);
-      if (!unique.contains(dateIso(d))) break;
-      streak++;
+  /// Liczy kolejne dni WYKONANYCH aktywności, zaczynając od najnowszego
+  /// zarejestrowanego dnia. Nie wymaga treningu dziś ani wczoraj,
+  /// ponieważ dziennik może być uzupełniany z opóźnieniem.
+  ///
+  /// Każda data jest liczona raz (również gdy jest kilka treningów dziennie).
+  /// Przyszłe daty nie mogą sztucznie podnosić serii.
+  static int calculate(Iterable<String> dates, {DateTime? asOf}) {
+    final reference = asOf ?? DateTime.now();
+    final today = dateIso(DateTime(reference.year, reference.month, reference.day));
+    final days = <String>{};
+    for (final value in dates) {
+      final iso = first10(value);
+      final date = DateTime.tryParse(iso);
+      if (date == null || dateIso(date) != iso || iso.compareTo(today) > 0) {
+        continue;
+      }
+      days.add(iso);
     }
-    return streak;
+    if (days.isEmpty) return 0;
+
+    final latest = days.reduce((a, b) => a.compareTo(b) > 0 ? a : b);
+    final lastDay = DateTime.parse(latest);
+    var count = 0;
+    for (var offset = 0; offset < days.length; offset++) {
+      final day = dateIso(DateTime(lastDay.year, lastDay.month, lastDay.day - offset));
+      if (!days.contains(day)) break;
+      count++;
+    }
+    return count;
   }
 }
-
 /// Agreguje obszary umiejętności z wykonanych aktywności.
 class SkillRadarService {
   static const Map<String, String> focusToAxis = <String, String>{
