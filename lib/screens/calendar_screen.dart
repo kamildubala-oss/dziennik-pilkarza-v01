@@ -62,10 +62,18 @@ class _CalendarScreenState extends State<CalendarScreen> {
   }
 
   Future<void> _toggle(EventItem e) async {
+    if (e.type != 'note') {
+      if (!e.done) {
+        await _openDetails(e);
+      } else if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Ten trening lub mecz jest już zapisany jako wykonany.')));
+      }
+      return;
+    }
     try {
       await Api.toggleEvent(e.id, !e.done);
-    } catch (_) {
-      // Błąd pomijamy - lista zostanie odświeżona poniżej.
+    } catch (error) {
+      if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Nie udało się zmienić statusu: $error')));
     }
     await _events.refetch();
   }
@@ -110,11 +118,11 @@ class _CalendarScreenState extends State<CalendarScreen> {
     }
   }
 
-  /// Edycja: trening/mecz z dziennika - pełny formularz; trening klubowy -
-  /// tylko ocena; notatki i treningi z planu - tytuł, data, godzina, opis.
+  /// Jeden formularz dla nowych i istniejących treningów oraz meczów.
+  /// Edycja wpisu dziennika używa jego oryginalnego formularza.
   Future<void> _edit(EventItem e) async {
     Widget? page;
-    if (e.type == 'club_training') {
+    if (e.type == 'club_training' && e.source == 'club') {
       page = ClubTrainingScreen(event: e);
     } else if (e.source == 'trainings' && e.sourceId.isNotEmpty) {
       final t = await Api.getTraining(e.sourceId);
@@ -123,7 +131,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
       final m = await Api.getMatch(e.sourceId);
       if (m != null) page = LogMatchScreen(editing: m);
     }
-    page ??= AddEventScreen(editing: e);
+    page ??= AddEventScreen(editing: e, initialType: e.type);
+    // Jedynym wyjątkiem jest trening klubowy generowany z profilu.
     if (!mounted) return;
     await pushModal<bool>(context, page);
     if (mounted) _events.refetch();
@@ -490,10 +499,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 ? 'KLUBOWY'
                 : 'NOTATKA';
 
-    final canOpen = e.planned || e.steps.isNotEmpty;
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
-      onTap: canOpen ? () => _openDetails(e) : null,
+      onTap: () => _edit(e),
       child: Container(
         margin: const EdgeInsets.only(bottom: Sp.sm),
         padding: const EdgeInsets.all(Sp.md),
@@ -531,7 +539,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    e.title,
+                    e.done && e.type != 'note' && e.title.toLowerCase().startsWith('planowany trening') ? e.title.replaceFirst(RegExp(r'^Planowany ', caseSensitive: false), '') : e.title,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: manrope(
@@ -540,13 +548,13 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       color: c.onSurface,
                     ),
                   ),
-                  if (e.time.isNotEmpty || e.isPending) ...[
+                  if (e.time.isNotEmpty || e.type != 'note') ...[
                     const SizedBox(height: 2),
                     Text(
                       <String>[
                         if (e.time.isNotEmpty) e.time,
-                        if (e.isPending)
-                          'zaplanowany · dotknij, aby zobaczyć szczegóły',
+                        if (e.type != 'note')
+                          (e.done ? 'Wykonany' : first10(e.date).compareTo(todayIso()) < 0 ? 'Nieodnotowany · termin minął' : 'Zaplanowany'),
                       ].join(' · '),
                       style: manrope(size: 12, color: c.muted),
                     ),
@@ -573,25 +581,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
                   e.done ? Icons.check_circle : Icons.radio_button_unchecked,
                   size: 24,
                   color: e.done ? c.brandPrimary : c.muted,
-                ),
-              ),
-            ),
-            const SizedBox(width: Sp.xs),
-            GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onTap: () => _edit(e),
-              child: Padding(
-                padding: const EdgeInsets.all(4),
-                child: Icon(
-                  e.type == 'club_training'
-                      ? (e.source == 'trainings'
-                          ? Icons.star
-                          : Icons.star_outline)
-                      : Icons.edit_outlined,
-                  size: 21,
-                  color: e.type == 'club_training'
-                      ? eventTypeColor(c, 'club_training')
-                      : c.onSurfaceSecondary,
                 ),
               ),
             ),

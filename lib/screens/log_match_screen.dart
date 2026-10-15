@@ -15,11 +15,13 @@ class LogMatchScreen extends StatefulWidget {
     this.header,
     this.plannedEventId,
     this.editing,
+    this.editingEvent,
     this.isPlanned = false,
   });
 
   /// Edytowany mecz (tryb edycji). Gdy null - nowy wpis.
   final MatchEntry? editing;
+  final EventItem? editingEvent;
 
   /// Zaplanowany mecz z kalendarza, który właśnie się odbył.
   final String? plannedEventId;
@@ -43,26 +45,26 @@ class LogMatchScreen extends StatefulWidget {
 class _LogMatchScreenState extends State<LogMatchScreen> {
   late final MatchEntry? _e = widget.editing;
   late final TextEditingController _date = TextEditingController(
-    text: _e != null ? first10(_e.date) : (widget.initialDate ?? todayIso()),
+    text: _e != null ? first10(_e.date) : (widget.editingEvent?.date ?? widget.initialDate ?? todayIso()),
   );
   late final TextEditingController _opponent =
-      TextEditingController(text: _e?.opponent ?? '');
+      TextEditingController(text: _e?.opponent ?? (widget.editingEvent?.details['opponent'] as String?) ?? '');
   late final TextEditingController _result =
-      TextEditingController(text: _e?.result ?? '');
+      TextEditingController(text: _e?.result ?? (widget.editingEvent?.details['result'] as String?) ?? '');
   late final TextEditingController _minutes =
-      TextEditingController(text: '${_e?.minutesPlayed ?? 60}');
+      TextEditingController(text: '${_e?.minutesPlayed ?? widget.editingEvent?.details['minutes_played'] ?? 60}');
   late final TextEditingController _goals =
-      TextEditingController(text: '${_e?.goals ?? 0}');
+      TextEditingController(text: '${_e?.goals ?? widget.editingEvent?.details['goals'] ?? 0}');
   late final TextEditingController _assists =
-      TextEditingController(text: '${_e?.assists ?? 0}');
+      TextEditingController(text: '${_e?.assists ?? widget.editingEvent?.details['assists'] ?? 0}');
   late final TextEditingController _wentWell =
-      TextEditingController(text: _e?.wentWell ?? '');
+      TextEditingController(text: _e?.wentWell ?? (widget.editingEvent?.details['went_well'] as String?) ?? '');
   late final TextEditingController _toImprove =
-      TextEditingController(text: _e?.toImprove ?? '');
+      TextEditingController(text: _e?.toImprove ?? (widget.editingEvent?.details['to_improve'] as String?) ?? '');
   late final TextEditingController _notes =
-      TextEditingController(text: _e?.notes ?? '');
+      TextEditingController(text: _e?.notes ?? (widget.editingEvent?.details['notes'] as String?) ?? '');
 
-  late int _rating = _e != null && _e.rating >= 1 ? _e.rating : 3;
+  late int _rating = _e != null && _e.rating >= 1 ? _e.rating : (widget.editingEvent?.details['rating'] as int?) ?? 3;
   bool _saving = false;
 
   @override
@@ -85,6 +87,18 @@ class _LogMatchScreenState extends State<LogMatchScreen> {
     if (_saving) return;
     setState(() => _saving = true);
     try {
+      if (widget.editingEvent != null) {
+        final event = widget.editingEvent!;
+        await Api.updateEvent(event.id,
+          date: _date.text,
+          time: event.time,
+          title: _opponent.text.trim().isEmpty ? 'Mecz' : 'Mecz z ${_opponent.text.trim()}',
+          description: 'Rywal: ${_opponent.text} · Minuty: ${_minutes.text}',
+          details: <String, dynamic>{'opponent': _opponent.text, 'result': _result.text, 'duration_min': _num(_minutes), 'minutes_played': _num(_minutes), 'goals': _num(_goals), 'assists': _num(_assists), 'rating': _rating, 'went_well': _wentWell.text, 'to_improve': _toImprove.text, 'notes': _notes.text},
+        );
+        if (mounted) Navigator.of(context).pop(true);
+        return;
+      }
       final e = _e;
       if (e != null) {
         await Api.updateMatch(

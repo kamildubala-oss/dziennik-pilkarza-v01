@@ -34,11 +34,13 @@ class LogSessionScreen extends StatefulWidget {
     this.initialIntensity,
     this.plannedEventId,
     this.editing,
+    this.editingEvent,
     this.isPlanned = false,
   });
 
   /// Edytowany trening (tryb edycji). Gdy null - nowy wpis.
   final Training? editing;
+  final EventItem? editingEvent;
 
   /// 'training' (zwykły) lub 'club_training' (klubowy).
   final String kind;
@@ -70,27 +72,27 @@ class LogSessionScreen extends StatefulWidget {
 class _LogSessionScreenState extends State<LogSessionScreen> {
   late final Training? _e = widget.editing;
   late final TextEditingController _date = TextEditingController(
-    text: _e != null ? first10(_e.date) : (widget.initialDate ?? todayIso()),
+    text: _e != null ? first10(_e.date) : (widget.editingEvent?.date ?? widget.initialDate ?? todayIso()),
   );
   late final TextEditingController _duration = TextEditingController(
     text:
-        '${_e?.durationMin ?? widget.initialDuration ?? (widget.kind == 'club_training' ? 90 : 45)}',
+        '${_e?.durationMin ?? widget.editingEvent?.durationMin ?? widget.initialDuration ?? (widget.kind == 'club_training' ? 90 : 45)}',
   );
   late final TextEditingController _wentWell =
-      TextEditingController(text: _e?.wentWell ?? '');
+      TextEditingController(text: _e?.wentWell ?? (widget.editingEvent?.details['went_well'] as String?) ?? '');
   late final TextEditingController _toImprove =
-      TextEditingController(text: _e?.toImprove ?? '');
+      TextEditingController(text: _e?.toImprove ?? (widget.editingEvent?.details['to_improve'] as String?) ?? '');
   late final TextEditingController _notes =
-      TextEditingController(text: _e?.notes ?? '');
+      TextEditingController(text: _e?.notes ?? (widget.editingEvent?.details['notes'] as String?) ?? '');
 
   late final Set<String> _focus = <String>{
-    ...?(_e?.focuses ?? widget.initialFocuses)?.where(_focusOptions.contains),
+    ...?(_e?.focuses ?? widget.initialFocuses ?? (widget.editingEvent?.focus.split(', ').where(_focusOptions.contains).toList()))?.where(_focusOptions.contains),
   };
   late String _intensity =
-      _intensities.contains(_e?.intensity ?? widget.initialIntensity)
-          ? (_e?.intensity ?? widget.initialIntensity)!
+      _intensities.contains(_e?.intensity ?? widget.initialIntensity ?? widget.editingEvent?.intensity)
+          ? (_e?.intensity ?? widget.initialIntensity ?? widget.editingEvent?.intensity)!
           : 'medium';
-  late int _rating = _e != null && _e.rating >= 1 ? _e.rating : 3;
+  late int _rating = _e != null && _e.rating >= 1 ? _e.rating : (widget.editingEvent?.details['rating'] as int?) ?? 3;
   bool _saving = false;
 
   @override
@@ -107,6 +109,19 @@ class _LogSessionScreenState extends State<LogSessionScreen> {
     if (_saving || _focus.isEmpty) return;
     setState(() => _saving = true);
     try {
+      if (widget.editingEvent != null) {
+        final event = widget.editingEvent!;
+        final focusList = _focusOptions.where(_focus.contains).toList();
+        await Api.updateEvent(event.id,
+          date: _date.text,
+          time: event.time,
+          title: '${widget.kind == 'club_training' ? 'Trening klubowy' : 'Trening'}: ${focusList.join(', ')}',
+          description: 'Czas: ${_duration.text} min · Obszary: ${focusList.join(', ')}',
+          details: <String, dynamic>{'focus': focusList.join(', '), 'focuses': focusList, 'duration_min': int.tryParse(_duration.text) ?? 0, 'intensity': _intensity, 'rating': _rating, 'went_well': _wentWell.text, 'to_improve': _toImprove.text, 'notes': _notes.text},
+        );
+        if (mounted) Navigator.of(context).pop(true);
+        return;
+      }
       final e = _e;
       if (e != null) {
         await Api.updateTraining(
