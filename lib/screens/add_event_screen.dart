@@ -127,7 +127,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
   Widget build(BuildContext context) {
     // Te same formularze obsługują kalendarz (plan) i dziennik (wykonanie).
     // isPlanned określa, czy zapisujemy plan czy zrealizowaną aktywność.
-    if ((_e == null || !_e!.done) && (_type == 'training' || _type == 'club_training')) {
+    if ((_e == null || _e!.sourceId.isEmpty) && (_type == 'training' || _type == 'club_training')) {
       return LogSessionScreen(
         key: ValueKey<String>(_type),
         kind: _type,
@@ -138,7 +138,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
         isPlanned: widget.isPlanned,
       );
     }
-    if ((_e == null || !_e!.done) && _type == 'match') {
+    if ((_e == null || _e!.sourceId.isEmpty) && _type == 'match') {
       return LogMatchScreen(
         key: const ValueKey<String>('match'),
         editingEvent: _e,

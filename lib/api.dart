@@ -7,6 +7,7 @@ import 'llm_settings.dart';
 import 'local_db.dart';
 import 'models.dart';
 import 'utils.dart';
+import 'services/progress_calculator.dart';
 
 /// Błąd walidacji / operacji - analogiczny do błędów HTTP z dawnego backendu.
 class ApiException implements Exception {
@@ -1364,122 +1365,7 @@ class Api {
   }
 
   // ---------------- Postęp ----------------
-  static const Map<String, String> _focusToAxis = <String, String>{
-    'Prowadzenie': 'Technika',
-    'Strzał': 'Strzał',
-    'Decyzyjność': 'Taktyka',
-    'Siła': 'Motoryka',
-    'Mentalność': 'Mentalność',
-  };
-  static const List<String> _axes = <String>[
-    'Technika',
-    'Strzał',
-    'Taktyka',
-    'Motoryka',
-    'Mentalność',
-  ];
-
-  // 1 -> 0.5 ... 5 -> 1.2 (liniowo)
-  static double _ratingWeight(dynamic r) {
-    final v = (r is num ? r.toInt() : 3).clamp(1, 5);
-    return 0.5 + (v - 1) * 0.175;
-  }
-
-  static Future<Progress> progress() async {
-    final trainings = await LocalDb.list('trainings');
-    final matches = await LocalDb.list('matches');
-
-    final totalMinutes =
-        trainings.fold<int>(0, (a, t) => a + _i(t['duration_min'])) +
-            matches.fold<int>(0, (a, m) => a + _i(m['minutes_played']));
-    final totalGoals = matches.fold<int>(0, (a, m) => a + _i(m['goals']));
-    final totalAssists = matches.fold<int>(0, (a, m) => a + _i(m['assists']));
-
-    final ratings = <int>[
-      ...trainings.map((t) => _i(t['rating'])),
-      ...matches.map((m) => _i(m['rating'])),
-    ];
-    final avgRating = ratings.isEmpty
-        ? 0.0
-        : (ratings.reduce((a, b) => a + b) / ratings.length * 100).round() /
-            100;
-
-    String day10(Map<String, dynamic> e) => first10(_s(e['date']));
-
-    final allDates = <String>{
-      ...trainings.map(day10).where((d) => d.isNotEmpty),
-      ...matches.map(day10).where((d) => d.isNotEmpty),
-    };
-
-    final now = DateTime.now();
-    String dayAgo(int i) => dateIso(DateTime(now.year, now.month, now.day - i));
-
-    // Seria: kolejne dni z wpisem, kończąca się dziś (lub wczoraj).
-    var streak = 0;
-    for (var i = 0; i < 365; i++) {
-      if (allDates.contains(dayAgo(i))) {
-        streak++;
-      } else {
-        if (i == 0) continue;
-        break;
-      }
-    }
-
-    // Ostatnie 7 dni (najstarszy -> dzisiaj).
-    final weekSessions = <int>[];
-    for (var i = 6; i >= 0; i--) {
-      final d = dayAgo(i);
-      weekSessions.add(
-        trainings.where((t) => day10(t) == d).length +
-            matches.where((m) => day10(m) == d).length,
-      );
-    }
-
-    Map<String, int> computeRadar(String? since) {
-      final weights = <String, double>{for (final a in _axes) a: 0.0};
-      for (final t in trainings) {
-        final d = day10(t);
-        if (since != null && d.compareTo(since) < 0) continue;
-        final raw = t['focuses'];
-        final focuses = raw is List && raw.isNotEmpty
-            ? raw.map(_s).toList()
-            : _s(t['focus']).split(',').map((e) => e.trim()).toList();
-        // Przy kilku obszarach waga treningu dzieli się między nie.
-        final share = focuses.isEmpty ? 0.0 : 1.0 / focuses.length;
-        for (final f in focuses) {
-          final axis = _focusToAxis[f];
-          if (axis == null) continue;
-          weights[axis] = weights[axis]! + _ratingWeight(t['rating']) * share;
-        }
-      }
-      for (final m in matches) {
-        final d = day10(m);
-        if (since != null && d.compareTo(since) < 0) continue;
-        weights['Mentalność'] =
-            weights['Mentalność']! + _ratingWeight(m['rating']) * 0.5;
-      }
-      return <String, int>{
-        for (final e in weights.entries)
-          e.key: ((e.value / 10) * 100).toInt().clamp(0, 100).toInt(),
-      };
-    }
-
-    final radarAll = computeRadar(null);
-    final radarRecent = computeRadar(dayAgo(14));
-
-    return Progress.fromJson(<String, dynamic>{
-      'total_trainings': trainings.length,
-      'total_matches': matches.length,
-      'total_minutes': totalMinutes,
-      'total_goals': totalGoals,
-      'total_assists': totalAssists,
-      'streak_days': streak,
-      'avg_rating': avgRating,
-      'skill_radar_all': radarAll,
-      'skill_radar_recent': radarRecent,
-      'week_sessions': weekSessions,
-    });
-  }
+  static Future<Progress> progress() => ProgressCalculator.calculate();
 
   // ---------------- Słabe punkty ----------------
   static Future<WeakSpotsPayload?> getWeakSpots() async {

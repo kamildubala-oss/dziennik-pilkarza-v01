@@ -167,7 +167,7 @@ class _DiaryScreenState extends State<DiaryScreen> {
       );
     }
     list.sort((a, b) => b.date.compareTo(a.date));
-    return list.length > 15 ? list.sublist(0, 15) : list;
+    return list.take(5).toList();
   }
 
   @override

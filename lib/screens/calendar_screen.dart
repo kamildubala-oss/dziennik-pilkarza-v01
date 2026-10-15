@@ -498,10 +498,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 ? 'KLUBOWY'
                 : 'NOTATKA';
 
-    final canOpen = e.planned || e.steps.isNotEmpty;
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
-      onTap: canOpen ? () => _openDetails(e) : null,
+      onTap: () => _edit(e),
       child: Container(
         margin: const EdgeInsets.only(bottom: Sp.sm),
         padding: const EdgeInsets.all(Sp.md),
@@ -581,25 +580,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
                   e.done ? Icons.check_circle : Icons.radio_button_unchecked,
                   size: 24,
                   color: e.done ? c.brandPrimary : c.muted,
-                ),
-              ),
-            ),
-            const SizedBox(width: Sp.xs),
-            GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onTap: () => _edit(e),
-              child: Padding(
-                padding: const EdgeInsets.all(4),
-                child: Icon(
-                  e.type == 'club_training'
-                      ? (e.source == 'trainings'
-                          ? Icons.star
-                          : Icons.star_outline)
-                      : Icons.edit_outlined,
-                  size: 21,
-                  color: e.type == 'club_training'
-                      ? eventTypeColor(c, 'club_training')
-                      : c.onSurfaceSecondary,
                 ),
               ),
             ),
