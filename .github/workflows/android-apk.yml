@@ -53,8 +53,9 @@ jobs:
 
       - name: Generate launcher icons from selected artwork
         run: |
-          python3 -m pip install --user Pillow
-          python3 .github/scripts/generate_android_icons.py
+          python3 -m venv .icon-venv
+          .icon-venv/bin/pip install Pillow
+          .icon-venv/bin/python .github/scripts/generate_android_icons.py
 
       - name: Build obfuscated ARM64 release APK (debug-signed)
         run: |
