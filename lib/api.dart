@@ -1243,6 +1243,7 @@ class Api {
     required String time,
     required String title,
     required String description,
+    Map<String, dynamic>? details,
   }) {
     return LocalDb.synchronized<EventItem>(() async {
       final items = await LocalDb.list('events');
@@ -1253,6 +1254,7 @@ class Api {
       e['time'] = time;
       e['title'] = title;
       e['description'] = description;
+      if (details != null) e.addAll(details);
       await LocalDb.saveList('events', items);
       return EventItem.fromJson(e);
     });
