@@ -48,23 +48,23 @@ class _LogMatchScreenState extends State<LogMatchScreen> {
     text: _e != null ? first10(_e.date) : (widget.editingEvent?.date ?? widget.initialDate ?? todayIso()),
   );
   late final TextEditingController _opponent =
-      TextEditingController(text: _e?.opponent ?? '');
+      TextEditingController(text: _e?.opponent ?? (widget.editingEvent?.details['opponent'] as String?) ?? '');
   late final TextEditingController _result =
-      TextEditingController(text: _e?.result ?? '');
+      TextEditingController(text: _e?.result ?? (widget.editingEvent?.details['result'] as String?) ?? '');
   late final TextEditingController _minutes =
-      TextEditingController(text: '${_e?.minutesPlayed ?? 60}');
+      TextEditingController(text: '${_e?.minutesPlayed ?? widget.editingEvent?.details['minutes_played'] ?? 60}');
   late final TextEditingController _goals =
-      TextEditingController(text: '${_e?.goals ?? 0}');
+      TextEditingController(text: '${_e?.goals ?? widget.editingEvent?.details['goals'] ?? 0}');
   late final TextEditingController _assists =
-      TextEditingController(text: '${_e?.assists ?? 0}');
+      TextEditingController(text: '${_e?.assists ?? widget.editingEvent?.details['assists'] ?? 0}');
   late final TextEditingController _wentWell =
-      TextEditingController(text: _e?.wentWell ?? '');
+      TextEditingController(text: _e?.wentWell ?? (widget.editingEvent?.details['went_well'] as String?) ?? '');
   late final TextEditingController _toImprove =
-      TextEditingController(text: _e?.toImprove ?? '');
+      TextEditingController(text: _e?.toImprove ?? (widget.editingEvent?.details['to_improve'] as String?) ?? '');
   late final TextEditingController _notes =
-      TextEditingController(text: _e?.notes ?? '');
+      TextEditingController(text: _e?.notes ?? (widget.editingEvent?.details['notes'] as String?) ?? '');
 
-  late int _rating = _e != null && _e.rating >= 1 ? _e.rating : 3;
+  late int _rating = _e != null && _e.rating >= 1 ? _e.rating : (widget.editingEvent?.details['rating'] as int?) ?? 3;
   bool _saving = false;
 
   @override
