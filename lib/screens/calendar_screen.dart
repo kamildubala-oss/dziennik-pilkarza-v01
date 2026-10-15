@@ -122,7 +122,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
   /// tylko ocena; notatki i treningi z planu - tytuł, data, godzina, opis.
   Future<void> _edit(EventItem e) async {
     Widget? page;
-    if (e.type == 'club_training') {
+    if (e.type == 'club_training' && e.source == 'club') {
       page = ClubTrainingScreen(event: e);
     } else if (e.source == 'trainings' && e.sourceId.isNotEmpty) {
       final t = await Api.getTraining(e.sourceId);
