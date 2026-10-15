@@ -1,0 +1,118 @@
+{
+  "schema_version": "2.0.0",
+  "purpose": "Lokalny, konserwatywny silnik wspierający planowanie i monitorowanie. Nie diagnozuje przeciążenia, kontuzji ani gotowości medycznej.",
+  "required_session_fields": {
+    "date": "ISO-8601 date",
+    "session_type": "club_training|match|individual|gym|recovery|other",
+    "duration_min": "integer",
+    "rpe_1_10": "integer 1-10, session RPE entered ideally 15-30 min after activity",
+    "match_minutes": "optional integer",
+    "wellbeing_1_5": "optional integer",
+    "sleep_hours": "optional numeric",
+    "pain_flag": "boolean",
+    "notes": "optional string",
+    "source": "manual|calendar|import"
+  },
+  "metrics": {
+    "session_load": "duration_min * rpe_1_10",
+    "daily_load": "sum(session_load for sessions on same day)",
+    "rolling_7d_load": "sum(daily_load over current day and previous 6 days)",
+    "rolling_28d_mean_weekly_load": "sum(daily_load over last 28 days) / 4",
+    "acute_chronic_ratio": "Do not use as a standalone decision rule; optional research metric only, if shown, explain uncertainty and suppress when data incomplete.",
+    "monotony": "mean(daily_load for 7 days) / standard_deviation(daily_load for 7 days); do not calculate if standard deviation is 0 or data is incomplete",
+    "strain": "weekly_total_load * monotony; exploratory trend only, not a clinical threshold",
+    "completion_rate": "completed planned sessions / planned sessions, excluding explicitly cancelled sessions"
+  },
+  "data_quality": {
+    "minimum_for_7d_summary": "At least 5 of 7 days with explicit activity/rest status; missing day is not assumed to be rest.",
+    "minimum_for_28d_trend": "At least 21 of 28 days with explicit activity/rest status and at least 3 weekly summaries.",
+    "confidence": "high if at least 6/7 daily records for weekly summary; medium if 5/7; low otherwise.",
+    "never_infer_rest_from_no_entry": true,
+    "distinguish_reported_zero_activity_from_missing_data": true
+  },
+  "decision_priority": [
+    {
+      "priority": 100,
+      "id": "pain_or_red_flag",
+      "condition": "pain_flag == true OR red_flag_symptom == true",
+      "action": "Nie rekomenduj dodatkowego obciążenia. Przerwij bolesną aktywność i zalec kontakt z rodzicem/opiekunem oraz trenerem; pilne objawy wymagają pilnej pomocy medycznej."
+    },
+    {
+      "priority": 90,
+      "id": "poor_wellbeing",
+      "condition": "wellbeing_1_5 <= 2 OR athlete_reports_unusual_fatigue",
+      "action": "Zaproponuj odpoczynek lub lekką regenerację; zapytaj o kontekst. Nie stawiaj diagnozy."
+    },
+    {
+      "priority": 80,
+      "id": "match_tomorrow",
+      "condition": "match_in_next_24h == true",
+      "action": "Nie dokładaj ciężkiej jednostki. Preferuj odpoczynek lub krótki, lekki kontakt z piłką."
+    },
+    {
+      "priority": 75,
+      "id": "day_after_match",
+      "condition": "match_yesterday == true",
+      "action": "Uwzględnij minuty meczu i samopoczucie; domyślnie odpoczynek albo lekka aktywność."
+    },
+    {
+      "priority": 70,
+      "id": "club_session_day",
+      "condition": "club_training_today == true",
+      "action": "Trening klubowy liczy się do obciążenia; nie planuj automatycznie dodatkowej ciężkiej sesji."
+    },
+    {
+      "priority": 60,
+      "id": "high_load_cluster",
+      "condition": "two_or_more_high_intensity_sessions_in_3_days == true",
+      "action": "Zaproponuj dzień lekki lub odpoczynek i poproś o ocenę samopoczucia."
+    },
+    {
+      "priority": 50,
+      "id": "load_rise",
+      "condition": "rolling_7d_load exceeds prior 28d weekly average materially",
+      "action": "Pokaż neutralne ostrzeżenie o wzroście obciążenia, zweryfikuj kompletność danych i samopoczucie; nie stosuj automatycznej diagnozy ani sztywnego progu."
+    },
+    {
+      "priority": 40,
+      "id": "missing_data",
+      "condition": "data_quality insufficient",
+      "action": "Oznacz rekomendację jako wstępną; zapytaj o brakujące treningi, mecze i dni odpoczynku."
+    }
+  ],
+  "planning_constraints": {
+    "weekly_rest_days_min": 1,
+    "low_intensity_days_min": 1,
+    "avoid_consecutive_high_intensity_individual_sessions": true,
+    "club_and_match_load_included": true,
+    "match_eve": "rest_or_low",
+    "day_after_match": "rest_or_low",
+    "age_appropriate_and_supervised": true,
+    "progression": "Change one variable at a time (duration, repetitions, or difficulty); use athlete feedback and coach oversight.",
+    "do_not_use": "No universal acute:chronic ratio threshold, monotony threshold, or RPE score alone should automatically declare athlete safe/unsafe."
+  },
+  "athlete_feedback": {
+    "daily_questions": [
+      "Jak oceniasz samopoczucie? (1-5)",
+      "Jak spałeś? (opcjonalnie)",
+      "Czy coś boli lub sprawia nietypowy dyskomfort?",
+      "Jak trudny był trening? (RPE 1-10)"
+    ],
+    "weekly_questions": [
+      "Co było najbardziej obciążające?",
+      "Czy czułeś się zregenerowany przed ważnymi treningami/meczem?",
+      "Jaki jeden element chcesz poprawić w kolejnym tygodniu?"
+    ]
+  },
+  "outputs": [
+    "daily_load",
+    "weekly_load",
+    "rolling_7d_load",
+    "rolling_28d_mean_weekly_load",
+    "data_completeness",
+    "wellbeing_trend",
+    "rpe_trend",
+    "planned_vs_completed",
+    "flags_with_explanations"
+  ]
+}

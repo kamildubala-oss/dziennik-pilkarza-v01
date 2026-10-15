@@ -1,0 +1,109 @@
+{
+  "schema_version": "2.0.0",
+  "purpose": "Wielotygodniowe podsumowanie dziennika zawodnika. Każdy wniosek musi wskazywać dane, zakres czasu i poziom pewności.",
+  "analysis_windows": {
+    "short_term_days": 7,
+    "comparison_days": 28,
+    "long_term_days": 84
+  },
+  "minimum_data": {
+    "weekly_summary": ">=5 days with explicit status",
+    "28_day_trend": ">=3 weekly summaries with sufficient data",
+    "84_day_trend": ">=8 weekly summaries; label as exploratory if fewer than 10",
+    "weakness_pattern": "At least 3 separate observations on different dates for a recurring candidate weakness; single entries remain one-off observations"
+  },
+  "trend_dimensions": [
+    {
+      "id": "technical",
+      "signals": [
+        "self_rating_by_skill",
+        "exercise_quality",
+        "successful_repetitions",
+        "weak_foot_use"
+      ],
+      "interpretation": "Trend in self-reported/exercise-specific measures; not an objective scouting rating."
+    },
+    {
+      "id": "tactical",
+      "signals": [
+        "decision_success",
+        "scanning_habit",
+        "coach_feedback",
+        "reflection_tags"
+      ],
+      "interpretation": "Only use recorded observations; do not infer match understanding from missing notes."
+    },
+    {
+      "id": "physical_load",
+      "signals": [
+        "session_load",
+        "weekly_load",
+        "high_intensity_days",
+        "match_minutes"
+      ],
+      "interpretation": "Describe exposure and reported effort, not medical readiness."
+    },
+    {
+      "id": "wellbeing",
+      "signals": [
+        "wellbeing_1_5",
+        "sleep_hours_optional",
+        "fatigue_notes",
+        "pain_flag"
+      ],
+      "interpretation": "Show patterns and encourage adult/coach support; do not diagnose."
+    },
+    {
+      "id": "mental_process",
+      "signals": [
+        "goal_completion",
+        "reflection_frequency",
+        "confidence_self_rating"
+      ],
+      "interpretation": "Track habits and self-reflection, not personality or mental health diagnoses."
+    },
+    {
+      "id": "consistency",
+      "signals": [
+        "planned_sessions",
+        "completed_sessions",
+        "logged_days"
+      ],
+      "interpretation": "Use encouraging language; no shaming or streak punishment."
+    }
+  ],
+  "trend_calculations": {
+    "weekly_mean": "mean(valid daily values within week)",
+    "week_over_week_change_percent": "(current_week - previous_week) / previous_week * 100; suppress if previous_week == 0 or data completeness differs materially",
+    "skill_trend": "Compare median of last 3 weekly values to prior 3 weekly values when enough data exists; show raw sample count.",
+    "consistency_rate": "completed_planned_sessions / planned_sessions * 100; exclude coach-cancelled or illness-cancelled sessions from denominator if explicitly marked.",
+    "rpe_efficiency": "Do not infer fitness from lower RPE alone. Show RPE alongside session type, duration and wellbeing.",
+    "repeated_signal": "Count matching journal tags by distinct dates in rolling 28-day window; >=3 dates = candidate pattern, not confirmed weakness."
+  },
+  "confidence_levels": {
+    "high": "Adequate coverage, comparable sessions and repeated observations.",
+    "medium": "Some missing entries or mixed session types; show limitations.",
+    "low": "Few observations, changing measurement method, or incomplete logs; phrase as a question rather than a conclusion."
+  },
+  "insight_template": {
+    "title": "Krótki tytuł",
+    "observation": "Co faktycznie pokazują wpisy",
+    "window": "Zakres dat",
+    "evidence_count": 0,
+    "data_completeness": "low|medium|high",
+    "confidence": "low|medium|high",
+    "possible_explanation": "Możliwe wyjaśnienie, nie diagnoza",
+    "next_step": "Jeden mały eksperyment lub cel",
+    "review_after_days": 14
+  },
+  "rules": [
+    "Never call a trait a permanent weakness based on one entry.",
+    "Always separate self-reported perception from objective measured performance.",
+    "Compare like with like: similar drill, duration, role and context.",
+    "Do not rank children against each other.",
+    "Do not infer absence of training from missing records.",
+    "Avoid shaming, streak penalties and alarmist labels.",
+    "If wellbeing worsens or pain repeats, recommend discussion with parent/guardian and coach rather than increasing workload.",
+    "Present no more than two priority insights at once."
+  ]
+}

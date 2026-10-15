@@ -1,0 +1,137 @@
+{
+  "schema_version": "2.2.0",
+  "inputs": [
+    "age",
+    "training_experience",
+    "club_training_days",
+    "match_date_and_minutes",
+    "school_or_other_activity_optional",
+    "recent_sessions_28d",
+    "wellbeing",
+    "pain_flag",
+    "goals_max_2",
+    "available_minutes",
+    "equipment",
+    "space",
+    "position_optional",
+    "training_partner_available",
+    "wall_available",
+    "max_human_participants_default_2"
+  ],
+  "pipeline": [
+    "1. Validate data and mark missing information.",
+    "2. Apply safety overrides: pain/red flags, poor wellbeing, recent match, recent high-load cluster.",
+    "3. Place club sessions and matches first; these are fixed external load.",
+    "4. Place at least one rest day; avoid adding hard sessions adjacent to match or club load.",
+    "5. Choose no more than two individual priorities from trend analysis.",
+    "6. Filtruj wyłącznie ćwiczenia z requires_team=false i participants_max<=2; sprawdź wymagany tryb (solo, wall, coach, wall_or_coach, solo_or_coach), dostępność trenera i ściany, sprzęt, wiek, przestrzeń, intensywność.",
+    "7. Limit volume; include warm-up and cool-down for active sessions.",
+    "8. Explain why each session was selected and how to make it easier.",
+    "9. Return the plan as provisional and ask the player to report RPE and wellbeing after sessions."
+  ],
+  "constraints": {
+    "days": 7,
+    "rest_days_min": 1,
+    "low_intensity_days_min": 1,
+    "max_consecutive_high_intensity_individual_sessions": 1,
+    "club_day_extra_hard_session": false,
+    "match_eve": "rest_or_low",
+    "day_after_match": "rest_or_low",
+    "unknown_schedule": "do_not_assume_free_day",
+    "max_individual_focus_areas": 2,
+    "max_human_participants": 2,
+    "team_exercises_allowed": false,
+    "respect_participation_mode": true,
+    "when_coach_unavailable": "select solo/wall exercises only",
+    "when_wall_unavailable": "exclude wall-only exercises; wall_or_coach only if coach available",
+    "never_schedule_incompatible_exercise": true
+  },
+  "weekly_example": [
+    {
+      "day": "Poniedziałek",
+      "type": "regeneracja",
+      "intensity": "low",
+      "minutes": 10,
+      "exercise_ids": [
+        "phy_walking_recovery",
+        "phy_mobility_reset"
+      ],
+      "why": "Po meczu lub ciężkim weekendzie najpierw oceń samopoczucie."
+    },
+    {
+      "day": "Wtorek",
+      "type": "technika",
+      "intensity": "low",
+      "minutes": 20,
+      "exercise_ids": [
+        "tech_first_touch",
+        "tech_weak_foot"
+      ],
+      "why": "Krótka praca jakościowa; tylko jeśli brak bólu i samopoczucie jest dobre."
+    },
+    {
+      "day": "Środa",
+      "type": "trening klubowy",
+      "intensity": "as_planned",
+      "minutes": 0,
+      "exercise_ids": [],
+      "why": "Trening klubowy wlicza się do całkowitego obciążenia."
+    },
+    {
+      "day": "Czwartek",
+      "type": "taktyka",
+      "intensity": "low",
+      "minutes": 12,
+      "exercise_ids": [
+        "tac_support_angle",
+        "tech_scan_receive"
+      ],
+      "why": "Krótka sesja poznawcza/techniczna, o ile nie koliduje z obciążeniem zespołu."
+    },
+    {
+      "day": "Piątek",
+      "type": "przygotowanie mentalne",
+      "intensity": "low",
+      "minutes": 5,
+      "exercise_ids": [
+        "men_pre_session_goal"
+      ],
+      "why": "Przed meczem bez dokładania zmęczenia."
+    },
+    {
+      "day": "Sobota",
+      "type": "mecz",
+      "intensity": "as_played",
+      "minutes": 0,
+      "exercise_ids": [],
+      "why": "Zapisz minuty gry, RPE i samopoczucie."
+    },
+    {
+      "day": "Niedziela",
+      "type": "odpoczynek",
+      "intensity": "low",
+      "minutes": 0,
+      "exercise_ids": [],
+      "why": "Dzień wolny nie musi zawierać dodatkowej jednostki."
+    }
+  ],
+  "important": "Przykład wyłącznie demonstracyjny. Generator musi dostosować plan do faktycznego kalendarza zawodnika i nie może kopiować tygodnia bez walidacji.",
+  "exercise_selection_rules": {
+    "hard_filters": [
+      "requires_team == false",
+      "participants_max <= 2",
+      "age_band.min <= age <= age_band.max",
+      "required equipment and space available",
+      "participation_mode compatible with coach/wall availability"
+    ],
+    "mode_requirements": {
+      "solo": "zawodnik",
+      "wall": "zawodnik + ściana",
+      "coach": "zawodnik + trener",
+      "wall_or_coach": "zawodnik + ściana LUB zawodnik + trener",
+      "solo_or_coach": "samodzielnie LUB zawodnik + trener"
+    },
+    "fallback": "Jeśli brak zgodnych ćwiczeń, skróć plan lub zaproponuj odpoczynek; nie dodawaj ćwiczeń grupowych.",
+    "rotation": "W obrębie obszaru rotuj ID ćwiczeń, unikaj identycznych zestawów w kolejnych tygodniach, ale zachowaj powtórzenia potrzebne do oceny postępu."
+  }
+}

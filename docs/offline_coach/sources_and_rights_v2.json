@@ -1,0 +1,44 @@
+{
+  "schema_version": "2.1.0",
+  "status": "Informacje o ogólnych materiałach referencyjnych; autorskie ćwiczenia nie są oficjalnym programem wskazanych organizacji.",
+  "sources": [
+    {
+      "name": "The FA — Working with individuals",
+      "url": "https://www.thefa.com/bootroom/resources/coaching/coaching-players-during-covid-19-working-with-individuals",
+      "themes": [
+        "technika indywidualna",
+        "adaptacje do 1–2 osób"
+      ],
+      "verification": "strona internetowa przejrzana; ćwiczenia są autorskimi adaptacjami, nie kopiami"
+    },
+    {
+      "name": "The FA — Coaching players part two",
+      "url": "https://www.thefa.com/bootroom/resources/coaching/coaching-players-during-covid-19-part-two",
+      "themes": [
+        "technika indywidualna",
+        "adaptacje do 1–2 osób"
+      ],
+      "verification": "strona internetowa przejrzana; ćwiczenia są autorskimi adaptacjami, nie kopiami"
+    },
+    {
+      "name": "The FA — How to coach passing",
+      "url": "https://www.thefa.com/bootroom/resources/coaching/how-to-coach-passing-in-football",
+      "themes": [
+        "technika indywidualna",
+        "adaptacje do 1–2 osób"
+      ],
+      "verification": "strona internetowa przejrzana; ćwiczenia są autorskimi adaptacjami, nie kopiami"
+    },
+    {
+      "name": "The FA — How to use constraints",
+      "url": "https://www.thefa.com/bootroom/resources/coaching/how-to-use-constraints-in-your-coaching-session",
+      "themes": [
+        "technika indywidualna",
+        "adaptacje do 1–2 osób"
+      ],
+      "verification": "strona internetowa przejrzana; ćwiczenia są autorskimi adaptacjami, nie kopiami"
+    }
+  ],
+  "use_and_rights_note": "Pakiet zawiera autorskie ćwiczenia i reguły, nie kopie treści, ilustracji, tabel ani kompletnych scenariuszy z publikacji. Przed komercyjnym użyciem zweryfikuj prawa do nazw, materiałów i znaków.",
+  "alignment_policy": "Powiązanie ćwiczenia z tematem źródłowym wskazuje jedynie ogólny obszar, nie źródło dosłownej treści."
+}

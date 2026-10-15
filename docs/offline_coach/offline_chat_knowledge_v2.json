@@ -1,0 +1,111 @@
+{
+  "schema_version": "2.0.0",
+  "mode": "deterministic_retrieval_and_rules",
+  "limitations": "Nie jest to LLM. Działa na lokalnych intencjach, kartach wiedzy, profilu, dzienniku i bibliotece ćwiczeń.",
+  "privacy_requirements": [
+    "Wszystkie operacje w ścieżce offline lokalnie.",
+    "Brak wywołań API, telemetrii treści i logowania notatek zawodnika.",
+    "Wyraźnie rozdziel ustawienie trybu online i offline.",
+    "Użytkownik może usunąć lokalną historię i eksportować ją świadomie."
+  ],
+  "intents": [
+    {
+      "id": "plan_week",
+      "examples": [
+        "ułóż plan tygodnia",
+        "co mam trenować",
+        "zaplanuj treningi"
+      ],
+      "handler": "weekly_planner_v2",
+      "requires": [
+        "club_training_days",
+        "match_date",
+        "goals_max_2",
+        "wellbeing",
+        "pain_flag"
+      ],
+      "fallback": "Żeby nie dołożyć Ci zbyt dużego obciążenia, podaj dni treningów klubowych, termin meczu i jak się dziś czujesz."
+    },
+    {
+      "id": "trend_summary",
+      "examples": [
+        "jak mi idzie",
+        "czy robię postępy",
+        "podsumuj ostatnie tygodnie"
+      ],
+      "handler": "trend_analysis_v2",
+      "requires": [
+        "journal_entries",
+        "session_logs"
+      ],
+      "fallback": "Potrzebuję kilku tygodni wpisów, aby odróżnić powtarzający się trend od pojedynczego dnia."
+    },
+    {
+      "id": "weakness_analysis",
+      "examples": [
+        "co powinienem poprawić",
+        "jakie mam słabe punkty"
+      ],
+      "handler": "weakness_rules",
+      "requires": [
+        "journal_entries"
+      ],
+      "fallback": "Nie będę zgadywać po jednym wpisie. Dodaj obserwacje z kilku treningów, a wskażę możliwy wzorzec i ćwiczenie do sprawdzenia."
+    },
+    {
+      "id": "load_check",
+      "examples": [
+        "czy dziś trenować",
+        "jestem zmęczony",
+        "mam jutro mecz"
+      ],
+      "handler": "load_model_v2",
+      "requires": [
+        "recent_sessions",
+        "wellbeing",
+        "pain_flag",
+        "match_calendar"
+      ],
+      "fallback": "Sprawdźmy ostatnie treningi, mecz i samopoczucie. Jeśli coś boli, nie dokładaj treningu przez ból."
+    },
+    {
+      "id": "exercise_search",
+      "examples": [
+        "ćwiczenie na przyjęcie",
+        "poprawa słabszej nogi",
+        "ćwiczenia na pressing"
+      ],
+      "handler": "exercise_library_v2",
+      "requires": [
+        "area_or_skill"
+      ],
+      "fallback": "Wybierz obszar: technika, taktyka, motoryka, regeneracja lub mentalność."
+    },
+    {
+      "id": "motivation",
+      "examples": [
+        "nie mam motywacji",
+        "słabo mi poszło"
+      ],
+      "handler": "supportive_response",
+      "fallback": "Nie oceniaj całego rozwoju po jednym treningu. Wybierz jeden mały cel na następną sesję."
+    },
+    {
+      "id": "source_transparency",
+      "examples": [
+        "skąd są te ćwiczenia",
+        "czy to oficjalne ćwiczenie federacji"
+      ],
+      "handler": "sources_and_rights",
+      "fallback": "To autorskie opracowanie inspirowane tematami szkolenia. Nie oznaczam ćwiczeń jako oficjalnych, jeśli nie mam potwierdzenia w źródle."
+    }
+  ],
+  "response_policy": [
+    "Odpowiadaj krótko i konkretnie.",
+    "Podaj podstawę w danych zawodnika: daty, liczby obserwacji i braki danych.",
+    "Nie przedstawiaj przypuszczeń jako faktów.",
+    "Nie diagnozuj kontuzji ani zdrowia psychicznego.",
+    "Nie zawstydzaj za brak treningu lub przerwę.",
+    "Maksymalnie dwa priorytety rozwojowe jednocześnie."
+  ]
+}

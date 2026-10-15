@@ -1,0 +1,3521 @@
+{
+  "schema_version": "2.2.0",
+  "language": "pl-PL",
+  "title": "Biblioteka 60 ćwiczeń — maksymalnie zawodnik i trener",
+  "count": 60,
+  "license_note": "Autorskie opisy ćwiczeń. Biblioteka nie stanowi oficjalnego programu żadnej federacji ani organizacji szkoleniowej.",
+  "areas": [
+    "technika",
+    "taktyka",
+    "motoryka",
+    "regeneracja",
+    "mentalność"
+  ],
+  "exercises": [
+    {
+      "id": "tech_ball_mastery",
+      "title": "Prowadzenie piłki – małe kontakty",
+      "area": "technika",
+      "subarea": "prowadzenie",
+      "age_band": {
+        "min": 10,
+        "max": 18
+      },
+      "duration_min": 15,
+      "intensity": "low",
+      "solo": true,
+      "equipment": [
+        "piłka",
+        "znaczniki"
+      ],
+      "space": "mała przestrzeń",
+      "goal": "Zwiększ kontrolę piłki przy częstych zmianach kierunku.",
+      "setup": "Ustaw prosty układ z bezpiecznymi odległościami; dostosuj wielkość pola do poziomu zawodnika.",
+      "steps": [
+        "Rozpocznij od 2-4 min spokojnej rozgrzewki z piłką.",
+        "Wykonuj krótkie serie z przerwą, utrzymując jakość techniczną.",
+        "Zwiększaj tempo dopiero wtedy, gdy kontrola jest stabilna.",
+        "Na koniec zapisz jedną obserwację i ocenę jakości 1-5."
+      ],
+      "coaching_cues": [
+        "Jakość przed szybkością.",
+        "Obserwuj przestrzeń, nie tylko piłkę.",
+        "Zakończ serię, jeśli technika wyraźnie się pogarsza."
+      ],
+      "regression": "Zwolnij, zwiększ odstępy lub skróć serię.",
+      "progression": "Dodaj presję czasową, zmianę kierunku albo partnera dopiero po opanowaniu podstaw.",
+      "trackable_metrics": [
+        "jakość_1_5",
+        "udane_powtórzenia",
+        "dominująca_noga"
+      ],
+      "tags": [
+        "technika",
+        "piłka"
+      ],
+      "provenance": {
+        "type": "autorskie opracowanie",
+        "alignment_theme": "NMG: technika i rozumienie gry",
+        "source_reference": "sources_and_rights.json"
+      },
+      "participation_mode": "solo",
+      "participants_min": 1,
+      "participants_max": 1,
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik"
+      ],
+      "environment_options": [
+        "samodzielnie"
+      ]
+    },
+    {
+      "id": "tech_slalom",
+      "title": "Slalom z podniesieniem głowy",
+      "area": "technika",
+      "subarea": "prowadzenie",
+      "age_band": {
+        "min": 10,
+        "max": 18
+      },
+      "duration_min": 12,
+      "intensity": "medium",
+      "solo": true,
+      "equipment": [
+        "piłka",
+        "4-8 znaczników"
+      ],
+      "space": "mała przestrzeń",
+      "goal": "Prowadź piłkę i regularnie obserwuj otoczenie.",
+      "setup": "Ustaw prosty układ z bezpiecznymi odległościami; dostosuj wielkość pola do poziomu zawodnika.",
+      "steps": [
+        "Rozpocznij od 2-4 min spokojnej rozgrzewki z piłką.",
+        "Wykonuj krótkie serie z przerwą, utrzymując jakość techniczną.",
+        "Zwiększaj tempo dopiero wtedy, gdy kontrola jest stabilna.",
+        "Na koniec zapisz jedną obserwację i ocenę jakości 1-5."
+      ],
+      "coaching_cues": [
+        "Jakość przed szybkością.",
+        "Obserwuj przestrzeń, nie tylko piłkę.",
+        "Zakończ serię, jeśli technika wyraźnie się pogarsza."
+      ],
+      "regression": "Zwolnij, zwiększ odstępy lub skróć serię.",
+      "progression": "Dodaj presję czasową, zmianę kierunku albo partnera dopiero po opanowaniu podstaw.",
+      "trackable_metrics": [
+        "jakość_1_5",
+        "udane_powtórzenia",
+        "dominująca_noga"
+      ],
+      "tags": [
+        "technika",
+        "piłka"
+      ],
+      "provenance": {
+        "type": "autorskie opracowanie",
+        "alignment_theme": "NMG: technika i rozumienie gry",
+        "source_reference": "sources_and_rights.json"
+      },
+      "participation_mode": "solo",
+      "participants_min": 1,
+      "participants_max": 1,
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik"
+      ],
+      "environment_options": [
+        "samodzielnie"
+      ]
+    },
+    {
+      "id": "tech_sole_roll",
+      "title": "Podeszwa i podeszwa-bok",
+      "area": "technika",
+      "subarea": "kontrola",
+      "age_band": {
+        "min": 10,
+        "max": 18
+      },
+      "duration_min": 10,
+      "intensity": "low",
+      "solo": true,
+      "equipment": [
+        "piłka"
+      ],
+      "space": "mała przestrzeń",
+      "goal": "Rozwijaj kontrolę piłki w ciasnej przestrzeni.",
+      "setup": "Ustaw prosty układ z bezpiecznymi odległościami; dostosuj wielkość pola do poziomu zawodnika.",
+      "steps": [
+        "Rozpocznij od 2-4 min spokojnej rozgrzewki z piłką.",
+        "Wykonuj krótkie serie z przerwą, utrzymując jakość techniczną.",
+        "Zwiększaj tempo dopiero wtedy, gdy kontrola jest stabilna.",
+        "Na koniec zapisz jedną obserwację i ocenę jakości 1-5."
+      ],
+      "coaching_cues": [
+        "Jakość przed szybkością.",
+        "Obserwuj przestrzeń, nie tylko piłkę.",
+        "Zakończ serię, jeśli technika wyraźnie się pogarsza."
+      ],
+      "regression": "Zwolnij, zwiększ odstępy lub skróć serię.",
+      "progression": "Dodaj presję czasową, zmianę kierunku albo partnera dopiero po opanowaniu podstaw.",
+      "trackable_metrics": [
+        "jakość_1_5",
+        "udane_powtórzenia",
+        "dominująca_noga"
+      ],
+      "tags": [
+        "technika",
+        "piłka"
+      ],
+      "provenance": {
+        "type": "autorskie opracowanie",
+        "alignment_theme": "NMG: technika i rozumienie gry",
+        "source_reference": "sources_and_rights.json"
+      },
+      "participation_mode": "solo",
+      "participants_min": 1,
+      "participants_max": 1,
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik"
+      ],
+      "environment_options": [
+        "samodzielnie"
+      ]
+    },
+    {
+      "id": "tech_weak_foot",
+      "title": "Słabsza noga – kontakt i podanie",
+      "area": "technika",
+      "subarea": "podanie",
+      "age_band": {
+        "min": 10,
+        "max": 18
+      },
+      "duration_min": 12,
+      "intensity": "low",
+      "solo": true,
+      "equipment": [
+        "piłka",
+        "ściana lub partner"
+      ],
+      "space": "mała przestrzeń",
+      "goal": "Buduj pewność w używaniu obu nóg.",
+      "setup": "Ustaw prosty układ z bezpiecznymi odległościami; dostosuj wielkość pola do poziomu zawodnika.",
+      "steps": [
+        "Rozpocznij od 2-4 min spokojnej rozgrzewki z piłką.",
+        "Wykonuj krótkie serie z przerwą, utrzymując jakość techniczną.",
+        "Zwiększaj tempo dopiero wtedy, gdy kontrola jest stabilna.",
+        "Na koniec zapisz jedną obserwację i ocenę jakości 1-5."
+      ],
+      "coaching_cues": [
+        "Jakość przed szybkością.",
+        "Obserwuj przestrzeń, nie tylko piłkę.",
+        "Zakończ serię, jeśli technika wyraźnie się pogarsza."
+      ],
+      "regression": "Zwolnij, zwiększ odstępy lub skróć serię.",
+      "progression": "Dodaj presję czasową, zmianę kierunku albo partnera dopiero po opanowaniu podstaw.",
+      "trackable_metrics": [
+        "jakość_1_5",
+        "udane_powtórzenia",
+        "dominująca_noga"
+      ],
+      "tags": [
+        "technika",
+        "piłka"
+      ],
+      "provenance": {
+        "type": "autorskie opracowanie",
+        "alignment_theme": "NMG: technika i rozumienie gry",
+        "source_reference": "sources_and_rights.json"
+      },
+      "participation_mode": "solo",
+      "participants_min": 1,
+      "participants_max": 1,
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik"
+      ],
+      "environment_options": [
+        "samodzielnie"
+      ]
+    },
+    {
+      "id": "tech_wall_pass",
+      "title": "Podania o ścianę",
+      "area": "technika",
+      "subarea": "podanie",
+      "age_band": {
+        "min": 10,
+        "max": 18
+      },
+      "duration_min": 15,
+      "intensity": "low",
+      "solo": true,
+      "equipment": [
+        "piłka",
+        "bezpieczna ściana"
+      ],
+      "space": "mała przestrzeń",
+      "goal": "Popraw dokładność i rytm podań.",
+      "setup": "Ustaw prosty układ z bezpiecznymi odległościami; dostosuj wielkość pola do poziomu zawodnika.",
+      "steps": [
+        "Rozpocznij od 2-4 min spokojnej rozgrzewki z piłką.",
+        "Wykonuj krótkie serie z przerwą, utrzymując jakość techniczną.",
+        "Zwiększaj tempo dopiero wtedy, gdy kontrola jest stabilna.",
+        "Na koniec zapisz jedną obserwację i ocenę jakości 1-5."
+      ],
+      "coaching_cues": [
+        "Jakość przed szybkością.",
+        "Obserwuj przestrzeń, nie tylko piłkę.",
+        "Zakończ serię, jeśli technika wyraźnie się pogarsza."
+      ],
+      "regression": "Zwolnij, zwiększ odstępy lub skróć serię.",
+      "progression": "Dodaj presję czasową, zmianę kierunku albo partnera dopiero po opanowaniu podstaw.",
+      "trackable_metrics": [
+        "jakość_1_5",
+        "udane_powtórzenia",
+        "dominująca_noga"
+      ],
+      "tags": [
+        "technika",
+        "piłka"
+      ],
+      "provenance": {
+        "type": "autorskie opracowanie",
+        "alignment_theme": "NMG: technika i rozumienie gry",
+        "source_reference": "sources_and_rights.json"
+      },
+      "participation_mode": "solo",
+      "participants_min": 1,
+      "participants_max": 1,
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik"
+      ],
+      "environment_options": [
+        "samodzielnie"
+      ]
+    },
+    {
+      "id": "tech_first_touch",
+      "title": "Przyjęcie kierunkowe",
+      "area": "technika",
+      "subarea": "przyjęcie",
+      "age_band": {
+        "min": 11,
+        "max": 18
+      },
+      "duration_min": 12,
+      "intensity": "low",
+      "solo": true,
+      "equipment": [
+        "piłka",
+        "ściana lub partner"
+      ],
+      "space": "mała przestrzeń",
+      "goal": "Przygotuj piłkę do kolejnego działania pierwszym kontaktem.",
+      "setup": "Ustaw prosty układ z bezpiecznymi odległościami; dostosuj wielkość pola do poziomu zawodnika.",
+      "steps": [
+        "Rozpocznij od 2-4 min spokojnej rozgrzewki z piłką.",
+        "Wykonuj krótkie serie z przerwą, utrzymując jakość techniczną.",
+        "Zwiększaj tempo dopiero wtedy, gdy kontrola jest stabilna.",
+        "Na koniec zapisz jedną obserwację i ocenę jakości 1-5."
+      ],
+      "coaching_cues": [
+        "Jakość przed szybkością.",
+        "Obserwuj przestrzeń, nie tylko piłkę.",
+        "Zakończ serię, jeśli technika wyraźnie się pogarsza."
+      ],
+      "regression": "Zwolnij, zwiększ odstępy lub skróć serię.",
+      "progression": "Dodaj presję czasową, zmianę kierunku albo partnera dopiero po opanowaniu podstaw.",
+      "trackable_metrics": [
+        "jakość_1_5",
+        "udane_powtórzenia",
+        "dominująca_noga"
+      ],
+      "tags": [
+        "technika",
+        "piłka"
+      ],
+      "provenance": {
+        "type": "autorskie opracowanie",
+        "alignment_theme": "NMG: technika i rozumienie gry",
+        "source_reference": "sources_and_rights.json"
+      },
+      "participation_mode": "solo",
+      "participants_min": 1,
+      "participants_max": 1,
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik"
+      ],
+      "environment_options": [
+        "samodzielnie"
+      ]
+    },
+    {
+      "id": "tech_scan_receive",
+      "title": "Skanowanie przed przyjęciem",
+      "area": "technika",
+      "subarea": "przyjęcie",
+      "age_band": {
+        "min": 12,
+        "max": 18
+      },
+      "duration_min": 12,
+      "intensity": "low",
+      "solo": true,
+      "equipment": [
+        "piłka",
+        "ściana",
+        "2 znaczniki"
+      ],
+      "space": "mała przestrzeń",
+      "goal": "Zbieraj informację przed otrzymaniem piłki.",
+      "setup": "Ustaw prosty układ z bezpiecznymi odległościami; dostosuj wielkość pola do poziomu zawodnika.",
+      "steps": [
+        "Rozpocznij od 2-4 min spokojnej rozgrzewki z piłką.",
+        "Wykonuj krótkie serie z przerwą, utrzymując jakość techniczną.",
+        "Zwiększaj tempo dopiero wtedy, gdy kontrola jest stabilna.",
+        "Na koniec zapisz jedną obserwację i ocenę jakości 1-5."
+      ],
+      "coaching_cues": [
+        "Jakość przed szybkością.",
+        "Obserwuj przestrzeń, nie tylko piłkę.",
+        "Zakończ serię, jeśli technika wyraźnie się pogarsza."
+      ],
+      "regression": "Zwolnij, zwiększ odstępy lub skróć serię.",
+      "progression": "Dodaj presję czasową, zmianę kierunku albo partnera dopiero po opanowaniu podstaw.",
+      "trackable_metrics": [
+        "jakość_1_5",
+        "udane_powtórzenia",
+        "dominująca_noga"
+      ],
+      "tags": [
+        "technika",
+        "piłka"
+      ],
+      "provenance": {
+        "type": "autorskie opracowanie",
+        "alignment_theme": "NMG: technika i rozumienie gry",
+        "source_reference": "sources_and_rights.json"
+      },
+      "participation_mode": "solo",
+      "participants_min": 1,
+      "participants_max": 1,
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik"
+      ],
+      "environment_options": [
+        "samodzielnie"
+      ]
+    },
+    {
+      "id": "tech_pass_move",
+      "title": "Podaj i zmień pozycję — ściana lub trener",
+      "area": "technika",
+      "subarea": "podanie",
+      "age_band": {
+        "min": 11,
+        "max": 18
+      },
+      "duration_min": 15,
+      "intensity": "medium",
+      "solo": false,
+      "equipment": [
+        "piłka",
+        "partner",
+        "znaczniki",
+        "ściana lub trener",
+        "2 znaczniki"
+      ],
+      "space": "mała przestrzeń",
+      "goal": "Łącz celne podanie z ruchem po podaniu.",
+      "setup": "Ustaw dwie bramki 3–5 m od ściany; trener może stać zamiast ściany.",
+      "steps": [
+        "Podaj do ściany lub trenera z bramki A.",
+        "Po podaniu przebiegnij do bramki B i przyjmij piłkę kierunkowo.",
+        "Zmień kierunek i nogę podającą po każdej serii."
+      ],
+      "coaching_cues": [
+        "Maksymalnie zawodnik i trener; brak dodatkowych uczestników.",
+        "Stosuj kontrolowany kontakt i dopasuj intensywność do wieku.",
+        "Liczy się jakość decyzji i techniki, nie wynik pojedynku."
+      ],
+      "regression": "Zwiększ przestrzeń, zmniejsz presję trenera i skróć serię.",
+      "progression": "Skróć czas decyzji lub zmniejsz pole bez dodawania zawodników.",
+      "trackable_metrics": [
+        "jakość_1_5",
+        "udane_powtórzenia",
+        "dominująca_noga"
+      ],
+      "tags": [
+        "technika",
+        "piłka"
+      ],
+      "provenance": {
+        "type": "autorskie opracowanie",
+        "alignment_theme": "NMG: technika i rozumienie gry",
+        "source_reference": "sources_and_rights.json"
+      },
+      "original_group_title": "Podaj i zmień pozycję",
+      "participation_mode": "wall_or_coach",
+      "adapted_from_group_drill": true,
+      "participants_min": 1,
+      "participants_max": 2,
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik"
+      ],
+      "environment_options": [
+        "ściana",
+        "trener"
+      ]
+    },
+    {
+      "id": "tech_receive_turn",
+      "title": "Przyjęcie i obrót — podanie trenera lub ściany",
+      "area": "technika",
+      "subarea": "przyjęcie",
+      "age_band": {
+        "min": 11,
+        "max": 18
+      },
+      "duration_min": 15,
+      "intensity": "medium",
+      "solo": false,
+      "equipment": [
+        "piłka",
+        "partner",
+        "ściana lub trener"
+      ],
+      "space": "średnia przestrzeń",
+      "goal": "Ćwicz orientację i przyjęcie kierunkowe.",
+      "setup": "Ustaw dwie bramki wyjściowe po bokach i źródło podania przed zawodnikiem.",
+      "steps": [
+        "Spójrz przez ramię przed kontaktem.",
+        "Przyjmij podanie od trenera lub odbicie od ściany dalszą nogą.",
+        "Obróć się i przeprowadź piłkę przez wskazaną bramkę."
+      ],
+      "coaching_cues": [
+        "Maksymalnie zawodnik i trener; brak dodatkowych uczestników.",
+        "Stosuj kontrolowany kontakt i dopasuj intensywność do wieku.",
+        "Liczy się jakość decyzji i techniki, nie wynik pojedynku."
+      ],
+      "regression": "Zwiększ przestrzeń, zmniejsz presję trenera i skróć serię.",
+      "progression": "Skróć czas decyzji lub zmniejsz pole bez dodawania zawodników.",
+      "trackable_metrics": [
+        "jakość_1_5",
+        "udane_powtórzenia",
+        "dominująca_noga"
+      ],
+      "tags": [
+        "technika",
+        "piłka"
+      ],
+      "provenance": {
+        "type": "autorskie opracowanie",
+        "alignment_theme": "NMG: technika i rozumienie gry",
+        "source_reference": "sources_and_rights.json"
+      },
+      "original_group_title": "Przyjęcie i obrót",
+      "participation_mode": "wall_or_coach",
+      "adapted_from_group_drill": true,
+      "participants_min": 1,
+      "participants_max": 2,
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik"
+      ],
+      "environment_options": [
+        "ściana",
+        "trener"
+      ]
+    },
+    {
+      "id": "tech_dribble_accel",
+      "title": "Zwód i wyjście z przyspieszeniem",
+      "area": "technika",
+      "subarea": "drybling",
+      "age_band": {
+        "min": 11,
+        "max": 18
+      },
+      "duration_min": 15,
+      "intensity": "medium",
+      "solo": true,
+      "equipment": [
+        "piłka",
+        "2 znaczniki"
+      ],
+      "space": "średnia przestrzeń",
+      "goal": "Po zwodzie wykonaj zdecydowane kolejne działanie.",
+      "setup": "Ustaw prosty układ z bezpiecznymi odległościami; dostosuj wielkość pola do poziomu zawodnika.",
+      "steps": [
+        "Rozpocznij od 2-4 min spokojnej rozgrzewki z piłką.",
+        "Wykonuj krótkie serie z przerwą, utrzymując jakość techniczną.",
+        "Zwiększaj tempo dopiero wtedy, gdy kontrola jest stabilna.",
+        "Na koniec zapisz jedną obserwację i ocenę jakości 1-5."
+      ],
+      "coaching_cues": [
+        "Jakość przed szybkością.",
+        "Obserwuj przestrzeń, nie tylko piłkę.",
+        "Zakończ serię, jeśli technika wyraźnie się pogarsza."
+      ],
+      "regression": "Zwolnij, zwiększ odstępy lub skróć serię.",
+      "progression": "Dodaj presję czasową, zmianę kierunku albo partnera dopiero po opanowaniu podstaw.",
+      "trackable_metrics": [
+        "jakość_1_5",
+        "udane_powtórzenia",
+        "dominująca_noga"
+      ],
+      "tags": [
+        "technika",
+        "piłka"
+      ],
+      "provenance": {
+        "type": "autorskie opracowanie",
+        "alignment_theme": "NMG: technika i rozumienie gry",
+        "source_reference": "sources_and_rights.json"
+      },
+      "participation_mode": "solo",
+      "participants_min": 1,
+      "participants_max": 1,
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik"
+      ],
+      "environment_options": [
+        "samodzielnie"
+      ]
+    },
+    {
+      "id": "tech_1v1_gate",
+      "title": "Pojedynek 1 na 1 z trenerem do dwóch bramek",
+      "area": "technika",
+      "subarea": "drybling",
+      "age_band": {
+        "min": 12,
+        "max": 18
+      },
+      "duration_min": 15,
+      "intensity": "high",
+      "solo": false,
+      "equipment": [
+        "piłka",
+        "znaczniki",
+        "partner",
+        "2 małe bramki"
+      ],
+      "space": "małe pole",
+      "goal": "Ćwicz zwód i decyzję przeciw jednemu obrońcy.",
+      "setup": "Ustaw dwie bramki po bokach pola 8×10 m; trener jest jedynym obrońcą.",
+      "steps": [
+        "Trener podaje piłkę zawodnikowi i zajmuje pozycję obronną.",
+        "Zawodnik próbuje minąć trenera i przeprowadzić piłkę przez wybraną bramkę.",
+        "Po 20–30 s odpocznij; trener zmienia poziom presji."
+      ],
+      "coaching_cues": [
+        "Maksymalnie zawodnik i trener; brak dodatkowych uczestników.",
+        "Stosuj kontrolowany kontakt i dopasuj intensywność do wieku.",
+        "Liczy się jakość decyzji i techniki, nie wynik pojedynku."
+      ],
+      "regression": "Zwiększ przestrzeń, zmniejsz presję trenera i skróć serię.",
+      "progression": "Skróć czas decyzji lub zmniejsz pole bez dodawania zawodników.",
+      "trackable_metrics": [
+        "jakość_1_5",
+        "udane_powtórzenia",
+        "dominująca_noga"
+      ],
+      "tags": [
+        "technika",
+        "piłka"
+      ],
+      "provenance": {
+        "type": "autorskie opracowanie",
+        "alignment_theme": "NMG: technika i rozumienie gry",
+        "source_reference": "sources_and_rights.json"
+      },
+      "original_group_title": "Pojedynek 1 na 1 do bramek",
+      "participation_mode": "coach",
+      "adapted_from_group_drill": true,
+      "participants_min": 2,
+      "participants_max": 2,
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik",
+        "trener"
+      ],
+      "environment_options": [
+        "trener"
+      ]
+    },
+    {
+      "id": "tech_shield_ball",
+      "title": "Ochrona piłki przed trenerem",
+      "area": "technika",
+      "subarea": "kontrola",
+      "age_band": {
+        "min": 12,
+        "max": 18
+      },
+      "duration_min": 12,
+      "intensity": "medium",
+      "solo": false,
+      "equipment": [
+        "piłka",
+        "partner",
+        "znaczniki"
+      ],
+      "space": "małe pole",
+      "goal": "Doskonal osłanianie piłki i wyjście spod presji.",
+      "setup": "Wyznacz kwadrat 5×5 m; trener wywiera kontrolowany nacisk bez kontaktu siłowego.",
+      "steps": [
+        "Ustaw ciało między piłką a trenerem.",
+        "Utrzymaj kontrolę przez 10–15 s, pracując nogą dalszą.",
+        "Na sygnał wyjdź z piłką przez wolną bramkę."
+      ],
+      "coaching_cues": [
+        "Maksymalnie zawodnik i trener; brak dodatkowych uczestników.",
+        "Stosuj kontrolowany kontakt i dopasuj intensywność do wieku.",
+        "Liczy się jakość decyzji i techniki, nie wynik pojedynku."
+      ],
+      "regression": "Zwiększ przestrzeń, zmniejsz presję trenera i skróć serię.",
+      "progression": "Skróć czas decyzji lub zmniejsz pole bez dodawania zawodników.",
+      "trackable_metrics": [
+        "jakość_1_5",
+        "udane_powtórzenia",
+        "dominująca_noga"
+      ],
+      "tags": [
+        "technika",
+        "piłka"
+      ],
+      "provenance": {
+        "type": "autorskie opracowanie",
+        "alignment_theme": "NMG: technika i rozumienie gry",
+        "source_reference": "sources_and_rights.json"
+      },
+      "original_group_title": "Ochrona piłki",
+      "participation_mode": "coach",
+      "adapted_from_group_drill": true,
+      "participants_min": 2,
+      "participants_max": 2,
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik",
+        "trener"
+      ],
+      "environment_options": [
+        "trener"
+      ]
+    },
+    {
+      "id": "tech_passing_gates",
+      "title": "Podania przez bramki",
+      "area": "technika",
+      "subarea": "podanie",
+      "age_band": {
+        "min": 10,
+        "max": 18
+      },
+      "duration_min": 12,
+      "intensity": "low",
+      "solo": true,
+      "equipment": [
+        "piłka",
+        "znaczniki"
+      ],
+      "space": "mała przestrzeń",
+      "goal": "Popraw precyzję podania do celu.",
+      "setup": "Ustaw prosty układ z bezpiecznymi odległościami; dostosuj wielkość pola do poziomu zawodnika.",
+      "steps": [
+        "Rozpocznij od 2-4 min spokojnej rozgrzewki z piłką.",
+        "Wykonuj krótkie serie z przerwą, utrzymując jakość techniczną.",
+        "Zwiększaj tempo dopiero wtedy, gdy kontrola jest stabilna.",
+        "Na koniec zapisz jedną obserwację i ocenę jakości 1-5."
+      ],
+      "coaching_cues": [
+        "Jakość przed szybkością.",
+        "Obserwuj przestrzeń, nie tylko piłkę.",
+        "Zakończ serię, jeśli technika wyraźnie się pogarsza."
+      ],
+      "regression": "Zwolnij, zwiększ odstępy lub skróć serię.",
+      "progression": "Dodaj presję czasową, zmianę kierunku albo partnera dopiero po opanowaniu podstaw.",
+      "trackable_metrics": [
+        "jakość_1_5",
+        "udane_powtórzenia",
+        "dominująca_noga"
+      ],
+      "tags": [
+        "technika",
+        "piłka"
+      ],
+      "provenance": {
+        "type": "autorskie opracowanie",
+        "alignment_theme": "NMG: technika i rozumienie gry",
+        "source_reference": "sources_and_rights.json"
+      },
+      "participation_mode": "solo",
+      "participants_min": 1,
+      "participants_max": 1,
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik"
+      ],
+      "environment_options": [
+        "samodzielnie"
+      ]
+    },
+    {
+      "id": "tech_long_pass",
+      "title": "Dłuższe podanie do trenera lub celu",
+      "area": "technika",
+      "subarea": "podanie",
+      "age_band": {
+        "min": 13,
+        "max": 18
+      },
+      "duration_min": 15,
+      "intensity": "medium",
+      "solo": true,
+      "equipment": [
+        "piłki",
+        "partner",
+        "znaczniki",
+        "cel z pachołków"
+      ],
+      "space": "większa przestrzeń",
+      "goal": "Doskonal celność dłuższych podań.",
+      "setup": "Ustaw cel szerokości 2–3 m w odległości odpowiedniej do wieku; trener może odbierać podania.",
+      "steps": [
+        "Wykonaj 6–8 podań do celu lub trenera.",
+        "Zmieniaj nogę i odległość bez utraty techniki.",
+        "Zapisz liczbę podań w celu."
+      ],
+      "coaching_cues": [
+        "Maksymalnie zawodnik i trener; brak dodatkowych uczestników.",
+        "Stosuj kontrolowany kontakt i dopasuj intensywność do wieku.",
+        "Liczy się jakość decyzji i techniki, nie wynik pojedynku."
+      ],
+      "regression": "Zwiększ przestrzeń, zmniejsz presję trenera i skróć serię.",
+      "progression": "Skróć czas decyzji lub zmniejsz pole bez dodawania zawodników.",
+      "trackable_metrics": [
+        "jakość_1_5",
+        "udane_powtórzenia",
+        "dominująca_noga"
+      ],
+      "tags": [
+        "technika",
+        "piłka"
+      ],
+      "provenance": {
+        "type": "autorskie opracowanie",
+        "alignment_theme": "NMG: technika i rozumienie gry",
+        "source_reference": "sources_and_rights.json"
+      },
+      "original_group_title": "Podanie na dalszą odległość",
+      "participation_mode": "solo_or_coach",
+      "adapted_from_group_drill": true,
+      "participants_min": 1,
+      "participants_max": 2,
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik"
+      ],
+      "environment_options": [
+        "samodzielnie",
+        "trener"
+      ]
+    },
+    {
+      "id": "tech_finish_zones",
+      "title": "Strzały do stref",
+      "area": "technika",
+      "subarea": "strzał",
+      "age_band": {
+        "min": 11,
+        "max": 18
+      },
+      "duration_min": 18,
+      "intensity": "medium",
+      "solo": true,
+      "equipment": [
+        "piłka",
+        "bramka lub cele"
+      ],
+      "space": "boisko",
+      "goal": "Popraw celność przed zwiększaniem siły.",
+      "setup": "Ustaw prosty układ z bezpiecznymi odległościami; dostosuj wielkość pola do poziomu zawodnika.",
+      "steps": [
+        "Rozpocznij od 2-4 min spokojnej rozgrzewki z piłką.",
+        "Wykonuj krótkie serie z przerwą, utrzymując jakość techniczną.",
+        "Zwiększaj tempo dopiero wtedy, gdy kontrola jest stabilna.",
+        "Na koniec zapisz jedną obserwację i ocenę jakości 1-5."
+      ],
+      "coaching_cues": [
+        "Jakość przed szybkością.",
+        "Obserwuj przestrzeń, nie tylko piłkę.",
+        "Zakończ serię, jeśli technika wyraźnie się pogarsza."
+      ],
+      "regression": "Zwolnij, zwiększ odstępy lub skróć serię.",
+      "progression": "Dodaj presję czasową, zmianę kierunku albo partnera dopiero po opanowaniu podstaw.",
+      "trackable_metrics": [
+        "jakość_1_5",
+        "udane_powtórzenia",
+        "dominująca_noga"
+      ],
+      "tags": [
+        "technika",
+        "piłka"
+      ],
+      "provenance": {
+        "type": "autorskie opracowanie",
+        "alignment_theme": "NMG: technika i rozumienie gry",
+        "source_reference": "sources_and_rights.json"
+      },
+      "participation_mode": "solo",
+      "participants_min": 1,
+      "participants_max": 1,
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik"
+      ],
+      "environment_options": [
+        "samodzielnie"
+      ]
+    },
+    {
+      "id": "tac_support_angle",
+      "title": "Kąt wsparcia — podanie i zmiana pozycji",
+      "area": "taktyka",
+      "subarea": "wsparcie",
+      "age_band": {
+        "min": 12,
+        "max": 18
+      },
+      "duration_min": 15,
+      "intensity": "medium",
+      "solo": false,
+      "equipment": [
+        "piłka",
+        "partner",
+        "znaczniki",
+        "ściana lub trener",
+        "3 znaczniki"
+      ],
+      "space": "małe pole",
+      "goal": "Naucz się tworzyć kąt wsparcia po podaniu.",
+      "setup": "Ustaw trójkąt z trzech znaczników; trener stoi przy jednym wierzchołku albo użyj ściany.",
+      "steps": [
+        "Podaj do trenera lub ściany.",
+        "Przemieść się ukośnie do kolejnego znacznika, by otworzyć linię podania.",
+        "Przyjmij i powtórz z drugiej strony."
+      ],
+      "coaching_cues": [
+        "Maksymalnie zawodnik i trener; brak dodatkowych uczestników.",
+        "Stosuj kontrolowany kontakt i dopasuj intensywność do wieku.",
+        "Liczy się jakość decyzji i techniki, nie wynik pojedynku."
+      ],
+      "regression": "Zwiększ przestrzeń, zmniejsz presję trenera i skróć serię.",
+      "progression": "Skróć czas decyzji lub zmniejsz pole bez dodawania zawodników.",
+      "trackable_metrics": [
+        "decyzje_udane",
+        "utrzymane_posiadania",
+        "jakość_1_5"
+      ],
+      "tags": [
+        "taktyka",
+        "gra",
+        "decyzje"
+      ],
+      "provenance": {
+        "type": "autorskie opracowanie",
+        "alignment_theme": "NMG: gry zadaniowe, trening pozycyjny, formacyjny i struktura gry",
+        "source_reference": "sources_and_rights.json"
+      },
+      "original_group_title": "Ustawienie pod kątem wsparcia",
+      "participation_mode": "wall_or_coach",
+      "adapted_from_group_drill": true,
+      "participants_min": 1,
+      "participants_max": 2,
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik"
+      ],
+      "environment_options": [
+        "ściana",
+        "trener"
+      ]
+    },
+    {
+      "id": "tac_third_man",
+      "title": "Ruch trzeciego zawodnika — symulacja z trenerem",
+      "area": "taktyka",
+      "subarea": "współpraca",
+      "age_band": {
+        "min": 13,
+        "max": 18
+      },
+      "duration_min": 18,
+      "intensity": "medium",
+      "solo": false,
+      "equipment": [
+        "piłka",
+        "2 partnerów",
+        "3 znaczniki"
+      ],
+      "space": "małe pole",
+      "goal": "Zrozum wbiegnięcie w wolny sektor po odegraniu bez udziału trzeciej osoby.",
+      "setup": "Zaznacz role A, B i C trzema pachołkami; występują tylko zawodnik i trener, a trzecią pozycję zastępuje pusty sektor.",
+      "steps": [
+        "Zawodnik podaje do trenera w punkcie B.",
+        "Trener odgrywa piłkę w wolny sektor C.",
+        "Zawodnik obiega znacznik i wbiega do sektora C, przyjmując podanie."
+      ],
+      "coaching_cues": [
+        "Maksymalnie zawodnik i trener; brak dodatkowych uczestników.",
+        "Stosuj kontrolowany kontakt i dopasuj intensywność do wieku.",
+        "Liczy się jakość decyzji i techniki, nie wynik pojedynku."
+      ],
+      "regression": "Zwiększ przestrzeń, zmniejsz presję trenera i skróć serię.",
+      "progression": "Skróć czas decyzji lub zmniejsz pole bez dodawania zawodników.",
+      "trackable_metrics": [
+        "decyzje_udane",
+        "utrzymane_posiadania",
+        "jakość_1_5"
+      ],
+      "tags": [
+        "taktyka",
+        "gra",
+        "decyzje"
+      ],
+      "provenance": {
+        "type": "autorskie opracowanie",
+        "alignment_theme": "NMG: gry zadaniowe, trening pozycyjny, formacyjny i struktura gry",
+        "source_reference": "sources_and_rights.json"
+      },
+      "original_group_title": "Gra na trzeciego zawodnika",
+      "participation_mode": "coach",
+      "adapted_from_group_drill": true,
+      "participants_min": 2,
+      "participants_max": 2,
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik",
+        "trener"
+      ],
+      "environment_options": [
+        "trener"
+      ]
+    },
+    {
+      "id": "tac_rondo_3v1",
+      "title": "Rondo indywidualne — kontrola pod presją trenera",
+      "area": "taktyka",
+      "subarea": "utrzymanie",
+      "age_band": {
+        "min": 12,
+        "max": 18
+      },
+      "duration_min": 15,
+      "intensity": "high",
+      "solo": false,
+      "equipment": [
+        "piłka",
+        "3-4 zawodników",
+        "znaczniki",
+        "4 znaczniki"
+      ],
+      "space": "małe pole",
+      "goal": "Ćwicz skanowanie i ochronę piłki pod ograniczoną presją.",
+      "setup": "Wyznacz kwadrat 6×6 m; trener jest jedynym obrońcą. Nie jest to rondo 3 na 1.",
+      "steps": [
+        "Zawodnik prowadzi piłkę między czterema bokami kwadratu.",
+        "Trener zamyka wybrane wyjście, nie odbierając agresywnie piłki.",
+        "Zawodnik zmienia kierunek i wyprowadza piłkę wolnym bokiem."
+      ],
+      "coaching_cues": [
+        "Maksymalnie zawodnik i trener; brak dodatkowych uczestników.",
+        "Stosuj kontrolowany kontakt i dopasuj intensywność do wieku.",
+        "Liczy się jakość decyzji i techniki, nie wynik pojedynku."
+      ],
+      "regression": "Zwiększ przestrzeń, zmniejsz presję trenera i skróć serię.",
+      "progression": "Skróć czas decyzji lub zmniejsz pole bez dodawania zawodników.",
+      "trackable_metrics": [
+        "decyzje_udane",
+        "utrzymane_posiadania",
+        "jakość_1_5"
+      ],
+      "tags": [
+        "taktyka",
+        "gra",
+        "decyzje"
+      ],
+      "provenance": {
+        "type": "autorskie opracowanie",
+        "alignment_theme": "NMG: gry zadaniowe, trening pozycyjny, formacyjny i struktura gry",
+        "source_reference": "sources_and_rights.json"
+      },
+      "original_group_title": "Rondo 3 na 1",
+      "participation_mode": "coach",
+      "adapted_from_group_drill": true,
+      "participants_min": 2,
+      "participants_max": 2,
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik",
+        "trener"
+      ],
+      "environment_options": [
+        "trener"
+      ]
+    },
+    {
+      "id": "tac_rondo_4v2",
+      "title": "Rondo z czterema celami — podania o ścianę",
+      "area": "taktyka",
+      "subarea": "utrzymanie",
+      "age_band": {
+        "min": 13,
+        "max": 18
+      },
+      "duration_min": 18,
+      "intensity": "high",
+      "solo": true,
+      "equipment": [
+        "piłka",
+        "6 zawodników",
+        "znaczniki",
+        "ściana",
+        "4 cele"
+      ],
+      "space": "małe pole",
+      "goal": "Trenuj szybkie podanie, przyjęcie i orientację.",
+      "setup": "Oznacz cztery cele na bezpiecznej ścianie i pole przyjęcia. Nie jest to rondo 4 na 2.",
+      "steps": [
+        "Podaj kolejno do wskazanych celów na ścianie.",
+        "Po odbiciu przyjmij kierunkowo i zmień kąt ustawienia.",
+        "W drugiej serii losuj kolejność celów."
+      ],
+      "coaching_cues": [
+        "Maksymalnie zawodnik i trener; brak dodatkowych uczestników.",
+        "Stosuj kontrolowany kontakt i dopasuj intensywność do wieku.",
+        "Liczy się jakość decyzji i techniki, nie wynik pojedynku."
+      ],
+      "regression": "Zwiększ przestrzeń, zmniejsz presję trenera i skróć serię.",
+      "progression": "Skróć czas decyzji lub zmniejsz pole bez dodawania zawodników.",
+      "trackable_metrics": [
+        "decyzje_udane",
+        "utrzymane_posiadania",
+        "jakość_1_5"
+      ],
+      "tags": [
+        "taktyka",
+        "gra",
+        "decyzje"
+      ],
+      "provenance": {
+        "type": "autorskie opracowanie",
+        "alignment_theme": "NMG: gry zadaniowe, trening pozycyjny, formacyjny i struktura gry",
+        "source_reference": "sources_and_rights.json"
+      },
+      "original_group_title": "Rondo 4 na 2",
+      "participation_mode": "wall",
+      "adapted_from_group_drill": true,
+      "participants_min": 1,
+      "participants_max": 1,
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik"
+      ],
+      "environment_options": [
+        "ściana"
+      ]
+    },
+    {
+      "id": "tac_possession_4v4",
+      "title": "Utrzymanie piłki w strefie — zawodnik i trener",
+      "area": "taktyka",
+      "subarea": "posiadanie",
+      "age_band": {
+        "min": 12,
+        "max": 18
+      },
+      "duration_min": 18,
+      "intensity": "high",
+      "solo": false,
+      "equipment": [
+        "piłka",
+        "8 zawodników",
+        "znaczniki",
+        "4 znaczniki"
+      ],
+      "space": "średnie pole",
+      "goal": "Doskonal kontrolę i wybór wolnej przestrzeni.",
+      "setup": "Wyznacz kwadrat 8×8 m; trener jest jedynym przeciwnikiem. Nie rozgrywaj 4 na 4.",
+      "steps": [
+        "Zawodnik utrzymuje piłkę 15–20 s pod lekką presją trenera.",
+        "Za każde kontrolowane wyjście do wolnego narożnika zdobądź punkt.",
+        "Po serii zmień stronę startową."
+      ],
+      "coaching_cues": [
+        "Maksymalnie zawodnik i trener; brak dodatkowych uczestników.",
+        "Stosuj kontrolowany kontakt i dopasuj intensywność do wieku.",
+        "Liczy się jakość decyzji i techniki, nie wynik pojedynku."
+      ],
+      "regression": "Zwiększ przestrzeń, zmniejsz presję trenera i skróć serię.",
+      "progression": "Skróć czas decyzji lub zmniejsz pole bez dodawania zawodników.",
+      "trackable_metrics": [
+        "decyzje_udane",
+        "utrzymane_posiadania",
+        "jakość_1_5"
+      ],
+      "tags": [
+        "taktyka",
+        "gra",
+        "decyzje"
+      ],
+      "provenance": {
+        "type": "autorskie opracowanie",
+        "alignment_theme": "NMG: gry zadaniowe, trening pozycyjny, formacyjny i struktura gry",
+        "source_reference": "sources_and_rights.json"
+      },
+      "original_group_title": "Gra na utrzymanie 4 na 4",
+      "participation_mode": "coach",
+      "adapted_from_group_drill": true,
+      "participants_min": 2,
+      "participants_max": 2,
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik",
+        "trener"
+      ],
+      "environment_options": [
+        "trener"
+      ]
+    },
+    {
+      "id": "tac_transition_3v2",
+      "title": "Przejście atak–obrona 1 na 1 z trenerem",
+      "area": "taktyka",
+      "subarea": "przejście",
+      "age_band": {
+        "min": 13,
+        "max": 18
+      },
+      "duration_min": 18,
+      "intensity": "high",
+      "solo": false,
+      "equipment": [
+        "piłki",
+        "bramki",
+        "zawodnicy",
+        "2 bramki"
+      ],
+      "space": "średnie pole",
+      "goal": "Ćwicz szybką zmianę zachowania po stracie piłki.",
+      "setup": "Ustaw dwie bramki 8–12 m od siebie; zawodnik i trener to jedyne osoby. Nie jest to gra 3 na 2.",
+      "steps": [
+        "Zawodnik atakuje jedną bramkę, trener lekko broni.",
+        "Po przechwycie trener próbuje przeprowadzić piłkę przez przeciwną bramkę.",
+        "Zawodnik natychmiast reaguje i wraca do obrony."
+      ],
+      "coaching_cues": [
+        "Maksymalnie zawodnik i trener; brak dodatkowych uczestników.",
+        "Stosuj kontrolowany kontakt i dopasuj intensywność do wieku.",
+        "Liczy się jakość decyzji i techniki, nie wynik pojedynku."
+      ],
+      "regression": "Zwiększ przestrzeń, zmniejsz presję trenera i skróć serię.",
+      "progression": "Skróć czas decyzji lub zmniejsz pole bez dodawania zawodników.",
+      "trackable_metrics": [
+        "decyzje_udane",
+        "utrzymane_posiadania",
+        "jakość_1_5"
+      ],
+      "tags": [
+        "taktyka",
+        "gra",
+        "decyzje"
+      ],
+      "provenance": {
+        "type": "autorskie opracowanie",
+        "alignment_theme": "NMG: gry zadaniowe, trening pozycyjny, formacyjny i struktura gry",
+        "source_reference": "sources_and_rights.json"
+      },
+      "original_group_title": "Przejście 3 na 2",
+      "participation_mode": "coach",
+      "adapted_from_group_drill": true,
+      "participants_min": 2,
+      "participants_max": 2,
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik",
+        "trener"
+      ],
+      "environment_options": [
+        "trener"
+      ]
+    },
+    {
+      "id": "tac_press_cues",
+      "title": "Sygnał do pressingu — doskok do trenera",
+      "area": "taktyka",
+      "subarea": "obrona",
+      "age_band": {
+        "min": 14,
+        "max": 18
+      },
+      "duration_min": 18,
+      "intensity": "high",
+      "solo": false,
+      "equipment": [
+        "piłka",
+        "4-8 zawodników",
+        "znaczniki",
+        "2 znaczniki"
+      ],
+      "space": "średnie pole",
+      "goal": "Rozpoznawaj moment doskoku i kontroluj dystans.",
+      "setup": "Trener stoi z piłką przy dwóch oznaczonych kierunkach wyjścia.",
+      "steps": [
+        "Obserwuj dotknięcie piłki przez trenera.",
+        "Gdy trener wykona dłuższy kontakt lub odwróci się, doskocz pod kontrolą.",
+        "Zamknij jedną linię wyjścia bez faulu."
+      ],
+      "coaching_cues": [
+        "Maksymalnie zawodnik i trener; brak dodatkowych uczestników.",
+        "Stosuj kontrolowany kontakt i dopasuj intensywność do wieku.",
+        "Liczy się jakość decyzji i techniki, nie wynik pojedynku."
+      ],
+      "regression": "Zwiększ przestrzeń, zmniejsz presję trenera i skróć serię.",
+      "progression": "Skróć czas decyzji lub zmniejsz pole bez dodawania zawodników.",
+      "trackable_metrics": [
+        "decyzje_udane",
+        "utrzymane_posiadania",
+        "jakość_1_5"
+      ],
+      "tags": [
+        "taktyka",
+        "gra",
+        "decyzje"
+      ],
+      "provenance": {
+        "type": "autorskie opracowanie",
+        "alignment_theme": "NMG: gry zadaniowe, trening pozycyjny, formacyjny i struktura gry",
+        "source_reference": "sources_and_rights.json"
+      },
+      "original_group_title": "Sygnały do pressingu",
+      "participation_mode": "coach",
+      "adapted_from_group_drill": true,
+      "participants_min": 2,
+      "participants_max": 2,
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik",
+        "trener"
+      ],
+      "environment_options": [
+        "trener"
+      ]
+    },
+    {
+      "id": "tac_defend_channel",
+      "title": "Kierowanie trenera na zewnątrz — 1 na 1",
+      "area": "taktyka",
+      "subarea": "obrona",
+      "age_band": {
+        "min": 12,
+        "max": 18
+      },
+      "duration_min": 15,
+      "intensity": "medium",
+      "solo": false,
+      "equipment": [
+        "piłka",
+        "partner",
+        "znaczniki"
+      ],
+      "space": "małe pole",
+      "goal": "Ćwicz ustawienie ciała w obronie indywidualnej.",
+      "setup": "Wyznacz korytarz 5×12 m z bramką na końcu; trener prowadzi piłkę.",
+      "steps": [
+        "Ustaw się bokiem i opóźniaj akcję.",
+        "Prowadź trenera w stronę bocznej linii korytarza.",
+        "Spróbuj odebrać piłkę dopiero przy bezpiecznej okazji."
+      ],
+      "coaching_cues": [
+        "Maksymalnie zawodnik i trener; brak dodatkowych uczestników.",
+        "Stosuj kontrolowany kontakt i dopasuj intensywność do wieku.",
+        "Liczy się jakość decyzji i techniki, nie wynik pojedynku."
+      ],
+      "regression": "Zwiększ przestrzeń, zmniejsz presję trenera i skróć serię.",
+      "progression": "Skróć czas decyzji lub zmniejsz pole bez dodawania zawodników.",
+      "trackable_metrics": [
+        "decyzje_udane",
+        "utrzymane_posiadania",
+        "jakość_1_5"
+      ],
+      "tags": [
+        "taktyka",
+        "gra",
+        "decyzje"
+      ],
+      "provenance": {
+        "type": "autorskie opracowanie",
+        "alignment_theme": "NMG: gry zadaniowe, trening pozycyjny, formacyjny i struktura gry",
+        "source_reference": "sources_and_rights.json"
+      },
+      "original_group_title": "Kierowanie atakującego na zewnątrz",
+      "participation_mode": "coach",
+      "adapted_from_group_drill": true,
+      "participants_min": 2,
+      "participants_max": 2,
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik",
+        "trener"
+      ],
+      "environment_options": [
+        "trener"
+      ]
+    },
+    {
+      "id": "tac_switch_play",
+      "title": "Zmiana strony gry — dwa cele i ściana",
+      "area": "taktyka",
+      "subarea": "atak",
+      "age_band": {
+        "min": 13,
+        "max": 18
+      },
+      "duration_min": 18,
+      "intensity": "medium",
+      "solo": false,
+      "equipment": [
+        "piłki",
+        "4+ zawodników",
+        "znaczniki",
+        "ściana lub trener",
+        "2 cele"
+      ],
+      "space": "większa przestrzeń",
+      "goal": "Ćwicz przenoszenie kierunku ataku i orientację.",
+      "setup": "Ustaw dwa szerokie cele po lewej i prawej stronie ściany lub trenera.",
+      "steps": [
+        "Rozpocznij z lewej strony i podaj do ściany lub trenera.",
+        "Przyjmij kierunkowo przez środek.",
+        "Zmień stronę i zagraj do prawego celu; powtórz odwrotnie."
+      ],
+      "coaching_cues": [
+        "Maksymalnie zawodnik i trener; brak dodatkowych uczestników.",
+        "Stosuj kontrolowany kontakt i dopasuj intensywność do wieku.",
+        "Liczy się jakość decyzji i techniki, nie wynik pojedynku."
+      ],
+      "regression": "Zwiększ przestrzeń, zmniejsz presję trenera i skróć serię.",
+      "progression": "Skróć czas decyzji lub zmniejsz pole bez dodawania zawodników.",
+      "trackable_metrics": [
+        "decyzje_udane",
+        "utrzymane_posiadania",
+        "jakość_1_5"
+      ],
+      "tags": [
+        "taktyka",
+        "gra",
+        "decyzje"
+      ],
+      "provenance": {
+        "type": "autorskie opracowanie",
+        "alignment_theme": "NMG: gry zadaniowe, trening pozycyjny, formacyjny i struktura gry",
+        "source_reference": "sources_and_rights.json"
+      },
+      "original_group_title": "Zmiana strony gry",
+      "participation_mode": "wall_or_coach",
+      "adapted_from_group_drill": true,
+      "participants_min": 1,
+      "participants_max": 2,
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik"
+      ],
+      "environment_options": [
+        "ściana",
+        "trener"
+      ]
+    },
+    {
+      "id": "tac_positional_boxes",
+      "title": "Sektory pozycyjne — samodzielny wybór strefy",
+      "area": "taktyka",
+      "subarea": "gra pozycyjna",
+      "age_band": {
+        "min": 14,
+        "max": 18
+      },
+      "duration_min": 18,
+      "intensity": "high",
+      "solo": true,
+      "equipment": [
+        "piłka",
+        "znaczniki",
+        "6+ zawodników",
+        "6 znaczników"
+      ],
+      "space": "średnie/duże pole",
+      "goal": "Ćwicz poruszanie się między sektorami i wybór przestrzeni.",
+      "setup": "Podziel pole na trzy sektory; trener może wskazywać wolny sektor.",
+      "steps": [
+        "Prowadź piłkę w środkowym sektorze.",
+        "Na sygnał lub według własnej sekwencji wybierz jeden z dwóch sektorów bocznych.",
+        "Wejdź przyjęciem kierunkowym, a potem wróć do środka."
+      ],
+      "coaching_cues": [
+        "Maksymalnie zawodnik i trener; brak dodatkowych uczestników.",
+        "Stosuj kontrolowany kontakt i dopasuj intensywność do wieku.",
+        "Liczy się jakość decyzji i techniki, nie wynik pojedynku."
+      ],
+      "regression": "Zwiększ przestrzeń, zmniejsz presję trenera i skróć serię.",
+      "progression": "Skróć czas decyzji lub zmniejsz pole bez dodawania zawodników.",
+      "trackable_metrics": [
+        "decyzje_udane",
+        "utrzymane_posiadania",
+        "jakość_1_5"
+      ],
+      "tags": [
+        "taktyka",
+        "gra",
+        "decyzje"
+      ],
+      "provenance": {
+        "type": "autorskie opracowanie",
+        "alignment_theme": "NMG: gry zadaniowe, trening pozycyjny, formacyjny i struktura gry",
+        "source_reference": "sources_and_rights.json"
+      },
+      "original_group_title": "Gra pozycyjna w sektorach",
+      "participation_mode": "solo_or_coach",
+      "adapted_from_group_drill": true,
+      "participants_min": 1,
+      "participants_max": 2,
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik"
+      ],
+      "environment_options": [
+        "samodzielnie",
+        "trener"
+      ]
+    },
+    {
+      "id": "tac_formation_build",
+      "title": "Wyprowadzenie od bramkarza — symulacja z trenerem",
+      "area": "taktyka",
+      "subarea": "formacja",
+      "age_band": {
+        "min": 14,
+        "max": 18
+      },
+      "duration_min": 18,
+      "intensity": "medium",
+      "solo": false,
+      "equipment": [
+        "bramki",
+        "piłki",
+        "6+ zawodników",
+        "3 znaczniki"
+      ],
+      "space": "większa przestrzeń",
+      "goal": "Doskonal pierwsze przyjęcie i decyzję przy rozpoczęciu akcji.",
+      "setup": "Trener pełni rolę bramkarza; dwa znaczniki oznaczają kierunki rozegrania, bez dodatkowych graczy.",
+      "steps": [
+        "Trener podaje piłkę do zawodnika.",
+        "Zawodnik skanuje przestrzeń, przyjmuje w otwartym ustawieniu.",
+        "Odgrywa do trenera lub przeprowadza piłkę przez wskazany sektor."
+      ],
+      "coaching_cues": [
+        "Maksymalnie zawodnik i trener; brak dodatkowych uczestników.",
+        "Stosuj kontrolowany kontakt i dopasuj intensywność do wieku.",
+        "Liczy się jakość decyzji i techniki, nie wynik pojedynku."
+      ],
+      "regression": "Zwiększ przestrzeń, zmniejsz presję trenera i skróć serię.",
+      "progression": "Skróć czas decyzji lub zmniejsz pole bez dodawania zawodników.",
+      "trackable_metrics": [
+        "decyzje_udane",
+        "utrzymane_posiadania",
+        "jakość_1_5"
+      ],
+      "tags": [
+        "taktyka",
+        "gra",
+        "decyzje"
+      ],
+      "provenance": {
+        "type": "autorskie opracowanie",
+        "alignment_theme": "NMG: gry zadaniowe, trening pozycyjny, formacyjny i struktura gry",
+        "source_reference": "sources_and_rights.json"
+      },
+      "original_group_title": "Wyprowadzenie piłki od bramkarza",
+      "participation_mode": "coach",
+      "adapted_from_group_drill": true,
+      "participants_min": 2,
+      "participants_max": 2,
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik",
+        "trener"
+      ],
+      "environment_options": [
+        "trener"
+      ]
+    },
+    {
+      "id": "tac_formation_wide",
+      "title": "Przewaga na skrzydle — zwód 1 na 1 z trenerem",
+      "area": "taktyka",
+      "subarea": "formacja",
+      "age_band": {
+        "min": 14,
+        "max": 18
+      },
+      "duration_min": 18,
+      "intensity": "high",
+      "solo": false,
+      "equipment": [
+        "piłki",
+        "bramka",
+        "6+ zawodników",
+        "2 znaczniki"
+      ],
+      "space": "większa przestrzeń",
+      "goal": "Ćwicz wybór sposobu minięcia jednego obrońcy na skrzydle.",
+      "setup": "Wyznacz boczny korytarz 6×15 m; trener broni dostępu do końcowej bramki.",
+      "steps": [
+        "Zawodnik przyjmuje podanie od trenera, który przechodzi do obrony.",
+        "Zawodnik wykonuje zwód i próbuje minąć trenera po zewnętrznej lub do środka.",
+        "Zakończ prowadzeniem przez bramkę."
+      ],
+      "coaching_cues": [
+        "Maksymalnie zawodnik i trener; brak dodatkowych uczestników.",
+        "Stosuj kontrolowany kontakt i dopasuj intensywność do wieku.",
+        "Liczy się jakość decyzji i techniki, nie wynik pojedynku."
+      ],
+      "regression": "Zwiększ przestrzeń, zmniejsz presję trenera i skróć serię.",
+      "progression": "Skróć czas decyzji lub zmniejsz pole bez dodawania zawodników.",
+      "trackable_metrics": [
+        "decyzje_udane",
+        "utrzymane_posiadania",
+        "jakość_1_5"
+      ],
+      "tags": [
+        "taktyka",
+        "gra",
+        "decyzje"
+      ],
+      "provenance": {
+        "type": "autorskie opracowanie",
+        "alignment_theme": "NMG: gry zadaniowe, trening pozycyjny, formacyjny i struktura gry",
+        "source_reference": "sources_and_rights.json"
+      },
+      "original_group_title": "Tworzenie przewagi na skrzydle",
+      "participation_mode": "coach",
+      "adapted_from_group_drill": true,
+      "participants_min": 2,
+      "participants_max": 2,
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik",
+        "trener"
+      ],
+      "environment_options": [
+        "trener"
+      ]
+    },
+    {
+      "id": "tac_counterpress",
+      "title": "Natychmiastowy doskok po stracie — 1 na 1",
+      "area": "taktyka",
+      "subarea": "przejście",
+      "age_band": {
+        "min": 14,
+        "max": 18
+      },
+      "duration_min": 18,
+      "intensity": "high",
+      "solo": false,
+      "equipment": [
+        "piłki",
+        "zawodnicy",
+        "znaczniki",
+        "2 bramki"
+      ],
+      "space": "średnie pole",
+      "goal": "Trenuj reakcję po stracie bez potrzeby zespołu.",
+      "setup": "Wyznacz małe pole i dwie bramki; trener przejmuje piłkę na umówiony sygnał.",
+      "steps": [
+        "Zawodnik prowadzi piłkę i celowo oddaje ją trenerowi.",
+        "Przez 3–5 s próbuje odzyskać piłkę, zamykając najbliższy kierunek.",
+        "Jeśli odzysk się nie uda, cofa się i ustawia między trenerem a bramką."
+      ],
+      "coaching_cues": [
+        "Maksymalnie zawodnik i trener; brak dodatkowych uczestników.",
+        "Stosuj kontrolowany kontakt i dopasuj intensywność do wieku.",
+        "Liczy się jakość decyzji i techniki, nie wynik pojedynku."
+      ],
+      "regression": "Zwiększ przestrzeń, zmniejsz presję trenera i skróć serię.",
+      "progression": "Skróć czas decyzji lub zmniejsz pole bez dodawania zawodników.",
+      "trackable_metrics": [
+        "decyzje_udane",
+        "utrzymane_posiadania",
+        "jakość_1_5"
+      ],
+      "tags": [
+        "taktyka",
+        "gra",
+        "decyzje"
+      ],
+      "provenance": {
+        "type": "autorskie opracowanie",
+        "alignment_theme": "NMG: gry zadaniowe, trening pozycyjny, formacyjny i struktura gry",
+        "source_reference": "sources_and_rights.json"
+      },
+      "original_group_title": "Reakcja po stracie piłki",
+      "participation_mode": "coach",
+      "adapted_from_group_drill": true,
+      "participants_min": 2,
+      "participants_max": 2,
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik",
+        "trener"
+      ],
+      "environment_options": [
+        "trener"
+      ]
+    },
+    {
+      "id": "tac_small_sided",
+      "title": "Gra zadaniowa 1 na 1 z trenerem",
+      "area": "taktyka",
+      "subarea": "gra zadaniowa",
+      "age_band": {
+        "min": 12,
+        "max": 18
+      },
+      "duration_min": 18,
+      "intensity": "high",
+      "solo": false,
+      "equipment": [
+        "piłka",
+        "bramki",
+        "10 zawodników",
+        "2 małe bramki"
+      ],
+      "space": "małe boisko",
+      "goal": "Rozwijaj decyzje i technikę w krótkiej grze 1 na 1.",
+      "setup": "Ustaw pole 10×15 m i dwie małe bramki. To gra 1 na 1, nie 5 na 5.",
+      "steps": [
+        "Trener podaje piłkę do zawodnika.",
+        "Zawodnik ma 15–25 s na zdobycie punktu przez bramkę.",
+        "Zmieniaj zadanie: słabsza noga, limit kontaktów lub określony zwód."
+      ],
+      "coaching_cues": [
+        "Maksymalnie zawodnik i trener; brak dodatkowych uczestników.",
+        "Stosuj kontrolowany kontakt i dopasuj intensywność do wieku.",
+        "Liczy się jakość decyzji i techniki, nie wynik pojedynku."
+      ],
+      "regression": "Zwiększ przestrzeń, zmniejsz presję trenera i skróć serię.",
+      "progression": "Skróć czas decyzji lub zmniejsz pole bez dodawania zawodników.",
+      "trackable_metrics": [
+        "decyzje_udane",
+        "utrzymane_posiadania",
+        "jakość_1_5"
+      ],
+      "tags": [
+        "taktyka",
+        "gra",
+        "decyzje"
+      ],
+      "provenance": {
+        "type": "autorskie opracowanie",
+        "alignment_theme": "NMG: gry zadaniowe, trening pozycyjny, formacyjny i struktura gry",
+        "source_reference": "sources_and_rights.json"
+      },
+      "original_group_title": "Gra zadaniowa 5 na 5",
+      "participation_mode": "coach",
+      "adapted_from_group_drill": true,
+      "participants_min": 2,
+      "participants_max": 2,
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik",
+        "trener"
+      ],
+      "environment_options": [
+        "trener"
+      ]
+    },
+    {
+      "id": "tac_finish_after_combination",
+      "title": "Podanie–odegranie–strzał z trenerem",
+      "area": "taktyka",
+      "subarea": "atak",
+      "age_band": {
+        "min": 12,
+        "max": 18
+      },
+      "duration_min": 18,
+      "intensity": "medium",
+      "solo": false,
+      "equipment": [
+        "piłki",
+        "bramka",
+        "3-5 zawodników",
+        "bramka lub cel"
+      ],
+      "space": "średnie pole",
+      "goal": "Ćwicz zakończenie akcji po dwójkowej kombinacji.",
+      "setup": "Trener stoi 5–8 m od zawodnika, przed bramką lub bezpiecznym celem.",
+      "steps": [
+        "Zawodnik podaje do trenera i wykonuje ruch w wolną przestrzeń.",
+        "Trener odgrywa piłkę na dobieg.",
+        "Zawodnik oddaje kontrolowany strzał do wybranej strefy."
+      ],
+      "coaching_cues": [
+        "Maksymalnie zawodnik i trener; brak dodatkowych uczestników.",
+        "Stosuj kontrolowany kontakt i dopasuj intensywność do wieku.",
+        "Liczy się jakość decyzji i techniki, nie wynik pojedynku."
+      ],
+      "regression": "Zwiększ przestrzeń, zmniejsz presję trenera i skróć serię.",
+      "progression": "Skróć czas decyzji lub zmniejsz pole bez dodawania zawodników.",
+      "trackable_metrics": [
+        "decyzje_udane",
+        "utrzymane_posiadania",
+        "jakość_1_5"
+      ],
+      "tags": [
+        "taktyka",
+        "gra",
+        "decyzje"
+      ],
+      "provenance": {
+        "type": "autorskie opracowanie",
+        "alignment_theme": "NMG: gry zadaniowe, trening pozycyjny, formacyjny i struktura gry",
+        "source_reference": "sources_and_rights.json"
+      },
+      "original_group_title": "Kombinacja i zakończenie",
+      "participation_mode": "coach",
+      "adapted_from_group_drill": true,
+      "participants_min": 2,
+      "participants_max": 2,
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik",
+        "trener"
+      ],
+      "environment_options": [
+        "trener"
+      ]
+    },
+    {
+      "id": "phy_dynamic_warmup",
+      "title": "Rozgrzewka dynamiczna piłkarza",
+      "area": "rozgrzewka",
+      "subarea": "przygotowanie ruchowe",
+      "age_band": {
+        "min": 10,
+        "max": 18
+      },
+      "duration_min": 8,
+      "intensity": "low",
+      "solo": true,
+      "equipment": [
+        "znaczniki opcjonalnie"
+      ],
+      "space": "bezpieczna przestrzeń",
+      "goal": "Stopniowo przygotuj ciało do ruchu.",
+      "setup": "Zapewnij bezpieczną nawierzchnię, miejsce i odpowiednie obuwie. Młodsi zawodnicy powinni ćwiczyć pod nadzorem dorosłego.",
+      "steps": [
+        "Zacznij od spokojnego przygotowania ruchowego.",
+        "Wykonuj niewielką liczbę jakościowych powtórzeń i odpoczywaj według samopoczucia.",
+        "Nie zwiększaj jednocześnie czasu, tempa i trudności.",
+        "Przerwij przy bólu, zawrotach głowy lub nietypowym osłabieniu."
+      ],
+      "coaching_cues": [
+        "Kontrola i technika przed intensywnością.",
+        "Nie wykonuj ćwiczenia przez ból.",
+        "Maksymalne sprinty i obciążenia wymagają odpowiedniego przygotowania i nadzoru."
+      ],
+      "regression": "Skróć serię, zmniejsz zakres ruchu albo wybierz spacer.",
+      "progression": "Zwiększaj trudność stopniowo i tylko jeśli technika oraz samopoczucie są dobre.",
+      "trackable_metrics": [
+        "czas_min",
+        "odczuwana_trudnosc_1_5",
+        "jakość_1_5"
+      ],
+      "tags": [
+        "motoryka",
+        "bezpieczeństwo"
+      ],
+      "provenance": {
+        "type": "autorskie opracowanie",
+        "alignment_theme": "NMG: przygotowanie motoryczne; autorskie ćwiczenia ogólnorozwojowe",
+        "source_reference": "sources_and_rights.json"
+      },
+      "participation_mode": "solo",
+      "participants_min": 1,
+      "participants_max": 1,
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik"
+      ],
+      "environment_options": [
+        "samodzielnie"
+      ]
+    },
+    {
+      "id": "phy_coordination_ladder",
+      "title": "Koordynacja – rytm kroków",
+      "area": "motoryka",
+      "subarea": "rytm i kontrola",
+      "age_band": {
+        "min": 10,
+        "max": 18
+      },
+      "duration_min": 10,
+      "intensity": "low",
+      "solo": true,
+      "equipment": [
+        "linie lub znaczniki"
+      ],
+      "space": "płaska nawierzchnia",
+      "goal": "Ćwicz rytm i kontrolę stóp bez pośpiechu.",
+      "setup": "Zapewnij bezpieczną nawierzchnię, miejsce i odpowiednie obuwie. Młodsi zawodnicy powinni ćwiczyć pod nadzorem dorosłego.",
+      "steps": [
+        "Zacznij od spokojnego przygotowania ruchowego.",
+        "Wykonuj niewielką liczbę jakościowych powtórzeń i odpoczywaj według samopoczucia.",
+        "Nie zwiększaj jednocześnie czasu, tempa i trudności.",
+        "Przerwij przy bólu, zawrotach głowy lub nietypowym osłabieniu."
+      ],
+      "coaching_cues": [
+        "Kontrola i technika przed intensywnością.",
+        "Nie wykonuj ćwiczenia przez ból.",
+        "Maksymalne sprinty i obciążenia wymagają odpowiedniego przygotowania i nadzoru."
+      ],
+      "regression": "Skróć serię, zmniejsz zakres ruchu albo wybierz spacer.",
+      "progression": "Zwiększaj trudność stopniowo i tylko jeśli technika oraz samopoczucie są dobre.",
+      "trackable_metrics": [
+        "czas_min",
+        "odczuwana_trudnosc_1_5",
+        "jakość_1_5"
+      ],
+      "tags": [
+        "motoryka",
+        "bezpieczeństwo"
+      ],
+      "provenance": {
+        "type": "autorskie opracowanie",
+        "alignment_theme": "NMG: przygotowanie motoryczne; autorskie ćwiczenia ogólnorozwojowe",
+        "source_reference": "sources_and_rights.json"
+      },
+      "participation_mode": "solo",
+      "participants_min": 1,
+      "participants_max": 1,
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik"
+      ],
+      "environment_options": [
+        "samodzielnie"
+      ]
+    },
+    {
+      "id": "phy_balance_single",
+      "title": "Równowaga jednonóż",
+      "area": "motoryka",
+      "subarea": "równowaga",
+      "age_band": {
+        "min": 10,
+        "max": 18
+      },
+      "duration_min": 8,
+      "intensity": "low",
+      "solo": true,
+      "equipment": [],
+      "space": "mała przestrzeń",
+      "goal": "Popraw kontrolę postawy i równowagę.",
+      "setup": "Zapewnij bezpieczną nawierzchnię, miejsce i odpowiednie obuwie. Młodsi zawodnicy powinni ćwiczyć pod nadzorem dorosłego.",
+      "steps": [
+        "Zacznij od spokojnego przygotowania ruchowego.",
+        "Wykonuj niewielką liczbę jakościowych powtórzeń i odpoczywaj według samopoczucia.",
+        "Nie zwiększaj jednocześnie czasu, tempa i trudności.",
+        "Przerwij przy bólu, zawrotach głowy lub nietypowym osłabieniu."
+      ],
+      "coaching_cues": [
+        "Kontrola i technika przed intensywnością.",
+        "Nie wykonuj ćwiczenia przez ból.",
+        "Maksymalne sprinty i obciążenia wymagają odpowiedniego przygotowania i nadzoru."
+      ],
+      "regression": "Skróć serię, zmniejsz zakres ruchu albo wybierz spacer.",
+      "progression": "Zwiększaj trudność stopniowo i tylko jeśli technika oraz samopoczucie są dobre.",
+      "trackable_metrics": [
+        "czas_min",
+        "odczuwana_trudnosc_1_5",
+        "jakość_1_5"
+      ],
+      "tags": [
+        "motoryka",
+        "bezpieczeństwo"
+      ],
+      "provenance": {
+        "type": "autorskie opracowanie",
+        "alignment_theme": "NMG: przygotowanie motoryczne; autorskie ćwiczenia ogólnorozwojowe",
+        "source_reference": "sources_and_rights.json"
+      },
+      "participation_mode": "solo",
+      "participants_min": 1,
+      "participants_max": 1,
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik"
+      ],
+      "environment_options": [
+        "samodzielnie"
+      ]
+    },
+    {
+      "id": "phy_squat_control",
+      "title": "Przysiad z masą ciała",
+      "area": "motoryka",
+      "subarea": "kontrola ruchu",
+      "age_band": {
+        "min": 12,
+        "max": 18
+      },
+      "duration_min": 10,
+      "intensity": "low",
+      "solo": true,
+      "equipment": [],
+      "space": "mała przestrzeń",
+      "goal": "Ćwicz podstawowy wzorzec ruchu bez dodatkowego ciężaru.",
+      "setup": "Zapewnij bezpieczną nawierzchnię, miejsce i odpowiednie obuwie. Młodsi zawodnicy powinni ćwiczyć pod nadzorem dorosłego.",
+      "steps": [
+        "Zacznij od spokojnego przygotowania ruchowego.",
+        "Wykonuj niewielką liczbę jakościowych powtórzeń i odpoczywaj według samopoczucia.",
+        "Nie zwiększaj jednocześnie czasu, tempa i trudności.",
+        "Przerwij przy bólu, zawrotach głowy lub nietypowym osłabieniu."
+      ],
+      "coaching_cues": [
+        "Kontrola i technika przed intensywnością.",
+        "Nie wykonuj ćwiczenia przez ból.",
+        "Maksymalne sprinty i obciążenia wymagają odpowiedniego przygotowania i nadzoru."
+      ],
+      "regression": "Skróć serię, zmniejsz zakres ruchu albo wybierz spacer.",
+      "progression": "Zwiększaj trudność stopniowo i tylko jeśli technika oraz samopoczucie są dobre.",
+      "trackable_metrics": [
+        "czas_min",
+        "odczuwana_trudnosc_1_5",
+        "jakość_1_5"
+      ],
+      "tags": [
+        "motoryka",
+        "bezpieczeństwo"
+      ],
+      "provenance": {
+        "type": "autorskie opracowanie",
+        "alignment_theme": "NMG: przygotowanie motoryczne; autorskie ćwiczenia ogólnorozwojowe",
+        "source_reference": "sources_and_rights.json"
+      },
+      "participation_mode": "solo",
+      "participants_min": 1,
+      "participants_max": 1,
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik"
+      ],
+      "environment_options": [
+        "samodzielnie"
+      ]
+    },
+    {
+      "id": "phy_lunge_control",
+      "title": "Wykrok kontrolowany",
+      "area": "motoryka",
+      "subarea": "równowaga",
+      "age_band": {
+        "min": 12,
+        "max": 18
+      },
+      "duration_min": 10,
+      "intensity": "low",
+      "solo": true,
+      "equipment": [],
+      "space": "mała przestrzeń",
+      "goal": "Rozwijaj kontrolę kończyn i równowagę.",
+      "setup": "Zapewnij bezpieczną nawierzchnię, miejsce i odpowiednie obuwie. Młodsi zawodnicy powinni ćwiczyć pod nadzorem dorosłego.",
+      "steps": [
+        "Zacznij od spokojnego przygotowania ruchowego.",
+        "Wykonuj niewielką liczbę jakościowych powtórzeń i odpoczywaj według samopoczucia.",
+        "Nie zwiększaj jednocześnie czasu, tempa i trudności.",
+        "Przerwij przy bólu, zawrotach głowy lub nietypowym osłabieniu."
+      ],
+      "coaching_cues": [
+        "Kontrola i technika przed intensywnością.",
+        "Nie wykonuj ćwiczenia przez ból.",
+        "Maksymalne sprinty i obciążenia wymagają odpowiedniego przygotowania i nadzoru."
+      ],
+      "regression": "Skróć serię, zmniejsz zakres ruchu albo wybierz spacer.",
+      "progression": "Zwiększaj trudność stopniowo i tylko jeśli technika oraz samopoczucie są dobre.",
+      "trackable_metrics": [
+        "czas_min",
+        "odczuwana_trudnosc_1_5",
+        "jakość_1_5"
+      ],
+      "tags": [
+        "motoryka",
+        "bezpieczeństwo"
+      ],
+      "provenance": {
+        "type": "autorskie opracowanie",
+        "alignment_theme": "NMG: przygotowanie motoryczne; autorskie ćwiczenia ogólnorozwojowe",
+        "source_reference": "sources_and_rights.json"
+      },
+      "participation_mode": "solo",
+      "participants_min": 1,
+      "participants_max": 1,
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik"
+      ],
+      "environment_options": [
+        "samodzielnie"
+      ]
+    },
+    {
+      "id": "phy_core_deadbug",
+      "title": "Stabilizacja tułowia – dead bug",
+      "area": "motoryka",
+      "subarea": "tułów",
+      "age_band": {
+        "min": 12,
+        "max": 18
+      },
+      "duration_min": 8,
+      "intensity": "low",
+      "solo": true,
+      "equipment": [
+        "mata opcjonalnie"
+      ],
+      "space": "mała przestrzeń",
+      "goal": "Utrzymuj kontrolę tułowia podczas ruchu kończyn.",
+      "setup": "Zapewnij bezpieczną nawierzchnię, miejsce i odpowiednie obuwie. Młodsi zawodnicy powinni ćwiczyć pod nadzorem dorosłego.",
+      "steps": [
+        "Zacznij od spokojnego przygotowania ruchowego.",
+        "Wykonuj niewielką liczbę jakościowych powtórzeń i odpoczywaj według samopoczucia.",
+        "Nie zwiększaj jednocześnie czasu, tempa i trudności.",
+        "Przerwij przy bólu, zawrotach głowy lub nietypowym osłabieniu."
+      ],
+      "coaching_cues": [
+        "Kontrola i technika przed intensywnością.",
+        "Nie wykonuj ćwiczenia przez ból.",
+        "Maksymalne sprinty i obciążenia wymagają odpowiedniego przygotowania i nadzoru."
+      ],
+      "regression": "Skróć serię, zmniejsz zakres ruchu albo wybierz spacer.",
+      "progression": "Zwiększaj trudność stopniowo i tylko jeśli technika oraz samopoczucie są dobre.",
+      "trackable_metrics": [
+        "czas_min",
+        "odczuwana_trudnosc_1_5",
+        "jakość_1_5"
+      ],
+      "tags": [
+        "motoryka",
+        "bezpieczeństwo"
+      ],
+      "provenance": {
+        "type": "autorskie opracowanie",
+        "alignment_theme": "NMG: przygotowanie motoryczne; autorskie ćwiczenia ogólnorozwojowe",
+        "source_reference": "sources_and_rights.json"
+      },
+      "participation_mode": "solo",
+      "participants_min": 1,
+      "participants_max": 1,
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik"
+      ],
+      "environment_options": [
+        "samodzielnie"
+      ]
+    },
+    {
+      "id": "phy_accel_5m",
+      "title": "Krótkie przyspieszenia 5 m",
+      "area": "motoryka",
+      "subarea": "start",
+      "age_band": {
+        "min": 13,
+        "max": 18
+      },
+      "duration_min": 10,
+      "intensity": "high",
+      "solo": true,
+      "equipment": [
+        "znaczniki"
+      ],
+      "space": "równa bezpieczna nawierzchnia",
+      "goal": "Ćwicz krótkie przyspieszenie z pełną kontrolą.",
+      "setup": "Zapewnij bezpieczną nawierzchnię, miejsce i odpowiednie obuwie. Młodsi zawodnicy powinni ćwiczyć pod nadzorem dorosłego.",
+      "steps": [
+        "Zacznij od spokojnego przygotowania ruchowego.",
+        "Wykonuj niewielką liczbę jakościowych powtórzeń i odpoczywaj według samopoczucia.",
+        "Nie zwiększaj jednocześnie czasu, tempa i trudności.",
+        "Przerwij przy bólu, zawrotach głowy lub nietypowym osłabieniu."
+      ],
+      "coaching_cues": [
+        "Kontrola i technika przed intensywnością.",
+        "Nie wykonuj ćwiczenia przez ból.",
+        "Maksymalne sprinty i obciążenia wymagają odpowiedniego przygotowania i nadzoru."
+      ],
+      "regression": "Skróć serię, zmniejsz zakres ruchu albo wybierz spacer.",
+      "progression": "Zwiększaj trudność stopniowo i tylko jeśli technika oraz samopoczucie są dobre.",
+      "trackable_metrics": [
+        "czas_min",
+        "odczuwana_trudnosc_1_5",
+        "jakość_1_5"
+      ],
+      "tags": [
+        "motoryka",
+        "bezpieczeństwo"
+      ],
+      "provenance": {
+        "type": "autorskie opracowanie",
+        "alignment_theme": "NMG: przygotowanie motoryczne; autorskie ćwiczenia ogólnorozwojowe",
+        "source_reference": "sources_and_rights.json"
+      },
+      "participation_mode": "solo",
+      "participants_min": 1,
+      "participants_max": 1,
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik"
+      ],
+      "environment_options": [
+        "samodzielnie"
+      ]
+    },
+    {
+      "id": "phy_decel_control",
+      "title": "Hamowanie i zmiana kierunku",
+      "area": "motoryka",
+      "subarea": "hamowanie",
+      "age_band": {
+        "min": 13,
+        "max": 18
+      },
+      "duration_min": 10,
+      "intensity": "medium",
+      "solo": true,
+      "equipment": [
+        "znaczniki"
+      ],
+      "space": "równa bezpieczna nawierzchnia",
+      "goal": "Ucz się kontrolować ciało przy zatrzymaniu.",
+      "setup": "Zapewnij bezpieczną nawierzchnię, miejsce i odpowiednie obuwie. Młodsi zawodnicy powinni ćwiczyć pod nadzorem dorosłego.",
+      "steps": [
+        "Zacznij od spokojnego przygotowania ruchowego.",
+        "Wykonuj niewielką liczbę jakościowych powtórzeń i odpoczywaj według samopoczucia.",
+        "Nie zwiększaj jednocześnie czasu, tempa i trudności.",
+        "Przerwij przy bólu, zawrotach głowy lub nietypowym osłabieniu."
+      ],
+      "coaching_cues": [
+        "Kontrola i technika przed intensywnością.",
+        "Nie wykonuj ćwiczenia przez ból.",
+        "Maksymalne sprinty i obciążenia wymagają odpowiedniego przygotowania i nadzoru."
+      ],
+      "regression": "Skróć serię, zmniejsz zakres ruchu albo wybierz spacer.",
+      "progression": "Zwiększaj trudność stopniowo i tylko jeśli technika oraz samopoczucie są dobre.",
+      "trackable_metrics": [
+        "czas_min",
+        "odczuwana_trudnosc_1_5",
+        "jakość_1_5"
+      ],
+      "tags": [
+        "motoryka",
+        "bezpieczeństwo"
+      ],
+      "provenance": {
+        "type": "autorskie opracowanie",
+        "alignment_theme": "NMG: przygotowanie motoryczne; autorskie ćwiczenia ogólnorozwojowe",
+        "source_reference": "sources_and_rights.json"
+      },
+      "participation_mode": "solo",
+      "participants_min": 1,
+      "participants_max": 1,
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik"
+      ],
+      "environment_options": [
+        "samodzielnie"
+      ]
+    },
+    {
+      "id": "phy_shuttle_submax",
+      "title": "Bieg wahadłowy w tempie umiarkowanym",
+      "area": "motoryka",
+      "subarea": "zmiana kierunku",
+      "age_band": {
+        "min": 13,
+        "max": 18
+      },
+      "duration_min": 12,
+      "intensity": "medium",
+      "solo": true,
+      "equipment": [
+        "znaczniki"
+      ],
+      "space": "równa bezpieczna nawierzchnia",
+      "goal": "Buduj tolerancję powtarzalnego ruchu bez maksymalnej intensywności.",
+      "setup": "Zapewnij bezpieczną nawierzchnię, miejsce i odpowiednie obuwie. Młodsi zawodnicy powinni ćwiczyć pod nadzorem dorosłego.",
+      "steps": [
+        "Zacznij od spokojnego przygotowania ruchowego.",
+        "Wykonuj niewielką liczbę jakościowych powtórzeń i odpoczywaj według samopoczucia.",
+        "Nie zwiększaj jednocześnie czasu, tempa i trudności.",
+        "Przerwij przy bólu, zawrotach głowy lub nietypowym osłabieniu."
+      ],
+      "coaching_cues": [
+        "Kontrola i technika przed intensywnością.",
+        "Nie wykonuj ćwiczenia przez ból.",
+        "Maksymalne sprinty i obciążenia wymagają odpowiedniego przygotowania i nadzoru."
+      ],
+      "regression": "Skróć serię, zmniejsz zakres ruchu albo wybierz spacer.",
+      "progression": "Zwiększaj trudność stopniowo i tylko jeśli technika oraz samopoczucie są dobre.",
+      "trackable_metrics": [
+        "czas_min",
+        "odczuwana_trudnosc_1_5",
+        "jakość_1_5"
+      ],
+      "tags": [
+        "motoryka",
+        "bezpieczeństwo"
+      ],
+      "provenance": {
+        "type": "autorskie opracowanie",
+        "alignment_theme": "NMG: przygotowanie motoryczne; autorskie ćwiczenia ogólnorozwojowe",
+        "source_reference": "sources_and_rights.json"
+      },
+      "participation_mode": "solo",
+      "participants_min": 1,
+      "participants_max": 1,
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik"
+      ],
+      "environment_options": [
+        "samodzielnie"
+      ]
+    },
+    {
+      "id": "phy_jump_landing",
+      "title": "Lądowanie po małym podskoku",
+      "area": "motoryka",
+      "subarea": "kontrola lądowania",
+      "age_band": {
+        "min": 12,
+        "max": 18
+      },
+      "duration_min": 8,
+      "intensity": "low",
+      "solo": true,
+      "equipment": [],
+      "space": "równa powierzchnia",
+      "goal": "Ćwicz miękkie, stabilne lądowanie.",
+      "setup": "Zapewnij bezpieczną nawierzchnię, miejsce i odpowiednie obuwie. Młodsi zawodnicy powinni ćwiczyć pod nadzorem dorosłego.",
+      "steps": [
+        "Zacznij od spokojnego przygotowania ruchowego.",
+        "Wykonuj niewielką liczbę jakościowych powtórzeń i odpoczywaj według samopoczucia.",
+        "Nie zwiększaj jednocześnie czasu, tempa i trudności.",
+        "Przerwij przy bólu, zawrotach głowy lub nietypowym osłabieniu."
+      ],
+      "coaching_cues": [
+        "Kontrola i technika przed intensywnością.",
+        "Nie wykonuj ćwiczenia przez ból.",
+        "Maksymalne sprinty i obciążenia wymagają odpowiedniego przygotowania i nadzoru."
+      ],
+      "regression": "Skróć serię, zmniejsz zakres ruchu albo wybierz spacer.",
+      "progression": "Zwiększaj trudność stopniowo i tylko jeśli technika oraz samopoczucie są dobre.",
+      "trackable_metrics": [
+        "czas_min",
+        "odczuwana_trudnosc_1_5",
+        "jakość_1_5"
+      ],
+      "tags": [
+        "motoryka",
+        "bezpieczeństwo"
+      ],
+      "provenance": {
+        "type": "autorskie opracowanie",
+        "alignment_theme": "NMG: przygotowanie motoryczne; autorskie ćwiczenia ogólnorozwojowe",
+        "source_reference": "sources_and_rights.json"
+      },
+      "participation_mode": "solo",
+      "participants_min": 1,
+      "participants_max": 1,
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik"
+      ],
+      "environment_options": [
+        "samodzielnie"
+      ]
+    },
+    {
+      "id": "phy_mobility_reset",
+      "title": "Lekka mobilność po treningu",
+      "area": "regeneracja",
+      "subarea": "lekki ruch",
+      "age_band": {
+        "min": 10,
+        "max": 18
+      },
+      "duration_min": 10,
+      "intensity": "low",
+      "solo": true,
+      "equipment": [],
+      "space": "dowolne bezpieczne miejsce",
+      "goal": "Zakończ dzień lekkim ruchem bez dokładania obciążenia.",
+      "setup": "Zapewnij bezpieczną nawierzchnię, miejsce i odpowiednie obuwie. Młodsi zawodnicy powinni ćwiczyć pod nadzorem dorosłego.",
+      "steps": [
+        "Zacznij od spokojnego przygotowania ruchowego.",
+        "Wykonuj niewielką liczbę jakościowych powtórzeń i odpoczywaj według samopoczucia.",
+        "Nie zwiększaj jednocześnie czasu, tempa i trudności.",
+        "Przerwij przy bólu, zawrotach głowy lub nietypowym osłabieniu."
+      ],
+      "coaching_cues": [
+        "Kontrola i technika przed intensywnością.",
+        "Nie wykonuj ćwiczenia przez ból.",
+        "Maksymalne sprinty i obciążenia wymagają odpowiedniego przygotowania i nadzoru."
+      ],
+      "regression": "Skróć serię, zmniejsz zakres ruchu albo wybierz spacer.",
+      "progression": "Zwiększaj trudność stopniowo i tylko jeśli technika oraz samopoczucie są dobre.",
+      "trackable_metrics": [
+        "czas_min",
+        "odczuwana_trudnosc_1_5",
+        "jakość_1_5"
+      ],
+      "tags": [
+        "motoryka",
+        "bezpieczeństwo"
+      ],
+      "provenance": {
+        "type": "autorskie opracowanie",
+        "alignment_theme": "NMG: przygotowanie motoryczne; autorskie ćwiczenia ogólnorozwojowe",
+        "source_reference": "sources_and_rights.json"
+      },
+      "participation_mode": "solo",
+      "participants_min": 1,
+      "participants_max": 1,
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik"
+      ],
+      "environment_options": [
+        "samodzielnie"
+      ]
+    },
+    {
+      "id": "phy_walking_recovery",
+      "title": "Spacer regeneracyjny",
+      "area": "regeneracja",
+      "subarea": "aktywna regeneracja",
+      "age_band": {
+        "min": 10,
+        "max": 18
+      },
+      "duration_min": 10,
+      "intensity": "low",
+      "solo": true,
+      "equipment": [],
+      "space": "bezpieczna trasa",
+      "goal": "Wybierz lekki ruch zamiast kolejnej intensywnej sesji.",
+      "setup": "Zapewnij bezpieczną nawierzchnię, miejsce i odpowiednie obuwie. Młodsi zawodnicy powinni ćwiczyć pod nadzorem dorosłego.",
+      "steps": [
+        "Zacznij od spokojnego przygotowania ruchowego.",
+        "Wykonuj niewielką liczbę jakościowych powtórzeń i odpoczywaj według samopoczucia.",
+        "Nie zwiększaj jednocześnie czasu, tempa i trudności.",
+        "Przerwij przy bólu, zawrotach głowy lub nietypowym osłabieniu."
+      ],
+      "coaching_cues": [
+        "Kontrola i technika przed intensywnością.",
+        "Nie wykonuj ćwiczenia przez ból.",
+        "Maksymalne sprinty i obciążenia wymagają odpowiedniego przygotowania i nadzoru."
+      ],
+      "regression": "Skróć serię, zmniejsz zakres ruchu albo wybierz spacer.",
+      "progression": "Zwiększaj trudność stopniowo i tylko jeśli technika oraz samopoczucie są dobre.",
+      "trackable_metrics": [
+        "czas_min",
+        "odczuwana_trudnosc_1_5",
+        "jakość_1_5"
+      ],
+      "tags": [
+        "motoryka",
+        "bezpieczeństwo"
+      ],
+      "provenance": {
+        "type": "autorskie opracowanie",
+        "alignment_theme": "NMG: przygotowanie motoryczne; autorskie ćwiczenia ogólnorozwojowe",
+        "source_reference": "sources_and_rights.json"
+      },
+      "participation_mode": "solo",
+      "participants_min": 1,
+      "participants_max": 1,
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik"
+      ],
+      "environment_options": [
+        "samodzielnie"
+      ]
+    },
+    {
+      "id": "men_pre_session_goal",
+      "title": "Cel przed treningiem",
+      "area": "mentalność",
+      "subarea": "cel",
+      "age_band": {
+        "min": 10,
+        "max": 18
+      },
+      "duration_min": 4,
+      "intensity": "low",
+      "solo": true,
+      "equipment": [],
+      "space": "spokojne miejsce",
+      "goal": "Wybierz jeden cel, na który masz wpływ.",
+      "setup": "Zawodnik może zapisać odpowiedzi w dzienniku; nie wymuszaj dzielenia się prywatnymi notatkami.",
+      "steps": [
+        "Zatrzymaj się na chwilę i opisz sytuację konkretnie.",
+        "Wskaż jedno działanie, na które masz wpływ.",
+        "Zapisz krótki wniosek bez etykietowania siebie.",
+        "Jeśli emocje są silne lub długotrwałe, porozmawiaj z zaufanym dorosłym."
+      ],
+      "coaching_cues": [
+        "Błąd jest informacją, nie etykietą.",
+        "Unikaj zawstydzania i porównywania zawodników.",
+        "Skupiaj się na procesie i działaniu."
+      ],
+      "regression": "Odpowiedz na jedno pytanie zamiast wykonywać cały zestaw.",
+      "progression": "Porównaj refleksje z kilku tygodni, aby zauważyć własne wzorce.",
+      "trackable_metrics": [
+        "cel_zapisany",
+        "samoocena_1_5",
+        "wniosek"
+      ],
+      "tags": [
+        "mentalność",
+        "refleksja"
+      ],
+      "provenance": {
+        "type": "autorskie opracowanie",
+        "alignment_theme": "NMG: przygotowanie psychologiczne; autorskie ćwiczenia mentalne",
+        "source_reference": "sources_and_rights.json"
+      },
+      "participation_mode": "solo",
+      "participants_min": 1,
+      "participants_max": 1,
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik"
+      ],
+      "environment_options": [
+        "samodzielnie"
+      ]
+    },
+    {
+      "id": "men_post_session_reflection",
+      "title": "Refleksja po treningu",
+      "area": "mentalność",
+      "subarea": "refleksja",
+      "age_band": {
+        "min": 10,
+        "max": 18
+      },
+      "duration_min": 5,
+      "intensity": "low",
+      "solo": true,
+      "equipment": [],
+      "space": "spokojne miejsce",
+      "goal": "Zapisz mocną stronę i jedną rzecz do poprawy.",
+      "setup": "Zawodnik może zapisać odpowiedzi w dzienniku; nie wymuszaj dzielenia się prywatnymi notatkami.",
+      "steps": [
+        "Zatrzymaj się na chwilę i opisz sytuację konkretnie.",
+        "Wskaż jedno działanie, na które masz wpływ.",
+        "Zapisz krótki wniosek bez etykietowania siebie.",
+        "Jeśli emocje są silne lub długotrwałe, porozmawiaj z zaufanym dorosłym."
+      ],
+      "coaching_cues": [
+        "Błąd jest informacją, nie etykietą.",
+        "Unikaj zawstydzania i porównywania zawodników.",
+        "Skupiaj się na procesie i działaniu."
+      ],
+      "regression": "Odpowiedz na jedno pytanie zamiast wykonywać cały zestaw.",
+      "progression": "Porównaj refleksje z kilku tygodni, aby zauważyć własne wzorce.",
+      "trackable_metrics": [
+        "cel_zapisany",
+        "samoocena_1_5",
+        "wniosek"
+      ],
+      "tags": [
+        "mentalność",
+        "refleksja"
+      ],
+      "provenance": {
+        "type": "autorskie opracowanie",
+        "alignment_theme": "NMG: przygotowanie psychologiczne; autorskie ćwiczenia mentalne",
+        "source_reference": "sources_and_rights.json"
+      },
+      "participation_mode": "solo",
+      "participants_min": 1,
+      "participants_max": 1,
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik"
+      ],
+      "environment_options": [
+        "samodzielnie"
+      ]
+    },
+    {
+      "id": "men_reset_after_error",
+      "title": "Reset po błędzie",
+      "area": "mentalność",
+      "subarea": "emocje",
+      "age_band": {
+        "min": 10,
+        "max": 18
+      },
+      "duration_min": 4,
+      "intensity": "low",
+      "solo": true,
+      "equipment": [],
+      "space": "spokojne miejsce",
+      "goal": "Po błędzie wróć uwagą do kolejnego działania.",
+      "setup": "Zawodnik może zapisać odpowiedzi w dzienniku; nie wymuszaj dzielenia się prywatnymi notatkami.",
+      "steps": [
+        "Zatrzymaj się na chwilę i opisz sytuację konkretnie.",
+        "Wskaż jedno działanie, na które masz wpływ.",
+        "Zapisz krótki wniosek bez etykietowania siebie.",
+        "Jeśli emocje są silne lub długotrwałe, porozmawiaj z zaufanym dorosłym."
+      ],
+      "coaching_cues": [
+        "Błąd jest informacją, nie etykietą.",
+        "Unikaj zawstydzania i porównywania zawodników.",
+        "Skupiaj się na procesie i działaniu."
+      ],
+      "regression": "Odpowiedz na jedno pytanie zamiast wykonywać cały zestaw.",
+      "progression": "Porównaj refleksje z kilku tygodni, aby zauważyć własne wzorce.",
+      "trackable_metrics": [
+        "cel_zapisany",
+        "samoocena_1_5",
+        "wniosek"
+      ],
+      "tags": [
+        "mentalność",
+        "refleksja"
+      ],
+      "provenance": {
+        "type": "autorskie opracowanie",
+        "alignment_theme": "NMG: przygotowanie psychologiczne; autorskie ćwiczenia mentalne",
+        "source_reference": "sources_and_rights.json"
+      },
+      "participation_mode": "solo",
+      "participants_min": 1,
+      "participants_max": 1,
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik"
+      ],
+      "environment_options": [
+        "samodzielnie"
+      ]
+    },
+    {
+      "id": "men_confidence_evidence",
+      "title": "Pewność siebie oparta na faktach",
+      "area": "mentalność",
+      "subarea": "pewność siebie",
+      "age_band": {
+        "min": 12,
+        "max": 18
+      },
+      "duration_min": 6,
+      "intensity": "low",
+      "solo": true,
+      "equipment": [],
+      "space": "spokojne miejsce",
+      "goal": "Zapisuj konkretne przykłady własnego postępu.",
+      "setup": "Zawodnik może zapisać odpowiedzi w dzienniku; nie wymuszaj dzielenia się prywatnymi notatkami.",
+      "steps": [
+        "Zatrzymaj się na chwilę i opisz sytuację konkretnie.",
+        "Wskaż jedno działanie, na które masz wpływ.",
+        "Zapisz krótki wniosek bez etykietowania siebie.",
+        "Jeśli emocje są silne lub długotrwałe, porozmawiaj z zaufanym dorosłym."
+      ],
+      "coaching_cues": [
+        "Błąd jest informacją, nie etykietą.",
+        "Unikaj zawstydzania i porównywania zawodników.",
+        "Skupiaj się na procesie i działaniu."
+      ],
+      "regression": "Odpowiedz na jedno pytanie zamiast wykonywać cały zestaw.",
+      "progression": "Porównaj refleksje z kilku tygodni, aby zauważyć własne wzorce.",
+      "trackable_metrics": [
+        "cel_zapisany",
+        "samoocena_1_5",
+        "wniosek"
+      ],
+      "tags": [
+        "mentalność",
+        "refleksja"
+      ],
+      "provenance": {
+        "type": "autorskie opracowanie",
+        "alignment_theme": "NMG: przygotowanie psychologiczne; autorskie ćwiczenia mentalne",
+        "source_reference": "sources_and_rights.json"
+      },
+      "participation_mode": "solo",
+      "participants_min": 1,
+      "participants_max": 1,
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik"
+      ],
+      "environment_options": [
+        "samodzielnie"
+      ]
+    },
+    {
+      "id": "men_pre_match_routine",
+      "title": "Rutyna przedmeczowa",
+      "area": "mentalność",
+      "subarea": "koncentracja",
+      "age_band": {
+        "min": 12,
+        "max": 18
+      },
+      "duration_min": 6,
+      "intensity": "low",
+      "solo": true,
+      "equipment": [],
+      "space": "spokojne miejsce",
+      "goal": "Ustal prostą rutynę skupiającą uwagę na zadaniu.",
+      "setup": "Zawodnik może zapisać odpowiedzi w dzienniku; nie wymuszaj dzielenia się prywatnymi notatkami.",
+      "steps": [
+        "Zatrzymaj się na chwilę i opisz sytuację konkretnie.",
+        "Wskaż jedno działanie, na które masz wpływ.",
+        "Zapisz krótki wniosek bez etykietowania siebie.",
+        "Jeśli emocje są silne lub długotrwałe, porozmawiaj z zaufanym dorosłym."
+      ],
+      "coaching_cues": [
+        "Błąd jest informacją, nie etykietą.",
+        "Unikaj zawstydzania i porównywania zawodników.",
+        "Skupiaj się na procesie i działaniu."
+      ],
+      "regression": "Odpowiedz na jedno pytanie zamiast wykonywać cały zestaw.",
+      "progression": "Porównaj refleksje z kilku tygodni, aby zauważyć własne wzorce.",
+      "trackable_metrics": [
+        "cel_zapisany",
+        "samoocena_1_5",
+        "wniosek"
+      ],
+      "tags": [
+        "mentalność",
+        "refleksja"
+      ],
+      "provenance": {
+        "type": "autorskie opracowanie",
+        "alignment_theme": "NMG: przygotowanie psychologiczne; autorskie ćwiczenia mentalne",
+        "source_reference": "sources_and_rights.json"
+      },
+      "participation_mode": "solo",
+      "participants_min": 1,
+      "participants_max": 1,
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik"
+      ],
+      "environment_options": [
+        "samodzielnie"
+      ]
+    },
+    {
+      "id": "men_controllable_goals",
+      "title": "Cele kontrolowalne",
+      "area": "mentalność",
+      "subarea": "cel",
+      "age_band": {
+        "min": 12,
+        "max": 18
+      },
+      "duration_min": 6,
+      "intensity": "low",
+      "solo": true,
+      "equipment": [],
+      "space": "spokojne miejsce",
+      "goal": "Oddziel działania zależne od Ciebie od wyniku.",
+      "setup": "Zawodnik może zapisać odpowiedzi w dzienniku; nie wymuszaj dzielenia się prywatnymi notatkami.",
+      "steps": [
+        "Zatrzymaj się na chwilę i opisz sytuację konkretnie.",
+        "Wskaż jedno działanie, na które masz wpływ.",
+        "Zapisz krótki wniosek bez etykietowania siebie.",
+        "Jeśli emocje są silne lub długotrwałe, porozmawiaj z zaufanym dorosłym."
+      ],
+      "coaching_cues": [
+        "Błąd jest informacją, nie etykietą.",
+        "Unikaj zawstydzania i porównywania zawodników.",
+        "Skupiaj się na procesie i działaniu."
+      ],
+      "regression": "Odpowiedz na jedno pytanie zamiast wykonywać cały zestaw.",
+      "progression": "Porównaj refleksje z kilku tygodni, aby zauważyć własne wzorce.",
+      "trackable_metrics": [
+        "cel_zapisany",
+        "samoocena_1_5",
+        "wniosek"
+      ],
+      "tags": [
+        "mentalność",
+        "refleksja"
+      ],
+      "provenance": {
+        "type": "autorskie opracowanie",
+        "alignment_theme": "NMG: przygotowanie psychologiczne; autorskie ćwiczenia mentalne",
+        "source_reference": "sources_and_rights.json"
+      },
+      "participation_mode": "solo",
+      "participants_min": 1,
+      "participants_max": 1,
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik"
+      ],
+      "environment_options": [
+        "samodzielnie"
+      ]
+    },
+    {
+      "id": "men_team_communication",
+      "title": "Komunikacja wspierająca",
+      "area": "mentalność",
+      "subarea": "współpraca",
+      "age_band": {
+        "min": 12,
+        "max": 18
+      },
+      "duration_min": 8,
+      "intensity": "low",
+      "solo": true,
+      "equipment": [],
+      "space": "spokojne miejsce",
+      "goal": "Ćwicz krótkie, konkretne komunikaty i wspieranie partnerów.",
+      "setup": "Zawodnik może zapisać odpowiedzi w dzienniku; nie wymuszaj dzielenia się prywatnymi notatkami.",
+      "steps": [
+        "Zatrzymaj się na chwilę i opisz sytuację konkretnie.",
+        "Wskaż jedno działanie, na które masz wpływ.",
+        "Zapisz krótki wniosek bez etykietowania siebie.",
+        "Jeśli emocje są silne lub długotrwałe, porozmawiaj z zaufanym dorosłym."
+      ],
+      "coaching_cues": [
+        "Błąd jest informacją, nie etykietą.",
+        "Unikaj zawstydzania i porównywania zawodników.",
+        "Skupiaj się na procesie i działaniu."
+      ],
+      "regression": "Odpowiedz na jedno pytanie zamiast wykonywać cały zestaw.",
+      "progression": "Porównaj refleksje z kilku tygodni, aby zauważyć własne wzorce.",
+      "trackable_metrics": [
+        "cel_zapisany",
+        "samoocena_1_5",
+        "wniosek"
+      ],
+      "tags": [
+        "mentalność",
+        "refleksja"
+      ],
+      "provenance": {
+        "type": "autorskie opracowanie",
+        "alignment_theme": "NMG: przygotowanie psychologiczne; autorskie ćwiczenia mentalne",
+        "source_reference": "sources_and_rights.json"
+      },
+      "participation_mode": "solo",
+      "participants_min": 1,
+      "participants_max": 1,
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik"
+      ],
+      "environment_options": [
+        "samodzielnie"
+      ]
+    },
+    {
+      "id": "men_pressure_reflection",
+      "title": "Refleksja po presji",
+      "area": "mentalność",
+      "subarea": "emocje",
+      "age_band": {
+        "min": 13,
+        "max": 18
+      },
+      "duration_min": 7,
+      "intensity": "low",
+      "solo": true,
+      "equipment": [],
+      "space": "spokojne miejsce",
+      "goal": "Przeanalizuj trudną sytuację bez oceniania swojej wartości.",
+      "setup": "Zawodnik może zapisać odpowiedzi w dzienniku; nie wymuszaj dzielenia się prywatnymi notatkami.",
+      "steps": [
+        "Zatrzymaj się na chwilę i opisz sytuację konkretnie.",
+        "Wskaż jedno działanie, na które masz wpływ.",
+        "Zapisz krótki wniosek bez etykietowania siebie.",
+        "Jeśli emocje są silne lub długotrwałe, porozmawiaj z zaufanym dorosłym."
+      ],
+      "coaching_cues": [
+        "Błąd jest informacją, nie etykietą.",
+        "Unikaj zawstydzania i porównywania zawodników.",
+        "Skupiaj się na procesie i działaniu."
+      ],
+      "regression": "Odpowiedz na jedno pytanie zamiast wykonywać cały zestaw.",
+      "progression": "Porównaj refleksje z kilku tygodni, aby zauważyć własne wzorce.",
+      "trackable_metrics": [
+        "cel_zapisany",
+        "samoocena_1_5",
+        "wniosek"
+      ],
+      "tags": [
+        "mentalność",
+        "refleksja"
+      ],
+      "provenance": {
+        "type": "autorskie opracowanie",
+        "alignment_theme": "NMG: przygotowanie psychologiczne; autorskie ćwiczenia mentalne",
+        "source_reference": "sources_and_rights.json"
+      },
+      "participation_mode": "solo",
+      "participants_min": 1,
+      "participants_max": 1,
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik"
+      ],
+      "environment_options": [
+        "samodzielnie"
+      ]
+    },
+    {
+      "id": "v21_colour_turn",
+      "title": "Kolorowy zwrot na komendę",
+      "area": "technika",
+      "subarea": "prowadzenie",
+      "age_band": {
+        "min": 10,
+        "max": 18
+      },
+      "duration_min": 12,
+      "intensity": "medium",
+      "solo": true,
+      "participants_min": 1,
+      "participants_max": 2,
+      "participation_mode": "solo_or_coach",
+      "equipment": [
+        "piłka",
+        "4 kolorowe znaczniki"
+      ],
+      "space": "kwadrat 6 × 6 m",
+      "goal": "Szybka reakcja i zmiana kierunku bez utraty piłki.",
+      "setup": "Ustaw cztery kolorowe bramki na bokach kwadratu. Trener wywołuje kolor; solo użyj wcześniej przygotowanej sekwencji kolorów na kartce.",
+      "steps": [
+        "Prowadź piłkę przez 20–30 sekund.",
+        "Na sygnał wykonaj zwrot i przejedź przez wskazaną bramkę.",
+        "Odpocznij 30–45 sekund; zrób 5–7 serii."
+      ],
+      "coaching_cues": [
+        "Najpierw kontrola, potem tempo.",
+        "Podnieś wzrok przed zwrotem."
+      ],
+      "regression": "Dwie bramki i wolne tempo.",
+      "progression": "Zmień rodzaj zwrotu i używaj słabszej nogi.",
+      "trackable_metrics": [
+        "trafione_bramki",
+        "czas_reakcji_s",
+        "jakość_1_5"
+      ],
+      "tags": [
+        "reakcja",
+        "zwroty"
+      ],
+      "provenance": {
+        "type": "autorska adaptacja koncepcji treningowej",
+        "alignment_theme": "technika i decyzje w grze",
+        "source_url": "https://www.thefa.com/bootroom/resources/coaching/coaching-players-during-covid-19-working-with-individuals",
+        "source_reference": "sources_and_rights_v2.json"
+      },
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik"
+      ],
+      "environment_options": [
+        "samodzielnie",
+        "trener"
+      ]
+    },
+    {
+      "id": "v21_wall_gate_switch",
+      "title": "Ściana: podanie i zmiana bramki",
+      "area": "technika",
+      "subarea": "podania",
+      "age_band": {
+        "min": 10,
+        "max": 18
+      },
+      "duration_min": 14,
+      "intensity": "medium",
+      "solo": true,
+      "participants_min": 1,
+      "participants_max": 2,
+      "participation_mode": "solo_or_coach",
+      "equipment": [
+        "piłka",
+        "ściana",
+        "4 znaczniki"
+      ],
+      "space": "3–6 m od bezpiecznej ściany",
+      "goal": "Popraw celność podania i ustawienie po odbiciu.",
+      "setup": "Wyznacz dwa cele na ścianie oraz dwie bramki do przyjęcia przed nią.",
+      "steps": [
+        "Podaj do pierwszego celu.",
+        "Przyjmij odbicie przez lewą bramkę, ustaw piłkę i podaj do drugiego celu.",
+        "Wykonaj 4 serie po 12 podań, naprzemiennie obiema nogami."
+      ],
+      "coaching_cues": [
+        "Ustaw ciało bokiem.",
+        "Pierwszy kontakt kieruj poza linię powrotu piłki."
+      ],
+      "regression": "Powiększ bramki i graj dwoma kontaktami.",
+      "progression": "Zmniejsz cele i graj maksymalnie dwoma kontaktami.",
+      "trackable_metrics": [
+        "celne_podania",
+        "liczba_kontaktów",
+        "słabsza_noga_celność"
+      ],
+      "tags": [
+        "ściana",
+        "podania"
+      ],
+      "provenance": {
+        "type": "autorska adaptacja koncepcji treningowej",
+        "alignment_theme": "technika i decyzje w grze",
+        "source_url": "https://www.thefa.com/bootroom/resources/coaching/coaching-players-during-covid-19-part-two",
+        "source_reference": "sources_and_rights_v2.json"
+      },
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik"
+      ],
+      "environment_options": [
+        "samodzielnie",
+        "trener"
+      ]
+    },
+    {
+      "id": "v21_scan_number",
+      "title": "Skanowanie numerów przed przyjęciem",
+      "area": "taktyka",
+      "subarea": "decyzje",
+      "age_band": {
+        "min": 10,
+        "max": 18
+      },
+      "duration_min": 10,
+      "intensity": "low",
+      "solo": true,
+      "participants_min": 1,
+      "participants_max": 2,
+      "participation_mode": "solo_or_coach",
+      "equipment": [
+        "piłka",
+        "3 znaczniki z numerami",
+        "ściana opcjonalnie"
+      ],
+      "space": "5 × 5 m",
+      "goal": "Wyrobić nawyk spojrzenia przez ramię przed kontaktem z piłką.",
+      "setup": "Ustaw trzy numerowane znaczniki za plecami zawodnika. Trener wskazuje numer podczas podania; solo ustaw kartoniki i przed każdym powtórzeniem odwróć się, odczytaj numer, następnie zagraj piłkę o ścianę.",
+      "steps": [
+        "Spójrz przez ramię przed przyjęciem.",
+        "Przyjmij piłkę od trenera albo odbicie od ściany.",
+        "Wypowiedz widziany numer i wyprowadź piłkę do odpowiedniej bramki.",
+        "Wykonaj 3 serie po 8 powtórzeń."
+      ],
+      "coaching_cues": [
+        "Skanuj przed dotknięciem piłki.",
+        "Otwórz ustawienie bioder."
+      ],
+      "regression": "Bez piłki przećwicz kolejność ruchów.",
+      "progression": "Trener zmienia numer w ostatniej chwili.",
+      "trackable_metrics": [
+        "prawidłowe_odczyty",
+        "udane_przyjęcia",
+        "jakość_1_5"
+      ],
+      "tags": [
+        "skanowanie",
+        "pierwszy_kontakt"
+      ],
+      "provenance": {
+        "type": "autorska adaptacja koncepcji treningowej",
+        "alignment_theme": "technika i decyzje w grze",
+        "source_url": "https://www.thefa.com/bootroom/resources/coaching/how-to-coach-passing-in-football",
+        "source_reference": "sources_and_rights_v2.json"
+      },
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik"
+      ],
+      "environment_options": [
+        "samodzielnie",
+        "trener"
+      ]
+    },
+    {
+      "id": "v21_first_touch_halfturn",
+      "title": "Przyjęcie półobrotem na dalszą nogę",
+      "area": "technika",
+      "subarea": "przyjęcie",
+      "age_band": {
+        "min": 10,
+        "max": 18
+      },
+      "duration_min": 12,
+      "intensity": "medium",
+      "solo": true,
+      "participants_min": 1,
+      "participants_max": 2,
+      "participation_mode": "solo_or_coach",
+      "equipment": [
+        "piłka",
+        "ściana",
+        "2 znaczniki"
+      ],
+      "space": "4–8 m od ściany",
+      "goal": "Przyjmować piłkę w kierunku wolnej przestrzeni.",
+      "setup": "Stań lekko bokiem do ściany; oznacz bramkę wyjściową po lewej i prawej stronie.",
+      "steps": [
+        "Podaj piłkę o ścianę.",
+        "Spójrz przez ramię i przyjmij dalszą nogą w półobrocie.",
+        "Wyprowadź piłkę przez bramkę, wróć i zmień stronę.",
+        "4 serie po 6 powtórzeń na stronę."
+      ],
+      "coaching_cues": [
+        "Nie zatrzymuj piłki pod sobą.",
+        "Kierunek przyjęcia wybierz przed kontaktem."
+      ],
+      "regression": "Większy dystans i wolniejsze podanie.",
+      "progression": "Maksymalnie dwa kontakty do przejścia przez bramkę.",
+      "trackable_metrics": [
+        "udane_przyjęcia",
+        "czas_do_bramki_s"
+      ],
+      "tags": [
+        "przyjęcie",
+        "ściana"
+      ],
+      "provenance": {
+        "type": "autorska adaptacja koncepcji treningowej",
+        "alignment_theme": "technika i decyzje w grze",
+        "source_url": "https://www.thefa.com/bootroom/resources/coaching/how-to-coach-passing-in-football",
+        "source_reference": "sources_and_rights_v2.json"
+      },
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik"
+      ],
+      "environment_options": [
+        "samodzielnie",
+        "trener"
+      ]
+    },
+    {
+      "id": "v21_feint_exit",
+      "title": "Zwód przed manekinem i sprint z piłką",
+      "area": "technika",
+      "subarea": "drybling",
+      "age_band": {
+        "min": 10,
+        "max": 18
+      },
+      "duration_min": 12,
+      "intensity": "high",
+      "solo": true,
+      "participants_min": 1,
+      "participants_max": 2,
+      "participation_mode": "solo_or_coach",
+      "equipment": [
+        "piłka",
+        "3 znaczniki"
+      ],
+      "space": "korytarz 12 × 4 m",
+      "goal": "Łączyć zmianę rytmu ze zwodem i wyjściem na wolną przestrzeń.",
+      "setup": "Ustaw znacznik jako obrońcę i linię mety 5 m za nim.",
+      "steps": [
+        "Podejdź wolno do znacznika.",
+        "Wykonaj zwód tułowiem i wyjdź piłką w przeciwną stronę.",
+        "Przyspiesz przez 5 m i zatrzymaj piłkę w strefie.",
+        "6–8 powtórzeń z pełną przerwą."
+      ],
+      "coaching_cues": [
+        "Zwód ma oszukać kierunkiem ciała.",
+        "Po zwodzie pierwszy kontakt ma być dynamiczny."
+      ],
+      "regression": "Zwolnij i zwiększ odstęp od znacznika.",
+      "progression": "Naprzemienne wyjście obiema nogami na czas.",
+      "trackable_metrics": [
+        "udane_zwody",
+        "czas_5m_s"
+      ],
+      "tags": [
+        "zwody",
+        "przyspieszenie"
+      ],
+      "provenance": {
+        "type": "autorska adaptacja koncepcji treningowej",
+        "alignment_theme": "technika i decyzje w grze",
+        "source_url": "https://www.thefa.com/bootroom/resources/coaching/coaching-players-during-covid-19-working-with-individuals",
+        "source_reference": "sources_and_rights_v2.json"
+      },
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik"
+      ],
+      "environment_options": [
+        "samodzielnie",
+        "trener"
+      ]
+    },
+    {
+      "id": "v21_coach_shadow_1v1",
+      "title": "1 na 1 z trenerem: wyjście z presji",
+      "area": "taktyka",
+      "subarea": "obrona",
+      "age_band": {
+        "min": 10,
+        "max": 18
+      },
+      "duration_min": 14,
+      "intensity": "medium",
+      "solo": false,
+      "participants_min": 2,
+      "participants_max": 2,
+      "participation_mode": "coach",
+      "equipment": [
+        "piłka",
+        "4 znaczniki"
+      ],
+      "space": "pole 8 × 6 m",
+      "goal": "Rozpoznawać wolną stronę i chronić piłkę.",
+      "setup": "Wyznacz dwie bramki na przeciwległych bokach. Trener jest jedynym obrońcą i początkowo broni pasywnie.",
+      "steps": [
+        "Zawodnik otrzymuje piłkę od trenera.",
+        "Ma 6 sekund na przejście z piłką przez jedną z bramek.",
+        "Trener stopniowo zwiększa presję, bez ostrego kontaktu.",
+        "3 serie po 5 prób."
+      ],
+      "coaching_cues": [
+        "Osłoń piłkę ciałem.",
+        "Zmieniaj kierunek, gdy obrońca przeniesie ciężar ciała."
+      ],
+      "regression": "Trener broni tylko jedną bramkę.",
+      "progression": "Trener aktywnie odcina obie bramki bez kontaktu fizycznego.",
+      "trackable_metrics": [
+        "udane_wyjścia",
+        "straty_piłki"
+      ],
+      "tags": [
+        "1v1",
+        "decyzje"
+      ],
+      "provenance": {
+        "type": "autorska adaptacja koncepcji treningowej",
+        "alignment_theme": "technika i decyzje w grze",
+        "source_url": "https://www.thefa.com/bootroom/resources/coaching/how-to-use-constraints-in-your-coaching-session",
+        "source_reference": "sources_and_rights_v2.json"
+      },
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik",
+        "trener"
+      ],
+      "environment_options": [
+        "trener"
+      ]
+    },
+    {
+      "id": "v21_wall_one_touch",
+      "title": "Ściana: rytm jednego kontaktu",
+      "area": "technika",
+      "subarea": "podania",
+      "age_band": {
+        "min": 10,
+        "max": 18
+      },
+      "duration_min": 10,
+      "intensity": "medium",
+      "solo": true,
+      "participants_min": 1,
+      "participants_max": 2,
+      "participation_mode": "solo_or_coach",
+      "equipment": [
+        "piłka",
+        "ściana",
+        "taśma do oznaczenia celu"
+      ],
+      "space": "2–4 m od ściany",
+      "goal": "Poprawić szybkość przygotowania stopy i dokładność podań.",
+      "setup": "Zaznacz szeroki cel na ścianie na wysokości niskiego podania.",
+      "steps": [
+        "Rozpocznij 20 podań na dwa kontakty.",
+        "Wykonaj serię podań jednym kontaktem prawą i lewą nogą.",
+        "4 serie po 30 sekund, odpoczynek 45 sekund."
+      ],
+      "coaching_cues": [
+        "Stopa podporowa stabilna.",
+        "Nie zwiększaj tempa kosztem dokładności."
+      ],
+      "regression": "Zwiększ cel i przejdź na dwa kontakty.",
+      "progression": "Zmniejsz cel lub naprzemiennie używaj nóg.",
+      "trackable_metrics": [
+        "celne_podania_30s",
+        "najdłuższa_seria"
+      ],
+      "tags": [
+        "ściana",
+        "rytm"
+      ],
+      "provenance": {
+        "type": "autorska adaptacja koncepcji treningowej",
+        "alignment_theme": "technika i decyzje w grze",
+        "source_url": "https://www.thefa.com/bootroom/resources/coaching/coaching-players-during-covid-19-part-two",
+        "source_reference": "sources_and_rights_v2.json"
+      },
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik"
+      ],
+      "environment_options": [
+        "samodzielnie",
+        "trener"
+      ]
+    },
+    {
+      "id": "v21_cutback_coach",
+      "title": "Strzał po podaniu wstecznym od trenera",
+      "area": "technika",
+      "subarea": "strzały",
+      "age_band": {
+        "min": 10,
+        "max": 18
+      },
+      "duration_min": 15,
+      "intensity": "medium",
+      "solo": false,
+      "participants_min": 2,
+      "participants_max": 2,
+      "participation_mode": "coach",
+      "equipment": [
+        "piłka",
+        "bramka lub cel",
+        "3 znaczniki"
+      ],
+      "space": "pole karne lub bezpieczny plac",
+      "goal": "Ćwiczyć nabiegnięcie i wykończenie po podaniu wstecznym.",
+      "setup": "Trener stoi z boku linii końcowej lub wyznaczonej strefy, zawodnik startuje kilka metrów dalej. Bez bramkarza.",
+      "steps": [
+        "Zawodnik robi ruch od piłki i wraca do strefy strzału.",
+        "Trener podaje piłkę po ziemi do tyłu.",
+        "Zawodnik uderza do wyznaczonego sektora.",
+        "3 serie po 6 prób, zmiana strony."
+      ],
+      "coaching_cues": [
+        "Sprawdź przestrzeń przed nabiegnięciem.",
+        "Ustaw stopę podporową w kierunku celu."
+      ],
+      "regression": "Podanie wolniejsze i strzał po przyjęciu.",
+      "progression": "Strzał pierwszym kontaktem słabszą nogą.",
+      "trackable_metrics": [
+        "celne_strzały",
+        "strzały_pierwszym_kontaktem"
+      ],
+      "tags": [
+        "strzały",
+        "trener"
+      ],
+      "provenance": {
+        "type": "autorska adaptacja koncepcji treningowej",
+        "alignment_theme": "technika i decyzje w grze",
+        "source_url": "https://www.thefa.com/bootroom/resources/coaching/coaching-players-during-covid-19-part-two",
+        "source_reference": "sources_and_rights_v2.json"
+      },
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik",
+        "trener"
+      ],
+      "environment_options": [
+        "trener"
+      ]
+    },
+    {
+      "id": "v21_tennis_two",
+      "title": "Piłkarski tenis 1 na 1 z trenerem",
+      "area": "technika",
+      "subarea": "kontrola_piłki",
+      "age_band": {
+        "min": 10,
+        "max": 18
+      },
+      "duration_min": 12,
+      "intensity": "low",
+      "solo": false,
+      "participants_min": 2,
+      "participants_max": 2,
+      "participation_mode": "coach",
+      "equipment": [
+        "piłka",
+        "linia z 4 znaczników"
+      ],
+      "space": "dwa pola 4 × 4 m",
+      "goal": "Doskonalić kontrolę piłki z powietrza i koordynację.",
+      "setup": "Wyznacz dwa pola rozdzielone linią na ziemi; trener stoi w drugim polu.",
+      "steps": [
+        "Rozpocznij piłką podaną z ręki.",
+        "Po maksymalnie jednym koźle odegraj piłkę nogą do pola trenera.",
+        "Możesz użyć jednego przyjęcia przed odegraniem.",
+        "Graj 3 rundy po 3 minuty."
+      ],
+      "coaching_cues": [
+        "Obserwuj tor lotu.",
+        "Miękko amortyzuj przyjęcie."
+      ],
+      "regression": "Pozwól na dwa kozły i dwa kontakty.",
+      "progression": "Bez kozła lub tylko słabsza noga.",
+      "trackable_metrics": [
+        "udane_odegrania",
+        "najdłuższa_wymiana"
+      ],
+      "tags": [
+        "koordynacja",
+        "zabawa"
+      ],
+      "provenance": {
+        "type": "autorska adaptacja koncepcji treningowej",
+        "alignment_theme": "technika i decyzje w grze",
+        "source_url": "https://www.thefa.com/bootroom/resources/coaching/coaching-players-during-covid-19-working-with-individuals",
+        "source_reference": "sources_and_rights_v2.json"
+      },
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik",
+        "trener"
+      ],
+      "environment_options": [
+        "trener"
+      ]
+    },
+    {
+      "id": "v21_four_corner_challenge",
+      "title": "Cztery narożniki: losowa misja z piłką",
+      "area": "technika",
+      "subarea": "prowadzenie",
+      "age_band": {
+        "min": 10,
+        "max": 18
+      },
+      "duration_min": 15,
+      "intensity": "medium",
+      "solo": true,
+      "participants_min": 1,
+      "participants_max": 2,
+      "participation_mode": "solo_or_coach",
+      "equipment": [
+        "piłka",
+        "8 znaczników",
+        "kartki z numerami 1–4"
+      ],
+      "space": "kwadrat 10 × 10 m",
+      "goal": "Urozmaicić trening przez mieszanie technik i krótkie cele.",
+      "setup": "W każdym narożniku ustaw inną stację: slalom, zwrot, zatrzymanie, celne podanie o ścianę (lub przez bramkę).",
+      "steps": [
+        "Wylosuj numer stacji.",
+        "Wykonaj zadanie i wróć prowadząc piłkę do środka.",
+        "Wylosuj kolejne zadanie; zrób 3 rundy po 4 stacje.",
+        "Między rundami odpocznij 60 sekund."
+      ],
+      "coaching_cues": [
+        "Każda stacja wymaga dokładności.",
+        "Zmiana stacji nie oznacza maksymalnego sprintu."
+      ],
+      "regression": "Dwie stacje i dłuższy odpoczynek.",
+      "progression": "Dodaj limit czasu i używaj słabszej nogi.",
+      "trackable_metrics": [
+        "ukończone_stacje",
+        "błędy_techniczne",
+        "czas_rundy_s"
+      ],
+      "tags": [
+        "różnorodność",
+        "prowadzenie"
+      ],
+      "provenance": {
+        "type": "autorska adaptacja koncepcji treningowej",
+        "alignment_theme": "technika i decyzje w grze",
+        "source_url": "https://www.thefa.com/bootroom/resources/coaching/coaching-players-during-covid-19-working-with-individuals",
+        "source_reference": "sources_and_rights_v2.json"
+      },
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik"
+      ],
+      "environment_options": [
+        "samodzielnie",
+        "trener"
+      ]
+    }
+  ],
+  "new_exercises_v2_1": {
+    "count": 10,
+    "participants_max": 2,
+    "note": "Nowe ćwiczenia nie wymagają grupy. Wariant wall wymaga ściany, ale nie drugiej osoby. Starsze ćwiczenia mogą wymagać grupy; filtruj po participants_max lub solo."
+  },
+  "adaptation_v2_2": {
+    "changed_legacy_exercises": 20,
+    "changed_ids": [
+      "tech_pass_move",
+      "tech_receive_turn",
+      "tech_1v1_gate",
+      "tech_shield_ball",
+      "tech_long_pass",
+      "tac_support_angle",
+      "tac_third_man",
+      "tac_rondo_3v1",
+      "tac_rondo_4v2",
+      "tac_possession_4v4",
+      "tac_transition_3v2",
+      "tac_press_cues",
+      "tac_defend_channel",
+      "tac_switch_play",
+      "tac_positional_boxes",
+      "tac_formation_build",
+      "tac_formation_wide",
+      "tac_counterpress",
+      "tac_small_sided",
+      "tac_finish_after_combination"
+    ],
+    "maximum_human_participants": 2,
+    "note": "Ćwiczenia oparte na grach grupowych są wariantami indywidualnymi; nie odtwarzają w pełni zespołowego kontekstu taktycznego."
+  }
+}
