@@ -421,7 +421,8 @@ class Api {
       await createEvent(
         date: date,
         type: kind,
-        title: kind == 'club_training' ? 'Planowany trening klubowy' : 'Planowany trening',
+        title: kind == 'club_training' ? 'Trening klubowy: ${focuses.join(', ')}' : 'Trening: ${focuses.join(', ')}',
+        details: <String, dynamic>{'focus': focuses.join(', '), 'focuses': focuses, 'duration_min': durationMin, 'intensity': intensity, 'rating': rating, 'went_well': wentWell, 'to_improve': toImprove, 'notes': notes},
         description: planDetails,
       );
       return Training.fromJson(doc);
@@ -822,7 +823,8 @@ class Api {
       await createEvent(
         date: date,
         type: 'match',
-        title: 'Mecz: $opponent',
+        title: opponent.trim().isEmpty ? 'Mecz' : 'Mecz z $opponent',
+        details: <String, dynamic>{'opponent': opponent, 'result': result, 'minutes_played': minutesPlayed, 'goals': goals, 'assists': assists, 'rating': rating, 'went_well': wentWell, 'to_improve': toImprove, 'notes': notes},
         description: planDetails,
       );
       return MatchEntry.fromJson(doc);
@@ -1212,8 +1214,10 @@ class Api {
     required String type,
     required String title,
     required String description,
+    Map<String, dynamic> details = const <String, dynamic>{},
   }) async {
     final doc = <String, dynamic>{
+      ...details,
       'id': LocalDb.newId(),
       'date': date,
       'time': time,
@@ -1252,6 +1256,31 @@ class Api {
       return EventItem.fromJson(e);
     });
   }
+
+  /// Edycja planu bez tworzenia wpisu wykonanego treningu w dzienniku.
+  static Future<EventItem> updatePlannedActivity(
+    String id, {
+    required String date,
+    required String title,
+    required String description,
+    required Map<String, dynamic> details,
+  }) => LocalDb.synchronized<EventItem>(() async {
+    final items = await LocalDb.list('events');
+    final idx = items.indexWhere((e) => _s(e['id']) == id);
+    if (idx < 0) throw ApiException(404, 'Not Found', 'Event not found');
+    final e = items[idx];
+    if (e['done'] == true || _s(e['source_id']).isNotEmpty) {
+      throw ApiException(409, 'Conflict', 'Completed activity cannot be edited as a plan');
+    }
+    e.addAll(details);
+    e['date'] = date;
+    e['title'] = title;
+    e['description'] = description;
+    e['planned'] = true;
+    e['updated_at'] = _nowIso();
+    await LocalDb.saveList('events', items);
+    return EventItem.fromJson(e);
+  });
 
   static Future<EventItem> toggleEvent(String id, bool done) {
     return LocalDb.synchronized<EventItem>(() async {
