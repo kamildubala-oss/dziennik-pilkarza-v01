@@ -8,8 +8,7 @@ import '../resource.dart';
 import '../theme.dart';
 import '../utils.dart';
 import '../widgets/common.dart';
-import 'log_match_screen.dart';
-import 'log_session_screen.dart';
+import 'add_event_screen.dart';
 import 'profile_screen.dart';
 import 'training_details_screen.dart';
 
@@ -337,7 +336,7 @@ class _DiaryScreenState extends State<DiaryScreen> {
                       textColor: c.brandPrimary,
                       bg: c.brandTertiary,
                       label: 'Zapisz trening',
-                      onTap: () => _openModal(const LogSessionScreen()),
+                      onTap: () => _openModal(AddEventScreen(initialDate: _selectedDay, initialType: 'training', isPlanned: false)),
                     ),
                   ),
                   const SizedBox(width: Sp.sm),
@@ -349,7 +348,7 @@ class _DiaryScreenState extends State<DiaryScreen> {
                       textColor: c.onSurfaceSecondary,
                       bg: c.surfaceSecondary,
                       label: 'Zapisz mecz',
-                      onTap: () => _openModal(const LogMatchScreen()),
+                      onTap: () => _openModal(AddEventScreen(initialDate: _selectedDay, initialType: 'match', isPlanned: false)),
                     ),
                   ),
                 ],
