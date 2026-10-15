@@ -62,10 +62,18 @@ class _CalendarScreenState extends State<CalendarScreen> {
   }
 
   Future<void> _toggle(EventItem e) async {
+    if (e.type != 'note') {
+      if (!e.done) {
+        await _openDetails(e);
+      } else if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Ten trening lub mecz jest już zapisany jako wykonany.')));
+      }
+      return;
+    }
     try {
       await Api.toggleEvent(e.id, !e.done);
-    } catch (_) {
-      // Błąd pomijamy - lista zostanie odświeżona poniżej.
+    } catch (error) {
+      if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Nie udało się zmienić statusu: $error')));
     }
     await _events.refetch();
   }
@@ -114,7 +122,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
   /// tylko ocena; notatki i treningi z planu - tytuł, data, godzina, opis.
   Future<void> _edit(EventItem e) async {
     Widget? page;
-    if (e.type == 'club_training') {
+    if (e.type == 'club_training' && e.source == 'club') {
       page = ClubTrainingScreen(event: e);
     } else if (e.source == 'trainings' && e.sourceId.isNotEmpty) {
       final t = await Api.getTraining(e.sourceId);
@@ -123,7 +131,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
       final m = await Api.getMatch(e.sourceId);
       if (m != null) page = LogMatchScreen(editing: m);
     }
-    page ??= AddEventScreen(editing: e);
+    page ??= AddEventScreen(editing: e, initialType: e.type);
     if (!mounted) return;
     await pushModal<bool>(context, page);
     if (mounted) _events.refetch();
@@ -531,7 +539,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    e.title,
+                    e.done && e.type != 'note' && e.title.toLowerCase().startsWith('planowany trening') ? e.title.replaceFirst(RegExp(r'^Planowany ', caseSensitive: false), '') : e.title,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: manrope(
@@ -540,13 +548,13 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       color: c.onSurface,
                     ),
                   ),
-                  if (e.time.isNotEmpty || e.isPending) ...[
+                  if (e.time.isNotEmpty || e.type != 'note') ...[
                     const SizedBox(height: 2),
                     Text(
                       <String>[
                         if (e.time.isNotEmpty) e.time,
-                        if (e.isPending)
-                          'zaplanowany · dotknij, aby zobaczyć szczegóły',
+                        if (e.type != 'note')
+                          (e.done ? 'Wykonany' : first10(e.date).compareTo(todayIso()) < 0 ? 'Nieodnotowany · termin minął' : 'Zaplanowany'),
                       ].join(' · '),
                       style: manrope(size: 12, color: c.muted),
                     ),

@@ -432,7 +432,7 @@ class Api {
       items.add(doc);
       await LocalDb.saveList('trainings', items);
       final linked = _eventForTraining(doc);
-      if (isPlanned) linked['done'] = false;
+      linked['done'] = true;
       if (plannedEventId != null && plannedEventId.isNotEmpty) {
         final events = await LocalDb.list('events');
         final idx = events.indexWhere((e) => e['id'] == plannedEventId);
@@ -834,7 +834,7 @@ class Api {
       items.add(doc);
       await LocalDb.saveList('matches', items);
       final linked = _eventForMatch(doc);
-      if (isPlanned) linked['done'] = false;
+      linked['done'] = true;
       if (plannedEventId != null && plannedEventId.isNotEmpty) {
         final events = await LocalDb.list('events');
         final idx = events.indexWhere((e) => e['id'] == plannedEventId);
@@ -1162,7 +1162,7 @@ class Api {
         parts.join(', '),
         if (notes.isNotEmpty) notes,
       ].where((x) => x.isNotEmpty).join(' - '),
-      'done': _isPastOrToday(_s(t['date'])),
+      'done': true,
       'source': 'trainings',
       'source_id': _s(t['id']),
       'created_at': _nowIso(),
@@ -1186,7 +1186,7 @@ class Api {
       'type': 'match',
       'title': opponent.isEmpty ? 'Mecz' : 'Mecz z $opponent',
       'description': parts.join(', '),
-      'done': _isPastOrToday(_s(m['date'])),
+      'done': true,
       'source': 'matches',
       'source_id': _s(m['id']),
       'created_at': _nowIso(),
@@ -1224,6 +1224,7 @@ class Api {
       'type': type,
       'title': title,
       'description': description,
+      'planned': type != 'note',
       'done': false,
       'created_at': _nowIso(),
     };
@@ -1242,6 +1243,7 @@ class Api {
     required String time,
     required String title,
     required String description,
+    Map<String, dynamic>? details,
   }) {
     return LocalDb.synchronized<EventItem>(() async {
       final items = await LocalDb.list('events');
@@ -1252,6 +1254,7 @@ class Api {
       e['time'] = time;
       e['title'] = title;
       e['description'] = description;
+      if (details != null) e.addAll(details);
       await LocalDb.saveList('events', items);
       return EventItem.fromJson(e);
     });
@@ -1287,6 +1290,16 @@ class Api {
       final items = await LocalDb.list('events');
       final idx = items.indexWhere((e) => e['id'] == id);
       if (idx < 0) throw ApiException(404, 'Not Found', 'Event not found');
+      // Oznaczenie wykonania bez dziennika fałszowałoby statystyki.
+      final event = items[idx];
+      final linked = _s(event['source_id']).isNotEmpty &&
+          (_s(event['source']) == 'trainings' || _s(event['source']) == 'matches');
+      if (_s(event['type']) != 'note' && !linked) {
+        throw StateError('Najpierw zapisz wykonany trening lub mecz w dzienniku.');
+      }
+      if (linked && !done) {
+        throw StateError('Wykonanego wpisu nie można cofnąć bez usunięcia go z dziennika.');
+      }
       items[idx]['done'] = done;
       await LocalDb.saveList('events', items);
       return EventItem.fromJson(items[idx]);

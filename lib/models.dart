@@ -151,6 +151,7 @@ class EventItem {
     this.steps = const <String>[],
     this.tip = '',
     this.plannedSource = '',
+    this.details = const <String, dynamic>{},
   });
 
   final String id;
@@ -176,6 +177,7 @@ class EventItem {
 
   /// Oryginalne źródło przed wykonaniem (np. 'plan', 'club').
   final String plannedSource;
+  final Map<String, dynamic> details;
 
   bool get isTrainingType => type == 'training' || type == 'club_training';
 
@@ -200,6 +202,7 @@ class EventItem {
         steps: _asStringList(j['steps']),
         tip: _asString(j['tip']),
         plannedSource: _asString(j['planned_source']),
+        details: Map<String, dynamic>.from(j),
       );
 }
 
