@@ -424,6 +424,9 @@ class Api {
         title: kind == 'club_training' ? 'Trening klubowy: ${focuses.join(', ')}' : 'Trening: ${focuses.join(', ')}',
         details: <String, dynamic>{'focus': focuses.join(', '), 'focuses': focuses, 'duration_min': durationMin, 'intensity': intensity, 'rating': rating, 'went_well': wentWell, 'to_improve': toImprove, 'notes': notes},
         description: planDetails,
+        focus: focuses.join(', '),
+        durationMin: durationMin,
+        intensity: intensity,
       );
       return Training.fromJson(doc);
     }
@@ -432,7 +435,7 @@ class Api {
       items.add(doc);
       await LocalDb.saveList('trainings', items);
       final linked = _eventForTraining(doc);
-      if (isPlanned) linked['done'] = false;
+      linked['done'] = true;
       if (plannedEventId != null && plannedEventId.isNotEmpty) {
         final events = await LocalDb.list('events');
         final idx = events.indexWhere((e) => e['id'] == plannedEventId);
@@ -826,6 +829,7 @@ class Api {
         title: opponent.trim().isEmpty ? 'Mecz' : 'Mecz z $opponent',
         details: <String, dynamic>{'opponent': opponent, 'result': result, 'minutes_played': minutesPlayed, 'goals': goals, 'assists': assists, 'rating': rating, 'went_well': wentWell, 'to_improve': toImprove, 'notes': notes},
         description: planDetails,
+        durationMin: minutesPlayed,
       );
       return MatchEntry.fromJson(doc);
     }
@@ -1162,7 +1166,7 @@ class Api {
         parts.join(', '),
         if (notes.isNotEmpty) notes,
       ].where((x) => x.isNotEmpty).join(' - '),
-      'done': _isPastOrToday(_s(t['date'])),
+      'done': true,
       'source': 'trainings',
       'source_id': _s(t['id']),
       'created_at': _nowIso(),
@@ -1186,7 +1190,7 @@ class Api {
       'type': 'match',
       'title': opponent.isEmpty ? 'Mecz' : 'Mecz z $opponent',
       'description': parts.join(', '),
-      'done': _isPastOrToday(_s(m['date'])),
+      'done': true,
       'source': 'matches',
       'source_id': _s(m['id']),
       'created_at': _nowIso(),
@@ -1224,6 +1228,10 @@ class Api {
       'type': type,
       'title': title,
       'description': description,
+      'focus': focus,
+      'duration_min': durationMin,
+      'intensity': intensity,
+      'planned': type != 'note',
       'done': false,
       'created_at': _nowIso(),
     };
@@ -1287,6 +1295,16 @@ class Api {
       final items = await LocalDb.list('events');
       final idx = items.indexWhere((e) => e['id'] == id);
       if (idx < 0) throw ApiException(404, 'Not Found', 'Event not found');
+      // Oznaczenie wykonania bez dziennika fałszowałoby statystyki.
+      final event = items[idx];
+      final linked = _s(event['source_id']).isNotEmpty &&
+          (_s(event['source']) == 'trainings' || _s(event['source']) == 'matches');
+      if (_s(event['type']) != 'note' && !linked) {
+        throw StateError('Najpierw zapisz wykonany trening lub mecz w dzienniku.');
+      }
+      if (linked && !done) {
+        throw StateError('Wykonanego wpisu nie można cofnąć bez usunięcia go z dziennika.');
+      }
       items[idx]['done'] = done;
       await LocalDb.saveList('events', items);
       return EventItem.fromJson(items[idx]);
