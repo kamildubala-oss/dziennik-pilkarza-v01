@@ -181,6 +181,8 @@ class AppTextField extends StatelessWidget {
     this.readOnly = false,
     this.onTap,
     this.suffixIcon,
+    this.errorText,
+    this.onChanged,
   });
 
   final TextEditingController controller;
@@ -191,6 +193,8 @@ class AppTextField extends StatelessWidget {
   final bool readOnly;
   final VoidCallback? onTap;
   final IconData? suffixIcon;
+  final String? errorText;
+  final ValueChanged<String>? onChanged;
 
   OutlineInputBorder _border(Color color) => OutlineInputBorder(
         borderRadius: BorderRadius.circular(Rad.md),
@@ -204,6 +208,7 @@ class AppTextField extends StatelessWidget {
       controller: controller,
       readOnly: readOnly,
       onTap: onTap,
+      onChanged: onChanged,
       keyboardType: multiline ? TextInputType.multiline : keyboardType,
       minLines: multiline ? minLines : 1,
       maxLines: multiline ? null : 1,
@@ -215,6 +220,7 @@ class AppTextField extends StatelessWidget {
         fillColor: c.surfaceSecondary,
         hintText: hint,
         hintStyle: manrope(size: 15, color: c.muted),
+        errorText: errorText,
         suffixIcon: suffixIcon == null
             ? null
             : Icon(suffixIcon, size: 20, color: c.muted),
