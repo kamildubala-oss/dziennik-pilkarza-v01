@@ -154,6 +154,8 @@ class CoachService {
   }
 
   static Future<Profile> updateProfile(Profile p) async {
+    _check(p.age == null || (p.age! >= 8 && p.age! <= 21),
+        'Wiek zawodnika powinien mieścić się w przedziale 8–21 lat.');
     final data = p.toJson();
     data['updated_at'] = _nowIso();
     await LocalDb.setDoc('profile', data);
