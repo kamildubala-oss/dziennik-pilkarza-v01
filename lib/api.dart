@@ -443,35 +443,58 @@ class Api {
       );
       return Training.fromJson(doc);
     }
-    await LocalDb.synchronized<void>(() async {
+    return LocalDb.synchronized<Training>(() async {
+      // Sprawdzenie planu PRZED dopisaniem treningu i wewnątrz blokady.
+      // Dzięki temu nawet dwa równoczesne zapisy nie tworzą duplikatu.
+      List<Map<String, dynamic>>? events;
+      var eventIndex = -1;
+      if (plannedEventId != null && plannedEventId.isNotEmpty) {
+        events = await LocalDb.list('events');
+        eventIndex = events.indexWhere((e) => _s(e['id']) == plannedEventId);
+        if (eventIndex < 0) {
+          throw ApiException(404, 'Not Found',
+              'Nie znaleziono zaplanowanego treningu w kalendarzu.');
+        }
+        final planned = events[eventIndex];
+        final linkedId = _s(planned['source_id']);
+        if (linkedId.isNotEmpty || planned['done'] == true) {
+          if (_s(planned['source']) == 'trainings' && linkedId.isNotEmpty) {
+            final saved = await LocalDb.list('trainings');
+            for (final item in saved) {
+              if (_s(item['id']) == linkedId) {
+                return Training.fromJson(item);
+              }
+            }
+          }
+          throw ApiException(409, 'Conflict',
+              'Ten trening jest już zapisany jako wykonany. Otwórz jego edycję.');
+        }
+        if (_s(planned['type']) != 'training' &&
+            _s(planned['type']) != 'club_training') {
+          throw ApiException(409, 'Conflict',
+              'Wybrane wydarzenie nie jest treningiem.');
+        }
+      }
       final items = await LocalDb.list('trainings');
       items.add(doc);
       await LocalDb.saveList('trainings', items);
       final linked = _eventForTraining(doc);
-      linked['done'] = true;
-      if (plannedEventId != null && plannedEventId.isNotEmpty) {
-        final events = await LocalDb.list('events');
-        final idx = events.indexWhere((e) => e['id'] == plannedEventId);
-        if (idx >= 0) {
-          final planned = events[idx];
-          // Zachowujemy plan (kroki, godzinę, typ), dopisujemy wykonanie.
-          events[idx] = <String, dynamic>{
-            ...planned,
-            'date': linked['date'],
-            'title': linked['title'],
-            'description': linked['description'],
-            'done': true,
-            'source': 'trainings',
-            'source_id': doc['id'],
-            'planned_source': _s(planned['source']),
-          };
-          await LocalDb.saveList('events', events);
-          return;
-        }
+      if (events != null) {
+        final planned = events[eventIndex];
+        events[eventIndex] = <String, dynamic>{
+          ...planned,
+          ..._completedEventFields(linked),
+          'done': true,
+          'source': 'trainings',
+          'source_id': doc['id'],
+          'planned_source': _s(planned['source']),
+        };
+        await LocalDb.saveList('events', events);
+      } else {
+        await _addLinkedEvent(linked);
       }
-      await _addLinkedEvent(linked);
+      return Training.fromJson(doc);
     });
-    return Training.fromJson(doc);
   }
 
   static Future<Training?> getTraining(String id) async {
@@ -490,17 +513,31 @@ class Api {
     return null;
   }
 
-  /// Aktualizuje wydarzenia w kalendarzu powiązane z treningiem/meczem
-  /// (data, tytuł, opis). Wywoływane wewnątrz LocalDb.synchronized.
+  /// Pola wykonania w kalendarzu są projekcją rzeczywistego wpisu
+  /// w dzienniku. Nie kopiujemy ID wydarzenia ani godziny planu.
+  static Map<String, dynamic> _completedEventFields(Map<String, dynamic> linked) {
+    const fields = <String>[
+      'date', 'title', 'description', 'type', 'duration_min',
+      'focus', 'focuses', 'intensity', 'rating',
+      'opponent', 'result', 'minutes_played', 'goals', 'assists',
+      'went_well', 'to_improve', 'notes',
+    ];
+    return <String, dynamic>{
+      for (final key in fields)
+        if (linked.containsKey(key)) key: linked[key],
+    };
+  }
+
+  /// Aktualizuje zarówno opis, jak i dane strukturalne karty kalendarza.
+  /// Wywoływane wewnątrz LocalDb.synchronized.
   static Future<void> _refreshLinkedEvents(
       String sourceId, Map<String, dynamic> linked) async {
     final events = await LocalDb.list('events');
     var changed = false;
     for (final e in events) {
       if (_s(e['source_id']) != sourceId) continue;
-      e['date'] = linked['date'];
-      e['title'] = linked['title'];
-      e['description'] = linked['description'];
+      e.addAll(_completedEventFields(linked));
+      e['done'] = true;
       changed = true;
     }
     if (changed) await LocalDb.saveList('events', events);
@@ -864,34 +901,55 @@ class Api {
       );
       return MatchEntry.fromJson(doc);
     }
-    await LocalDb.synchronized<void>(() async {
+    return LocalDb.synchronized<MatchEntry>(() async {
+      List<Map<String, dynamic>>? events;
+      var eventIndex = -1;
+      if (plannedEventId != null && plannedEventId.isNotEmpty) {
+        events = await LocalDb.list('events');
+        eventIndex = events.indexWhere((e) => _s(e['id']) == plannedEventId);
+        if (eventIndex < 0) {
+          throw ApiException(404, 'Not Found',
+              'Nie znaleziono zaplanowanego meczu w kalendarzu.');
+        }
+        final planned = events[eventIndex];
+        final linkedId = _s(planned['source_id']);
+        if (linkedId.isNotEmpty || planned['done'] == true) {
+          if (_s(planned['source']) == 'matches' && linkedId.isNotEmpty) {
+            final saved = await LocalDb.list('matches');
+            for (final item in saved) {
+              if (_s(item['id']) == linkedId) {
+                return MatchEntry.fromJson(item);
+              }
+            }
+          }
+          throw ApiException(409, 'Conflict',
+              'Ten mecz jest już zapisany jako wykonany. Otwórz jego edycję.');
+        }
+        if (_s(planned['type']) != 'match') {
+          throw ApiException(409, 'Conflict',
+              'Wybrane wydarzenie nie jest meczem.');
+        }
+      }
       final items = await LocalDb.list('matches');
       items.add(doc);
       await LocalDb.saveList('matches', items);
       final linked = _eventForMatch(doc);
-      linked['done'] = true;
-      if (plannedEventId != null && plannedEventId.isNotEmpty) {
-        final events = await LocalDb.list('events');
-        final idx = events.indexWhere((e) => e['id'] == plannedEventId);
-        if (idx >= 0) {
-          final planned = events[idx];
-          events[idx] = <String, dynamic>{
-            ...planned,
-            'date': linked['date'],
-            'title': linked['title'],
-            'description': linked['description'],
-            'done': true,
-            'source': 'matches',
-            'source_id': doc['id'],
-            'planned_source': _s(planned['source']),
-          };
-          await LocalDb.saveList('events', events);
-          return;
-        }
+      if (events != null) {
+        final planned = events[eventIndex];
+        events[eventIndex] = <String, dynamic>{
+          ...planned,
+          ..._completedEventFields(linked),
+          'done': true,
+          'source': 'matches',
+          'source_id': doc['id'],
+          'planned_source': _s(planned['source']),
+        };
+        await LocalDb.saveList('events', events);
+      } else {
+        await _addLinkedEvent(linked);
       }
-      await _addLinkedEvent(linked);
+      return MatchEntry.fromJson(doc);
     });
-    return MatchEntry.fromJson(doc);
   }
 
   static Future<void> deleteMatch(String id) async {
@@ -1197,6 +1255,14 @@ class Api {
         parts.join(', '),
         if (notes.isNotEmpty) notes,
       ].where((x) => x.isNotEmpty).join(' - '),
+      'duration_min': _i(t['duration_min']),
+      'focus': _s(t['focus']),
+      'focuses': _sList(t['focuses']).isNotEmpty ? _sList(t['focuses']) : _s(t['focus']).split(',').map((x) => x.trim()).where((x) => x.isNotEmpty).toList(),
+      'intensity': _s(t['intensity']),
+      'rating': _i(t['rating']),
+      'went_well': _s(t['went_well']),
+      'to_improve': _s(t['to_improve']),
+      'notes': _s(t['notes']),
       'done': true,
       'source': 'trainings',
       'source_id': _s(t['id']),
@@ -1221,6 +1287,16 @@ class Api {
       'type': 'match',
       'title': opponent.isEmpty ? 'Mecz' : 'Mecz z $opponent',
       'description': parts.join(', '),
+      'duration_min': _i(m['minutes_played']),
+      'minutes_played': _i(m['minutes_played']),
+      'opponent': _s(m['opponent']),
+      'result': _s(m['result']),
+      'goals': _i(m['goals']),
+      'assists': _i(m['assists']),
+      'rating': _i(m['rating']),
+      'went_well': _s(m['went_well']),
+      'to_improve': _s(m['to_improve']),
+      'notes': _s(m['notes']),
       'done': true,
       'source': 'matches',
       'source_id': _s(m['id']),
