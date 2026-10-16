@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../api.dart';
 import '../models.dart';
+import '../services/planned_training_defaults.dart';
 import '../theme.dart';
 import '../utils.dart';
 import '../widgets/common.dart';
@@ -35,12 +36,17 @@ class LogSessionScreen extends StatefulWidget {
     this.plannedEventId,
     this.editing,
     this.editingEvent,
+    this.completingEvent,
     this.isPlanned = false,
   });
 
   /// Edytowany trening (tryb edycji). Gdy null - nowy wpis.
   final Training? editing;
   final EventItem? editingEvent;
+
+  /// Wydarzenie z kalendarza, którego wykonanie właśnie zapisujemy.
+  /// Nie jest to edycja planu: zapis tworzy wpis w Dzienniku i łączy go z planem.
+  final EventItem? completingEvent;
 
   /// 'training' (zwykły) lub 'club_training' (klubowy).
   final String kind;
@@ -71,28 +77,33 @@ class LogSessionScreen extends StatefulWidget {
 
 class _LogSessionScreenState extends State<LogSessionScreen> {
   late final Training? _e = widget.editing;
+  late final PlannedTrainingDefaults? _planned = widget.completingEvent == null
+      ? null
+      : PlannedTrainingDefaults.fromEvent(widget.completingEvent!);
   late final TextEditingController _date = TextEditingController(
-    text: _e != null ? first10(_e.date) : (widget.editingEvent?.date ?? widget.initialDate ?? todayIso()),
+    text: _e != null
+        ? first10(_e.date)
+        : (_planned?.date ?? widget.editingEvent?.date ?? widget.initialDate ?? todayIso()),
   );
   late final TextEditingController _duration = TextEditingController(
     text:
-        '${_e?.durationMin ?? widget.editingEvent?.durationMin ?? widget.initialDuration ?? (widget.kind == 'club_training' ? 90 : 45)}',
+        '${_e?.durationMin ?? _planned?.durationMin ?? widget.editingEvent?.durationMin ?? widget.initialDuration ?? (widget.kind == 'club_training' ? 90 : 45)}',
   );
   late final TextEditingController _wentWell =
-      TextEditingController(text: _e?.wentWell ?? (widget.editingEvent?.details['went_well'] as String?) ?? '');
+      TextEditingController(text: _e?.wentWell ?? _planned?.wentWell ?? (widget.editingEvent?.details['went_well'] as String?) ?? '');
   late final TextEditingController _toImprove =
-      TextEditingController(text: _e?.toImprove ?? (widget.editingEvent?.details['to_improve'] as String?) ?? '');
+      TextEditingController(text: _e?.toImprove ?? _planned?.toImprove ?? (widget.editingEvent?.details['to_improve'] as String?) ?? '');
   late final TextEditingController _notes =
-      TextEditingController(text: _e?.notes ?? (widget.editingEvent?.details['notes'] as String?) ?? '');
+      TextEditingController(text: _e?.notes ?? _planned?.notes ?? (widget.editingEvent?.details['notes'] as String?) ?? '');
 
   late final Set<String> _focus = <String>{
-    ...?(_e?.focuses ?? widget.initialFocuses ?? (widget.editingEvent?.focus.split(', ').where(_focusOptions.contains).toList()))?.where(_focusOptions.contains),
+    ...?(_e?.focuses ?? (_planned != null && _planned!.focuses.isNotEmpty ? _planned!.focuses : null) ?? widget.initialFocuses ?? widget.editingEvent?.focus.split(', ').where(_focusOptions.contains).toList())?.where(_focusOptions.contains),
   };
   late String _intensity =
-      _intensities.contains(_e?.intensity ?? widget.initialIntensity ?? widget.editingEvent?.intensity)
-          ? (_e?.intensity ?? widget.initialIntensity ?? widget.editingEvent?.intensity)!
+      _intensities.contains(_e?.intensity ?? _planned?.intensity ?? widget.initialIntensity ?? widget.editingEvent?.intensity)
+          ? (_e?.intensity ?? _planned?.intensity ?? widget.initialIntensity ?? widget.editingEvent?.intensity)!
           : 'medium';
-  late int _rating = _e != null && _e.rating >= 1 ? _e.rating : (widget.editingEvent?.details['rating'] as int?) ?? 3;
+  late int _rating = _e != null && _e.rating >= 1 ? _e.rating : _planned?.rating ?? (widget.editingEvent?.details['rating'] as int?) ?? 3;
   bool _saving = false;
 
   @override
@@ -144,7 +155,7 @@ class _LogSessionScreenState extends State<LogSessionScreen> {
         // Kolejność jak na liście wyboru.
         focuses: _focusOptions.where(_focus.contains).toList(),
         kind: widget.kind,
-        plannedEventId: widget.plannedEventId,
+        plannedEventId: widget.completingEvent?.id ?? widget.plannedEventId,
         isPlanned: widget.isPlanned,
         intensity: _intensity,
         rating: _rating,
@@ -264,7 +275,9 @@ class _LogSessionScreenState extends State<LogSessionScreen> {
                             ? 'Wybierz obszar'
                             : _e != null
                                 ? 'Zapisz zmiany'
-                                : 'Zapisz trening',
+                                : widget.completingEvent != null
+                                    ? 'Trening wykonany'
+                                    : 'Zapisz trening',
                     onTap: _saving || _focus.isEmpty ? null : _save,
                   ),
                 ],

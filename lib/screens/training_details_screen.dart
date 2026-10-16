@@ -185,6 +185,7 @@ class _TrainingDetailsScreenState extends State<TrainingDetailsScreen> {
           ? LogMatchScreen(editing: editing)
           : LogMatchScreen(
               initialDate: widget.date,
+              completingEvent: ev,
               plannedEventId: widget.plannedEventId,
             );
     } else {
@@ -198,6 +199,7 @@ class _TrainingDetailsScreenState extends State<TrainingDetailsScreen> {
           ? LogSessionScreen(editing: editing)
           : LogSessionScreen(
               initialDate: widget.date,
+              completingEvent: ev,
               kind: widget.type == 'club_training' ? 'club_training' : 'training',
               initialFocuses: <String>[
                 if (_trainingFocuses.contains(widget.focus)) widget.focus,
