@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../api.dart';
 import '../models.dart';
+import '../services/user_errors.dart';
 import '../theme.dart';
 import '../utils.dart';
 import '../widgets/common.dart';
@@ -81,7 +82,7 @@ class _ClubTrainingScreenState extends State<ClubTrainingScreen> {
       if (mounted) Navigator.of(context).pop(true);
     } catch (error) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Nie udało się zapisać: $error")));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(friendlyError(error))));
         setState(() => _saving = false);
       }
     }

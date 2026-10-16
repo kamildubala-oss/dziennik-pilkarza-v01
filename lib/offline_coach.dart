@@ -38,7 +38,7 @@ class OfflineCoach {
     final matches = list.where((e) {
       if (target == null) return true;
       final combined = '${e['title']} ${e['area']} ${e['subarea']} ${e['goal']}'.toLowerCase();
-      return combined.contains(target!);
+      return combined.contains(target);
     }).toList();
     final choices = matches.isEmpty ? list : matches;
     final exercise = choices[DateTime.now().day % choices.length];

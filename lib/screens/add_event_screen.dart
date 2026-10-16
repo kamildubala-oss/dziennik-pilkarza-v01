@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../api.dart';
 import '../models.dart';
+import '../services/user_errors.dart';
 import '../theme.dart';
 import '../utils.dart';
 import '../widgets/common.dart';
@@ -101,7 +102,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
       Navigator.of(context).pop(true);
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Nie udało się zapisać: $e")));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(friendlyError(e))));
         setState(() => _saving = false);
       }
     }

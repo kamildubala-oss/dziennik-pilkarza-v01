@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../api.dart';
 import '../models.dart';
+import '../services/user_errors.dart';
 import '../services/planned_training_defaults.dart';
 import '../theme.dart';
 import '../utils.dart';
@@ -96,13 +97,25 @@ class _LogSessionScreenState extends State<LogSessionScreen> {
   late final TextEditingController _notes =
       TextEditingController(text: _e?.notes ?? _planned?.notes ?? (widget.editingEvent?.details['notes'] as String?) ?? '');
 
-  late final Set<String> _focus = <String>{
-    ...?(_e?.focuses ?? (_planned != null && _planned!.focuses.isNotEmpty ? _planned!.focuses : null) ?? widget.initialFocuses ?? widget.editingEvent?.focus.split(', ').where(_focusOptions.contains).toList())?.where(_focusOptions.contains),
-  };
-  late String _intensity =
-      _intensities.contains(_e?.intensity ?? _planned?.intensity ?? widget.initialIntensity ?? widget.editingEvent?.intensity)
-          ? (_e?.intensity ?? _planned?.intensity ?? widget.initialIntensity ?? widget.editingEvent?.intensity)!
-          : 'medium';
+  List<String> _initialFocuses() {
+    if (_e != null) return _e.focuses;
+    final planned = _planned;
+    if (planned != null && planned.focuses.isNotEmpty) {
+      return planned.focuses;
+    }
+    return widget.initialFocuses ??
+        widget.editingEvent?.focus.split(', ').where(_focusOptions.contains).toList() ??
+        <String>[];
+  }
+
+  late final Set<String> _focus =
+      _initialFocuses().where(_focusOptions.contains).toSet();
+
+  late String _intensity = () {
+    final value = _e?.intensity ?? _planned?.intensity ??
+        widget.initialIntensity ?? widget.editingEvent?.intensity;
+    return _intensities.contains(value) ? (value ?? 'medium') : 'medium';
+  }();
   late int _rating = _e != null && _e.rating >= 1 ? _e.rating : _planned?.rating ?? (widget.editingEvent?.details['rating'] as int?) ?? 3;
   bool _saving = false;
 
@@ -117,18 +130,19 @@ class _LogSessionScreenState extends State<LogSessionScreen> {
   }
 
   Future<void> _save() async {
-    if (_saving || _focus.isEmpty) return;
+    if (_saving || _focus.isEmpty ||
+        numberFieldError(_duration.text, 'Czas (min)', 0, 600) != null) return;
+    final minutes = int.parse(_duration.text.trim());
     setState(() => _saving = true);
     try {
       if (widget.editingEvent != null) {
         final event = widget.editingEvent!;
         final focusList = _focusOptions.where(_focus.contains).toList();
-        await Api.updateEvent(event.id,
+        await Api.updatePlannedActivity(event.id,
           date: _date.text,
-          time: event.time,
           title: '${widget.kind == 'club_training' ? 'Trening klubowy' : 'Trening'}: ${focusList.join(', ')}',
           description: 'Czas: ${_duration.text} min · Obszary: ${focusList.join(', ')}',
-          details: <String, dynamic>{'focus': focusList.join(', '), 'focuses': focusList, 'duration_min': int.tryParse(_duration.text) ?? 0, 'intensity': _intensity, 'rating': _rating, 'went_well': _wentWell.text, 'to_improve': _toImprove.text, 'notes': _notes.text},
+          details: <String, dynamic>{'focus': focusList.join(', '), 'focuses': focusList, 'duration_min': minutes, 'intensity': _intensity, 'rating': _rating, 'went_well': _wentWell.text, 'to_improve': _toImprove.text, 'notes': _notes.text},
         );
         if (mounted) Navigator.of(context).pop(true);
         return;
@@ -138,7 +152,7 @@ class _LogSessionScreenState extends State<LogSessionScreen> {
         await Api.updateTraining(
           e.id,
           date: _date.text,
-          durationMin: int.tryParse(_duration.text.trim()) ?? 0,
+          durationMin: minutes,
           focuses: _focusOptions.where(_focus.contains).toList(),
           intensity: _intensity,
           rating: _rating,
@@ -151,7 +165,7 @@ class _LogSessionScreenState extends State<LogSessionScreen> {
       }
       await Api.createTraining(
         date: _date.text,
-        durationMin: int.tryParse(_duration.text.trim()) ?? 0,
+        durationMin: minutes,
         // Kolejność jak na liście wyboru.
         focuses: _focusOptions.where(_focus.contains).toList(),
         kind: widget.kind,
@@ -167,7 +181,7 @@ class _LogSessionScreenState extends State<LogSessionScreen> {
       Navigator.of(context).pop(true);
     } catch (error) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Nie udało się zapisać: $error")));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(friendlyError(error))));
         setState(() => _saving = false);
       }
     }
@@ -205,6 +219,9 @@ class _LogSessionScreenState extends State<LogSessionScreen> {
                     child: AppTextField(
                       controller: _duration,
                       keyboardType: TextInputType.number,
+                      errorText: numberFieldError(
+                          _duration.text, 'Czas (min)', 0, 600),
+                      onChanged: (_) => setState(() {}),
                     ),
                   ),
                   LabeledField(
@@ -278,7 +295,9 @@ class _LogSessionScreenState extends State<LogSessionScreen> {
                                 : widget.completingEvent != null
                                     ? 'Trening wykonany'
                                     : 'Zapisz trening',
-                    onTap: _saving || _focus.isEmpty ? null : _save,
+                    onTap: _saving || _focus.isEmpty ||
+                            numberFieldError(_duration.text, 'Czas (min)', 0, 600) != null
+                        ? null : _save,
                   ),
                 ],
               ),
