@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../api.dart';
 import '../coach_content.dart';
-import '../config.dart';
 import '../models.dart';
 import '../resource.dart';
 import '../theme.dart';
