@@ -170,15 +170,15 @@ void main() {
         date: todayIso(), opponent: 'Rywal', result: '0:0', minutesPlayed: 60,
         goals: 0, assists: 0, rating: 3, wentWell: '', toImprove: '', notes: '',
       );
-      await expectLater(
-        Api.updateMatch(match.id,
+      expect(
+        () => Api.updateMatch(match.id,
           date: todayIso(), opponent: 'Rywal', result: '', minutesPlayed: 181,
           goals: 0, assists: 0, rating: 3, wentWell: '', toImprove: '', notes: '',
         ),
         throwsA(isA<ApiException>()),
       );
-      await expectLater(
-        Api.updateMatch(match.id,
+      expect(
+        () => Api.updateMatch(match.id,
           date: todayIso(), opponent: 'Rywal', result: '', minutesPlayed: 60,
           goals: 99, assists: 0, rating: 3, wentWell: '', toImprove: '', notes: '',
         ),
