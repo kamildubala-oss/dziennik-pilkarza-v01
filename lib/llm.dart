@@ -75,12 +75,11 @@ class Llm {
     final models = fast
         ? <String>[AppConfig.llmFastModel, AppConfig.llmModel]
         : <String>[AppConfig.llmModel, AppConfig.llmFastModel];
-    Object? lastError;
     for (final model in models) {
       try {
         return await _completeWith(model, system, messages, json);
-      } catch (e) {
-        lastError = e;
+      } catch (_) {
+        // Spróbuj alternatywnego modelu.
       }
     }
     throw LlmException('Nie udało się uzyskać odpowiedzi trenera AI. Sprawdź połączenie i spróbuj ponownie.');
