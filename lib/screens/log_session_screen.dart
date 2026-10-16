@@ -275,7 +275,9 @@ class _LogSessionScreenState extends State<LogSessionScreen> {
                             ? 'Wybierz obszar'
                             : _e != null
                                 ? 'Zapisz zmiany'
-                                : 'Zapisz trening',
+                                : widget.completingEvent != null
+                                    ? 'Trening wykonany'
+                                    : 'Zapisz trening',
                     onTap: _saving || _focus.isEmpty ? null : _save,
                   ),
                 ],
