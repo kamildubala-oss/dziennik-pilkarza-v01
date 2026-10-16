@@ -179,8 +179,14 @@ class _AddEventScreenState extends State<AddEventScreen> {
                   const FieldLabel('Tytuł'),
                   AppTextField(
                     controller: _title,
-                    hint: 'np. Trening klubowy, Mecz z Wisłą...',
+                    hint: _type == 'note' ? 'Wpisz tytuł notatki' : 'Wpisz tytuł wydarzenia',
                   ),
+                  if (_type == 'note' && _title.text.trim().isEmpty)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 6),
+                      child: Text('Wpisz tytuł, aby zapisać notatkę.',
+                          style: manrope(size: 12, color: c.muted)),
+                    ),
                   const SizedBox(height: Sp.lg),
                   const FieldLabel('Opis / uwagi'),
                   AppTextField(

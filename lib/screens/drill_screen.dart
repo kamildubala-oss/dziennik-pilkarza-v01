@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../models.dart';
 import '../theme.dart';
+import '../utils.dart';
 import '../widgets/common.dart';
 import 'log_session_screen.dart';
 
@@ -52,7 +53,7 @@ class DrillScreen extends StatelessWidget {
                         Icons.timer_outlined,
                         '${drill.durationMin} min',
                       ),
-                      _pill(c, Icons.local_fire_department, drill.intensity),
+                      _pill(c, Icons.local_fire_department, intensityLabel(drill.intensity)),
                       _pill(c, Icons.gps_fixed, drill.focus),
                     ],
                   ),

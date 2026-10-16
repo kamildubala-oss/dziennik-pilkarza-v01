@@ -622,7 +622,7 @@ class _CoachScreenState extends State<CoachScreen> {
             ),
             const SizedBox(height: 2),
             Text(
-              '${d.durationMin} min · ${d.intensity}',
+              '${d.durationMin} min · ${intensityLabel(d.intensity)}',
               style: manrope(size: 12, color: c.muted),
             ),
             const SizedBox(height: Sp.md),

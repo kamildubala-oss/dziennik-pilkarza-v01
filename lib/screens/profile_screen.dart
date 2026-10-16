@@ -97,7 +97,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Future<void> _save() async {
-    if (_saving) return;
+    if (_saving || ageFieldError(_age.text) != null) return;
     final pref = context.read<ThemeController>().preference;
     setState(() => _saving = true);
     try {
@@ -105,7 +105,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         Profile(
           name: _name.text.trim(),
           age: _age.text.trim().isNotEmpty
-              ? int.tryParse(_age.text.trim())
+              ? int.parse(_age.text.trim())
               : null,
           position: _position,
           dominantFoot: _foot,
@@ -231,6 +231,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               controller: _age,
                               keyboardType: TextInputType.number,
                               hint: '14',
+                              errorText: ageFieldError(_age.text),
+                              onChanged: (_) => setState(() {}),
                             ),
                           ),
                         ),

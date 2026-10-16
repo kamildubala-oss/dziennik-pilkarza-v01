@@ -1,6 +1,7 @@
 import '../local_db.dart';
 import '../models.dart';
 import '../utils.dart';
+import 'achievement_service.dart';
 
 /// Oblicza serię kolejnych dni z wykonanym treningiem lub meczem.
 /// Seria kończy się w ostatnim dniu, w którym zapisano aktywność,
@@ -93,8 +94,15 @@ class ProgressCalculator {
     final streak = StreakService.calculate(dates);
     final now = DateTime.now();
     String dayAgo(int i) => dateIso(DateTime(now.year, now.month, now.day - i));
+    final history = await LocalDb.exportAll();
+    final completedPlanWeek = AchievementService.hasCompletedPlanWeek(
+      history, trainings, matches,
+    );
     final weekSessions = <int>[for (var i = 6; i >= 0; i--) trainings.where((t) => day(t) == dayAgo(i)).length + matches.where((m) => day(m) == dayAgo(i)).length];
     return Progress.fromJson(<String, dynamic>{
+      'best_match_goals': AchievementService.maxGoals(matches),
+      'has_top_rating': AchievementService.hasFiveStarRating(trainings, matches),
+      'completed_plan_week': completedPlanWeek,
       'total_trainings': trainings.length,
       'total_matches': matches.length,
       'total_minutes': totalMinutes,
