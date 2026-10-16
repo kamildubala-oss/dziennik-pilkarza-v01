@@ -13,7 +13,7 @@ class LocalDb {
   // Osobna przestrzeń: wewnętrzne kopie nie trafiają do eksportu użytkownika.
   static const String _recoveryPrefix = 'mp.recovery.';
   static const Set<String> _collections = <String>{
-    'trainings', 'matches', 'events', 'plans',
+    'trainings', 'matches', 'events', 'plans', 'chat_messages',
   };
 
   static String _slot(String collection, int number) =>
@@ -227,7 +227,7 @@ class LocalDb {
           if (!_collections.contains(name)) continue;
           final record = Map<String, dynamic>.from(raw);
           final label = '$name, wpis ${index + 1}';
-          if (name == 'plans') {
+          if (name == 'plans' || name == 'chat_messages') {
             if (record.containsKey('date')) _checkDate(record['date'], label);
             continue;
           }
