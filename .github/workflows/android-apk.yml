@@ -51,6 +51,18 @@ jobs:
       - name: Run tests
         run: flutter test
 
+      - name: Analyze Dart (no new warnings versus audit baseline)
+        run: |
+          flutter analyze --no-fatal-warnings --no-fatal-infos | tee /tmp/flutter-analyze.log
+          python3 - <<'PY'
+          import pathlib, re
+          output = pathlib.Path('/tmp/flutter-analyze.log').read_text()
+          warnings = re.findall(r'^\s*warning\s+[•-]', output, re.MULTILINE)
+          print(f'Analyzer warnings: {len(warnings)} (audit baseline: 9)')
+          if len(warnings) > 9:
+              raise SystemExit('New analyzer warnings detected')
+          PY
+
       - name: Generate launcher icons from selected artwork
         run: |
           python3 -m venv .icon-venv
