@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../api.dart';
 import '../models.dart';
+import '../services/user_errors.dart';
 import '../resource.dart';
 import '../theme.dart';
 import '../utils.dart';
@@ -10,7 +11,6 @@ import 'add_event_screen.dart';
 import 'club_training_screen.dart';
 import 'log_match_screen.dart';
 import 'log_session_screen.dart';
-import 'training_details_screen.dart';
 
 /// Zakładka "Kalendarz".
 class CalendarScreen extends StatefulWidget {
@@ -70,7 +70,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
       } catch (error) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Nie udało się zmienić statusu: $error')),
+            SnackBar(content: Text('Nie udało się zmienić statusu: ${friendlyError(error)}')),
           );
         }
       }
@@ -137,7 +137,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
     } catch (error) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Nie udało się usunąć: $error')),
+          SnackBar(content: Text('Nie udało się usunąć: ${friendlyError(error)}')),
         );
       }
     }
@@ -160,11 +160,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
     // Jedynym wyjątkiem jest trening klubowy generowany z profilu.
     if (!mounted) return;
     await pushModal<bool>(context, page);
-    if (mounted) _events.refetch();
-  }
-
-  Future<void> _openDetails(EventItem e) async {
-    await pushModal<bool>(context, TrainingDetailsScreen.forEvent(e));
     if (mounted) _events.refetch();
   }
 
