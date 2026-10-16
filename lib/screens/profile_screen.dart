@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../api.dart';
+import '../services/user_errors.dart';
 import '../models.dart';
 import '../theme.dart';
 import '../llm_settings.dart';
@@ -127,7 +128,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       Navigator.of(context).pop(true);
     } catch (error) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Nie udało się zapisać: $error")));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(friendlyError(error))));
         setState(() => _saving = false);
       }
     }
