@@ -209,7 +209,9 @@ class _TrainingDetailsScreenState extends State<TrainingDetailsScreen> {
               plannedEventId: widget.plannedEventId,
             );
     }
+    if (!mounted) return; // Po asynchronicznym odczycie treningu/meczu.
     final saved = await pushModal<bool>(context, page);
+    if (!mounted) return; // Modal mógł zostać zamknięty podczas await.
     if (saved == true) {
       // Po udanym zapisie oznacz powiązane wydarzenie jako wykonane,
       // żeby kalendarz i plan tygodnia pozostały zgodne.
@@ -221,7 +223,8 @@ class _TrainingDetailsScreenState extends State<TrainingDetailsScreen> {
           // Błąd zapisu - nie blokuje zamknięcia ekranu.
         }
       }
-      if (mounted) Navigator.of(context).pop(true);
+      if (!mounted) return;
+      Navigator.of(context).pop(true);
     }
   }
 
