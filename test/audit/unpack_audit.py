@@ -41,4 +41,32 @@ with tarfile.open(fileobj=BytesIO(data), mode="r:gz") as archive:
         if stream is None:
             raise SystemExit("Nie można odczytać źródła testu.")
         (OUT / member.name).write_bytes(stream.read())
+# Test B3 zakładał, że pierwsze z ośmiu przyszłych wydarzeń klubowych
+# można zapisać jako WYKONANE. Sprint 1 słusznie blokuje datę przyszłą.
+# Użyj wydarzenia klubowego z bieżącą datą, jeśli żadne nie jest jeszcze
+# zaległe. W ten sposób test nadal bada utworzenie wpisu + jego edycję.
+test = OUT / "audit_test.dart"
+source = test.read_text(encoding="utf-8")
+old = "final ev = (await Api.listEvents()).firstWhere((e) => e.type == 'club_training');"
+new = """final clubEvents = (await Api.listEvents())
+          .where((e) => e.type == 'club_training' && first10(e.date).compareTo(todayIso()) <= 0)
+          .toList();
+      final ev = clubEvents.isNotEmpty ? clubEvents.first : await Api.createEvent(
+        date: todayIso(), type: 'club_training', title: 'Trening klubowy',
+        description: 'Trening klubowy', details: <String, dynamic>{
+          'duration_min': 90, 'intensity': 'medium',
+        },
+      );"""
+if source.count(old) != 1:
+    raise SystemExit("Nie znaleziono jednoznacznie scenariusza B3.")
+test.write_text(source.replace(old, new), encoding="utf-8")
+
+# P3-1 zmienia nazwę radaru; smoke test ma sprawdzać nową etykietę.
+smoke = OUT / "smoke_screens_test.dart"
+source = smoke.read_text(encoding="utf-8")
+old = "MAPA UMIEJĘTNOŚCI"
+if source.count(old) != 1:
+    raise SystemExit("Nie znaleziono etykiety radaru do aktualizacji.")
+smoke.write_text(source.replace(old, "AKTYWNOŚĆ W OBSZARACH"), encoding="utf-8")
+
 print(f"Przygotowano {len(ALLOWED)} pliki źródłowe i 55 testów audytowych.")
