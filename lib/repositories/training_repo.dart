@@ -104,7 +104,7 @@ class TrainingRepo {
         final planned = events[eventIndex];
         events[eventIndex] = <String, dynamic>{
           ...planned,
-          ..._completedEventFields(linked),
+          ...Api._completedEventFields(linked),
           'done': true,
           'source': 'trainings',
           'source_id': doc['id'],
@@ -376,7 +376,7 @@ class TrainingRepo {
         final planned = events[eventIndex];
         events[eventIndex] = <String, dynamic>{
           ...planned,
-          ..._completedEventFields(linked),
+          ...Api._completedEventFields(linked),
           'done': true,
           'source': 'matches',
           'source_id': doc['id'],
