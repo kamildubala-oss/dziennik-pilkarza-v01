@@ -184,8 +184,10 @@ class LocalDb {
     if (!RegExp(r'^\d{4}-\d{2}-\d{2}$').hasMatch(day)) {
       throw FormatException('Nieprawidłowa data w $label.');
     }
-    final date = DateTime.tryParse(value);
-    if (date == null || dateIsoDate(date) != day) {
+    final date = DateTime.tryParse(day);
+    // Zmiana strefy czasowej nie może unieważniać poprawnej daty z pliku.
+    if (date == null || dateIsoDate(date) != day ||
+        (value.length > 10 && DateTime.tryParse(value) == null)) {
       throw FormatException('Nieprawidłowa data w $label.');
     }
     return day;
