@@ -355,6 +355,24 @@ class _DiaryScreenState extends State<DiaryScreen> {
               ),
             ),
 
+            // ---------- Awaria odczytu lokalnych danych ----------
+            if (_trainings.error != null || _matches.error != null ||
+                _events.error != null)
+              Padding(
+                padding: const EdgeInsets.only(bottom: Sp.lg),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Text('Nie można odczytać części dziennika. Dane nie zostały usunięte.',
+                        style: manrope(size: 13, color: c.error)),
+                    TextButton(
+                      onPressed: () => _reloadAll(),
+                      child: const Text('Spróbuj ponownie'),
+                    ),
+                  ],
+                ),
+              ),
+
             // ---------- Ostatnie wpisy ----------
             Padding(
               padding: const EdgeInsets.only(bottom: Sp.sm),
@@ -374,6 +392,9 @@ class _DiaryScreenState extends State<DiaryScreen> {
                 padding: EdgeInsets.only(top: 24),
                 child: Center(child: Spinner()),
               )
+            else if (_trainings.error != null || _matches.error != null)
+              Text('Odczyt wpisów nie powiódł się — przywróć kopię, jeśli błąd się powtarza.',
+                  style: manrope(size: 13, color: c.error))
             else if (sessions.isEmpty)
               _empty(c)
             else

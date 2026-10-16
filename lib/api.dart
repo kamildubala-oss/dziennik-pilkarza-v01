@@ -27,6 +27,20 @@ void _check(bool ok, String message) {
   if (!ok) throw ApiException(422, 'Unprocessable Entity', message);
 }
 
+
+/// Data wykonania nie może być przyszła; planowanie może dotyczyć dowolnego dnia.
+void _validateActivityDate(String date, {required bool isPlanned}) {
+  final match = RegExp(r'^\d{4}-\d{2}-\d{2}$').hasMatch(date);
+  final parsed = DateTime.tryParse(date);
+  _check(match && parsed != null && dateIso(parsed) == date,
+      'Podaj prawidłową datę (RRRR-MM-DD).');
+  if (!isPlanned) {
+    _check(date.compareTo(todayIso()) <= 0,
+        'Nie można zapisać wykonanego treningu ani meczu z datą przyszłą. '
+        'Użyj opcji planowania.');
+  }
+}
+
 int _i(dynamic v) => v is num ? v.toInt() : 0;
 
 String _s(dynamic v) => v == null ? '' : v.toString();
@@ -388,6 +402,7 @@ class Api {
     /// oznaczane jako wykonane.
     bool isPlanned = false,
   }) async {
+    _validateActivityDate(date, isPlanned: isPlanned);
     _check(
       durationMin >= 0 && durationMin <= 600,
       'duration_min must be between 0 and 600',
@@ -503,6 +518,11 @@ class Api {
     required String toImprove,
     required String notes,
   }) {
+    if (date != null) _validateActivityDate(date, isPlanned: false);
+    if (durationMin != null) {
+      _check(durationMin >= 0 && durationMin <= 600,
+          'Czas treningu musi wynosić od 0 do 600 minut.');
+    }
     _check(rating >= 1 && rating <= 5, 'rating must be between 1 and 5');
     return LocalDb.synchronized<Training>(() async {
       final items = await LocalDb.list('trainings');
@@ -541,6 +561,12 @@ class Api {
     required String toImprove,
     required String notes,
   }) {
+    _validateActivityDate(date, isPlanned: false);
+    _check(minutesPlayed >= 0 && minutesPlayed <= 180,
+        'Czas meczu musi wynosić od 0 do 180 minut.');
+    _check(goals >= 0 && goals <= 20, 'Liczba goli musi wynosić od 0 do 20.');
+    _check(assists >= 0 && assists <= 20,
+        'Liczba asyst musi wynosić od 0 do 20.');
     _check(rating >= 1 && rating <= 5, 'rating must be between 1 and 5');
     return LocalDb.synchronized<MatchEntry>(() async {
       final items = await LocalDb.list('matches');
@@ -661,7 +687,14 @@ class Api {
       throw ApiException(
           400, 'Bad Request', 'To nie jest kopia z Dziennika Piłkarza.');
     }
-    return Map<String, dynamic>.from(decoded['data'] as Map);
+    final data = Map<String, dynamic>.from(decoded['data'] as Map);
+    try {
+      LocalDb.validateImport(data);
+    } on FormatException catch (error) {
+      throw ApiException(400, 'Bad Request',
+          'Kopia zawiera nieprawidłowe dane: ${error.message}');
+    }
+    return data;
   }
 
   /// Pole CSV (średnik jako separator - Excel w polskiej wersji).
@@ -788,6 +821,7 @@ class Api {
     /// oznaczane jako wykonane.
     bool isPlanned = false,
   }) async {
+    _validateActivityDate(date, isPlanned: isPlanned);
     _check(
       minutesPlayed >= 0 && minutesPlayed <= 180,
       'minutes_played must be between 0 and 180',
@@ -1217,6 +1251,7 @@ class Api {
     required String description,
     Map<String, dynamic> details = const <String, dynamic>{},
   }) async {
+    _validateActivityDate(date, isPlanned: true);
     final doc = <String, dynamic>{
       ...details,
       'id': LocalDb.newId(),
@@ -1246,6 +1281,7 @@ class Api {
     required String description,
     Map<String, dynamic>? details,
   }) {
+    _validateActivityDate(date, isPlanned: true);
     return LocalDb.synchronized<EventItem>(() async {
       final items = await LocalDb.list('events');
       final idx = items.indexWhere((e) => e['id'] == id);
@@ -1268,7 +1304,9 @@ class Api {
     required String title,
     required String description,
     required Map<String, dynamic> details,
-  }) => LocalDb.synchronized<EventItem>(() async {
+  }) {
+    _validateActivityDate(date, isPlanned: true);
+    return LocalDb.synchronized<EventItem>(() async {
     final items = await LocalDb.list('events');
     final idx = items.indexWhere((e) => _s(e['id']) == id);
     if (idx < 0) throw ApiException(404, 'Not Found', 'Event not found');
@@ -1284,7 +1322,8 @@ class Api {
     e['updated_at'] = _nowIso();
     await LocalDb.saveList('events', items);
     return EventItem.fromJson(e);
-  });
+    });
+  }
 
   static Future<EventItem> toggleEvent(String id, bool done) {
     return LocalDb.synchronized<EventItem>(() async {
