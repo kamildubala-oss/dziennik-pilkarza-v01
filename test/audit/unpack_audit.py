@@ -69,4 +69,15 @@ if source.count(old) != 1:
     raise SystemExit("Nie znaleziono etykiety radaru do aktualizacji.")
 smoke.write_text(source.replace(old, "AKTYWNOŚĆ W OBSZARACH"), encoding="utf-8")
 
+# W oryginalnej paczce znajdowały się nieużywane zmienne/importy
+# przygotowawcze (audyt nie wymagał analizy statycznej). Tłumimy wyłącznie
+# te dwa lintery w importowanych plikach, a nie w kodzie aplikacji.
+for name in ALLOWED:
+    path = OUT / name
+    text = path.read_text(encoding="utf-8")
+    path.write_text(
+        "// ignore_for_file: unused_import, unused_local_variable\n" + text,
+        encoding="utf-8",
+    )
+
 print(f"Przygotowano {len(ALLOWED)} pliki źródłowe i 55 testów audytowych.")
