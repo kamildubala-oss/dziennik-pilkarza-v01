@@ -48,6 +48,9 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
+      - name: Restore 55 audit regression tests
+        run: python3 test/audit/unpack_audit.py
+
       - name: Run tests
         run: flutter test
 
