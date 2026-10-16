@@ -53,6 +53,7 @@ jobs:
 
       - name: Analyze Dart (no new warnings versus audit baseline)
         run: |
+          set -o pipefail
           flutter analyze --no-fatal-warnings --no-fatal-infos | tee /tmp/flutter-analyze.log
           python3 - <<'PY'
           import pathlib, re
