@@ -192,6 +192,8 @@ class _LogMatchScreenState extends State<LogMatchScreen> {
                           child: AppTextField(
                             controller: _minutes,
                             keyboardType: TextInputType.number,
+                            errorText: numberFieldError(_minutes.text, 'Minuty', 0, 180),
+                            onChanged: (_) => setState(() {}),
                           ),
                         ),
                       ),
@@ -202,6 +204,8 @@ class _LogMatchScreenState extends State<LogMatchScreen> {
                           child: AppTextField(
                             controller: _goals,
                             keyboardType: TextInputType.number,
+                            errorText: numberFieldError(_goals.text, 'Gole', 0, 20),
+                            onChanged: (_) => setState(() {}),
                           ),
                         ),
                       ),
@@ -212,6 +216,8 @@ class _LogMatchScreenState extends State<LogMatchScreen> {
                           child: AppTextField(
                             controller: _assists,
                             keyboardType: TextInputType.number,
+                            errorText: numberFieldError(_assists.text, 'Asysty', 0, 20),
+                            onChanged: (_) => setState(() {}),
                           ),
                         ),
                       ),
