@@ -252,8 +252,9 @@ Map<String, dynamic> _withSteps(Map<String, dynamic> day) {
 /// dzisiejsze/przeszłe wydarzenia są już "wykonane" (done=true).
 bool _isUserScheduledActivity(Map<String, dynamic> e) {
   if (e['done'] == true) return false;
-  if (!const {'training', 'club_training', 'match'}.contains(_s(e['type'])))
+  if (!const {'training', 'club_training', 'match'}.contains(_s(e['type']))) {
     return false;
+  }
   final source = _s(e['source']);
   final originalSource = _s(e['planned_source']);
   if (originalSource == 'plan' || originalSource == 'club') return false;
@@ -289,16 +290,18 @@ Future<void> _enrichEventFromDiary(Map<String, dynamic> e) async {
     if (t.isNotEmpty) {
       if (_i(t['duration_min']) > 0) e['duration_min'] = _i(t['duration_min']);
       if (_s(t['intensity']).isNotEmpty) e['intensity'] = _s(t['intensity']);
-      if (_s(e['focus']).isEmpty && _s(t['focus']).isNotEmpty)
+      if (_s(e['focus']).isEmpty && _s(t['focus']).isNotEmpty) {
         e['focus'] = _s(t['focus']);
+      }
     }
   } else if (source == 'matches') {
     final m = await LocalDb.list('matches')
         .then((items) => items.firstWhere((x) => _s(x['id']) == sourceId,
             orElse: () => <String, dynamic>{}));
     if (m.isNotEmpty) {
-      if (_i(m['minutes_played']) > 0)
+      if (_i(m['minutes_played']) > 0) {
         e['duration_min'] = _i(m['minutes_played']);
+      }
     }
   }
 }
