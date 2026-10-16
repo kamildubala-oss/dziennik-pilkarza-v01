@@ -61,21 +61,46 @@ class _CalendarScreenState extends State<CalendarScreen> {
     if (widget.selected.value == widget.index) _events.refetch();
   }
 
+  /// Ptaszek w Kalendarzu od razu otwiera formularz wykonania,
+  /// bez pośredniego ekranu szczegółów. Formularz otrzymuje zapisany plan.
   Future<void> _toggle(EventItem e) async {
-    if (e.type != 'note') {
-      if (!e.done) {
-        await _openDetails(e);
-      } else if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Ten trening lub mecz jest już zapisany jako wykonany.')));
+    if (e.type == 'note') {
+      try {
+        await Api.toggleEvent(e.id, !e.done);
+      } catch (error) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Nie udało się zmienić statusu: $error')),
+          );
+        }
+      }
+      if (mounted) await _events.refetch();
+      return;
+    }
+    if (e.done || e.sourceId.isNotEmpty) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('Ta aktywność jest już zapisana jako wykonana.'),
+        ));
       }
       return;
     }
-    try {
-      await Api.toggleEvent(e.id, !e.done);
-    } catch (error) {
-      if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Nie udało się zmienić statusu: $error')));
+
+    final Widget page;
+    if (e.type == 'club_training' && e.source == 'club') {
+      // Trening generowany z profilu zachowuje specjalny formularz oceny.
+      page = ClubTrainingScreen(event: e);
+    } else if (e.type == 'match') {
+      page = LogMatchScreen(completingEvent: e);
+    } else {
+      page = LogSessionScreen(
+        completingEvent: e,
+        kind: e.type == 'club_training' ? 'club_training' : 'training',
+      );
     }
-    await _events.refetch();
+
+    await pushModal<bool>(context, page);
+    if (mounted) await _events.refetch();
   }
 
   Future<void> _delete(EventItem e) async {
