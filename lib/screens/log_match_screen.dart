@@ -16,12 +16,15 @@ class LogMatchScreen extends StatefulWidget {
     this.plannedEventId,
     this.editing,
     this.editingEvent,
+    this.completingEvent,
     this.isPlanned = false,
   });
 
   /// Edytowany mecz (tryb edycji). Gdy null - nowy wpis.
   final MatchEntry? editing;
   final EventItem? editingEvent;
+  /// Kalendarz: wykonujemy wcześniej zaplanowany mecz, a nie edytujemy planu.
+  final EventItem? completingEvent;
 
   /// Zaplanowany mecz z kalendarza, który właśnie się odbył.
   final String? plannedEventId;
@@ -44,27 +47,28 @@ class LogMatchScreen extends StatefulWidget {
 
 class _LogMatchScreenState extends State<LogMatchScreen> {
   late final MatchEntry? _e = widget.editing;
+  late final EventItem? _sourceEvent = widget.completingEvent ?? widget.editingEvent;
   late final TextEditingController _date = TextEditingController(
-    text: _e != null ? first10(_e.date) : (widget.editingEvent?.date ?? widget.initialDate ?? todayIso()),
+    text: _e != null ? first10(_e.date) : (_sourceEvent?.date ?? widget.initialDate ?? todayIso()),
   );
   late final TextEditingController _opponent =
-      TextEditingController(text: _e?.opponent ?? (widget.editingEvent?.details['opponent'] as String?) ?? '');
+      TextEditingController(text: _e?.opponent ?? (_sourceEvent?.details['opponent'] as String?) ?? '');
   late final TextEditingController _result =
-      TextEditingController(text: _e?.result ?? (widget.editingEvent?.details['result'] as String?) ?? '');
+      TextEditingController(text: _e?.result ?? (_sourceEvent?.details['result'] as String?) ?? '');
   late final TextEditingController _minutes =
-      TextEditingController(text: '${_e?.minutesPlayed ?? widget.editingEvent?.details['minutes_played'] ?? 60}');
+      TextEditingController(text: '${_e?.minutesPlayed ?? _sourceEvent?.details['minutes_played'] ?? 60}');
   late final TextEditingController _goals =
-      TextEditingController(text: '${_e?.goals ?? widget.editingEvent?.details['goals'] ?? 0}');
+      TextEditingController(text: '${_e?.goals ?? _sourceEvent?.details['goals'] ?? 0}');
   late final TextEditingController _assists =
-      TextEditingController(text: '${_e?.assists ?? widget.editingEvent?.details['assists'] ?? 0}');
+      TextEditingController(text: '${_e?.assists ?? _sourceEvent?.details['assists'] ?? 0}');
   late final TextEditingController _wentWell =
-      TextEditingController(text: _e?.wentWell ?? (widget.editingEvent?.details['went_well'] as String?) ?? '');
+      TextEditingController(text: _e?.wentWell ?? (_sourceEvent?.details['went_well'] as String?) ?? '');
   late final TextEditingController _toImprove =
-      TextEditingController(text: _e?.toImprove ?? (widget.editingEvent?.details['to_improve'] as String?) ?? '');
+      TextEditingController(text: _e?.toImprove ?? (_sourceEvent?.details['to_improve'] as String?) ?? '');
   late final TextEditingController _notes =
-      TextEditingController(text: _e?.notes ?? (widget.editingEvent?.details['notes'] as String?) ?? '');
+      TextEditingController(text: _e?.notes ?? (_sourceEvent?.details['notes'] as String?) ?? '');
 
-  late int _rating = _e != null && _e.rating >= 1 ? _e.rating : (widget.editingEvent?.details['rating'] as int?) ?? 3;
+  late int _rating = _e != null && _e.rating >= 1 ? _e.rating : (_sourceEvent?.details['rating'] as int?) ?? 3;
   bool _saving = false;
 
   @override
@@ -128,7 +132,7 @@ class _LogMatchScreenState extends State<LogMatchScreen> {
         wentWell: _wentWell.text,
         toImprove: _toImprove.text,
         notes: _notes.text,
-        plannedEventId: widget.plannedEventId,
+        plannedEventId: widget.completingEvent?.id ?? widget.plannedEventId,
         isPlanned: widget.isPlanned,
       );
       if (!mounted) return;
@@ -244,7 +248,9 @@ class _LogMatchScreenState extends State<LogMatchScreen> {
                         ? 'Zapisywanie...'
                         : _e != null
                             ? 'Zapisz zmiany'
-                            : 'Zapisz mecz',
+                            : widget.completingEvent != null
+                                ? 'Mecz wykonany'
+                                : 'Zapisz mecz',
                     onTap: _saving ? null : _save,
                   ),
                 ],
