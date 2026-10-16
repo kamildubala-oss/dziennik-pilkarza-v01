@@ -181,7 +181,7 @@ class LocalDb {
       throw FormatException('Brak poprawnej daty w $label.');
     }
     final day = value.substring(0, 10);
-    if (!RegExp(r'^\\d{4}-\\d{2}-\\d{2}$').hasMatch(day)) {
+    if (!RegExp(r'^\d{4}-\d{2}-\d{2}$').hasMatch(day)) {
       throw FormatException('Nieprawidłowa data w $label.');
     }
     final date = DateTime.tryParse(value);
