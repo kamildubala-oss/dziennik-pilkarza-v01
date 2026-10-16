@@ -337,6 +337,9 @@ class Progress {
     required this.skillRadarAll,
     required this.skillRadarRecent,
     required this.weekSessions,
+    this.bestMatchGoals = 0,
+    this.hasTopRating = false,
+    this.completedPlanWeek = false,
   });
 
   final int totalTrainings;
@@ -349,10 +352,16 @@ class Progress {
   final Map<String, int> skillRadarAll;
   final Map<String, int> skillRadarRecent;
   final List<int> weekSessions;
+  final int bestMatchGoals;
+  final bool hasTopRating;
+  final bool completedPlanWeek;
 
   factory Progress.fromJson(Map<String, dynamic> j) {
     final rawWeek = j['week_sessions'];
     return Progress(
+      bestMatchGoals: _asInt(j['best_match_goals']),
+      hasTopRating: j['has_top_rating'] == true,
+      completedPlanWeek: j['completed_plan_week'] == true,
       totalTrainings: _asInt(j['total_trainings']),
       totalMatches: _asInt(j['total_matches']),
       totalMinutes: _asInt(j['total_minutes']),
