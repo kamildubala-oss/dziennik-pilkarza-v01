@@ -219,6 +219,9 @@ class _LogSessionScreenState extends State<LogSessionScreen> {
                     child: AppTextField(
                       controller: _duration,
                       keyboardType: TextInputType.number,
+                      errorText: numberFieldError(
+                          _duration.text, 'Czas (min)', 0, 600),
+                      onChanged: (_) => setState(() {}),
                     ),
                   ),
                   LabeledField(
