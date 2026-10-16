@@ -17,7 +17,7 @@ class LocalDb {
   };
 
   static String _slot(String collection, int number) =>
-      '${_recoveryPrefix}$collection.$number';
+      '$_recoveryPrefix$collection.$number';
 
   static Future<void> _write(SharedPreferences sp, String key, String value) async {
     if (!await sp.setString(key, value)) {
@@ -54,7 +54,7 @@ class LocalDb {
   /// Wracamy do najnowszego poprawnego z dwóch niezależnych slotów;
   /// przy braku obu kopii jawnie zgłaszamy uszkodzenie.
   static Future<String?> _safeRaw(SharedPreferences sp, String collection) async {
-    final key = '${_prefix}$collection';
+    final key = '$_prefix$collection';
     final raw = sp.getString(key);
     if (raw == null && !sp.containsKey(_slot(collection, 1)) &&
         !sp.containsKey(_slot(collection, 2))) {
@@ -123,7 +123,7 @@ class LocalDb {
       await _write(sp, _slot(collection, 2), recent);
     }
     await _write(sp, _slot(collection, 1), encoded);
-    await _write(sp, '${_prefix}$collection', encoded);
+    await _write(sp, '$_prefix$collection', encoded);
   }
 
   static Future<Map<String, dynamic>?> getDoc(String name) async {
