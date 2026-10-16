@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'coach_content.dart';
 import 'llm.dart';
 import 'offline_coach.dart';
-import 'llm_settings.dart';
 import 'local_db.dart';
 import 'models.dart';
 import 'utils.dart';
@@ -1227,11 +1226,6 @@ class Api {
     });
     return true;
   }
-
-  /// Wydarzenia z przeszłości (przed dzisiejszym dniem) są oznaczane jako
-  /// wykonane.
-  static bool _isPastOrToday(String date) =>
-      first10(date).compareTo(todayIso()) <= 0;
 
   static Map<String, dynamic> _eventForTraining(Map<String, dynamic> t) {
     final parts = <String>[
