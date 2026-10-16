@@ -231,6 +231,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               controller: _age,
                               keyboardType: TextInputType.number,
                               hint: '14',
+                              errorText: ageFieldError(_age.text),
+                              onChanged: (_) => setState(() {}),
                             ),
                           ),
                         ),
