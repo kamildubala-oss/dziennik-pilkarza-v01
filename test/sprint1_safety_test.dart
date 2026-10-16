@@ -154,8 +154,8 @@ void main() {
       await addTraining();
       final id = (await Api.listTrainings()).single.id;
       for (final duration in <int>[-5, 601]) {
-        await expectLater(
-          Api.updateTraining(
+        expect(
+          () => Api.updateTraining(
             id, durationMin: duration, rating: 3,
             wentWell: '', toImprove: '', notes: '',
           ),
