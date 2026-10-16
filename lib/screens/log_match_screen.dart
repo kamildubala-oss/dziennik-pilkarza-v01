@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../api.dart';
 import '../models.dart';
+import '../services/user_errors.dart';
 import '../theme.dart';
 import '../utils.dart';
 import '../widgets/common.dart';
@@ -85,17 +86,21 @@ class _LogMatchScreenState extends State<LogMatchScreen> {
     super.dispose();
   }
 
-  int _num(TextEditingController c) => int.tryParse(c.text.trim()) ?? 0;
+  int _num(TextEditingController c) => int.parse(c.text.trim());
+
+  bool get _fieldsValid =>
+      numberFieldError(_minutes.text, 'Minuty', 0, 180) == null &&
+      numberFieldError(_goals.text, 'Gole', 0, 20) == null &&
+      numberFieldError(_assists.text, 'Asysty', 0, 20) == null;
 
   Future<void> _save() async {
-    if (_saving) return;
+    if (_saving || !_fieldsValid) return;
     setState(() => _saving = true);
     try {
       if (widget.editingEvent != null) {
         final event = widget.editingEvent!;
-        await Api.updateEvent(event.id,
+        await Api.updatePlannedActivity(event.id,
           date: _date.text,
-          time: event.time,
           title: _opponent.text.trim().isEmpty ? 'Mecz' : 'Mecz z ${_opponent.text.trim()}',
           description: 'Rywal: ${_opponent.text} · Minuty: ${_minutes.text}',
           details: <String, dynamic>{'opponent': _opponent.text, 'result': _result.text, 'duration_min': _num(_minutes), 'minutes_played': _num(_minutes), 'goals': _num(_goals), 'assists': _num(_assists), 'rating': _rating, 'went_well': _wentWell.text, 'to_improve': _toImprove.text, 'notes': _notes.text},
@@ -139,7 +144,7 @@ class _LogMatchScreenState extends State<LogMatchScreen> {
       Navigator.of(context).pop(true);
     } catch (error) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Nie udało się zapisać: $error")));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(friendlyError(error))));
         setState(() => _saving = false);
       }
     }
@@ -251,7 +256,7 @@ class _LogMatchScreenState extends State<LogMatchScreen> {
                             : widget.completingEvent != null
                                 ? 'Mecz wykonany'
                                 : 'Zapisz mecz',
-                    onTap: _saving ? null : _save,
+                    onTap: _saving || !_fieldsValid ? null : _save,
                   ),
                 ],
               ),
