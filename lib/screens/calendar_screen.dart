@@ -359,6 +359,16 @@ class _CalendarScreenState extends State<CalendarScreen> {
             ),
             if (_events.isLoading)
               const Center(child: Spinner())
+            else if (_events.error != null)
+              Padding(
+                padding: const EdgeInsets.all(Sp.lg),
+                child: Column(children: [
+                  Text('Nie można bezpiecznie odczytać wydarzeń kalendarza.',
+                      style: manrope(size: 13, color: c.error)),
+                  TextButton(onPressed: () => _events.refetch(),
+                      child: const Text('Spróbuj ponownie')),
+                ]),
+              )
             else if (selectedEvents.isEmpty)
               _empty(c)
             else
