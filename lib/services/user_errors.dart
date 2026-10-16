@@ -63,3 +63,9 @@ String? numberFieldError(String input, String label, int min, int max) {
   }
   return null;
 }
+
+/// W profilu wiek jest opcjonalny, ale podana wartość musi być prawidłowa.
+String? ageFieldError(String input) {
+  if (input.trim().isEmpty) return null;
+  return numberFieldError(input, 'Wiek', 8, 21);
+}
