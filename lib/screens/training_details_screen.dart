@@ -219,7 +219,7 @@ class _TrainingDetailsScreenState extends State<TrainingDetailsScreen> {
     } else if (widget.type == 'match') {
       // Jeśli wydarzenie kalendarza już ma wpis meczu w dzienniku,
       // otwieramy edycję tego wpisu zamiast tworzyć nowy.
-      var editing;
+      MatchEntry? editing;
       if (ev != null && ev.source == 'matches' && ev.sourceId.isNotEmpty) {
         editing = await Api.getMatch(ev.sourceId);
       }
