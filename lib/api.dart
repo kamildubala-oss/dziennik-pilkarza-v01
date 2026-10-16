@@ -30,7 +30,18 @@ void _check(bool ok, String message) {
 
 /// Data wykonania nie może być przyszła; planowanie może dotyczyć dowolnego dnia.
 void _validateActivityDate(String date, {required bool isPlanned}) {
-  final match = RegExp(r'^\d{4}-\d{2}-\d{2} v is num ? v.toInt() : 0;
+  final match = RegExp(r'^\d{4}-\d{2}-\d{2}$').hasMatch(date);
+  final parsed = DateTime.tryParse(date);
+  _check(match && parsed != null && dateIso(parsed) == date,
+      'Podaj prawidłową datę (RRRR-MM-DD).');
+  if (!isPlanned) {
+    _check(date.compareTo(todayIso()) <= 0,
+        'Nie można zapisać wykonanego treningu ani meczu z datą przyszłą. '
+        'Użyj opcji planowania.');
+  }
+}
+
+int _i(dynamic v) => v is num ? v.toInt() : 0;
 
 String _s(dynamic v) => v == null ? '' : v.toString();
 
