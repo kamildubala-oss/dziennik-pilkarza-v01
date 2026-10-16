@@ -152,25 +152,67 @@ const List<String> _trainingFocuses = <String>[
 
 class _TrainingDetailsScreenState extends State<TrainingDetailsScreen> {
   late bool _inCalendar = widget.inCalendar;
+  EventItem? _linkedEvent;
   bool _adding = false;
+
+  /// Po dodaniu dnia planu do kalendarza nie korzystamy ze starego
+  /// widget.plannedEventId (mógł być null w chwili otwarcia okna).
+  Future<EventItem?> _resolveCalendarEvent() async {
+    final events = await Api.listEvents();
+    final current = _linkedEvent ?? widget.event;
+    if (current != null) {
+      for (final event in events) {
+        if (event.id == current.id) return event;
+      }
+    }
+    if (_inCalendar && widget.onAddToCalendar != null) {
+      final byKey = await Api.planEvents();
+      return byKey[Api.planKey(widget.date, widget.title)];
+    }
+    return null;
+  }
 
   Future<void> _add() async {
     final cb = widget.onAddToCalendar;
     if (cb == null || _adding) return;
     setState(() => _adding = true);
     try {
-      await cb();
-      if (mounted) setState(() => _inCalendar = true);
+      final added = await cb();
+      // Odczytujemy nowy ID wydarzenia, zanim pozwolimy je wykonać.
+      final byKey = await Api.planEvents();
+      final event = byKey[Api.planKey(widget.date, widget.title)];
+      if (!mounted) return;
+      if (event != null) {
+        setState(() {
+          _linkedEvent = event;
+          _inCalendar = true;
+        });
+      } else if (added) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('Nie udało się powiązać planu z kalendarzem. Spróbuj ponownie.'),
+        ));
+      }
     } catch (_) {
-      // Błąd zapisu - przycisk pozostaje aktywny.
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('Nie udało się dodać treningu do kalendarza.'),
+        ));
+      }
     } finally {
       if (mounted) setState(() => _adding = false);
     }
   }
 
   Future<void> _log() async {
+    final ev = await _resolveCalendarEvent();
+    if (!mounted) return;
+    if (_inCalendar && widget.onAddToCalendar != null && ev == null) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Nie można znaleźć treningu w kalendarzu. Otwórz ponownie szczegóły.'),
+      ));
+      return;
+    }
     final Widget page;
-    final ev = widget.event;
     if (widget.type == 'club_training' && ev != null) {
       // Trening klubowy: termin z profilu, zawodnik tylko go ocenia.
       page = ClubTrainingScreen(event: ev);
@@ -186,7 +228,7 @@ class _TrainingDetailsScreenState extends State<TrainingDetailsScreen> {
           : LogMatchScreen(
               initialDate: widget.date,
               completingEvent: ev,
-              plannedEventId: widget.plannedEventId,
+              plannedEventId: ev?.id ?? widget.plannedEventId,
             );
     } else {
       // Jeśli wydarzenie kalendarza już ma wpis treningu w dzienniku,
@@ -206,23 +248,14 @@ class _TrainingDetailsScreenState extends State<TrainingDetailsScreen> {
               ],
               initialDuration: widget.durationMin > 0 ? widget.durationMin : null,
               initialIntensity: widget.intensity,
-              plannedEventId: widget.plannedEventId,
+              plannedEventId: ev?.id ?? widget.plannedEventId,
             );
     }
     if (!mounted) return; // Po asynchronicznym odczycie treningu/meczu.
     final saved = await pushModal<bool>(context, page);
     if (!mounted) return; // Modal mógł zostać zamknięty podczas await.
     if (saved == true) {
-      // Po udanym zapisie oznacz powiązane wydarzenie jako wykonane,
-      // żeby kalendarz i plan tygodnia pozostały zgodne.
-      final ev = widget.event;
-      if (ev != null && !ev.done) {
-        try {
-          await Api.toggleEvent(ev.id, true);
-        } catch (_) {
-          // Błąd zapisu - nie blokuje zamknięcia ekranu.
-        }
-      }
+      // API zapisuje wykonanie i aktualizuje wydarzenie atomowo pod blokadą.
       if (!mounted) return;
       Navigator.of(context).pop(true);
     }
