@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:dziennik_pilkarza/api.dart';
-import 'package:dziennik_pilkarza/local_db.dart';
 import 'package:dziennik_pilkarza/utils.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
