@@ -246,10 +246,13 @@ class ThemeController extends ChangeNotifier {
   Future<void> load() async {
     try {
       final sp = await SharedPreferences.getInstance();
-      final v = sp.getString(_key);
+      final v = sp.get(_key);
       for (final p in ThemePreference.values) {
         if (p.name == v) {
-          _preference = p;
+          if (_preference != p) {
+            _preference = p;
+            notifyListeners();
+          }
           break;
         }
       }

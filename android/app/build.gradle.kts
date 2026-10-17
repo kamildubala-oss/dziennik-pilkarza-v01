@@ -17,7 +17,10 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
+    testBuildType = if (project.hasProperty("startupSmoke")) "release" else "debug"
+
     defaultConfig {
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         applicationId = "com.emergent.mlodypilkarz.dziennik_pilkarza"
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
@@ -45,6 +48,9 @@ flutter {
 }
 
 dependencies {
+    androidTestImplementation("androidx.test:runner:1.6.2")
+    androidTestImplementation("androidx.test:rules:1.6.1")
+    androidTestImplementation("junit:junit:4.13.2")
     // FileProvider - udostępnianie eksportowanych plików.
     implementation("androidx.core:core:1.13.1")
 }
