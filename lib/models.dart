@@ -66,25 +66,25 @@ class Training {
   bool get isClub => kind == 'club_training';
 
   factory Training.fromJson(Map<String, dynamic> j) => Training(
-        id: _asString(j['id']),
-        date: _asString(j['date']),
-        durationMin: _asInt(j['duration_min']),
-        focus: _asString(j['focus']),
-        focuses: _asStringList(j['focuses']).isNotEmpty
-            ? _asStringList(j['focuses'])
-            : _asString(j['focus'])
-                .split(',')
-                .map((e) => e.trim())
-                .where((e) => e.isNotEmpty)
-                .toList(),
-        intensity: _asString(j['intensity']),
-        rating: _asInt(j['rating'], 3),
-        wentWell: _asString(j['went_well']),
-        toImprove: _asString(j['to_improve']),
-        notes: _asString(j['notes']),
-        kind: _asString(j['kind']),
-        createdAt: _asString(j['created_at']),
-      );
+    id: _asString(j['id']),
+    date: _asString(j['date']),
+    durationMin: _asInt(j['duration_min']),
+    focus: _asString(j['focus']),
+    focuses: _asStringList(j['focuses']).isNotEmpty
+        ? _asStringList(j['focuses'])
+        : _asString(j['focus'])
+              .split(',')
+              .map((e) => e.trim())
+              .where((e) => e.isNotEmpty)
+              .toList(),
+    intensity: _asString(j['intensity']),
+    rating: _asInt(j['rating']),
+    wentWell: _asString(j['went_well']),
+    toImprove: _asString(j['to_improve']),
+    notes: _asString(j['notes']),
+    kind: _asString(j['kind']),
+    createdAt: _asString(j['created_at']),
+  );
 }
 
 class MatchEntry {
@@ -117,19 +117,19 @@ class MatchEntry {
   final String createdAt;
 
   factory MatchEntry.fromJson(Map<String, dynamic> j) => MatchEntry(
-        id: _asString(j['id']),
-        date: _asString(j['date']),
-        opponent: _asString(j['opponent']),
-        result: _asString(j['result']),
-        minutesPlayed: _asInt(j['minutes_played']),
-        goals: _asInt(j['goals']),
-        assists: _asInt(j['assists']),
-        rating: _asInt(j['rating'], 3),
-        wentWell: _asString(j['went_well']),
-        toImprove: _asString(j['to_improve']),
-        notes: _asString(j['notes']),
-        createdAt: _asString(j['created_at']),
-      );
+    id: _asString(j['id']),
+    date: _asString(j['date']),
+    opponent: _asString(j['opponent']),
+    result: _asString(j['result']),
+    minutesPlayed: _asInt(j['minutes_played']),
+    goals: _asInt(j['goals']),
+    assists: _asInt(j['assists']),
+    rating: _asInt(j['rating']),
+    wentWell: _asString(j['went_well']),
+    toImprove: _asString(j['to_improve']),
+    notes: _asString(j['notes']),
+    createdAt: _asString(j['created_at']),
+  );
 }
 
 class EventItem {
@@ -185,25 +185,25 @@ class EventItem {
   bool get isPending => planned && !done;
 
   factory EventItem.fromJson(Map<String, dynamic> j) => EventItem(
-        id: _asString(j['id']),
-        date: _asString(j['date']),
-        time: _asString(j['time']),
-        type: _asString(j['type']),
-        title: _asString(j['title']),
-        description: _asString(j['description']),
-        done: _asBool(j['done']),
-        createdAt: _asString(j['created_at']),
-        planned: _asBool(j['planned']),
-        source: _asString(j['source']),
-        sourceId: _asString(j['source_id']),
-        focus: _asString(j['focus']),
-        durationMin: _asInt(j['duration_min']),
-        intensity: _asString(j['intensity']),
-        steps: _asStringList(j['steps']),
-        tip: _asString(j['tip']),
-        plannedSource: _asString(j['planned_source']),
-        details: Map<String, dynamic>.from(j),
-      );
+    id: _asString(j['id']),
+    date: _asString(j['date']),
+    time: _asString(j['time']),
+    type: _asString(j['type']),
+    title: _asString(j['title']),
+    description: _asString(j['description']),
+    done: _asBool(j['done']),
+    createdAt: _asString(j['created_at']),
+    planned: _asBool(j['planned']),
+    source: _asString(j['source']),
+    sourceId: _asString(j['source_id']),
+    focus: _asString(j['focus']),
+    durationMin: _asInt(j['duration_min']),
+    intensity: _asString(j['intensity']),
+    steps: _asStringList(j['steps']),
+    tip: _asString(j['tip']),
+    plannedSource: _asString(j['planned_source']),
+    details: Map<String, dynamic>.from(j),
+  );
 }
 
 class Drill {
@@ -280,21 +280,24 @@ class PlanDay {
   /// Pozostałe wydarzenia tego dnia (poza głównym).
   final List<String> extraEventIds;
 
-  bool get isRest => focus == 'Odpoczynek';
+  bool get isRest =>
+      focus.toLowerCase().contains('odpoczynek') ||
+      focus.toLowerCase().contains('regeneracj') ||
+      focus == 'rest';
 
   factory PlanDay.fromJson(Map<String, dynamic> j) => PlanDay(
-        date: _asString(j['date']),
-        dayName: _asString(j['day_name']),
-        focus: _asString(j['focus']),
-        title: _asString(j['title']),
-        durationMin: _asInt(j['duration_min']),
-        intensity: _asString(j['intensity']),
-        description: _asString(j['description']),
-        steps: _asStringList(j['steps']),
-        tip: _asString(j['tip']),
-        calendarEventIds: _asStringList(j['calendar_event_ids']),
-        extraEventIds: _asStringList(j['extra_event_ids']),
-      );
+    date: _asString(j['date']),
+    dayName: _asString(j['day_name']),
+    focus: _asString(j['focus']),
+    title: _asString(j['title']),
+    durationMin: _asInt(j['duration_min']),
+    intensity: _asString(j['intensity']),
+    description: _asString(j['description']),
+    steps: _asStringList(j['steps']),
+    tip: _asString(j['tip']),
+    calendarEventIds: _asStringList(j['calendar_event_ids']),
+    extraEventIds: _asStringList(j['extra_event_ids']),
+  );
 }
 
 class WeeklyPlan {
@@ -303,12 +306,14 @@ class WeeklyPlan {
     required this.weekStart,
     required this.days,
     required this.generatedAt,
+    this.source = 'unknown',
   });
 
   final String id;
   final String weekStart;
   final List<PlanDay> days;
   final String generatedAt;
+  final String source;
 
   factory WeeklyPlan.fromJson(Map<String, dynamic> j) {
     final rawDays = j['days'];
@@ -317,10 +322,13 @@ class WeeklyPlan {
       weekStart: _asString(j['week_start']),
       days: rawDays is List
           ? rawDays
-              .map((e) => PlanDay.fromJson(e as Map<String, dynamic>))
-              .toList()
+                .map((e) => PlanDay.fromJson(e as Map<String, dynamic>))
+                .toList()
           : <PlanDay>[],
       generatedAt: _asString(j['generated_at']),
+      source: _asString(j['source']).isEmpty
+          ? 'unknown'
+          : _asString(j['source']),
     );
   }
 }
@@ -337,6 +345,12 @@ class Progress {
     required this.skillRadarAll,
     required this.skillRadarRecent,
     required this.weekSessions,
+    this.ratedCount = 0,
+    this.weekPlanned = 0,
+    this.weekCompleted = 0,
+    this.weekByType = const {},
+    this.skillRadarPrevious = const {},
+    this.confirmedRecoveryDays = const [],
     this.bestMatchGoals = 0,
     this.hasTopRating = false,
     this.completedPlanWeek = false,
@@ -352,6 +366,12 @@ class Progress {
   final Map<String, int> skillRadarAll;
   final Map<String, int> skillRadarRecent;
   final List<int> weekSessions;
+  final int ratedCount;
+  final int weekPlanned;
+  final int weekCompleted;
+  final Map<String, List<int>> weekByType;
+  final Map<String, int> skillRadarPrevious;
+  final List<String> confirmedRecoveryDays;
   final int bestMatchGoals;
   final bool hasTopRating;
   final bool completedPlanWeek;
@@ -359,6 +379,17 @@ class Progress {
   factory Progress.fromJson(Map<String, dynamic> j) {
     final rawWeek = j['week_sessions'];
     return Progress(
+      ratedCount: _asInt(j['rated_count']),
+      weekPlanned: _asInt(j['week_planned']),
+      weekCompleted: _asInt(j['week_completed']),
+      confirmedRecoveryDays: _asStringList(j['confirmed_recovery_days']),
+      skillRadarPrevious: _asIntMap(j['skill_radar_previous']),
+      weekByType: j['week_by_type'] is Map
+          ? {
+              for (final entry in (j['week_by_type'] as Map).entries)
+                entry.key.toString(): _asIntList(entry.value),
+            }
+          : {},
       bestMatchGoals: _asInt(j['best_match_goals']),
       hasTopRating: j['has_top_rating'] == true,
       completedPlanWeek: j['completed_plan_week'] == true,
@@ -390,21 +421,23 @@ class WeakSpot {
   final String priority; // low | medium | high
 
   factory WeakSpot.fromJson(Map<String, dynamic> j) => WeakSpot(
-        area: _asString(j['area']),
-        insight: _asString(j['insight']),
-        priority: _asString(j['priority']),
-      );
+    area: _asString(j['area']),
+    insight: _asString(j['insight']),
+    priority: _asString(j['priority']),
+  );
 }
 
 class WeakSpotsPayload {
   const WeakSpotsPayload({
     required this.weakSpots,
     required this.generatedAt,
+    this.source = 'unknown',
     required this.noteCount,
   });
 
   final List<WeakSpot> weakSpots;
   final String generatedAt;
+  final String source;
   final int noteCount;
 
   factory WeakSpotsPayload.fromJson(Map<String, dynamic> j) {
@@ -412,10 +445,13 @@ class WeakSpotsPayload {
     return WeakSpotsPayload(
       weakSpots: raw is List
           ? raw
-              .map((e) => WeakSpot.fromJson(e as Map<String, dynamic>))
-              .toList()
+                .map((e) => WeakSpot.fromJson(e as Map<String, dynamic>))
+                .toList()
           : <WeakSpot>[],
       generatedAt: _asString(j['generated_at']),
+      source: _asString(j['source']).isEmpty
+          ? 'unknown'
+          : _asString(j['source']),
       noteCount: _asInt(j['note_count']),
     );
   }
@@ -457,32 +493,32 @@ class Profile {
   final int clubDurationMin;
 
   factory Profile.fromJson(Map<String, dynamic> j) => Profile(
-        name: _asString(j['name']),
-        age: _asIntOrNull(j['age']),
-        position: _asString(j['position']),
-        dominantFoot: _asString(j['dominant_foot']),
-        club: _asString(j['club']),
-        jerseyNumber: _asIntOrNull(j['jersey_number']),
-        seasonGoal: _asString(j['season_goal']),
-        theme: _asString(j['theme']),
-        updatedAt: _asString(j['updated_at']),
-        clubDays: _asIntList(j['club_days']),
-        clubTime: _asString(j['club_time']),
-        clubDurationMin: _asInt(j['club_duration_min'], 90),
-      );
+    name: _asString(j['name']),
+    age: _asIntOrNull(j['age']),
+    position: _asString(j['position']),
+    dominantFoot: _asString(j['dominant_foot']),
+    club: _asString(j['club']),
+    jerseyNumber: _asIntOrNull(j['jersey_number']),
+    seasonGoal: _asString(j['season_goal']),
+    theme: _asString(j['theme']),
+    updatedAt: _asString(j['updated_at']),
+    clubDays: _asIntList(j['club_days']),
+    clubTime: _asString(j['club_time']),
+    clubDurationMin: _asInt(j['club_duration_min'], 90),
+  );
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'name': name,
-        'age': age,
-        'position': position,
-        'dominant_foot': dominantFoot,
-        'club': club,
-        'jersey_number': jerseyNumber,
-        'season_goal': seasonGoal,
-        'theme': theme,
-        'updated_at': updatedAt,
-        'club_days': clubDays,
-        'club_time': clubTime,
-        'club_duration_min': clubDurationMin,
-      };
+    'name': name,
+    'age': age,
+    'position': position,
+    'dominant_foot': dominantFoot,
+    'club': club,
+    'jersey_number': jerseyNumber,
+    'season_goal': seasonGoal,
+    'theme': theme,
+    'updated_at': updatedAt,
+    'club_days': clubDays,
+    'club_time': clubTime,
+    'club_duration_min': clubDurationMin,
+  };
 }

@@ -50,7 +50,8 @@ class TrainingDetailsScreen extends StatefulWidget {
     Future<bool> Function()? onAddToCalendar,
     List<EventItem> extraEvents = const <EventItem>[],
   }) {
-    final isUserScheduled = calendarEvent != null &&
+    final isUserScheduled =
+        calendarEvent != null &&
         (calendarEvent.source.isEmpty ||
             calendarEvent.source == 'trainings' ||
             calendarEvent.source == 'matches') &&
@@ -69,14 +70,15 @@ class TrainingDetailsScreen extends StatefulWidget {
       type: d.focus == 'Mecz'
           ? 'match'
           : d.focus == 'Trening klubowy'
-              ? 'club_training'
-              : d.isRest
-                  ? 'rest'
-                  : 'training',
+          ? 'club_training'
+          : d.isRest
+          ? 'rest'
+          : 'training',
       done: calendarEvent?.done ?? false,
       inCalendar: calendarEvent != null,
       onAddToCalendar: d.isRest ? null : onAddToCalendar,
-      plannedEventId: calendarEvent != null &&
+      plannedEventId:
+          calendarEvent != null &&
               (calendarEvent.isPending || isUserScheduled) &&
               !calendarEvent.done
           ? calendarEvent.id
@@ -91,15 +93,17 @@ class TrainingDetailsScreen extends StatefulWidget {
     final kind = e.type == 'club_training'
         ? 'TRENING KLUBOWY'
         : e.type == 'match'
-            ? 'MECZ'
-            : 'TRENING';
+        ? 'MECZ'
+        : 'TRENING';
     // Przekaż ID także dla ręcznych (niez planu tygodnia) treningów/meczów,
     // żeby zapis wykonania nie utworzył duplikatu w dzienniku.
     final isUserScheduled =
         e.plannedSource != 'plan' &&
-            e.source != 'plan' &&
-            !e.done &&
-            (e.type == 'training' || e.type == 'club_training' || e.type == 'match');
+        e.source != 'plan' &&
+        !e.done &&
+        (e.type == 'training' ||
+            e.type == 'club_training' ||
+            e.type == 'match');
     return TrainingDetailsScreen(
       key: key,
       label:
@@ -155,6 +159,38 @@ class _TrainingDetailsScreenState extends State<TrainingDetailsScreen> {
   late bool _inCalendar = widget.inCalendar;
   EventItem? _linkedEvent;
   bool _adding = false;
+  bool _recovered = false;
+  @override
+  void initState() {
+    super.initState();
+    if (widget.type == 'rest') _loadRecovery();
+  }
+
+  Future<void> _loadRecovery() async {
+    try {
+      final dates = await Api.recoveryDays();
+      if (mounted) setState(() => _recovered = dates.contains(widget.date));
+    } catch (error) {
+      if (mounted)
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(friendlyError(error))));
+    }
+  }
+
+  Future<void> _confirmRecovery() async {
+    if (_adding) return;
+    setState(() => _adding = true);
+    try {
+      await Api.confirmRecovery(widget.date);
+      if (mounted) setState(() => _recovered = true);
+    } catch (error) {
+      if (mounted)
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(friendlyError(error))));
+    } finally {
+      if (mounted) setState(() => _adding = false);
+    }
+  }
 
   /// Po dodaniu dnia planu do kalendarza nie korzystamy ze starego
   /// widget.plannedEventId (mógł być null w chwili otwarcia okna).
@@ -189,15 +225,21 @@ class _TrainingDetailsScreenState extends State<TrainingDetailsScreen> {
           _inCalendar = true;
         });
       } else if (added) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Nie udało się powiązać planu z kalendarzem. Spróbuj ponownie.'),
-        ));
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              'Nie udało się powiązać planu z kalendarzem. Spróbuj ponownie.',
+            ),
+          ),
+        );
       }
     } catch (_) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Nie udało się dodać treningu do kalendarza.'),
-        ));
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Nie udało się dodać treningu do kalendarza.'),
+          ),
+        );
       }
     } finally {
       if (mounted) setState(() => _adding = false);
@@ -208,9 +250,13 @@ class _TrainingDetailsScreenState extends State<TrainingDetailsScreen> {
     final ev = await _resolveCalendarEvent();
     if (!mounted) return;
     if (_inCalendar && widget.onAddToCalendar != null && ev == null) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('Nie można znaleźć treningu w kalendarzu. Otwórz ponownie szczegóły.'),
-      ));
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Nie można znaleźć treningu w kalendarzu. Otwórz ponownie szczegóły.',
+          ),
+        ),
+      );
       return;
     }
     final Widget page;
@@ -219,9 +265,8 @@ class _TrainingDetailsScreenState extends State<TrainingDetailsScreen> {
         page = await activityEditor(ev, complete: true);
       } catch (error) {
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(friendlyError(error))),
-          );
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text(friendlyError(error))));
         }
         return;
       }
@@ -316,8 +361,7 @@ class _TrainingDetailsScreenState extends State<TrainingDetailsScreen> {
                     const SizedBox(height: Sp.lg),
                     const SectionTitle('INNE ZAPLANOWANE WYDARZENIA TEGO DNIA'),
                     const SizedBox(height: Sp.sm),
-                    for (final e in widget.extraEvents)
-                      _extraEventTile(c, e),
+                    for (final e in widget.extraEvents) _extraEventTile(c, e),
                   ],
                   if (w.steps.isNotEmpty) ...[
                     const SizedBox(height: Sp.xl),
@@ -365,27 +409,43 @@ class _TrainingDetailsScreenState extends State<TrainingDetailsScreen> {
                       label: _inCalendar
                           ? 'W kalendarzu'
                           : _adding
-                              ? 'Dodawanie...'
-                              : 'Dodaj do kalendarza',
+                          ? 'Dodawanie...'
+                          : 'Dodaj do kalendarza',
                       icon: _inCalendar
                           ? Icons.event_available
                           : Icons.calendar_month_outlined,
                       marginTop: Sp.xl,
                       onTap: _inCalendar || _adding ? null : _add,
                     ),
+                  if (w.type == 'rest')
+                    PrimaryButton(
+                      label: _recovered
+                          ? 'Regeneracja potwierdzona'
+                          : _adding
+                          ? 'Zapisywanie…'
+                          : 'Potwierdź regenerację',
+                      onTap:
+                          _recovered ||
+                              _adding ||
+                              w.date.compareTo(todayIso()) > 0
+                          ? null
+                          : _confirmRecovery,
+                      icon: Icons.self_improvement,
+                    ),
                   if (w.type == 'club_training' && w.event != null)
                     PrimaryButton(
                       label: w.event!.source == 'trainings'
-                          ? 'Zmień ocenę'
-                          : 'Oceń trening',
+                          ? 'Zobacz podsumowanie'
+                          : 'Trening wykonany',
                       icon: Icons.star_outline,
                       marginTop: w.onAddToCalendar != null ? Sp.sm : Sp.xl,
                       onTap: _log,
                     )
                   else if (w.type != 'rest' && !w.done)
                     PrimaryButton(
-                      label:
-                          w.type == 'match' ? 'Zapisz mecz' : 'Zapisz trening',
+                      label: w.type == 'match'
+                          ? 'Zapisz mecz'
+                          : 'Zapisz trening',
                       marginTop: w.onAddToCalendar != null ? Sp.sm : Sp.xl,
                       onTap: _log,
                     ),
@@ -412,8 +472,8 @@ class _TrainingDetailsScreenState extends State<TrainingDetailsScreen> {
             e.type == 'match'
                 ? Icons.sports_soccer
                 : e.type == 'club_training'
-                    ? Icons.groups_outlined
-                    : Icons.fitness_center,
+                ? Icons.groups_outlined
+                : Icons.fitness_center,
             size: 20,
             color: c.brandPrimary,
           ),
@@ -431,10 +491,7 @@ class _TrainingDetailsScreenState extends State<TrainingDetailsScreen> {
                   ),
                 ),
                 if (e.time.isNotEmpty)
-                  Text(
-                    e.time,
-                    style: manrope(size: 12, color: c.muted),
-                  ),
+                  Text(e.time, style: manrope(size: 12, color: c.muted)),
               ],
             ),
           ),
@@ -508,4 +565,3 @@ class _TrainingDetailsScreenState extends State<TrainingDetailsScreen> {
     );
   }
 }
-

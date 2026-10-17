@@ -13,13 +13,21 @@ class LocalDb {
   // Osobna przestrzeń: wewnętrzne kopie nie trafiają do eksportu użytkownika.
   static const String _recoveryPrefix = 'mp.recovery.';
   static const Set<String> _collections = <String>{
-    'trainings', 'matches', 'events', 'plans', 'chat_messages',
+    'trainings',
+    'matches',
+    'events',
+    'plans',
+    'chat_messages',
   };
 
   static String _slot(String collection, int number) =>
       '$_recoveryPrefix$collection.$number';
 
-  static Future<void> _write(SharedPreferences sp, String key, String value) async {
+  static Future<void> _write(
+    SharedPreferences sp,
+    String key,
+    String value,
+  ) async {
     if (!await sp.setString(key, value)) {
       throw StateError('Nie udało się bezpiecznie zapisać danych ($key).');
     }
@@ -53,17 +61,24 @@ class LocalDb {
   /// Nie interpretujemy błędnego JSON-a jako pustego dziennika.
   /// Wracamy do najnowszego poprawnego z dwóch niezależnych slotów;
   /// przy braku obu kopii jawnie zgłaszamy uszkodzenie.
-  static Future<String?> _safeRaw(SharedPreferences sp, String collection) async {
+  static Future<String?> _safeRaw(
+    SharedPreferences sp,
+    String collection,
+  ) async {
     final key = '$_prefix$collection';
     final raw = sp.getString(key);
-    if (raw == null && !sp.containsKey(_slot(collection, 1)) &&
+    if (raw == null &&
+        !sp.containsKey(_slot(collection, 1)) &&
         !sp.containsKey(_slot(collection, 2))) {
       return null; // Pierwsze uruchomienie, brak danych i kopii.
     }
     final valid = _validSnapshot(raw, collection);
     if (valid != null) return valid;
     for (final number in <int>[1, 2]) {
-      final backup = _validSnapshot(sp.getString(_slot(collection, number)), collection);
+      final backup = _validSnapshot(
+        sp.getString(_slot(collection, number)),
+        collection,
+      );
       if (backup != null) {
         await _write(sp, key, backup);
         return backup;
@@ -102,7 +117,9 @@ class LocalDb {
   static Future<List<Map<String, dynamic>>> list(String collection) async {
     final sp = await _prefs();
     final raw = await _safeRaw(sp, collection);
-    return raw == null ? <Map<String, dynamic>>[] : _decodeList(raw, collection);
+    return raw == null
+        ? <Map<String, dynamic>>[]
+        : _decodeList(raw, collection);
   }
 
   /// Dwa poprawnie zakodowane snapshoty: najnowszy i poprzedni.
@@ -114,11 +131,17 @@ class LocalDb {
     List<Map<String, dynamic>> items,
   ) async {
     final sp = await _prefs();
-    await _safeRaw(sp, collection); // Wykrywanie/naprawa uszkodzenia przed zapisem.
+    await _safeRaw(
+      sp,
+      collection,
+    ); // Wykrywanie/naprawa uszkodzenia przed zapisem.
     final encoded = jsonEncode(items);
     _decodeList(encoded, collection);
 
-    final recent = _validSnapshot(sp.getString(_slot(collection, 1)), collection);
+    final recent = _validSnapshot(
+      sp.getString(_slot(collection, 1)),
+      collection,
+    );
     if (recent != null && recent != encoded) {
       await _write(sp, _slot(collection, 2), recent);
     }
@@ -147,9 +170,9 @@ class LocalDb {
   /// Losowy identyfikator w formacie UUID v4.
   static String newId() {
     String hex(int n) => List<String>.generate(
-          n,
-          (_) => _rng.nextInt(16).toRadixString(16),
-        ).join();
+      n,
+      (_) => _rng.nextInt(16).toRadixString(16),
+    ).join();
     final variant = (8 + _rng.nextInt(4)).toRadixString(16);
     return '${hex(8)}-${hex(4)}-4${hex(3)}-$variant${hex(3)}-${hex(12)}';
   }
@@ -164,7 +187,9 @@ class LocalDb {
       if (raw == null || raw.isEmpty) continue;
       final name = key.substring(_prefix.length);
       if (_collections.contains(name)) {
-        out[name] = await list(name); // Odzyskaj albo zgłoś błąd - bez cichego pomijania.
+        out[name] = await list(
+          name,
+        ); // Odzyskaj albo zgłoś błąd - bez cichego pomijania.
       } else {
         try {
           out[name] = jsonDecode(raw);
@@ -186,7 +211,8 @@ class LocalDb {
     }
     final date = DateTime.tryParse(day);
     // Zmiana strefy czasowej nie może unieważniać poprawnej daty z pliku.
-    if (date == null || dateIsoDate(date) != day ||
+    if (date == null ||
+        dateIsoDate(date) != day ||
         (value.length > 10 && DateTime.tryParse(value) == null)) {
       throw FormatException('Nieprawidłowa data w $label.');
     }
@@ -197,13 +223,22 @@ class LocalDb {
       '${d.year.toString().padLeft(4, '0')}-${d.month.toString().padLeft(2, '0')}-${d.day.toString().padLeft(2, '0')}';
 
   static void _checkNumber(
-    Map<String, dynamic> record, String key, int min, int max, String label,
+    Map<String, dynamic> record,
+    String key,
+    int min,
+    int max,
+    String label,
   ) {
     if (!record.containsKey(key)) return; // Starsze wersje mogły nie mieć pola.
     final value = record[key];
-    if (value is! num || !value.isFinite || value % 1 != 0 ||
-        value < min || value > max) {
-      throw FormatException('Nieprawidłowe pole $key w $label (dozwolone $min–$max).');
+    if (value is! num ||
+        !value.isFinite ||
+        value % 1 != 0 ||
+        value < min ||
+        value > max) {
+      throw FormatException(
+        'Nieprawidłowe pole $key w $label (dozwolone $min–$max).',
+      );
     }
   }
 
@@ -212,8 +247,11 @@ class LocalDb {
   static void validateImport(Map<String, dynamic> data) {
     for (final entry in data.entries) {
       final name = entry.key;
-      if (name.isEmpty || name.contains('..') || name.contains('/') ||
-          name.contains('\\') || name.startsWith('_')) {
+      if (name.isEmpty ||
+          name.contains('..') ||
+          name.contains('/') ||
+          name.contains('\\') ||
+          name.startsWith('_')) {
         throw const FormatException('Nieprawidłowa nazwa kolekcji w kopii.');
       }
       if (_collections.contains(name) && entry.value is! List) {
@@ -224,7 +262,9 @@ class LocalDb {
         for (var index = 0; index < rows.length; index++) {
           final raw = rows[index];
           if (raw is! Map || raw.keys.any((key) => key is! String)) {
-            throw FormatException('Nieprawidłowy rekord w $name, pozycja ${index + 1}.');
+            throw FormatException(
+              'Nieprawidłowy rekord w $name, pozycja ${index + 1}.',
+            );
           }
           if (!_collections.contains(name)) continue;
           final record = Map<String, dynamic>.from(raw);
@@ -234,20 +274,21 @@ class LocalDb {
             continue;
           }
           _checkDate(record['date'], label);
-          if (record['id'] is! String || (record['id'] as String).trim().isEmpty) {
+          if (record['id'] is! String ||
+              (record['id'] as String).trim().isEmpty) {
             throw FormatException('Brak identyfikatora w $label.');
           }
           if (name == 'trainings') {
             _checkNumber(record, 'duration_min', 0, 600, label);
-            _checkNumber(record, 'rating', 1, 5, label);
+            _checkNumber(record, 'rating', 0, 5, label);
           } else if (name == 'matches') {
             _checkNumber(record, 'minutes_played', 0, 180, label);
             _checkNumber(record, 'goals', 0, 20, label);
             _checkNumber(record, 'assists', 0, 20, label);
-            _checkNumber(record, 'rating', 1, 5, label);
+            _checkNumber(record, 'rating', 0, 5, label);
           } else if (name == 'events') {
             _checkNumber(record, 'duration_min', 0, 600, label);
-            _checkNumber(record, 'rating', 1, 5, label);
+            _checkNumber(record, 'rating', 0, 5, label);
             _checkNumber(record, 'minutes_played', 0, 180, label);
             _checkNumber(record, 'goals', 0, 20, label);
             _checkNumber(record, 'assists', 0, 20, label);
@@ -269,7 +310,8 @@ class LocalDb {
         if (_collections.contains(entry.key) && entry.value is! List) {
           throw FormatException('Nieprawidłowy typ: ${entry.key}');
         }
-        if (entry.value is List && !(entry.value as List).every((e) => e is Map)) {
+        if (entry.value is List &&
+            !(entry.value as List).every((e) => e is Map)) {
           throw FormatException('Nieprawidłowe rekordy: ${entry.key}');
         }
         prepared['$_prefix${entry.key}'] = jsonEncode(entry.value);
@@ -319,7 +361,9 @@ class LocalDb {
         for (final key in prepared.keys) {
           if (!old.containsKey(key)) await sp.remove(key);
         }
-        for (final key in sp.getKeys().where((key) => key.startsWith(_recoveryPrefix))) {
+        for (final key in sp.getKeys().where(
+          (key) => key.startsWith(_recoveryPrefix),
+        )) {
           if (!oldRecovery.containsKey(key)) await sp.remove(key);
         }
         for (final entry in oldRecovery.entries) {

@@ -80,7 +80,22 @@ source = smoke.read_text(encoding="utf-8")
 old = "MAPA UMIEJĘTNOŚCI"
 if source.count(old) != 1:
     raise SystemExit("Nie znaleziono etykiety radaru do aktualizacji.")
-smoke.write_text(source.replace(old, "AKTYWNOŚĆ W OBSZARACH"), encoding="utf-8")
+source = source.replace(old, "AKTYWNOŚĆ W OBSZARACH")
+source = source.replace("find.text('Statystyki')", "find.text('Twój postęp')")
+# P1/P2: plan, ćwiczenia i rozmowa mają osobne widoki. Sprawdzamy każdy.
+source = source.replace(
+    "    expect(find.text('GOTOWE TRENINGI'), findsOneWidget);",
+    "    await tester.tap(find.text('Ćwiczenia'));\n"
+    "    await tester.pumpAndSettle();\n"
+    "    expect(find.text('GOTOWE TRENINGI'), findsOneWidget);",
+)
+source = source.replace(
+    "    expect(find.text('CZAT Z TRENEREM'), findsOneWidget);",
+    "    await tester.tap(find.text('Rozmowa'));\n"
+    "    await tester.pumpAndSettle();\n"
+    "    expect(find.text('CZAT Z TRENEREM'), findsOneWidget);",
+)
+smoke.write_text(source, encoding="utf-8")
 
 # W oryginalnej paczce znajdowały się nieużywane zmienne/importy
 # przygotowawcze (audyt nie wymagał analizy statycznej). Tłumimy wyłącznie

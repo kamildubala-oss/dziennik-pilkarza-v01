@@ -214,8 +214,8 @@ ThemeData buildTheme(AppColors c, Brightness brightness) {
       bodyColor: c.onSurface,
       displayColor: c.onSurface,
     ),
-    splashFactory: NoSplash.splashFactory,
-    highlightColor: Colors.transparent,
+    splashFactory: InkRipple.splashFactory,
+    highlightColor: c.brandPrimary.withValues(alpha: 0.12),
     hoverColor: Colors.transparent,
     textSelectionTheme: TextSelectionThemeData(
       cursorColor: c.brandPrimary,

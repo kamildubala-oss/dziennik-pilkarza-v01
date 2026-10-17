@@ -10,6 +10,8 @@ import '../widgets/common.dart';
 import 'add_event_screen.dart';
 import 'profile_screen.dart';
 import 'training_details_screen.dart';
+import 'activity_editor.dart';
+import '../services/user_errors.dart';
 
 class _Session {
   const _Session({
@@ -78,6 +80,10 @@ class _DiaryScreenState extends State<DiaryScreen> {
 
   /// Dzień wybrany na pasku tygodnia (domyślnie dziś).
   String _selectedDay = todayIso();
+  late final Resource<WeeklyPlan?> _plan = Resource(
+    Api.getWeeklyPlan,
+    _rebuild,
+  );
 
   /// Aktywności wybranego dnia: najpierw do wykonania, potem wg godziny,
   /// notatki na końcu.
@@ -113,6 +119,7 @@ class _DiaryScreenState extends State<DiaryScreen> {
     _progress.dispose();
     _profile.dispose();
     _events.dispose();
+    _plan.dispose();
     super.dispose();
   }
 
@@ -127,6 +134,7 @@ class _DiaryScreenState extends State<DiaryScreen> {
       _progress.refetch(),
       _profile.refetch(),
       _events.refetch(),
+      _plan.refetch(),
     ]);
   }
 
@@ -264,12 +272,12 @@ class _DiaryScreenState extends State<DiaryScreen> {
                         ),
                       ),
                       const SizedBox(width: Sp.sm),
-                      GestureDetector(
+                      AppTapTarget(
                         behavior: HitTestBehavior.opaque,
                         onTap: () => _openModal(const ProfileScreen()),
                         child: Container(
-                          width: 40,
-                          height: 40,
+                          width: 48,
+                          height: 48,
                           decoration: BoxDecoration(
                             color: c.surfaceSecondary,
                             shape: BoxShape.circle,
@@ -308,9 +316,8 @@ class _DiaryScreenState extends State<DiaryScreen> {
                       isToday: dateIso(weekDates[i]) == todayStr,
                       isSelected: dateIso(weekDates[i]) == _selectedDay,
                       types: typesByDay[dateIso(weekDates[i])] ?? <String>{},
-                      onTap: () => setState(
-                        () => _selectedDay = dateIso(weekDates[i]),
-                      ),
+                      onTap: () =>
+                          setState(() => _selectedDay = dateIso(weekDates[i])),
                     ),
                 ],
               ),
@@ -335,7 +342,13 @@ class _DiaryScreenState extends State<DiaryScreen> {
                       textColor: c.brandPrimary,
                       bg: c.brandTertiary,
                       label: 'Zapisz trening',
-                      onTap: () => _openModal(AddEventScreen(initialDate: _selectedDay, initialType: 'training', isPlanned: false)),
+                      onTap: () => _openModal(
+                        AddEventScreen(
+                          initialDate: _selectedDay,
+                          initialType: 'training',
+                          isPlanned: false,
+                        ),
+                      ),
                     ),
                   ),
                   const SizedBox(width: Sp.sm),
@@ -347,7 +360,13 @@ class _DiaryScreenState extends State<DiaryScreen> {
                       textColor: c.onSurfaceSecondary,
                       bg: c.surfaceSecondary,
                       label: 'Zapisz mecz',
-                      onTap: () => _openModal(AddEventScreen(initialDate: _selectedDay, initialType: 'match', isPlanned: false)),
+                      onTap: () => _openModal(
+                        AddEventScreen(
+                          initialDate: _selectedDay,
+                          initialType: 'match',
+                          isPlanned: false,
+                        ),
+                      ),
                     ),
                   ),
                 ],
@@ -355,15 +374,18 @@ class _DiaryScreenState extends State<DiaryScreen> {
             ),
 
             // ---------- Awaria odczytu lokalnych danych ----------
-            if (_trainings.error != null || _matches.error != null ||
+            if (_trainings.error != null ||
+                _matches.error != null ||
                 _events.error != null)
               Padding(
                 padding: const EdgeInsets.only(bottom: Sp.lg),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Text('Nie można odczytać części dziennika. Dane nie zostały usunięte.',
-                        style: manrope(size: 13, color: c.error)),
+                    Text(
+                      'Nie można odczytać części dziennika. Dane nie zostały usunięte.',
+                      style: manrope(size: 13, color: c.error),
+                    ),
                     TextButton(
                       onPressed: () => _reloadAll(),
                       child: const Text('Spróbuj ponownie'),
@@ -380,7 +402,7 @@ class _DiaryScreenState extends State<DiaryScreen> {
                 children: [
                   const SectionTitle('OSTATNIE WPISY'),
                   Text(
-                    '${sessions.length}',
+                    '${sessions.length} ostatnich',
                     style: manrope(size: 12, color: c.muted),
                   ),
                 ],
@@ -392,8 +414,10 @@ class _DiaryScreenState extends State<DiaryScreen> {
                 child: Center(child: Spinner()),
               )
             else if (_trainings.error != null || _matches.error != null)
-              Text('Odczyt wpisów nie powiódł się — przywróć kopię, jeśli błąd się powtarza.',
-                  style: manrope(size: 13, color: c.error))
+              Text(
+                'Odczyt wpisów nie powiódł się — przywróć kopię, jeśli błąd się powtarza.',
+                style: manrope(size: 13, color: c.error),
+              )
             else if (sessions.isEmpty)
               _empty(c)
             else
@@ -413,7 +437,7 @@ class _DiaryScreenState extends State<DiaryScreen> {
     required Set<String> types,
     required VoidCallback onTap,
   }) {
-    return GestureDetector(
+    return AppTapTarget(
       behavior: HitTestBehavior.opaque,
       onTap: onTap,
       child: Container(
@@ -423,8 +447,8 @@ class _DiaryScreenState extends State<DiaryScreen> {
           color: isSelected
               ? c.brandPrimary
               : isToday
-                  ? c.surfaceSecondary
-                  : Colors.transparent,
+              ? c.surfaceSecondary
+              : Colors.transparent,
           borderRadius: BorderRadius.circular(Rad.md),
         ),
         child: Column(
@@ -445,8 +469,8 @@ class _DiaryScreenState extends State<DiaryScreen> {
                 color: isSelected
                     ? c.onBrandPrimary
                     : isToday
-                        ? c.brandPrimary
-                        : c.onSurface,
+                    ? c.brandPrimary
+                    : c.onSurface,
               ),
             ),
             const SizedBox(height: 4),
@@ -555,10 +579,22 @@ class _DiaryScreenState extends State<DiaryScreen> {
     return '${kPolishDays[d.weekday - 1].toUpperCase()} $dd.$mm';
   }
 
-  bool _canOpen(EventItem e) => e.planned || e.steps.isNotEmpty;
+  bool _canOpen(EventItem e) => e.type != 'note' || e.steps.isNotEmpty;
 
   Future<void> _openGoal(EventItem e) async {
-    await pushModal<bool>(context, TrainingDetailsScreen.forEvent(e));
+    if (e.done && e.type != 'note') {
+      try {
+        final page = await activityEditor(e);
+        if (!mounted) return;
+        await pushModal<bool>(context, page);
+      } catch (error) {
+        if (mounted)
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text(friendlyError(error))));
+      }
+    } else {
+      await pushModal<bool>(context, TrainingDetailsScreen.forEvent(e));
+    }
     if (mounted) _reloadAll();
   }
 
@@ -575,6 +611,50 @@ class _DiaryScreenState extends State<DiaryScreen> {
           : const Color(0xFFD4FF26),
     );
 
+    final restDays =
+        _plan.data?.days
+            .where((d) => first10(d.date) == _selectedDay && d.isRest)
+            .toList() ??
+        <PlanDay>[];
+    if (events.where((e) => e.type != 'note').isEmpty && restDays.isNotEmpty) {
+      final recovered =
+          _progress.data?.confirmedRecoveryDays.contains(_selectedDay) ?? false;
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(label, style: labelStyle),
+          const SizedBox(height: 8),
+          Text(
+            recovered
+                ? 'Regeneracja potwierdzona'
+                : 'Dziś zadbaj o regenerację',
+            style: manrope(
+              size: 22,
+              weight: FontWeight.w700,
+              color: Colors.white,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Odpoczynek jest częścią Twojego planu. Zobacz wskazówki na ten dzień.',
+            style: manrope(size: 14, color: Colors.white),
+          ),
+          const SizedBox(height: 12),
+          _heroButton(
+            c,
+            label: 'Zobacz regenerację',
+            icon: Icons.self_improvement,
+            onTap: () async {
+              await pushModal<bool>(
+                context,
+                TrainingDetailsScreen.forPlanDay(restDays.first),
+              );
+              if (mounted) _reloadAll();
+            },
+          ),
+        ],
+      );
+    }
     if (events.isEmpty) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -597,21 +677,29 @@ class _DiaryScreenState extends State<DiaryScreen> {
           Text(
             isToday
                 ? (_motivation.data ??
-                    'Zrób dziś 1 trening więcej niż wczoraj.')
+                      'Zaplanuj aktywność lub odpoczynek zgodnie ze swoim tygodniem.')
                 : isPast
-                    ? 'Nie zapisano treningu ani meczu.'
-                    : 'Dodaj trening w kalendarzu albo z planu tygodnia u trenera.',
+                ? 'Nie zapisano treningu ani meczu.'
+                : 'Dodaj trening w kalendarzu albo z planu tygodnia u trenera.',
             maxLines: 3,
             overflow: TextOverflow.ellipsis,
-            style:
-                manrope(size: 13, height: 1.4, color: const Color(0xFFD0D4DA)),
+            style: manrope(
+              size: 13,
+              height: 1.4,
+              color: const Color(0xFFD0D4DA),
+            ),
           ),
           const SizedBox(height: Sp.md),
           _heroButton(
             c,
-            label: 'Zapytaj trenera',
+            label: 'Zaplanuj aktywność',
             icon: Icons.arrow_forward,
-            onTap: widget.onOpenCoach,
+            onTap: () => _openModal(
+              AddEventScreen(
+                initialDate: _selectedDay,
+                initialType: 'training',
+              ),
+            ),
           ),
         ],
       );
@@ -641,9 +729,36 @@ class _DiaryScreenState extends State<DiaryScreen> {
           const SizedBox(height: Sp.md),
           _heroButton(
             c,
-            label: first.isPending ? 'Co robić' : 'Szczegóły',
+            label: first.done ? 'Zobacz podsumowanie' : 'Zobacz trening',
             icon: Icons.arrow_forward,
             onTap: () => _openGoal(first),
+          ),
+        ],
+        if (!first.done &&
+            first.type != 'note' &&
+            _selectedDay.compareTo(todayIso()) <= 0) ...[
+          const SizedBox(height: 8),
+          _heroButton(
+            c,
+            label: isPast
+                ? 'Uzupełnij wykonanie'
+                : first.type == 'match'
+                ? 'Mecz wykonany'
+                : 'Trening wykonany',
+            icon: Icons.check,
+            onTap: () async {
+              try {
+                final page = await activityEditor(first, complete: true);
+                if (!mounted) return;
+                await pushModal<bool>(context, page);
+                if (mounted) _reloadAll();
+              } catch (error) {
+                if (mounted)
+                  ScaffoldMessenger.of(
+                    context,
+                  ).showSnackBar(SnackBar(content: Text(friendlyError(error))));
+              }
+            },
           ),
         ],
       ],
@@ -659,7 +774,7 @@ class _DiaryScreenState extends State<DiaryScreen> {
       if (e.done && e.type != 'note') 'wykonany',
     ].join(' · ');
     final open = _canOpen(e);
-    return GestureDetector(
+    return AppTapTarget(
       behavior: HitTestBehavior.opaque,
       onTap: open ? () => _openGoal(e) : null,
       child: Padding(
@@ -701,8 +816,11 @@ class _DiaryScreenState extends State<DiaryScreen> {
               ),
             ),
             if (open && !big)
-              const Icon(Icons.chevron_right,
-                  size: 18, color: Color(0xFFD0D4DA)),
+              const Icon(
+                Icons.chevron_right,
+                size: 18,
+                color: Color(0xFFD0D4DA),
+              ),
           ],
         ),
       ),
@@ -715,35 +833,16 @@ class _DiaryScreenState extends State<DiaryScreen> {
     required IconData icon,
     required VoidCallback onTap,
   }) {
-    return Align(
-      alignment: Alignment.centerLeft,
-      child: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: onTap,
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: Sp.lg, vertical: 10),
-          decoration: BoxDecoration(
-            color: c.brandPrimary,
-            borderRadius: BorderRadius.circular(Rad.pill),
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                label,
-                style: manrope(
-                  size: 12,
-                  weight: FontWeight.w800,
-                  letterSpacing: 1,
-                  color: c.onBrandPrimary,
-                ),
-              ),
-              const SizedBox(width: 6),
-              Icon(icon, size: 16, color: c.onBrandPrimary),
-            ],
-          ),
-        ),
+    return FilledButton.icon(
+      style: FilledButton.styleFrom(
+        backgroundColor: const Color(0xFFD4FF26),
+        foregroundColor: Colors.black,
+        minimumSize: const Size(48, 48),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       ),
+      onPressed: onTap,
+      icon: Icon(icon, size: 20),
+      label: Text(label, textAlign: TextAlign.center),
     );
   }
 
@@ -756,7 +855,7 @@ class _DiaryScreenState extends State<DiaryScreen> {
     required String label,
     required VoidCallback onTap,
   }) {
-    return GestureDetector(
+    return AppTapTarget(
       behavior: HitTestBehavior.opaque,
       onTap: onTap,
       child: Container(
@@ -830,8 +929,8 @@ class _DiaryScreenState extends State<DiaryScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            width: 40,
-            height: 40,
+            width: 48,
+            height: 48,
             decoration: BoxDecoration(
               color: s.isMatch ? c.brandSecondary : c.brandTertiary,
               borderRadius: BorderRadius.circular(Rad.sm),
@@ -860,7 +959,7 @@ class _DiaryScreenState extends State<DiaryScreen> {
                 ),
                 const SizedBox(height: 2),
                 Text(
-                  '${first10(s.date)} · ${s.duration} min · ocena ${s.rating}/5',
+                  '${first10(s.date)} · ${s.duration} min · ${s.rating > 0 ? 'ocena ${s.rating}/5' : 'bez oceny'}',
                   style: manrope(size: 12, color: c.muted),
                 ),
                 if (s.wentWell.isNotEmpty) ...[

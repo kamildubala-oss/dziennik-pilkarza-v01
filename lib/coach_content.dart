@@ -9,8 +9,7 @@ const List<Map<String, dynamic>> kDrills = <Map<String, dynamic>>[
     'duration_min': 20,
     'intensity': 'medium',
     'source': 'Ćwiczenie autorskie',
-    'description':
-        'Slalom między pachołkami ze zmianą tempa i kierunku. 6 serii x 2 powtórzenia.',
+    'description': 'Slalom między pachołkami ze zmianą tempa i kierunku. 6 serii x 2 powtórzenia.',
     'steps': <String>[
       'Rozgrzewka: 5 min truchtu i krążeń.',
       'Slalom pomiędzy 8 pachołkami ustawionych co 1,5 m – wewnętrznym podbiciem.',
@@ -85,9 +84,9 @@ const List<Map<String, dynamic>> kDrills = <Map<String, dynamic>>[
 ];
 
 const List<String> kMotivations = <String>[
-  'Każdy wielki piłkarz zaczynał od pierwszego dotknięcia piłki. Zrób dziś jedno więcej.',
+  'Każdy wielki piłkarz zaczynał od małych kroków. Dziś zrealizuj swój plan.',
   'Nie liczy się talent – liczy się regularność. Zapisz dziś swój trening.',
-  'Technika rodzi się z powtórzeń. 100 strzałów dziennie = sezon różnicy.',
+  'Technika rośnie dzięki regularnej pracy i regeneracji. Trzymaj się swojego planu.',
   'Dobry piłkarz podejmuje decyzje przed przyjęciem piłki. Trenuj głowę razem z nogami.',
   'Mentalność jest jak mięsień – trenuj ją tak samo mocno jak strzał.',
 ];
@@ -138,10 +137,8 @@ const String kWeakSpotsSystem =
     "Opieraj się na obserwacjach zawodnika i ogólnych zasadach treningu. Pisz po polsku. Nie używaj emoji.";
 
 const Map<String, String> _drillTips = <String, String>{
-  'drill-prowadzenie':
-      'Głowa do góry między dotknięciami piłki i kontrola tempa – wolniej, ale czysto.',
-  'drill-strzal':
-      'Stabilna noga podporowa, ciało nad piłką i celuj w róg bramki, nie tylko mocno.',
+  'drill-prowadzenie': 'Głowa do góry między dotknięciami piłki i kontrola tempa – wolniej, ale czysto.',
+  'drill-strzal': 'Stabilna noga podporowa, ciało nad piłką i celuj w róg bramki, nie tylko mocno.',
   'drill-decyzyjnosc':
       'Zanim dostaniesz piłkę, sprawdź ustawienie rywala i wolną przestrzeń.',
   'drill-sila':

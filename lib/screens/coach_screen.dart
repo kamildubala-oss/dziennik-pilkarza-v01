@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../api.dart';
+import '../llm_settings.dart';
+import '../services/coach_runtime.dart';
+import '../services/user_errors.dart';
 import '../config.dart';
 import '../models.dart';
 import '../resource.dart';
@@ -11,7 +14,8 @@ import 'drill_screen.dart';
 import 'training_details_screen.dart';
 
 class _Msg {
-  const _Msg(this.role, this.content);
+  const _Msg(this.role, this.content, [this.source = '']);
+  final String source;
 
   final String role; // user | assistant
   final String content;
@@ -26,10 +30,18 @@ const List<String> _quickPrompts = <String>[
 
 /// Zakładka "Trener" (AI).
 class CoachScreen extends StatefulWidget {
-  const CoachScreen({super.key, required this.selected, required this.index});
+  const CoachScreen({
+    super.key,
+    required this.selected,
+    required this.index,
+    this.initialSection = 0,
+    this.initialArea,
+  });
 
   final ValueNotifier<int> selected;
   final int index;
+  final int initialSection;
+  final String? initialArea;
 
   @override
   State<CoachScreen> createState() => _CoachScreenState();
@@ -47,6 +59,12 @@ class _CoachScreenState extends State<CoachScreen> {
   late final Resource<Map<String, EventItem>> _planEvents =
       Resource<Map<String, EventItem>>(Api.planEvents, _rebuild);
   bool _addingWeek = false;
+  late int _section = widget.initialSection;
+  late String? _area = widget.initialArea;
+  String? _chatError;
+  String? _retryMessage;
+  String? _planError;
+  String? _addError;
 
   final TextEditingController _input = TextEditingController();
   final ScrollController _scroll = ScrollController();
@@ -74,7 +92,11 @@ class _CoachScreenState extends State<CoachScreen> {
   }
 
   void _onTabChanged() {
-    if (widget.selected.value == widget.index) _planEvents.refetch();
+    if (widget.selected.value == widget.index) {
+      _planEvents.refetch();
+      _plan.refetch();
+      _rebuild();
+    }
   }
 
   Future<void> _openPlanDay(PlanDay d) async {
@@ -110,7 +132,10 @@ class _CoachScreenState extends State<CoachScreen> {
 
   Future<void> _addWeek(WeeklyPlan plan) async {
     if (_addingWeek) return;
-    setState(() => _addingWeek = true);
+    setState(() {
+      _addingWeek = true;
+      _addError = null;
+    });
     try {
       final n = await Api.addPlanWeekToCalendar(plan);
       await _planEvents.refetch();
@@ -120,13 +145,21 @@ class _CoachScreenState extends State<CoachScreen> {
             content: Text(
               n == 0
                   ? 'Wszystkie treningi z planu są już w kalendarzu.'
-                  : 'Dodano do kalendarza: $n ${n == 1 ? 'trening' : n < 5 ? 'treningi' : 'treningów'}.',
+                  : 'Dodano do kalendarza: $n ${n == 1
+                        ? 'trening'
+                        : n < 5
+                        ? 'treningi'
+                        : 'treningów'}.',
             ),
           ),
         );
       }
-    } catch (_) {
-      // Błąd zapisu - bez komunikatu.
+    } catch (error) {
+      if (mounted)
+        setState(
+          () =>
+              _addError = 'Nie udało się dodać planu. ${friendlyError(error)}',
+        );
     } finally {
       if (mounted) setState(() => _addingWeek = false);
     }
@@ -155,41 +188,54 @@ class _CoachScreenState extends State<CoachScreen> {
 
   Future<void> _generatePlan() async {
     if (_generating) return;
-    setState(() => _generating = true);
+    setState(() {
+      _generating = true;
+      _planError = null;
+    });
     try {
       await Api.generateWeeklyPlan();
       await _plan.refetch();
       // Po wygenerowaniu planu odświeżamy też mapę powiązanych wydarzeń
       // kalendarza, bo plan może teraz odwoływać się do ręcznych treningów.
       await _planEvents.refetch();
-    } catch (_) {
-      // Jak w wersji React - błąd generowania nie jest pokazywany.
+    } catch (error) {
+      if (mounted)
+        setState(
+          () => _planError =
+              'Nie udało się utworzyć planu. Dotychczasowy plan jest zachowany. ${friendlyError(error)}',
+        );
     } finally {
       if (mounted) setState(() => _generating = false);
     }
   }
 
-  Future<void> _send([String? text]) async {
+  Future<void> _send([String? text, bool retry = false]) async {
     final msg = (text ?? _input.text).trim();
     if (msg.isEmpty || _sending) return;
     _input.clear();
     setState(() {
-      _messages.add(_Msg('user', msg));
+      if (!retry) _messages.add(_Msg('user', msg));
+      _chatError = null;
+      _retryMessage = msg;
       _sending = true;
     });
     try {
       final reply = await Api.chat(AppConfig.coachSessionId, msg);
-      if (mounted) setState(() => _messages.add(_Msg('assistant', reply)));
-    } catch (e) {
-      if (mounted) {
+      if (mounted)
         setState(() {
           _messages.add(
-            _Msg(
-              'assistant',
-              'Trener chwilowo nie odpowiada. Spróbuj ponownie za chwilę. ($e)',
-            ),
+            _Msg('assistant', reply, CoachRuntime.lastReplySource.value),
           );
+          if (_messages.length > 5)
+            _messages.removeRange(0, _messages.length - 5);
+          _retryMessage = null;
         });
+    } catch (e) {
+      if (mounted) {
+        setState(
+          () =>
+              _chatError = 'Trener chwilowo nie odpowiada. ${friendlyError(e)}',
+        );
       }
     } finally {
       if (mounted) setState(() => _sending = false);
@@ -197,202 +243,175 @@ class _CoachScreenState extends State<CoachScreen> {
     }
   }
 
+  Widget _error(String message, VoidCallback retry) => Padding(
+    padding: const EdgeInsets.symmetric(vertical: 8),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Text(message, style: manrope(size: 14, color: context.c.error)),
+        TextButton(onPressed: retry, child: const Text('Spróbuj ponownie')),
+      ],
+    ),
+  );
+
   @override
   Widget build(BuildContext context) {
     final c = context.c;
-    final top = MediaQuery.of(context).padding.top;
-    final todayStr = todayIso();
     final plan = _plan.data;
     final canSend = _input.text.trim().isNotEmpty && !_sending;
-
-    return Column(
-      children: [
-        Expanded(
-          child: SingleChildScrollView(
-            controller: _scroll,
-            padding: EdgeInsets.fromLTRB(Sp.lg, top + Sp.md, Sp.lg, Sp.xxxl),
+    return SafeArea(
+      bottom: false,
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                _hero(c),
-
-                // ---------- Plan tygodnia ----------
-                Padding(
-                  padding: const EdgeInsets.only(top: Sp.sm),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Padding(
-                              padding: EdgeInsets.only(top: Sp.sm),
-                              child: SectionTitle('PLAN TYGODNIA'),
-                            ),
-                            if (plan != null)
-                              Padding(
-                                padding: const EdgeInsets.only(top: 2),
-                                child: Text(
-                                  'Od ${plan.weekStart}',
-                                  style: manrope(
-                                    size: 12,
-                                    weight: FontWeight.w600,
-                                    color: c.onSurface,
-                                  ),
-                                ),
-                              ),
-                          ],
+                Text(
+                  'Twój trener',
+                  style: barlow(size: 30, color: c.onSurface),
+                ),
+                ValueListenableBuilder<String>(
+                  valueListenable: CoachRuntime.lastReplySource,
+                  builder: (context, source, _) => Text(
+                    LlmSettings.forceOffline || !LlmSettings.hasKey
+                        ? 'Offline · pytania pozostają na urządzeniu'
+                        : source == 'offline'
+                        ? 'Ostatnia odpowiedź: offline'
+                        : source == 'online'
+                        ? 'Ostatnia odpowiedź: online · Gemini'
+                        : 'Automatyczny · online z opcją offline',
+                    style: manrope(size: 13, color: c.muted),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Wrap(
+                  spacing: 8,
+                  children: [
+                    for (final (i, label) in [
+                      (0, 'Plan'),
+                      (1, 'Ćwiczenia'),
+                      (2, 'Rozmowa'),
+                    ])
+                      ChoiceChip(
+                        label: Text(label),
+                        selected: _section == i,
+                        onSelected: (_) => setState(() => _section = i),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 10,
                         ),
                       ),
-                      const SizedBox(width: Sp.sm),
-                      _planAction(c, plan != null),
-                    ],
-                  ),
+                  ],
                 ),
-                if (_plan.isLoading)
-                  const Padding(
-                    padding: EdgeInsets.only(top: Sp.sm),
-                    child: Center(child: Spinner()),
-                  )
-                else if (plan == null)
-                  _planEmpty(c)
-                else ...[
-                  _planRail(c, plan, todayStr),
-                  Text(
-                    'Dotknij dnia, aby zobaczyć ćwiczenia krok po kroku.',
-                    style: manrope(size: 12, color: c.muted),
-                  ),
-                  SecondaryButton(
-                    label: _addingWeek
-                        ? 'Dodawanie...'
-                        : 'Dodaj plan do kalendarza',
-                    icon: Icons.calendar_month_outlined,
-                    onTap: _addingWeek ? null : () => _addWeek(plan),
-                  ),
-                ],
-
-                // ---------- Gotowe treningi ----------
-                const Padding(
-                  padding: EdgeInsets.only(top: Sp.sm),
-                  child: SectionTitle('GOTOWE TRENINGI'),
-                ),
-                _drillsRail(c),
-
-                // ---------- Czat ----------
-                const Padding(
-                  padding: EdgeInsets.only(top: Sp.lg),
-                  child: SectionTitle('CZAT Z TRENEREM'),
-                ),
-                if (_messages.isEmpty) _quickCol(c),
-                ..._messages.map((m) => _bubble(c, m)),
-                if (_sending) _typingBubble(c),
               ],
             ),
           ),
-        ),
-        _inputBar(c, canSend),
-      ],
-    );
-  }
-
-  Widget _hero(AppColors c) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: Sp.lg),
-      child: SizedBox(
-        height: 140,
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(Rad.lg),
-          child: Stack(
-            fit: StackFit.expand,
-            children: [
-              Image.asset(
-                'assets/images/coach_field.jpg',
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stack) =>
-                    Container(color: c.surfaceSecondary),
-              ),
-              const DecoratedBox(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: <Color>[Color(0x4D0F1115), Color(0xF20F1115)],
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(Sp.lg),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'TWÓJ AI TRENER',
-                      style: manrope(
-                        size: 11,
-                        weight: FontWeight.w800,
-                        letterSpacing: 1.8,
-                        color: c.brandPrimary,
+          Expanded(
+            child: SingleChildScrollView(
+              key: PageStorageKey('coach-section-$_section'),
+              controller: _section == 2 ? _scroll : null,
+              padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  if (_section == 0) ...[
+                    const SectionTitle('PLAN TYGODNIA'),
+                    if (plan != null)
+                      Text(
+                        'Od ${plan.weekStart} · ${_sourceLabel(plan.source)}',
+                        style: manrope(size: 13, color: c.muted),
                       ),
+                    PrimaryButton(
+                      label: _generating
+                          ? 'Układanie planu…'
+                          : plan == null
+                          ? 'Ułóż plan'
+                          : 'Generuj ponownie',
+                      icon: Icons.auto_fix_high,
+                      onTap: _generating ? null : _generatePlan,
                     ),
-                    const SizedBox(height: 2),
-                    Text(
-                      'Trener indywidualny',
-                      style: barlow(size: 28, color: c.onSurface),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      'Indywidualny trening · Rozwój umiejętności',
-                      style: manrope(size: 12, color: c.muted),
-                    ),
+                    if (_planError != null) _error(_planError!, _generatePlan),
+                    if (_plan.error != null)
+                      _error(
+                        'Nie udało się odczytać planu.',
+                        () => _plan.refetch(),
+                      ),
+                    if (_plan.isLoading)
+                      const Center(child: Spinner())
+                    else if (plan == null && _plan.error == null)
+                      _planEmpty(c)
+                    else if (plan != null) ...[
+                      _planRail(c, plan, todayIso()),
+                      const Text(
+                        'Dotknij dnia, aby zobaczyć trening lub regenerację.',
+                      ),
+                      SecondaryButton(
+                        label: _addingWeek
+                            ? 'Dodawanie…'
+                            : 'Dodaj plan do kalendarza',
+                        icon: Icons.calendar_month_outlined,
+                        onTap: _addingWeek ? null : () => _addWeek(plan),
+                      ),
+                      if (_addError != null)
+                        _error(_addError!, () => _addWeek(plan)),
+                    ],
                   ],
-                ),
+                  if (_section == 1) ...[
+                    const SectionTitle('GOTOWE TRENINGI'),
+                    Wrap(
+                      spacing: 8,
+                      children: [
+                        for (final area in <String?>[
+                          null,
+                          'Technika',
+                          'Strzał',
+                          'Taktyka',
+                          'Motoryka',
+                          'Mentalność',
+                        ])
+                          ChoiceChip(
+                            label: Text(area ?? 'Wszystkie'),
+                            selected: _area == area,
+                            onSelected: (_) => setState(() => _area = area),
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 10,
+                              horizontal: 8,
+                            ),
+                          ),
+                      ],
+                    ),
+                    if (_drills.error != null)
+                      _error(
+                        'Nie udało się odczytać ćwiczeń.',
+                        () => _drills.refetch(),
+                      ),
+                    _drillsRail(c),
+                  ],
+                  if (_section == 2) ...[
+                    const SectionTitle('CZAT Z TRENEREM'),
+                    if (_messages.isEmpty) _quickCol(c),
+                    ..._messages.map((m) => _bubble(c, m)),
+                    if (_sending) _typingBubble(c),
+                    if (_chatError != null)
+                      _error(_chatError!, () => _send(_retryMessage, true)),
+                  ],
+                ],
               ),
-            ],
+            ),
           ),
-        ),
+          if (_section == 2) _inputBar(c, canSend),
+        ],
       ),
     );
   }
 
-  Widget _planAction(AppColors c, bool hasPlan) {
-    return GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onTap: _generating ? null : _generatePlan,
-      child: Opacity(
-        opacity: _generating ? 0.6 : 1,
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-          decoration: BoxDecoration(
-            color: c.brandPrimary,
-            borderRadius: BorderRadius.circular(Rad.pill),
-          ),
-          child: _generating
-              ? Spinner(color: c.onBrandPrimary)
-              : Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      hasPlan ? Icons.refresh : Icons.auto_fix_high,
-                      size: 14,
-                      color: c.onBrandPrimary,
-                    ),
-                    const SizedBox(width: 4),
-                    Text(
-                      hasPlan ? 'Generuj ponownie' : 'Ułóż plan',
-                      style: manrope(
-                        size: 10,
-                        weight: FontWeight.w800,
-                        letterSpacing: 1,
-                        color: c.onBrandPrimary,
-                      ),
-                    ),
-                  ],
-                ),
-        ),
-      ),
-    );
-  }
+  String _sourceLabel(String source) => source == 'online'
+      ? 'Online · Gemini'
+      : source == 'offline'
+      ? 'Offline'
+      : 'Źródło wcześniejszej analizy nieznane';
 
   Widget _planEmpty(AppColors c) {
     return Container(
@@ -447,12 +466,11 @@ class _CoachScreenState extends State<CoachScreen> {
     // żeby status wykonania nie zrywał rozpoznania.
     EventItem? ev;
     if (d.calendarEventIds.isNotEmpty && _planEvents.data != null) {
-      ev = Api.planEventById(
-          _planEvents.data!, d.calendarEventIds.first);
+      ev = Api.planEventById(_planEvents.data!, d.calendarEventIds.first);
     } else {
       ev = _planEvents.data?[Api.planKey(d.date, d.title)];
     }
-    return GestureDetector(
+    return AppTapTarget(
       behavior: HitTestBehavior.opaque,
       onTap: () => _openPlanDay(d),
       child: Container(
@@ -539,8 +557,8 @@ class _CoachScreenState extends State<CoachScreen> {
                   ev == null
                       ? Icons.chevron_right
                       : ev.done
-                          ? Icons.check_circle
-                          : Icons.event_available,
+                      ? Icons.check_circle
+                      : Icons.event_available,
                   size: 14,
                   color: isToday ? onToday : c.brandPrimary,
                 ),
@@ -550,8 +568,8 @@ class _CoachScreenState extends State<CoachScreen> {
                     ev == null
                         ? 'Szczegóły'
                         : ev.done
-                            ? 'Wykonany'
-                            : 'W kalendarzu',
+                        ? 'Wykonany'
+                        : 'W kalendarzu',
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: manrope(
@@ -571,28 +589,41 @@ class _CoachScreenState extends State<CoachScreen> {
   }
 
   Widget _drillsRail(AppColors c) {
-    final drills = _drills.data ?? <Drill>[];
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      padding: const EdgeInsets.symmetric(vertical: Sp.sm),
-      child: IntrinsicHeight(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: withGap([
-            if (_drills.isLoading) const Spinner(),
-            ...drills.map((d) => _drillCard(c, d)),
-          ], width: Sp.sm),
+    final drills = (_drills.data ?? <Drill>[])
+        .where(
+          (d) =>
+              _area == null ||
+              d.focus.toLowerCase().contains(_area!.toLowerCase()) ||
+              (_area == 'Technika' && d.focus.contains('Prowadzenie')) ||
+              (_area == 'Motoryka' && d.focus.contains('Siła')) ||
+              (_area == 'Taktyka' && d.focus.contains('Decyzyjność')),
+        )
+        .toList();
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        if (_drills.isLoading) const Center(child: Spinner()),
+        if (!_drills.isLoading && _drills.error == null && drills.isEmpty)
+          const Padding(
+            padding: EdgeInsets.all(16),
+            child: Text('Brak ćwiczeń w tym obszarze. Wybierz „Wszystkie”.'),
+          ),
+        ...drills.map(
+          (d) => Padding(
+            padding: const EdgeInsets.only(top: 12),
+            child: _drillCard(c, d),
+          ),
         ),
-      ),
+      ],
     );
   }
 
   Widget _drillCard(AppColors c, Drill d) {
-    return GestureDetector(
+    return AppTapTarget(
       behavior: HitTestBehavior.opaque,
       onTap: () => pushModal<void>(context, DrillScreen(drill: d)),
       child: Container(
-        width: 180,
+        width: double.infinity,
         padding: const EdgeInsets.all(Sp.md),
         decoration: BoxDecoration(
           color: c.surfaceSecondary,
@@ -662,7 +693,7 @@ class _CoachScreenState extends State<CoachScreen> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: withGap(
           _quickPrompts.map((q) {
-            return GestureDetector(
+            return AppTapTarget(
               behavior: HitTestBehavior.opaque,
               onTap: () => _send(q),
               child: Container(
@@ -724,7 +755,7 @@ class _CoachScreenState extends State<CoachScreen> {
                       Padding(
                         padding: const EdgeInsets.only(bottom: 4),
                         child: Text(
-                          'TRENER',
+                          'TRENER · ${_sourceLabel(m.source)}',
                           style: manrope(
                             size: 10,
                             weight: FontWeight.w800,
@@ -805,22 +836,11 @@ class _CoachScreenState extends State<CoachScreen> {
             ),
           ),
           const SizedBox(width: Sp.sm),
-          GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onTap: canSend ? () => _send() : null,
-            child: Opacity(
-              opacity: canSend ? 1 : 0.5,
-              child: Container(
-                width: 44,
-                height: 44,
-                decoration: BoxDecoration(
-                  color: c.brandPrimary,
-                  shape: BoxShape.circle,
-                ),
-                alignment: Alignment.center,
-                child: Icon(Icons.send, size: 18, color: c.onBrandPrimary),
-              ),
-            ),
+          IconButton.filled(
+            tooltip: 'Wyślij wiadomość',
+            constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
+            onPressed: canSend ? () => _send() : null,
+            icon: const Icon(Icons.send),
           ),
         ],
       ),

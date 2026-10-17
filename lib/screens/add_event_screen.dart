@@ -6,6 +6,7 @@ import '../services/user_errors.dart';
 import '../theme.dart';
 import '../utils.dart';
 import '../widgets/common.dart';
+import '../widgets/form_exit_guard.dart';
 import 'log_match_screen.dart';
 import 'log_session_screen.dart';
 
@@ -25,11 +26,19 @@ String _typeLabel(String t) {
 
 /// Modal "Nowe wydarzenie" (kalendarz).
 class AddEventScreen extends StatefulWidget {
-  const AddEventScreen({super.key, this.initialDate, this.editing, this.initialType = 'training', this.isPlanned = true});
+  const AddEventScreen({
+    super.key,
+    this.initialDate,
+    this.editing,
+    this.initialType = 'training',
+    this.isPlanned = true,
+  });
 
   final String? initialDate;
+
   /// Typ wybrany przez przycisk otwierający formularz.
   final String initialType;
+
   /// Kalendarz planuje aktywność, dziennik zapisuje wykonaną.
   final bool isPlanned;
 
@@ -45,15 +54,21 @@ class _AddEventScreenState extends State<AddEventScreen> {
   late final TextEditingController _date = TextEditingController(
     text: _e != null ? first10(_e.date) : (widget.initialDate ?? todayIso()),
   );
-  late final TextEditingController _time =
-      TextEditingController(text: _e?.time ?? '17:30');
-  late final TextEditingController _title =
-      TextEditingController(text: _e?.title ?? '');
-  late final TextEditingController _description =
-      TextEditingController(text: _e?.description ?? '');
+  late final TextEditingController _time = TextEditingController(
+    text: _e?.time ?? '17:30',
+  );
+  late final TextEditingController _title = TextEditingController(
+    text: _e?.title ?? '',
+  );
+  late final TextEditingController _description = TextEditingController(
+    text: _e?.description ?? '',
+  );
 
   late String _type = _e?.type ?? widget.initialType;
   bool _saving = false;
+  final _exitKey = GlobalKey<FormExitGuardState>();
+  String _fingerprint() =>
+      [_date.text, _time.text, _title.text, _description.text].join('\u0000');
 
   @override
   void initState() {
@@ -88,7 +103,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
           title: _title.text.trim(),
           description: _description.text.trim(),
         );
-        if (mounted) Navigator.of(context).pop(true);
+        if (mounted) await _exitKey.currentState!.finish(true);
         return;
       }
       await Api.createEvent(
@@ -99,10 +114,11 @@ class _AddEventScreenState extends State<AddEventScreen> {
         description: _description.text,
       );
       if (!mounted) return;
-      Navigator.of(context).pop(true);
+      await _exitKey.currentState!.finish(true);
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(friendlyError(e))));
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(friendlyError(e))));
         setState(() => _saving = false);
       }
     }
@@ -117,7 +133,29 @@ class _AddEventScreenState extends State<AddEventScreen> {
             ChipOption(
               label: _typeLabel(t),
               selected: _type == t,
-              onTap: () => setState(() => _type = t),
+              onTap: () async {
+                if (t == _type) return;
+                final change = await showDialog<bool>(
+                  context: context,
+                  builder: (ctx) => AlertDialog(
+                    title: const Text('Zmienić typ aktywności?'),
+                    content: const Text(
+                      'Pola bieżącego formularza zostaną wyczyszczone. Data pozostanie bez zmian.',
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(ctx, false),
+                        child: const Text('Anuluj'),
+                      ),
+                      TextButton(
+                        onPressed: () => Navigator.pop(ctx, true),
+                        child: const Text('Zmień typ'),
+                      ),
+                    ],
+                  ),
+                );
+                if (change == true && mounted) setState(() => _type = t);
+              },
             ),
         ],
       ),
@@ -134,9 +172,12 @@ class _AddEventScreenState extends State<AddEventScreen> {
         kind: _type,
         editingEvent: _e,
         initialDate: _date.text,
+        onDateChanged: (value) => _date.text = value,
         title: _e != null
             ? 'Edytuj trening'
-            : widget.isPlanned ? 'Zaplanuj trening' : 'Zapisz trening',
+            : widget.isPlanned
+            ? 'Zaplanuj trening'
+            : 'Zapisz trening',
         header: _e == null ? _typeSelector() : null,
         isPlanned: widget.isPlanned,
       );
@@ -146,69 +187,86 @@ class _AddEventScreenState extends State<AddEventScreen> {
         key: const ValueKey<String>('match'),
         editingEvent: _e,
         initialDate: _date.text,
+        onDateChanged: (value) => _date.text = value,
         title: _e != null
             ? 'Edytuj mecz'
-            : widget.isPlanned ? 'Zaplanuj mecz' : 'Zapisz mecz',
+            : widget.isPlanned
+            ? 'Zaplanuj mecz'
+            : 'Zapisz mecz',
         header: _typeSelector(),
         isPlanned: widget.isPlanned,
       );
     }
     final c = context.c;
     final canSave = _title.text.trim().isNotEmpty && !_saving;
-    return Scaffold(
-      backgroundColor: c.surface,
-      body: Column(
-        children: [
-          ModalHeader(
-            title: _e != null ? 'Edytuj wydarzenie' : 'Nowe wydarzenie',
-            onClose: () => Navigator.of(context).pop(),
-          ),
-          Expanded(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.fromLTRB(Sp.lg, Sp.lg, Sp.lg, Sp.xxxl),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  if (_e == null) _typeSelector(),
-                  const FieldLabel('Data'),
-                  DateField(controller: _date),
-                  const SizedBox(height: Sp.lg),
-                  const FieldLabel('Godzina'),
-                  TimeField(controller: _time),
-                  const SizedBox(height: Sp.lg),
-                  const FieldLabel('Tytuł'),
-                  AppTextField(
-                    controller: _title,
-                    hint: _type == 'note' ? 'Wpisz tytuł notatki' : 'Wpisz tytuł wydarzenia',
-                  ),
-                  if (_type == 'note' && _title.text.trim().isEmpty)
-                    Padding(
-                      padding: const EdgeInsets.only(top: 6),
-                      child: Text('Wpisz tytuł, aby zapisać notatkę.',
-                          style: manrope(size: 12, color: c.muted)),
+    return FormExitGuard(
+      key: _exitKey,
+      fingerprint: _fingerprint,
+      listenables: [_date, _time, _title, _description],
+      child: Scaffold(
+        backgroundColor: c.surface,
+        body: Column(
+          children: [
+            ModalHeader(
+              title: _e != null ? 'Edytuj wydarzenie' : 'Nowe wydarzenie',
+              onClose: () => _exitKey.currentState!.close(),
+            ),
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.fromLTRB(
+                  Sp.lg,
+                  Sp.lg,
+                  Sp.lg,
+                  Sp.xxxl,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    if (_e == null) _typeSelector(),
+                    const FieldLabel('Data'),
+                    DateField(controller: _date),
+                    const SizedBox(height: Sp.lg),
+                    const FieldLabel('Godzina'),
+                    TimeField(controller: _time),
+                    const SizedBox(height: Sp.lg),
+                    const FieldLabel('Tytuł'),
+                    AppTextField(
+                      controller: _title,
+                      hint: _type == 'note'
+                          ? 'Wpisz tytuł notatki'
+                          : 'Wpisz tytuł wydarzenia',
                     ),
-                  const SizedBox(height: Sp.lg),
-                  const FieldLabel('Opis / uwagi'),
-                  AppTextField(
-                    controller: _description,
-                    multiline: true,
-                    minLines: 4,
-                    hint: 'Co trenujemy, nad czym pracujemy...',
-                  ),
-                  PrimaryButton(
-                    label: _saving
-                        ? 'Zapisywanie...'
-                        : _e != null
-                            ? 'Zapisz zmiany'
-                            : 'Dodaj',
-                    marginTop: Sp.xl,
-                    onTap: canSave ? _save : null,
-                  ),
-                ],
+                    if (_type == 'note' && _title.text.trim().isEmpty)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 6),
+                        child: Text(
+                          'Wpisz tytuł, aby zapisać notatkę.',
+                          style: manrope(size: 12, color: c.muted),
+                        ),
+                      ),
+                    const SizedBox(height: Sp.lg),
+                    const FieldLabel('Opis / uwagi'),
+                    AppTextField(
+                      controller: _description,
+                      multiline: true,
+                      minLines: 4,
+                      hint: 'Co trenujemy, nad czym pracujemy...',
+                    ),
+                    PrimaryButton(
+                      label: _saving
+                          ? 'Zapisywanie...'
+                          : _e != null
+                          ? 'Zapisz zmiany'
+                          : 'Dodaj',
+                      marginTop: Sp.xl,
+                      onTap: canSave ? _save : null,
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

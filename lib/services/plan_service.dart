@@ -36,7 +36,9 @@ class PlanService {
           Api.planKey(_s(e['date']), 'Trening klubowy'): EventItem.fromJson(e),
       for (final e in events)
         if (Api._fromPlan(e))
-          Api.planKey(_s(e['date']), _s(e['plan_title'])): EventItem.fromJson(e),
+          Api.planKey(_s(e['date']), _s(e['plan_title'])): EventItem.fromJson(
+            e,
+          ),
       // Ręczne zaplanowane treningi/mecze - powiązane z planem przez
       // plan_link (ustawiane w _addPlanDay przy już istniejącym wydarzeniu).
       for (final e in events)
@@ -85,10 +87,12 @@ class PlanService {
     }
 
     List<Map<String, dynamic>>? days;
+    var source = 'offline';
 
     if (Llm.enabled) {
       try {
-        var prompt = 'Zawodnik: '
+        var prompt =
+            'Zawodnik: '
             'imię=${_orDefault(profile['name'], 'brak')}, '
             'wiek=${_orDefault(profile['age'], 'brak')}, '
             'pozycja=${_orDefault(profile['position'], 'brak')}, '
@@ -105,31 +109,38 @@ class PlanService {
         if (scheduled.isNotEmpty) {
           final b = StringBuffer()
             ..writeln()
-            ..writeln('Zaplanowane przez zawodnika w kalendarzu (PRIORYTET - te dni są zajęte):');
+            ..writeln(
+              'Zaplanowane przez zawodnika w kalendarzu (PRIORYTET - te dni są zajęte):',
+            );
           for (final entry in scheduled.entries) {
             for (final e in entry.value) {
               final type = _s(e['type']);
               final label = type == 'match'
                   ? 'Mecz'
                   : type == 'club_training'
-                      ? 'Trening klubowy'
-                      : 'Trening';
+                  ? 'Trening klubowy'
+                  : 'Trening';
               final time = _s(e['time']);
-              final dur = _i(e['duration_min']) > 0 ? '${_i(e['duration_min'])} min' : 'brak danych';
+              final dur = _i(e['duration_min']) > 0
+                  ? '${_i(e['duration_min'])} min'
+                  : 'brak danych';
               final focus = _s(e['focus']);
               final intensity = _s(e['intensity']);
               final description = _s(e['description']);
               b.writeln(
-                  '- ${entry.key}${time.isNotEmpty ? ' ${time}' : ''}: $label – ${_s(e['title'])}'
-                  '${focus.isNotEmpty ? ' (obszar: $focus)' : ''}'
-                  '${dur != 'brak danych' ? ' ($dur)' : ''}'
-                  '${intensity.isNotEmpty ? ' (intensywność: $intensity)' : ''}'
-                  '${description.isNotEmpty ? ' (opis: $description)' : ''}'
-                  '. W tym dniu NIE układaj własnego treningu - powtórz tylko focus i tytuł tego wydarzenia, '
-                  'steps puste (zostanie uzupełnione automatycznie).');
+                '- ${entry.key}${time.isNotEmpty ? ' ${time}' : ''}: $label – ${_s(e['title'])}'
+                '${focus.isNotEmpty ? ' (obszar: $focus)' : ''}'
+                '${dur != 'brak danych' ? ' ($dur)' : ''}'
+                '${intensity.isNotEmpty ? ' (intensywność: $intensity)' : ''}'
+                '${description.isNotEmpty ? ' (opis: $description)' : ''}'
+                '. W tym dniu NIE układaj własnego treningu - powtórz tylko focus i tytuł tego wydarzenia, '
+                'steps puste (zostanie uzupełnione automatycznie).',
+              );
             }
           }
-          b.writeln('Te wydarzenia mają pierwszeństwo nad pozostałymi zasadami.');
+          b.writeln(
+            'Te wydarzenia mają pierwszeństwo nad pozostałymi zasadami.',
+          );
           prompt = '$prompt\n${b.toString()}';
         }
         final raw = await Llm.complete(
@@ -167,15 +178,18 @@ class PlanService {
               'description': _s(d['description']),
               'steps': d['steps'] is List
                   ? (d['steps'] as List)
-                      .map(_s)
-                      .where((x) => x.trim().isNotEmpty)
-                      .take(8)
-                      .toList()
+                        .map(_s)
+                        .where((x) => x.trim().isNotEmpty)
+                        .take(8)
+                        .toList()
                   : <String>[],
               'tip': _s(d['tip']),
             });
           }
-          if (built.length == 7) days = built;
+          if (built.length == 7) {
+            days = built;
+            source = 'online';
+          }
         }
       } catch (_) {
         days = null;
@@ -189,9 +203,13 @@ class PlanService {
       final priorities = <String>['technika', 'taktyka', 'motoryka'];
       for (var i = 0; i < days.length; i++) {
         final day = days[i];
-        if (_s(day['focus']) == 'Odpoczynek' || _clubDays(profile).contains(i + 1)) continue;
+        if (_s(day['focus']) == 'Odpoczynek' ||
+            _clubDays(profile).contains(i + 1))
+          continue;
         final area = priorities[i % priorities.length];
-        final matching = library.where((e) => _s(e['area']).toLowerCase() == area).toList();
+        final matching = library
+            .where((e) => _s(e['area']).toLowerCase() == area)
+            .toList();
         if (matching.isEmpty) continue;
         final exercise = matching[(week.monday.day + i) % matching.length];
         day['title'] = _s(exercise['title']);
@@ -199,7 +217,8 @@ class PlanService {
         day['duration_min'] = _i(exercise['duration_min']).clamp(10, 60);
         day['intensity'] = _s(exercise['intensity']);
         day['description'] = _s(exercise['goal']);
-        day['steps'] = (exercise['steps'] as List?)?.map(_s).toList() ?? <String>[];
+        day['steps'] =
+            (exercise['steps'] as List?)?.map(_s).toList() ?? <String>[];
         day['tip'] = _s(exercise['regression']);
       }
     }
@@ -214,6 +233,7 @@ class PlanService {
       'week_start': dateIso(week.monday),
       'days': days,
       'generated_at': _nowIso(),
+      'source': source,
     };
     await LocalDb.setDoc('weekly_plan_${week.id}', plan);
     return WeeklyPlan.fromJson(plan);

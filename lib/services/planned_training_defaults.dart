@@ -24,7 +24,8 @@ class PlannedTrainingDefaults {
   final String toImprove;
   final String notes;
 
-  static String _text(dynamic value) => value == null ? '' : value.toString().trim();
+  static String _text(dynamic value) =>
+      value == null ? '' : value.toString().trim();
 
   static String _descriptionField(String description, List<String> labels) {
     for (final line in description.split('\n')) {
@@ -55,8 +56,8 @@ class PlannedTrainingDefaults {
       final focus = _text(details['focus']).isNotEmpty
           ? _text(details['focus'])
           : event.focus.isNotEmpty
-              ? event.focus
-              : _descriptionField(description, <String>['Obszary:']);
+          ? event.focus
+          : _descriptionField(description, <String>['Obszary:']);
       focuses = focus
           .split(',')
           .map((f) => f.trim())
@@ -65,8 +66,9 @@ class PlannedTrainingDefaults {
     }
 
     final savedDuration = _positiveNumber(details['duration_min']);
-    final legacyDurationText =
-        _descriptionField(description, <String>['Czas:']);
+    final legacyDurationText = _descriptionField(description, <String>[
+      'Czas:',
+    ]);
     final legacyDurationMatch = RegExp(r'\d+').firstMatch(legacyDurationText);
     final legacyDuration = legacyDurationMatch == null
         ? null
@@ -75,8 +77,8 @@ class PlannedTrainingDefaults {
     final rawIntensity = _text(details['intensity']).isNotEmpty
         ? _text(details['intensity'])
         : event.intensity.isNotEmpty
-            ? event.intensity
-            : _descriptionField(description, <String>['Intensywność:']);
+        ? event.intensity
+        : _descriptionField(description, <String>['Intensywność:']);
     final intensity = switch (rawIntensity.toLowerCase()) {
       'low' || 'niska' => 'low',
       'high' || 'wysoka' => 'high',
@@ -84,14 +86,17 @@ class PlannedTrainingDefaults {
     };
 
     final savedRating = _positiveNumber(details['rating']);
-    final legacyRating = RegExp(r'\d+').firstMatch(_descriptionField(
-      description, <String>['Planowana ocena:', 'Ocena:'],
-    ));
-    final rating = (savedRating ??
-            (legacyRating != null ? int.tryParse(legacyRating.group(0)!) : null) ??
-            3)
-        .clamp(1, 5)
-        .toInt();
+    final legacyRating = RegExp(r'\d+').firstMatch(
+      _descriptionField(description, <String>['Planowana ocena:', 'Ocena:']),
+    );
+    final rating =
+        (savedRating ??
+                (legacyRating != null
+                    ? int.tryParse(legacyRating.group(0)!)
+                    : null) ??
+                0)
+            .clamp(0, 5)
+            .toInt();
 
     String savedText(String key, List<String> labels) {
       final value = _text(details[key]);
@@ -100,13 +105,17 @@ class PlannedTrainingDefaults {
 
     return PlannedTrainingDefaults(
       date: first10(event.date),
-      durationMin: savedDuration ??
+      durationMin:
+          savedDuration ??
           (event.durationMin > 0 ? event.durationMin : legacyDuration),
       focuses: focuses,
       intensity: intensity,
       rating: rating,
       wentWell: savedText('went_well', <String>['Co było dobrze:']),
-      toImprove: savedText('to_improve', <String>['Do poprawy:', 'Co trzeba poprawić:']),
+      toImprove: savedText('to_improve', <String>[
+        'Do poprawy:',
+        'Co trzeba poprawić:',
+      ]),
       notes: savedText('notes', <String>['Notatka:', 'Notatki:']),
     );
   }

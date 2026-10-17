@@ -71,7 +71,8 @@ void main() {
       'time': '',
       'done': false,
       'created_at': '2026-10-11',
-      'description': 'Czas: 75 min\nObszary: Siła, Mentalność\n'
+      'description':
+          'Czas: 75 min\nObszary: Siła, Mentalność\n'
           'Intensywność: high\nPlanowana ocena: 5/5\n'
           'Co było dobrze: Sprinty\nDo poprawy: Oddech\n'
           'Notatka: Rozciąganie',
@@ -86,82 +87,104 @@ void main() {
     expect(fields.notes, 'Rozciąganie');
   });
 
-  testWidgets('completion form shows prefilled plan and Trening wykonany action', (tester) async {
-    await tester.pumpWidget(inApp(LogSessionScreen(
-      completingEvent: plannedTraining(),
-    )));
+  testWidgets(
+    'completion form shows prefilled plan and Trening wykonany action',
+    (tester) async {
+      await tester.pumpWidget(
+        inApp(LogSessionScreen(completingEvent: plannedTraining())),
+      );
 
-    final dateField = tester.widget<DateField>(find.byType(DateField));
-    expect(dateField.controller.text, '2026-10-13');
+      final dateField = tester.widget<DateField>(find.byType(DateField));
+      expect(dateField.controller.text, '2026-10-13');
 
-    final chips = tester.widgetList<ChipOption>(find.byType(ChipOption)).toList();
-    expect(chips.firstWhere((c) => c.label == 'Prowadzenie').selected, isTrue);
-    expect(chips.firstWhere((c) => c.label == 'Strzał').selected, isTrue);
-    expect(chips.firstWhere((c) => c.label == 'Wysoka').selected, isTrue);
-    expect(tester.widget<RatingStars>(find.byType(RatingStars)).rating, 4);
+      final chips = tester
+          .widgetList<ChipOption>(find.byType(ChipOption))
+          .toList();
+      expect(
+        chips.firstWhere((c) => c.label == 'Prowadzenie').selected,
+        isTrue,
+      );
+      expect(chips.firstWhere((c) => c.label == 'Strzał').selected, isTrue);
+      expect(chips.firstWhere((c) => c.label == 'Wysoka').selected, isTrue);
+      expect(tester.widget<RatingStars>(find.byType(RatingStars)).rating, 4);
 
-    final values = tester
-        .widgetList<AppTextField>(find.byType(AppTextField))
-        .map((w) => w.controller.text)
-        .toList();
-    expect(values, containsAll(<String>[
-      '60', 'Dokładne podania', 'Gra słabszą nogą', 'Ćwiczenie podań',
-    ]));
-    expect(tester.widget<PrimaryButton>(find.byType(PrimaryButton)).label,
-        'Trening wykonany');
-    expect(find.byType(TrainingDetailsScreen), findsNothing);
-  });
+      final values = tester
+          .widgetList<AppTextField>(find.byType(AppTextField))
+          .map((w) => w.controller.text)
+          .toList();
+      expect(
+        values,
+        containsAll(<String>[
+          '60',
+          'Dokładne podania',
+          'Gra słabszą nogą',
+          'Ćwiczenie podań',
+        ]),
+      );
+      expect(
+        tester.widget<PrimaryButton>(find.byType(PrimaryButton)).label,
+        'Trening wykonany',
+      );
+      expect(find.byType(TrainingDetailsScreen), findsNothing);
+    },
+  );
 
-  testWidgets('calendar checkmark immediately opens one prefilled completion form and saves linked training',
-      (tester) async {
-    final today = todayIso();
-    await Api.createTraining(
-      date: today,
-      durationMin: 60,
-      focuses: <String>['Prowadzenie', 'Strzał'],
-      intensity: 'high',
-      rating: 4,
-      wentWell: 'Dokładne podania',
-      toImprove: 'Gra słabszą nogą',
-      notes: 'Ćwiczenie podań',
-      isPlanned: true,
-    );
-    final original = (await LocalDb.list('events')).single;
-    expect(await LocalDb.list('trainings'), isEmpty);
+  testWidgets(
+    'calendar checkmark immediately opens one prefilled completion form and saves linked training',
+    (tester) async {
+      final today = todayIso();
+      await Api.createTraining(
+        date: today,
+        durationMin: 60,
+        focuses: <String>['Prowadzenie', 'Strzał'],
+        intensity: 'high',
+        rating: 4,
+        wentWell: 'Dokładne podania',
+        toImprove: 'Gra słabszą nogą',
+        notes: 'Ćwiczenie podań',
+        isPlanned: true,
+      );
+      final original = (await LocalDb.list('events')).single;
+      expect(await LocalDb.list('trainings'), isEmpty);
 
-    final selected = ValueNotifier<int>(1);
-    addTearDown(selected.dispose);
-    await tester.pumpWidget(inApp(CalendarScreen(selected: selected, index: 1)));
-    await tester.pumpAndSettle();
+      final selected = ValueNotifier<int>(1);
+      addTearDown(selected.dispose);
+      await tester.pumpWidget(
+        inApp(CalendarScreen(selected: selected, index: 1)),
+      );
+      await tester.pumpAndSettle();
 
-    final checkmark = find.byIcon(Icons.radio_button_unchecked);
-    await tester.ensureVisible(checkmark);
-    await tester.tap(checkmark);
-    await tester.pumpAndSettle();
+      final checkmark = find.byIcon(Icons.radio_button_unchecked);
+      await tester.ensureVisible(checkmark);
+      await tester.tap(checkmark);
+      await tester.pumpAndSettle();
 
-    expect(find.byType(TrainingDetailsScreen), findsNothing);
-    expect(find.byType(LogSessionScreen), findsOneWidget);
-    expect(tester.widget<RatingStars>(find.byType(RatingStars)).rating, 4);
-    expect(tester.widget<PrimaryButton>(find.byType(PrimaryButton)).label,
-        'Trening wykonany');
+      expect(find.byType(TrainingDetailsScreen), findsNothing);
+      expect(find.byType(LogSessionScreen), findsOneWidget);
+      expect(tester.widget<RatingStars>(find.byType(RatingStars)).rating, 0);
+      expect(
+        tester.widget<PrimaryButton>(find.byType(PrimaryButton)).label,
+        'Trening wykonany',
+      );
 
-    final button = find.byType(PrimaryButton);
-    await tester.ensureVisible(button);
-    await tester.tap(button);
-    await tester.pumpAndSettle();
+      final button = find.byType(PrimaryButton);
+      await tester.ensureVisible(button);
+      await tester.tap(button);
+      await tester.pumpAndSettle();
 
-    final trainings = await LocalDb.list('trainings');
-    final events = await LocalDb.list('events');
-    expect(trainings, hasLength(1));
-    expect(events, hasLength(1));
-    expect(events.single['id'], original['id']);
-    expect(events.single['done'], true);
-    expect(events.single['source_id'], trainings.single['id']);
-    expect(trainings.single['date'], today);
-    expect(trainings.single['focuses'], <String>['Prowadzenie', 'Strzał']);
-    expect(trainings.single['intensity'], 'high');
-    expect(trainings.single['rating'], 4);
-    expect(trainings.single['went_well'], 'Dokładne podania');
-    expect(trainings.single['to_improve'], 'Gra słabszą nogą');
-  });
+      final trainings = await LocalDb.list('trainings');
+      final events = await LocalDb.list('events');
+      expect(trainings, hasLength(1));
+      expect(events, hasLength(1));
+      expect(events.single['id'], original['id']);
+      expect(events.single['done'], true);
+      expect(events.single['source_id'], trainings.single['id']);
+      expect(trainings.single['date'], today);
+      expect(trainings.single['focuses'], <String>['Prowadzenie', 'Strzał']);
+      expect(trainings.single['intensity'], 'high');
+      expect(trainings.single['rating'], 0);
+      expect(trainings.single['went_well'], '');
+      expect(trainings.single['to_improve'], '');
+    },
+  );
 }
