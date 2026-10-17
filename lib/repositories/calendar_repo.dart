@@ -124,6 +124,17 @@ class CalendarRepo {
     if (e['done'] == true || _s(e['source_id']).isNotEmpty) {
       throw ApiException(409, 'Conflict', 'Completed activity cannot be edited as a plan');
     }
+    if (_s(e['source']) == 'club') {
+      // Ręczna edycja pojedynczego terminu ma pierwszeństwo przed profilem.
+      e['club_override'] = true;
+      final oldDate = first10(_s(e['date']));
+      if (oldDate != date) {
+        final skipped = await LocalDb.getDoc('club_skipped');
+        final dates = (skipped?['dates'] as List?)?.map(_s).toSet() ?? <String>{};
+        dates.add(oldDate);
+        await LocalDb.setDoc('club_skipped', <String, dynamic>{'dates': dates.toList()});
+      }
+    }
     e.addAll(details);
     e['date'] = date;
     e['title'] = title;
@@ -195,3 +206,4 @@ class CalendarRepo {
     });
   }
 }
+

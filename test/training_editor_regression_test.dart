@@ -109,6 +109,26 @@ void main() {
     expect(completing.mode, TrainingFormMode.complete);
   });
 
+  test('manual club plan changes survive profile synchronization', () async {
+    final today = DateTime.now();
+    await LocalDb.setDoc('profile', <String, dynamic>{
+      'club_days': [today.weekday], 'club_time': '17:30', 'club_duration_min': 90,
+    });
+    await Api.synchronizeCalendar();
+    final original = (await Api.listEvents()).firstWhere((e) => e.date == todayIso());
+    final moved = dateIso(DateTime(today.year, today.month, today.day + 1));
+    await Api.updatePlannedActivity(original.id, date: moved,
+      title: 'Trening klubowy: Strzał', description: 'Zmieniony termin',
+      details: <String, dynamic>{'duration_min': 65, 'focuses': ['Strzał']});
+    await Api.synchronizeCalendar();
+    final events = await Api.listEvents();
+    final edited = events.singleWhere((e) => e.id == original.id);
+    expect(edited.date, moved);
+    expect(edited.durationMin, 65);
+    expect(events.where((e) => e.date == todayIso()), isEmpty);
+    expect(await LocalDb.list('trainings'), isEmpty);
+  });
+
   test('progress uses requested date for streak independently of display limit', () async {
     await LocalDb.saveList('trainings', [
       for (var day = 1; day <= 8; day++) <String, dynamic>{

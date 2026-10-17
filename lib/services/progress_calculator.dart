@@ -25,7 +25,7 @@ class ProgressCalculator {
     String dayAgo(int i) => dateIso(DateTime(now.year, now.month, now.day - i));
     final history = await LocalDb.exportAll();
     final completedPlanWeek = AchievementService.hasCompletedPlanWeek(
-      history, trainings, matches,
+      history, trainings, matches, asOf: now,
     );
     final weekSessions = <int>[for (var i = 6; i >= 0; i--) trainings.where((t) => day(t) == dayAgo(i)).length + matches.where((m) => day(m) == dayAgo(i)).length];
     return Progress.fromJson(<String, dynamic>{

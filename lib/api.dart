@@ -601,7 +601,8 @@ class Api {
     // Usuń / zaktualizuj przyszłe, niewykonane treningi klubowe.
     final before = events.length;
     events.removeWhere((e) {
-      if (_s(e['source']) != 'club' || e['done'] == true) return false;
+      if (_s(e['source']) != 'club' || e['done'] == true ||
+          e['club_override'] == true) return false;
       final d = DateTime.tryParse(first10(_s(e['date'])));
       if (d == null || first10(_s(e['date'])).compareTo(today) < 0) {
         return false;
@@ -610,7 +611,8 @@ class Api {
     });
     if (events.length != before) changed = true;
     for (final e in events) {
-      if (_s(e['source']) != 'club' || e['done'] == true) continue;
+      if (_s(e['source']) != 'club' || e['done'] == true ||
+          e['club_override'] == true) continue;
       if (_s(e['time']) != time || _i(e['duration_min']) != dur) {
         e['time'] = time;
         e['duration_min'] = dur;
@@ -987,3 +989,4 @@ class Api {
 
   static Future<String> chat(String sessionId, String message) => CoachService.chat(sessionId, message);
 }
+
