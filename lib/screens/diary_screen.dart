@@ -437,11 +437,11 @@ class _DiaryScreenState extends State<DiaryScreen> {
     required Set<String> types,
     required VoidCallback onTap,
   }) {
-    return AppTapTarget(
+    return Expanded(child: AppTapTarget(
       behavior: HitTestBehavior.opaque,
       onTap: onTap,
       child: Container(
-        width: 42,
+        width: double.infinity,
         padding: const EdgeInsets.symmetric(vertical: Sp.sm),
         decoration: BoxDecoration(
           color: isSelected
@@ -499,7 +499,7 @@ class _DiaryScreenState extends State<DiaryScreen> {
           ],
         ),
       ),
-    );
+    ));
   }
 
   /// Tło dobierane do rzeczywistego rodzaju aktywności wybranego dnia.

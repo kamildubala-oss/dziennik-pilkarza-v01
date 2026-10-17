@@ -72,16 +72,18 @@ class _ProgressScreenState extends State<ProgressScreen> {
     }
   }
 
-  Widget _card(List<Widget> children) => Container(
-    margin: const EdgeInsets.only(bottom: 16),
-    padding: const EdgeInsets.all(16),
-    decoration: BoxDecoration(
+  Widget _card(List<Widget> children) => Padding(
+    padding: const EdgeInsets.only(bottom: 16),
+    child: Material(
       color: context.c.surfaceSecondary,
       borderRadius: BorderRadius.circular(16),
-    ),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: withGap(children, height: 8),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: withGap(children, height: 8),
+        ),
+      ),
     ),
   );
   Widget _error(String message, VoidCallback retry) => _card([
@@ -144,7 +146,6 @@ class _ProgressScreenState extends State<ProgressScreen> {
       LinearProgressIndicator(
         value: stats.weekCompleted / stats.weekPlanned,
         semanticsLabel: 'Realizacja tygodnia',
-        semanticsValue: '${stats.weekCompleted} z ${stats.weekPlanned}',
       ),
     Text(
       stats.weekPlanned == 0
@@ -297,15 +298,12 @@ class _ProgressScreenState extends State<ProgressScreen> {
             LinearProgressIndicator(
               value: (stats.skillRadarRecent[area] ?? 0) / maxCount,
               semanticsLabel: '$area, ostatnie 14 dni',
-              semanticsValue: '${stats.skillRadarRecent[area] ?? 0} treningów',
             ),
             const SizedBox(height: 4),
             LinearProgressIndicator(
               value: (stats.skillRadarPrevious[area] ?? 0) / maxCount,
               color: context.c.muted,
               semanticsLabel: '$area, poprzednie 14 dni',
-              semanticsValue:
-                  '${stats.skillRadarPrevious[area] ?? 0} treningów',
             ),
           ],
         ),
@@ -420,7 +418,6 @@ class _ProgressScreenState extends State<ProgressScreen> {
         LinearProgressIndicator(
           value: stats.totalTrainings / next,
           semanticsLabel: 'Postęp do odznaki',
-          semanticsValue: '${stats.totalTrainings} z $next treningów',
         ),
       ExpansionTile(
         tilePadding: EdgeInsets.zero,
