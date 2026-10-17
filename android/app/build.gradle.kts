@@ -48,6 +48,13 @@ flutter {
 }
 
 dependencies {
+    // Instrumentowana aplikacja release oraz jej test muszą rozwiązać te
+    // same wersje bibliotek runnera. Zwykły APK nie dostaje tych zależności.
+    if (project.hasProperty("startupSmoke")) {
+        implementation("androidx.test:runner:1.6.2")
+        implementation("androidx.test:rules:1.6.1")
+        implementation("junit:junit:4.13.2")
+    }
     androidTestImplementation("androidx.test:runner:1.6.2")
     androidTestImplementation("androidx.test:rules:1.6.1")
     androidTestImplementation("junit:junit:4.13.2")
