@@ -239,15 +239,15 @@ class LocalDb {
           }
           if (name == 'trainings') {
             _checkNumber(record, 'duration_min', 0, 600, label);
-            _checkNumber(record, 'rating', 1, 5, label);
+            _checkNumber(record, 'rating', 0, 5, label);
           } else if (name == 'matches') {
             _checkNumber(record, 'minutes_played', 0, 180, label);
             _checkNumber(record, 'goals', 0, 20, label);
             _checkNumber(record, 'assists', 0, 20, label);
-            _checkNumber(record, 'rating', 1, 5, label);
+            _checkNumber(record, 'rating', 0, 5, label);
           } else if (name == 'events') {
             _checkNumber(record, 'duration_min', 0, 600, label);
-            _checkNumber(record, 'rating', 1, 5, label);
+            _checkNumber(record, 'rating', 0, 5, label);
             _checkNumber(record, 'minutes_played', 0, 180, label);
             _checkNumber(record, 'goals', 0, 20, label);
             _checkNumber(record, 'assists', 0, 20, label);

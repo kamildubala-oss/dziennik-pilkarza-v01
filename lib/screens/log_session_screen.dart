@@ -125,7 +125,7 @@ class _LogSessionScreenState extends State<LogSessionScreen> {
         widget.initialIntensity ?? widget.editingEvent?.intensity;
     return _intensities.contains(value) ? (value ?? 'medium') : 'medium';
   }();
-  late int _rating = _e != null && _e.rating >= 1 ? _e.rating : _planned?.rating ?? (widget.editingEvent?.details['rating'] as int?) ?? 3;
+  late int _rating = _e != null && _e.rating >= 0 ? _e.rating : _planned?.rating ?? (widget.editingEvent?.details['rating'] as int?) ?? 0;
   bool _saving = false;
 
   @override
@@ -262,7 +262,7 @@ class _LogSessionScreenState extends State<LogSessionScreen> {
                     ),
                   ),
                   LabeledField(
-                    label: 'Ocena treningu',
+                    label: 'Jak oceniasz swój trening?',
                     child: RatingStars(
                       rating: _rating,
                       onChanged: (n) => setState(() => _rating = n),

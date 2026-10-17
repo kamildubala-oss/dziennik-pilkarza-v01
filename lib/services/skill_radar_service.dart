@@ -12,7 +12,9 @@ class SkillRadarService {
   static const List<String> axes = <String>['Technika', 'Strzał', 'Taktyka', 'Motoryka', 'Mentalność'];
 
   static double ratingWeight(dynamic r) {
-    final v = (r is num ? r.toInt() : 3).clamp(1, 5);
+    // Bez oceny liczy się aktywność, bez premii ani kary za samoocenę.
+    if (r is! num || r < 1 || r > 5) return 1.0;
+    final v = r.toInt();
     return 0.5 + (v - 1) * 0.175;
   }
 

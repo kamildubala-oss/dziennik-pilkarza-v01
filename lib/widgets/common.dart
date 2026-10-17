@@ -329,30 +329,40 @@ class ChipsWrap extends StatelessWidget {
 
 /// Gwiazdki oceny 1-5.
 class RatingStars extends StatelessWidget {
-  const RatingStars({super.key, required this.rating, required this.onChanged});
+  const RatingStars({super.key, required this.rating, required this.onChanged, this.prompt = 'Oceń trening'});
 
+  final String prompt;
   final int rating;
   final ValueChanged<int> onChanged;
 
   @override
   Widget build(BuildContext context) {
     final c = context.c;
-    return Row(
-      children: withGap([
-        for (var n = 1; n <= 5; n++)
-          GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onTap: () => onChanged(n),
-            child: Padding(
-              padding: const EdgeInsets.all(4),
-              child: Icon(
-                n <= rating ? Icons.star : Icons.star_outline,
-                size: 28,
-                color: n <= rating ? c.brandPrimary : c.muted,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(rating == 0 ? '$prompt (opcjonalnie)' : 'Twoja ocena: $rating/5'),
+        const SizedBox(height: 4),
+        Row(mainAxisSize: MainAxisSize.min, children: [
+          for (var n = 1; n <= 5; n++)
+            Semantics(
+              button: true,
+              selected: n == rating,
+              label: '$n z 5',
+              child: GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () => onChanged(n == rating ? 0 : n),
+                child: SizedBox(width: 48, height: 48, child: Icon(
+                  n <= rating ? Icons.star : Icons.star_outline,
+                  size: 28, color: n <= rating ? c.brandPrimary : c.muted,
+                )),
               ),
             ),
-          ),
-      ], width: 4),
+        ]),
+        const Text('1 — słabo · 3 — przeciętnie · 5 — świetnie'),
+        if (rating > 0)
+          TextButton(onPressed: () => onChanged(0), child: const Text('Usuń ocenę')),
+      ],
     );
   }
 }

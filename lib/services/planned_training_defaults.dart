@@ -83,14 +83,14 @@ class PlannedTrainingDefaults {
       _ => 'medium',
     };
 
-    final savedRating = _positiveNumber(details['rating']);
+    final savedRating = details['rating'] == 0 ? 0 : _positiveNumber(details['rating']);
     final legacyRating = RegExp(r'\d+').firstMatch(_descriptionField(
       description, <String>['Planowana ocena:', 'Ocena:'],
     ));
     final rating = (savedRating ??
             (legacyRating != null ? int.tryParse(legacyRating.group(0)!) : null) ??
-            3)
-        .clamp(1, 5)
+            0)
+        .clamp(0, 5)
         .toInt();
 
     String savedText(String key, List<String> labels) {

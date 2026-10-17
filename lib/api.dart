@@ -954,7 +954,7 @@ class Api {
           '- ${first10(_s(t['date']))} ${club ? 'TRENING KLUBOWY' : 'trening własny'}'
           '${_s(t['focus']).isNotEmpty ? ' (${_s(t['focus'])})' : ''}, '
           '${_i(t['duration_min'])} min, intensywność ${_s(t['intensity'])}, '
-          'ocena ${_i(t['rating'])}/5'
+          '${_i(t['rating']) > 0 ? 'ocena ${_i(t['rating'])}/5' : 'bez oceny'}'
           '${clip(t['went_well']).isNotEmpty ? '; dobrze: ${clip(t['went_well'])}' : ''}'
           '${clip(t['to_improve']).isNotEmpty ? '; do poprawy: ${clip(t['to_improve'])}' : ''}'
           '${clip(t['notes']).isNotEmpty ? '; notatki: ${clip(t['notes'])}' : ''}');
@@ -966,7 +966,7 @@ class Api {
           '- ${first10(_s(m['date']))} vs ${_orDefault(m['opponent'], '?')}'
           '${_s(m['result']).isNotEmpty ? ' wynik ${_s(m['result'])}' : ''}, '
           '${_i(m['minutes_played'])} min, gole ${_i(m['goals'])}, asysty ${_i(m['assists'])}, '
-          'ocena ${_i(m['rating'])}/5'
+          '${_i(m['rating']) > 0 ? 'ocena ${_i(m['rating'])}/5' : 'bez oceny'}'
           '${clip(m['went_well']).isNotEmpty ? '; dobrze: ${clip(m['went_well'])}' : ''}'
           '${clip(m['to_improve']).isNotEmpty ? '; do poprawy: ${clip(m['to_improve'])}' : ''}'
           '${clip(m['notes']).isNotEmpty ? '; notatki: ${clip(m['notes'])}' : ''}');

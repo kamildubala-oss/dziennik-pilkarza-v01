@@ -860,7 +860,7 @@ class _DiaryScreenState extends State<DiaryScreen> {
                 ),
                 const SizedBox(height: 2),
                 Text(
-                  '${first10(s.date)} · ${s.duration} min · ocena ${s.rating}/5',
+                  '${first10(s.date)} · ${s.duration} min · ${s.rating > 0 ? 'ocena ${s.rating}/5' : 'bez oceny'}',
                   style: manrope(size: 12, color: c.muted),
                 ),
                 if (s.wentWell.isNotEmpty) ...[
