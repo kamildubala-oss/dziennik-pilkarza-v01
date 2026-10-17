@@ -111,7 +111,7 @@ void main() {
     final selected = ValueNotifier<int>(0);
     addTearDown(selected.dispose);
     await tester.pumpWidget(MaterialApp(theme: buildTheme(AppColors.dark, Brightness.dark),
-      home: CoachScreen(selected: selected, index: 0)));
+      home: Scaffold(body: CoachScreen(selected: selected, index: 0))));
     await tester.pumpAndSettle();
     expect(find.text('Połączenie jeszcze niesprawdzone'), findsOneWidget);
     CoachRuntime.record('online', 'rozmowa', '2026-10-17T12:00:00Z');
