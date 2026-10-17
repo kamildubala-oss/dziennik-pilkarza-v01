@@ -127,7 +127,7 @@ jobs:
         if: always()
         run: |
           mkdir -p build/startup-diagnostics
-          adb logcat -d > build/startup-diagnostics/logcat.txt 2>&1 || true
+          timeout 10s adb logcat -d > build/startup-diagnostics/logcat.txt 2>&1 || true
       - name: Upload startup test reports
         if: always()
         uses: actions/upload-artifact@v4
