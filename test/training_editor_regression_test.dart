@@ -49,7 +49,8 @@ void main() {
 
   Future<void> saveChangedDuration(WidgetTester tester) async {
     final duration = find.descendant(
-      of: find.byType(AppTextField).first, matching: find.byType(TextField));
+      of: find.byWidgetPredicate((widget) => widget is AppTextField &&
+        widget.keyboardType == TextInputType.number), matching: find.byType(TextField));
     await tester.ensureVisible(duration);
     await tester.enterText(duration, '70');
     final save = find.byType(PrimaryButton);
