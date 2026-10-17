@@ -36,12 +36,15 @@ class CoachService {
         'weak_spots': <Map<String, dynamic>>[],
         'generated_at': _nowIso(),
         'note_count': 0,
+        'source': 'offline',
       };
       await LocalDb.setDoc('weak_spots', empty);
+      CoachRuntime.record('offline', 'analiza', _s(empty['generated_at']));
       return WeakSpotsPayload.fromJson(empty);
     }
 
     var spots = <Map<String, dynamic>>[];
+    var source = 'offline';
 
     if (Llm.enabled) {
       try {
@@ -83,6 +86,7 @@ class CoachService {
       }
     }
 
+    if (spots.isNotEmpty) source = 'online';
     if (spots.isEmpty) {
       // Wersja offline - zliczanie słów kluczowych.
       final tally = <String, int>{};
@@ -130,8 +134,10 @@ class CoachService {
       'weak_spots': spots,
       'generated_at': _nowIso(),
       'note_count': notes.length,
+      'source': source,
     };
     await LocalDb.setDoc('weak_spots', payload);
+    CoachRuntime.record(source, 'analiza', _s(payload['generated_at']));
     return WeakSpotsPayload.fromJson(payload);
   }
 
@@ -183,6 +189,7 @@ class CoachService {
     final session = all.where((m) => m['session_id'] == sessionId).toList();
 
     String reply;
+    var source = 'offline';
     if (Llm.enabled) {
       final recent =
           session.length > 20 ? session.sublist(session.length - 20) : session;
@@ -199,6 +206,7 @@ class CoachService {
             <String, String>{'role': 'user', 'content': message},
           ],
         );
+        source = 'online';
       } catch (e) {
         reply = await OfflineCoach.reply(message);
       }
@@ -206,6 +214,7 @@ class CoachService {
       reply = await OfflineCoach.reply(message);
     }
 
+    final generatedAt = _nowIso();
     await LocalDb.synchronized<void>(() async {
       final items = await LocalDb.list('chat_messages');
       items.add(<String, dynamic>{
@@ -220,12 +229,14 @@ class CoachService {
         'session_id': sessionId,
         'role': 'assistant',
         'content': reply,
-        'created_at': _nowIso(),
+        'source': source,
+        'created_at': generatedAt,
       });
       final trimmed =
           items.length > 200 ? items.sublist(items.length - 200) : items;
       await LocalDb.saveList('chat_messages', trimmed);
     });
+    CoachRuntime.record(source, 'rozmowa', generatedAt);
     return reply;
   }
 }

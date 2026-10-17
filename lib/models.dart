@@ -305,12 +305,14 @@ class WeeklyPlan {
     required this.weekStart,
     required this.days,
     required this.generatedAt,
+    this.source = '',
   });
 
   final String id;
   final String weekStart;
   final List<PlanDay> days;
   final String generatedAt;
+  final String source;
 
   factory WeeklyPlan.fromJson(Map<String, dynamic> j) {
     final rawDays = j['days'];
@@ -323,6 +325,7 @@ class WeeklyPlan {
               .toList()
           : <PlanDay>[],
       generatedAt: _asString(j['generated_at']),
+      source: _asString(j['source']),
     );
   }
 }
@@ -403,11 +406,13 @@ class WeakSpotsPayload {
   const WeakSpotsPayload({
     required this.weakSpots,
     required this.generatedAt,
+    this.source = '',
     required this.noteCount,
   });
 
   final List<WeakSpot> weakSpots;
   final String generatedAt;
+  final String source;
   final int noteCount;
 
   factory WeakSpotsPayload.fromJson(Map<String, dynamic> j) {
@@ -419,6 +424,7 @@ class WeakSpotsPayload {
               .toList()
           : <WeakSpot>[],
       generatedAt: _asString(j['generated_at']),
+      source: _asString(j['source']),
       noteCount: _asInt(j['note_count']),
     );
   }
