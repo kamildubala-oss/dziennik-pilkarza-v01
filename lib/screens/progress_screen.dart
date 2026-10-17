@@ -170,7 +170,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                 bg: c.surfaceSecondary,
                 icon: Icons.star,
                 iconColor: c.brandSecondary,
-                value: avg != null ? avg.toStringAsFixed(1) : '0.0',
+                value: avg != null && avg > 0 ? avg.toStringAsFixed(1) : '—',
                 valueColor: c.onSurface,
                 label: 'ŚR. OCENA TRENINGÓW I MECZÓW',
                 labelColor: c.muted,
@@ -280,7 +280,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                 w,
                 Icons.trending_up,
                 'Śr. ocena T+M',
-                avg != null ? avg.toStringAsFixed(1) : '0',
+                avg != null && avg > 0 ? avg.toStringAsFixed(1) : '—',
               ),
             ],
           );

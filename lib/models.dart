@@ -56,6 +56,7 @@ class Training {
   /// Lista obszarów, nad którymi pracował zawodnik.
   final List<String> focuses;
   final String intensity; // low | medium | high
+  /// 0 oznacza brak samooceny; wystawione oceny mają zakres 1–5.
   final int rating;
   final String wentWell;
   final String toImprove;
@@ -78,7 +79,7 @@ class Training {
                 .where((e) => e.isNotEmpty)
                 .toList(),
         intensity: _asString(j['intensity']),
-        rating: _asInt(j['rating'], 3),
+        rating: _asInt(j['rating'], 0),
         wentWell: _asString(j['went_well']),
         toImprove: _asString(j['to_improve']),
         notes: _asString(j['notes']),
@@ -110,6 +111,7 @@ class MatchEntry {
   final int minutesPlayed;
   final int goals;
   final int assists;
+  /// 0 oznacza brak samooceny; wystawione oceny mają zakres 1–5.
   final int rating;
   final String wentWell;
   final String toImprove;
@@ -124,7 +126,7 @@ class MatchEntry {
         minutesPlayed: _asInt(j['minutes_played']),
         goals: _asInt(j['goals']),
         assists: _asInt(j['assists']),
-        rating: _asInt(j['rating'], 3),
+        rating: _asInt(j['rating'], 0),
         wentWell: _asString(j['went_well']),
         toImprove: _asString(j['to_improve']),
         notes: _asString(j['notes']),
@@ -348,6 +350,7 @@ class Progress {
   final int totalGoals;
   final int totalAssists;
   final int streakDays;
+  /// 0 oznacza brak wystawionych ocen, a nie średnią ocenę 0/5.
   final double avgRating;
   final Map<String, int> skillRadarAll;
   final Map<String, int> skillRadarRecent;

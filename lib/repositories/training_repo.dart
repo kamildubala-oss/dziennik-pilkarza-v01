@@ -28,7 +28,7 @@ class TrainingRepo {
       durationMin >= 0 && durationMin <= 600,
       'duration_min must be between 0 and 600',
     );
-    _check(rating >= 1 && rating <= 5, 'rating must be between 1 and 5');
+    _check(rating >= 0 && rating <= 5, 'rating must be between 0 (unrated) and 5');
     _check(focuses.isNotEmpty || kind == 'club_training',
         'focuses must not be empty');
     final doc = <String, dynamic>{
@@ -50,7 +50,7 @@ class TrainingRepo {
         'Czas: $durationMin min',
         'Obszary: ${focuses.join(', ')}',
         'Intensywność: $intensity',
-        'Planowana ocena: $rating/5',
+        if (rating > 0) 'Planowana ocena: $rating/5',
         if (wentWell.trim().isNotEmpty) 'Co było dobrze: $wentWell',
         if (toImprove.trim().isNotEmpty) 'Do poprawy: $toImprove',
         if (notes.trim().isNotEmpty) 'Notatka: $notes',
@@ -150,7 +150,7 @@ class TrainingRepo {
       _check(durationMin >= 0 && durationMin <= 600,
           'Czas treningu musi wynosić od 0 do 600 minut.');
     }
-    _check(rating >= 1 && rating <= 5, 'rating must be between 1 and 5');
+    _check(rating >= 0 && rating <= 5, 'rating must be between 0 (unrated) and 5');
     return LocalDb.synchronized<Training>(() async {
       final items = await LocalDb.list('trainings');
       final idx = items.indexWhere((t) => _s(t['id']) == id);
@@ -193,7 +193,7 @@ class TrainingRepo {
     _check(goals >= 0 && goals <= 20, 'Liczba goli musi wynosić od 0 do 20.');
     _check(assists >= 0 && assists <= 20,
         'Liczba asyst musi wynosić od 0 do 20.');
-    _check(rating >= 1 && rating <= 5, 'rating must be between 1 and 5');
+    _check(rating >= 0 && rating <= 5, 'rating must be between 0 (unrated) and 5');
     return LocalDb.synchronized<MatchEntry>(() async {
       final items = await LocalDb.list('matches');
       final idx = items.indexWhere((m) => _s(m['id']) == id);
@@ -303,7 +303,7 @@ class TrainingRepo {
     );
     _check(goals >= 0 && goals <= 20, 'goals must be between 0 and 20');
     _check(assists >= 0 && assists <= 20, 'assists must be between 0 and 20');
-    _check(rating >= 1 && rating <= 5, 'rating must be between 1 and 5');
+    _check(rating >= 0 && rating <= 5, 'rating must be between 0 (unrated) and 5');
     final doc = <String, dynamic>{
       'id': LocalDb.newId(),
       'date': date,
@@ -325,7 +325,7 @@ class TrainingRepo {
         'Minuty: $minutesPlayed',
         'Bramki: $goals',
         'Asysty: $assists',
-        'Planowana ocena: $rating/5',
+        if (rating > 0) 'Planowana ocena: $rating/5',
         if (wentWell.trim().isNotEmpty) 'Co było dobrze: $wentWell',
         if (toImprove.trim().isNotEmpty) 'Do poprawy: $toImprove',
         if (notes.trim().isNotEmpty) 'Notatka: $notes',

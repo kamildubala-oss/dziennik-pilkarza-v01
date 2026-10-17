@@ -69,7 +69,7 @@ class _LogMatchScreenState extends State<LogMatchScreen> {
   late final TextEditingController _notes =
       TextEditingController(text: _e?.notes ?? (_sourceEvent?.details['notes'] as String?) ?? '');
 
-  late int _rating = _e != null && _e.rating >= 1 ? _e.rating : (_sourceEvent?.details['rating'] as int?) ?? 3;
+  late int _rating = _e != null && _e.rating >= 0 ? _e.rating : (_sourceEvent?.details['rating'] as int?) ?? 0;
   bool _saving = false;
 
   @override
@@ -224,8 +224,9 @@ class _LogMatchScreenState extends State<LogMatchScreen> {
                     ],
                   ),
                   LabeledField(
-                    label: 'Ocena',
+                    label: 'Jak oceniasz swój mecz?',
                     child: RatingStars(
+                      prompt: 'Oceń mecz',
                       rating: _rating,
                       onChanged: (n) => setState(() => _rating = n),
                     ),

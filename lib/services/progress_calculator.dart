@@ -17,7 +17,7 @@ class ProgressCalculator {
     final totalMinutes = trainings.fold<int>(0, (a, t) => a + asInt(t['duration_min'])) + matches.fold<int>(0, (a, m) => a + asInt(m['minutes_played']));
     final totalGoals = matches.fold<int>(0, (a, m) => a + asInt(m['goals']));
     final totalAssists = matches.fold<int>(0, (a, m) => a + asInt(m['assists']));
-    final ratings = <int>[...trainings.map((t) => asInt(t['rating'])), ...matches.map((m) => asInt(m['rating']))];
+    final ratings = <int>[...trainings.map((t) => asInt(t['rating'])), ...matches.map((m) => asInt(m['rating']))].where((r) => r >= 1 && r <= 5).toList();
     final avgRating = ratings.isEmpty ? 0.0 : (ratings.reduce((a, b) => a + b) / ratings.length * 100).round() / 100;
     String day(Map<String, dynamic> e) => first10(asString(e['date']));
     final dates = <String>{...trainings.map(day).where((d) => d.isNotEmpty), ...matches.map(day).where((d) => d.isNotEmpty)};
