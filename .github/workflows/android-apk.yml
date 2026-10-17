@@ -19,13 +19,11 @@ on:
 permissions:
   contents: read
 
-concurrency:
-  # Nowa grupa nie czeka na sprzątanie starej wersji testu emulatora.
-  group: android-apk-startup-v2-${{ github.ref }}
-  cancel-in-progress: true
-
 jobs:
   build-apk:
+    concurrency:
+      group: android-apk-${{ github.ref }}
+      cancel-in-progress: true
     name: Build Android ARM64 APK
     runs-on: ubuntu-latest
     timeout-minutes: 45
@@ -95,6 +93,9 @@ jobs:
           retention-days: 30
 
   startup-release:
+    concurrency:
+      group: android-startup-${{ github.ref }}
+      cancel-in-progress: true
     name: Android release startup smoke test
     runs-on: ubuntu-latest
     timeout-minutes: 30
@@ -109,8 +110,21 @@ jobs:
         with:
           channel: stable
           cache: true
+      - name: Prepare instrumented release dependencies
+        run: |
+          python3 - <<'PYTEST'
+          from pathlib import Path
+          # Tylko aplikacja testowa: plugin integration_test musi być dostępny
+          # dla natywnego runnera także w release. APK użytkownika go nie zawiera.
+          p = Path('pubspec.yaml')
+          text = p.read_text().replace('dev_dependencies:\n  integration_test:\n    sdk: flutter\n', 'dev_dependencies:\n')
+          text = text.replace('\ndependencies:\n', '\ndependencies:\n  integration_test:\n    sdk: flutter\n', 1)
+          p.write_text(text)
+          PYTEST
       - name: Install dependencies
-        run: flutter pub get
+        run: |
+          flutter pub get
+          printf 'sdk.dir=%s\nflutter.sdk=%s\n' "$ANDROID_HOME" "$FLUTTER_ROOT" > android/local.properties
       - name: Enable KVM
         run: sudo chmod 666 /dev/kvm
       - name: Launch and test obfuscated release on Android emulator
@@ -122,7 +136,7 @@ jobs:
           disable-animations: true
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -memory 2048
           script: |
-            ./android/gradlew -p android :app:connectedReleaseAndroidTest -PstartupSmoke=true "-Ptarget=$GITHUB_WORKSPACE/integration_test/startup_test.dart" -Ptarget-platform=android-x64 -Pdart-obfuscation=true "-Psplit-debug-info=$GITHUB_WORKSPACE/build/smoke-symbols" --stacktrace
+            bash ./android/gradlew -p android :app:connectedReleaseAndroidTest -PstartupSmoke=true "-Ptarget=$GITHUB_WORKSPACE/integration_test/startup_test.dart" -Ptarget-platform=android-x64 -Pdart-obfuscation=true "-Psplit-debug-info=$GITHUB_WORKSPACE/build/smoke-symbols" --stacktrace
       - name: Preserve startup diagnostics
         if: always()
         run: |
