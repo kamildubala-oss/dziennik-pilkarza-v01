@@ -30,8 +30,9 @@ class LlmSettings {
   /// Wczytuje zapisany klucz (wywoływane przy starcie aplikacji).
   static Future<void> load() async {
     final sp = await SharedPreferences.getInstance();
-    _custom = (sp.getString(_key) ?? '').trim();
-    _mode = sp.getString(_modeKey) == 'offline' ? 'offline' : 'auto';
+    final key = sp.get(_key);
+    _custom = key is String ? key.trim() : '';
+    _mode = sp.get(_modeKey) == 'offline' ? 'offline' : 'auto';
   }
 
   /// Klucz używany w zapytaniach do AI.
