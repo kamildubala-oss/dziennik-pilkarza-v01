@@ -122,8 +122,7 @@ jobs:
           disable-animations: true
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -memory 2048
           script: |
-            cd android
-            ./gradlew :app:connectedReleaseAndroidTest -PstartupSmoke=true "-Ptarget=$GITHUB_WORKSPACE/integration_test/startup_test.dart" -Ptarget-platform=android-x64 -Pdart-obfuscation=true "-Psplit-debug-info=$GITHUB_WORKSPACE/build/smoke-symbols" --stacktrace
+            ./android/gradlew -p android :app:connectedReleaseAndroidTest -PstartupSmoke=true "-Ptarget=$GITHUB_WORKSPACE/integration_test/startup_test.dart" -Ptarget-platform=android-x64 -Pdart-obfuscation=true "-Psplit-debug-info=$GITHUB_WORKSPACE/build/smoke-symbols" --stacktrace
       - name: Preserve startup diagnostics
         if: always()
         run: |
