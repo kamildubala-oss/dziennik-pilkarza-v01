@@ -214,8 +214,8 @@ ThemeData buildTheme(AppColors c, Brightness brightness) {
       bodyColor: c.onSurface,
       displayColor: c.onSurface,
     ),
-    splashFactory: InkRipple.splashFactory,
-    highlightColor: c.brandPrimary.withValues(alpha: 0.12),
+    splashFactory: NoSplash.splashFactory,
+    highlightColor: Colors.transparent,
     hoverColor: Colors.transparent,
     textSelectionTheme: TextSelectionThemeData(
       cursorColor: c.brandPrimary,
@@ -246,13 +246,10 @@ class ThemeController extends ChangeNotifier {
   Future<void> load() async {
     try {
       final sp = await SharedPreferences.getInstance();
-      final v = sp.get(_key);
+      final v = sp.getString(_key);
       for (final p in ThemePreference.values) {
         if (p.name == v) {
-          if (_preference != p) {
-            _preference = p;
-            notifyListeners();
-          }
+          _preference = p;
           break;
         }
       }

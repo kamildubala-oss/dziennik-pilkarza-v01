@@ -6,14 +6,12 @@ import '../services/user_errors.dart';
 import '../theme.dart';
 import '../utils.dart';
 import '../widgets/common.dart';
-import '../widgets/form_exit_guard.dart';
 
 /// Modal "Zapisz mecz".
 class LogMatchScreen extends StatefulWidget {
   const LogMatchScreen({
     super.key,
     this.initialDate,
-    this.onDateChanged,
     this.title,
     this.header,
     this.plannedEventId,
@@ -26,7 +24,6 @@ class LogMatchScreen extends StatefulWidget {
   /// Edytowany mecz (tryb edycji). Gdy null - nowy wpis.
   final MatchEntry? editing;
   final EventItem? editingEvent;
-
   /// Kalendarz: wykonujemy wcześniej zaplanowany mecz, a nie edytujemy planu.
   final EventItem? completingEvent;
 
@@ -38,7 +35,6 @@ class LogMatchScreen extends StatefulWidget {
 
   /// Data początkowa (RRRR-MM-DD). Domyślnie dzisiaj.
   final String? initialDate;
-  final ValueChanged<String>? onDateChanged;
 
   /// Tytuł okna. Domyślnie jak w dzienniku.
   final String? title;
@@ -52,71 +48,32 @@ class LogMatchScreen extends StatefulWidget {
 
 class _LogMatchScreenState extends State<LogMatchScreen> {
   late final MatchEntry? _e = widget.editing;
-  late final EventItem? _sourceEvent =
-      widget.completingEvent ?? widget.editingEvent;
+  late final EventItem? _sourceEvent = widget.completingEvent ?? widget.editingEvent;
   late final TextEditingController _date = TextEditingController(
-    text: _e != null
-        ? first10(_e.date)
-        : (_sourceEvent?.date ?? widget.initialDate ?? todayIso()),
+    text: _e != null ? first10(_e.date) : (_sourceEvent?.date ?? widget.initialDate ?? todayIso()),
   );
-  late final TextEditingController _opponent = TextEditingController(
-    text: _e?.opponent ?? (_sourceEvent?.details['opponent'] as String?) ?? '',
-  );
-  late final TextEditingController _result = TextEditingController(
-    text: _e?.result ?? (_sourceEvent?.details['result'] as String?) ?? '',
-  );
-  late final TextEditingController _minutes = TextEditingController(
-    text:
-        '${_e?.minutesPlayed ?? _sourceEvent?.details['minutes_played'] ?? 60}',
-  );
-  late final TextEditingController _goals = TextEditingController(
-    text: '${_e?.goals ?? _sourceEvent?.details['goals'] ?? 0}',
-  );
-  late final TextEditingController _assists = TextEditingController(
-    text: '${_e?.assists ?? _sourceEvent?.details['assists'] ?? 0}',
-  );
-  late final TextEditingController _wentWell = TextEditingController(
-    text: _e?.wentWell ?? (_sourceEvent?.details['went_well'] as String?) ?? '',
-  );
-  late final TextEditingController _toImprove = TextEditingController(
-    text:
-        _e?.toImprove ?? (_sourceEvent?.details['to_improve'] as String?) ?? '',
-  );
-  late final TextEditingController _notes = TextEditingController(
-    text: _e?.notes ?? (_sourceEvent?.details['notes'] as String?) ?? '',
-  );
+  late final TextEditingController _opponent =
+      TextEditingController(text: _e?.opponent ?? (_sourceEvent?.details['opponent'] as String?) ?? '');
+  late final TextEditingController _result =
+      TextEditingController(text: _e?.result ?? (_sourceEvent?.details['result'] as String?) ?? '');
+  late final TextEditingController _minutes =
+      TextEditingController(text: '${_e?.minutesPlayed ?? _sourceEvent?.details['minutes_played'] ?? 60}');
+  late final TextEditingController _goals =
+      TextEditingController(text: '${_e?.goals ?? _sourceEvent?.details['goals'] ?? 0}');
+  late final TextEditingController _assists =
+      TextEditingController(text: '${_e?.assists ?? _sourceEvent?.details['assists'] ?? 0}');
+  late final TextEditingController _wentWell =
+      TextEditingController(text: _e?.wentWell ?? (_sourceEvent?.details['went_well'] as String?) ?? '');
+  late final TextEditingController _toImprove =
+      TextEditingController(text: _e?.toImprove ?? (_sourceEvent?.details['to_improve'] as String?) ?? '');
+  late final TextEditingController _notes =
+      TextEditingController(text: _e?.notes ?? (_sourceEvent?.details['notes'] as String?) ?? '');
 
-  late int _rating = _e != null && _e.rating >= 1
-      ? _e.rating
-      : (_sourceEvent?.details['rating'] as int?) ?? 0;
+  late int _rating = _e != null && _e.rating >= 1 ? _e.rating : (_sourceEvent?.details['rating'] as int?) ?? 3;
   bool _saving = false;
-  final _exitKey = GlobalKey<FormExitGuardState>();
-  bool get _isPlan => widget.isPlanned || widget.editingEvent != null;
-  List<TextEditingController> get _controllers => [
-    _date,
-    _opponent,
-    _result,
-    _minutes,
-    _goals,
-    _assists,
-    _wentWell,
-    _toImprove,
-    _notes,
-  ];
-  String _fingerprint() =>
-      [..._controllers.map((c) => c.text), _rating].join('\u0000');
-
-  @override
-  void initState() {
-    super.initState();
-    _date.addListener(_dateChanged);
-  }
-
-  void _dateChanged() => widget.onDateChanged?.call(_date.text);
 
   @override
   void dispose() {
-    _date.removeListener(_dateChanged);
     _date.dispose();
     _opponent.dispose();
     _result.dispose();
@@ -133,9 +90,8 @@ class _LogMatchScreenState extends State<LogMatchScreen> {
 
   bool get _fieldsValid =>
       numberFieldError(_minutes.text, 'Minuty', 0, 180) == null &&
-      (_isPlan ||
-          (numberFieldError(_goals.text, 'Gole', 0, 20) == null &&
-              numberFieldError(_assists.text, 'Asysty', 0, 20) == null));
+      numberFieldError(_goals.text, 'Gole', 0, 20) == null &&
+      numberFieldError(_assists.text, 'Asysty', 0, 20) == null;
 
   Future<void> _save() async {
     if (_saving || !_fieldsValid) return;
@@ -143,21 +99,13 @@ class _LogMatchScreenState extends State<LogMatchScreen> {
     try {
       if (widget.editingEvent != null) {
         final event = widget.editingEvent!;
-        await Api.updatePlannedActivity(
-          event.id,
+        await Api.updatePlannedActivity(event.id,
           date: _date.text,
-          title: _opponent.text.trim().isEmpty
-              ? 'Mecz'
-              : 'Mecz z ${_opponent.text.trim()}',
+          title: _opponent.text.trim().isEmpty ? 'Mecz' : 'Mecz z ${_opponent.text.trim()}',
           description: 'Rywal: ${_opponent.text} · Minuty: ${_minutes.text}',
-          details: <String, dynamic>{
-            'opponent': _opponent.text,
-            'duration_min': _num(_minutes),
-            'minutes_played': _num(_minutes),
-            'notes': _notes.text,
-          },
+          details: <String, dynamic>{'opponent': _opponent.text, 'result': _result.text, 'duration_min': _num(_minutes), 'minutes_played': _num(_minutes), 'goals': _num(_goals), 'assists': _num(_assists), 'rating': _rating, 'went_well': _wentWell.text, 'to_improve': _toImprove.text, 'notes': _notes.text},
         );
-        if (mounted) await _exitKey.currentState!.finish(true);
+        if (mounted) Navigator.of(context).pop(true);
         return;
       }
       final e = _e;
@@ -175,7 +123,7 @@ class _LogMatchScreenState extends State<LogMatchScreen> {
           toImprove: _toImprove.text,
           notes: _notes.text,
         );
-        if (mounted) await _exitKey.currentState!.finish(true);
+        if (mounted) Navigator.of(context).pop(true);
         return;
       }
       await Api.createMatch(
@@ -193,11 +141,10 @@ class _LogMatchScreenState extends State<LogMatchScreen> {
         isPlanned: widget.isPlanned,
       );
       if (!mounted) return;
-      await _exitKey.currentState!.finish(true);
+      Navigator.of(context).pop(true);
     } catch (error) {
       if (mounted) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(friendlyError(error))));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(friendlyError(error))));
         setState(() => _saving = false);
       }
     }
@@ -206,174 +153,122 @@ class _LogMatchScreenState extends State<LogMatchScreen> {
   @override
   Widget build(BuildContext context) {
     final c = context.c;
-    return FormExitGuard(
-      key: _exitKey,
-      fingerprint: _fingerprint,
-      listenables: _controllers,
-      child: Scaffold(
-        backgroundColor: c.surface,
-
-        body: Column(
-          children: [
-            ModalHeader(
-              title:
-                  widget.title ?? (_e != null ? 'Edytuj mecz' : 'Zapisz mecz'),
-              onClose: () => _exitKey.currentState!.close(),
-            ),
-            Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.fromLTRB(
-                  Sp.lg,
-                  Sp.lg,
-                  Sp.lg,
-                  Sp.xxxl,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    if (widget.header != null) widget.header!,
-                    LabeledField(
-                      label: 'Data',
-                      child: DateField(controller: _date),
+    return Scaffold(
+      backgroundColor: c.surface,
+      body: Column(
+        children: [
+          ModalHeader(
+            title: widget.title ?? (_e != null ? 'Edytuj mecz' : 'Zapisz mecz'),
+            onClose: () => Navigator.of(context).pop(),
+          ),
+          Expanded(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.fromLTRB(Sp.lg, Sp.lg, Sp.lg, Sp.xxxl),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  if (widget.header != null) widget.header!,
+                  LabeledField(
+                    label: 'Data',
+                    child: DateField(controller: _date),
+                  ),
+                  LabeledField(
+                    label: 'Przeciwnik',
+                    child: AppTextField(
+                      controller: _opponent,
+                      hint: 'np. Legia U15',
                     ),
-                    LabeledField(
-                      label: 'Przeciwnik',
-                      child: AppTextField(
-                        controller: _opponent,
-                        hint: 'np. Legia U15',
-                      ),
-                    ),
-                    if (!_isPlan)
-                      LabeledField(
-                        label: 'Wynik',
-                        child: AppTextField(
-                          controller: _result,
-                          hint: 'np. 3:1',
+                  ),
+                  LabeledField(
+                    label: 'Wynik',
+                    child: AppTextField(controller: _result, hint: 'np. 3:1'),
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: LabeledField(
+                          label: 'Minuty',
+                          child: AppTextField(
+                            controller: _minutes,
+                            keyboardType: TextInputType.number,
+                            errorText: numberFieldError(_minutes.text, 'Minuty', 0, 180),
+                            onChanged: (_) => setState(() {}),
+                          ),
                         ),
                       ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: LabeledField(
-                            label: 'Minuty',
-                            child: AppTextField(
-                              controller: _minutes,
-                              keyboardType: TextInputType.number,
-                              errorText: numberFieldError(
-                                _minutes.text,
-                                'Minuty',
-                                0,
-                                180,
-                              ),
-                              onChanged: (_) => setState(() {}),
-                            ),
+                      const SizedBox(width: Sp.sm),
+                      Expanded(
+                        child: LabeledField(
+                          label: 'Gole',
+                          child: AppTextField(
+                            controller: _goals,
+                            keyboardType: TextInputType.number,
+                            errorText: numberFieldError(_goals.text, 'Gole', 0, 20),
+                            onChanged: (_) => setState(() {}),
                           ),
-                        ),
-                        const SizedBox(width: Sp.sm),
-                        if (!_isPlan)
-                          Expanded(
-                            child: LabeledField(
-                              label: 'Gole',
-                              child: AppTextField(
-                                controller: _goals,
-                                keyboardType: TextInputType.number,
-                                errorText: numberFieldError(
-                                  _goals.text,
-                                  'Gole',
-                                  0,
-                                  20,
-                                ),
-                                onChanged: (_) => setState(() {}),
-                              ),
-                            ),
-                          ),
-                        const SizedBox(width: Sp.sm),
-                        if (!_isPlan)
-                          Expanded(
-                            child: LabeledField(
-                              label: 'Asysty',
-                              child: AppTextField(
-                                controller: _assists,
-                                keyboardType: TextInputType.number,
-                                errorText: numberFieldError(
-                                  _assists.text,
-                                  'Asysty',
-                                  0,
-                                  20,
-                                ),
-                                onChanged: (_) => setState(() {}),
-                              ),
-                            ),
-                          ),
-                      ],
-                    ),
-                    if (!_isPlan) ...[
-                      LabeledField(
-                        label: 'Ocena',
-                        child: RatingStars(
-                          rating: _rating,
-                          onChanged: (n) => setState(() => _rating = n),
                         ),
                       ),
-                      ExpansionTile(
-                        title: const Text('Dodaj podsumowanie'),
-                        initiallyExpanded:
-                            _wentWell.text.isNotEmpty ||
-                            _toImprove.text.isNotEmpty,
-                        tilePadding: EdgeInsets.zero,
-                        children: [
-                          LabeledField(
-                            label: 'Co było dobrze?',
-                            child: AppTextField(
-                              controller: _wentWell,
-                              multiline: true,
-                              minLines: 2,
-                            ),
+                      const SizedBox(width: Sp.sm),
+                      Expanded(
+                        child: LabeledField(
+                          label: 'Asysty',
+                          child: AppTextField(
+                            controller: _assists,
+                            keyboardType: TextInputType.number,
+                            errorText: numberFieldError(_assists.text, 'Asysty', 0, 20),
+                            onChanged: (_) => setState(() {}),
                           ),
-                          LabeledField(
-                            label: 'Co poprawić?',
-                            child: AppTextField(
-                              controller: _toImprove,
-                              multiline: true,
-                              minLines: 2,
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
                     ],
-                    LabeledField(
-                      label: 'Notatki',
-                      child: AppTextField(
-                        controller: _notes,
-                        multiline: true,
-                        minLines: 2,
-                      ),
+                  ),
+                  LabeledField(
+                    label: 'Ocena',
+                    child: RatingStars(
+                      rating: _rating,
+                      onChanged: (n) => setState(() => _rating = n),
                     ),
-                  ],
-                ),
+                  ),
+                  LabeledField(
+                    label: 'Co było dobrze?',
+                    child: AppTextField(
+                      controller: _wentWell,
+                      multiline: true,
+                      minLines: 3,
+                    ),
+                  ),
+                  LabeledField(
+                    label: 'Co poprawić?',
+                    child: AppTextField(
+                      controller: _toImprove,
+                      multiline: true,
+                      minLines: 3,
+                    ),
+                  ),
+                  LabeledField(
+                    label: 'Notatki',
+                    child: AppTextField(
+                      controller: _notes,
+                      multiline: true,
+                      minLines: 2,
+                    ),
+                  ),
+                  PrimaryButton(
+                    label: _saving
+                        ? 'Zapisywanie...'
+                        : _e != null
+                            ? 'Zapisz zmiany'
+                            : widget.completingEvent != null
+                                ? 'Mecz wykonany'
+                                : 'Zapisz mecz',
+                    onTap: _saving || !_fieldsValid ? null : _save,
+                  ),
+                ],
               ),
             ),
-            SafeArea(
-              top: false,
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-                child: PrimaryButton(
-                  label: _saving
-                      ? 'Zapisywanie...'
-                      : _e != null || widget.editingEvent != null
-                      ? 'Zapisz zmiany'
-                      : _isPlan
-                      ? 'Zapisz plan'
-                      : widget.completingEvent != null
-                      ? 'Mecz wykonany'
-                      : 'Zapisz mecz',
-                  onTap: _saving || !_fieldsValid ? null : _save,
-                ),
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

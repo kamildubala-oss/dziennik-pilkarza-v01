@@ -68,11 +68,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
       } catch (error) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                'Nie udało się zmienić statusu: ${friendlyError(error)}',
-              ),
-            ),
+            SnackBar(content: Text('Nie udało się zmienić statusu: ${friendlyError(error)}')),
           );
         }
       }
@@ -81,11 +77,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
     }
     if (e.done || e.sourceId.isNotEmpty) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Ta aktywność jest już zapisana jako wykonana.'),
-          ),
-        );
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('Ta aktywność jest już zapisana jako wykonana.'),
+        ));
       }
       return;
     }
@@ -94,18 +88,15 @@ class _CalendarScreenState extends State<CalendarScreen> {
   }
 
   Future<void> _delete(EventItem e) async {
-    final linked =
-        e.sourceId.isNotEmpty &&
+    final linked = e.sourceId.isNotEmpty &&
         (e.source == 'trainings' || e.source == 'matches');
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (dialogContext) => AlertDialog(
         title: const Text('Usunąć wydarzenie?'),
-        content: Text(
-          linked
-              ? 'To wydarzenie zostanie trwale usunięte z kalendarza i dziennika. Powiązany trening lub mecz zniknie także ze statystyk i eksportu danych.'
-              : 'To wydarzenie zostanie trwale usunięte z kalendarza. Tej operacji nie można cofnąć.',
-        ),
+        content: Text(linked
+            ? 'To wydarzenie zostanie trwale usunięte z kalendarza i dziennika. Powiązany trening lub mecz zniknie także ze statystyk i eksportu danych.'
+            : 'To wydarzenie zostanie trwale usunięte z kalendarza. Tej operacji nie można cofnąć.'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(dialogContext, false),
@@ -130,9 +121,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
     } catch (error) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Nie udało się usunąć: ${friendlyError(error)}'),
-          ),
+          SnackBar(content: Text('Nie udało się usunąć: ${friendlyError(error)}')),
         );
       }
     }
@@ -151,8 +140,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
       await pushModal<bool>(context, page);
     } catch (error) {
       if (mounted) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(friendlyError(error))));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(friendlyError(error))),
+        );
       }
     }
     if (mounted) await _events.refetch();
@@ -205,10 +195,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
             // ---------- Nagłówek ----------
             Padding(
               padding: const EdgeInsets.only(bottom: Sp.lg),
-              child: Wrap(
-                alignment: WrapAlignment.spaceBetween,
-                crossAxisAlignment: WrapCrossAlignment.center,
-                spacing: 16, runSpacing: 8,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -228,7 +216,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       ),
                     ],
                   ),
-                  AppTapTarget(
+                  GestureDetector(
                     behavior: HitTestBehavior.opaque,
                     onTap: _addEvent,
                     child: Container(
@@ -241,7 +229,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
                         borderRadius: BorderRadius.circular(Rad.pill),
                       ),
                       child: Row(
-                        mainAxisSize: MainAxisSize.min,
                         children: [
                           Icon(Icons.add, size: 18, color: c.onBrandPrimary),
                           const SizedBox(width: 4),
@@ -274,15 +261,14 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       _cursor = DateTime(_cursor.year, _cursor.month - 1, 1);
                     }),
                   ),
-                  Expanded(child: Text(
+                  Text(
                     '${kMonths[_cursor.month - 1]} ${_cursor.year}',
-                    textAlign: TextAlign.center,
                     style: manrope(
                       size: 16,
                       weight: FontWeight.w700,
                       color: c.onSurface,
                     ),
-                  )),
+                  ),
                   _chevron(
                     c,
                     Icons.chevron_right,
@@ -318,14 +304,12 @@ class _CalendarScreenState extends State<CalendarScreen> {
             // ---------- Siatka dni ----------
             Padding(
               padding: EdgeInsets.zero,
-              child: GridView(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 7,
-                  mainAxisExtent: (MediaQuery.textScalerOf(context).scale(18) * 1.5 + 12).clamp(48.0, 160.0).toDouble(),
-                ),
+              child: GridView.count(
+                crossAxisCount: 7,
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 padding: EdgeInsets.zero,
+                childAspectRatio: 1,
                 children: [for (final cell in cells) _dayBox(c, cell, byDate)],
               ),
             ),
@@ -335,10 +319,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
             // ---------- Wydarzenia wybranego dnia ----------
             Padding(
               padding: const EdgeInsets.only(bottom: Sp.sm),
-              child: Wrap(
-                alignment: WrapAlignment.spaceBetween,
-                crossAxisAlignment: WrapCrossAlignment.center,
-                spacing: 12, runSpacing: 8,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     _selectedDate,
@@ -360,18 +342,12 @@ class _CalendarScreenState extends State<CalendarScreen> {
             else if (_events.error != null)
               Padding(
                 padding: const EdgeInsets.all(Sp.lg),
-                child: Column(
-                  children: [
-                    Text(
-                      'Nie można bezpiecznie odczytać wydarzeń kalendarza.',
-                      style: manrope(size: 13, color: c.error),
-                    ),
-                    TextButton(
-                      onPressed: () => _events.refetch(),
-                      child: const Text('Spróbuj ponownie'),
-                    ),
-                  ],
-                ),
+                child: Column(children: [
+                  Text('Nie można bezpiecznie odczytać wydarzeń kalendarza.',
+                      style: manrope(size: 13, color: c.error)),
+                  TextButton(onPressed: () => _events.refetch(),
+                      child: const Text('Spróbuj ponownie')),
+                ]),
               )
             else if (selectedEvents.isEmpty)
               _empty(c)
@@ -384,13 +360,19 @@ class _CalendarScreenState extends State<CalendarScreen> {
   }
 
   Widget _chevron(AppColors c, IconData icon, VoidCallback onTap) {
-    return IconButton.filledTonal(
-      tooltip: icon == Icons.chevron_left
-          ? 'Poprzedni miesiąc'
-          : 'Następny miesiąc',
-      constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
-      onPressed: onTap,
-      icon: Icon(icon),
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: onTap,
+      child: Container(
+        width: 36,
+        height: 36,
+        decoration: BoxDecoration(
+          color: c.surfaceSecondary,
+          shape: BoxShape.circle,
+        ),
+        alignment: Alignment.center,
+        child: Icon(icon, size: 22, color: c.onSurface),
+      ),
     );
   }
 
@@ -404,11 +386,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
     final dayEvents = byDate[iso] ?? <EventItem>[];
     final isSelected = iso == _selectedDate;
     final types = <String>{for (final e in dayEvents) e.type};
-    return AppTapTarget(
+    return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () => setState(() => _selectedDate = iso),
       child: Container(
-        constraints: const BoxConstraints(minHeight: 48),
         decoration: BoxDecoration(
           color: isSelected ? c.brandPrimary : Colors.transparent,
           borderRadius: BorderRadius.circular(Rad.sm),
@@ -416,14 +397,14 @@ class _CalendarScreenState extends State<CalendarScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            FittedBox(fit: BoxFit.scaleDown, child: Text(
+            Text(
               '${cell.day}',
               style: manrope(
                 size: 15,
                 weight: FontWeight.w600,
                 color: isSelected ? c.onBrandPrimary : c.onSurface,
               ),
-            )),
+            ),
             const SizedBox(height: 2),
             SizedBox(
               height: 4,
@@ -528,12 +509,12 @@ class _CalendarScreenState extends State<CalendarScreen> {
     pillTxt = e.type == 'match'
         ? 'MECZ'
         : e.type == 'training'
-        ? 'TRENING'
-        : e.type == 'club_training'
-        ? 'KLUBOWY'
-        : 'NOTATKA';
+            ? 'TRENING'
+            : e.type == 'club_training'
+                ? 'KLUBOWY'
+                : 'NOTATKA';
 
-    return AppTapTarget(
+    return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () => _edit(e),
       child: Container(
@@ -573,16 +554,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    e.done &&
-                            e.type != 'note' &&
-                            e.title.toLowerCase().startsWith(
-                              'planowany trening',
-                            )
-                        ? e.title.replaceFirst(
-                            RegExp(r'^Planowany ', caseSensitive: false),
-                            '',
-                          )
-                        : e.title,
+                    e.done && e.type != 'note' && e.title.toLowerCase().startsWith('planowany trening') ? e.title.replaceFirst(RegExp(r'^Planowany ', caseSensitive: false), '') : e.title,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: manrope(
@@ -597,11 +569,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       <String>[
                         if (e.time.isNotEmpty) e.time,
                         if (e.type != 'note')
-                          (e.done
-                              ? 'Wykonany'
-                              : first10(e.date).compareTo(todayIso()) < 0
-                              ? 'Nieodnotowany · termin minął'
-                              : 'Zaplanowany'),
+                          (e.done ? 'Wykonany' : first10(e.date).compareTo(todayIso()) < 0 ? 'Nieodnotowany · termin minął' : 'Zaplanowany'),
                       ].join(' · '),
                       style: manrope(size: 12, color: c.muted),
                     ),
@@ -619,35 +587,26 @@ class _CalendarScreenState extends State<CalendarScreen> {
               ),
             ),
             const SizedBox(width: Sp.md),
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                IconButton(
-                  tooltip: e.done
-                      ? 'Aktywność wykonana'
-                      : e.type == 'note'
-                      ? 'Zmień status notatki'
-                      : 'Oznacz jako wykonane',
-                  constraints: const BoxConstraints(
-                    minWidth: 48,
-                    minHeight: 48,
-                  ),
-                  onPressed: () => _toggle(e),
-                  icon: Icon(
-                    e.done ? Icons.check_circle : Icons.radio_button_unchecked,
-                    color: e.done ? c.success : c.muted,
-                  ),
+            GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () => _toggle(e),
+              child: Padding(
+                padding: const EdgeInsets.all(4),
+                child: Icon(
+                  e.done ? Icons.check_circle : Icons.radio_button_unchecked,
+                  size: 24,
+                  color: e.done ? c.brandPrimary : c.muted,
                 ),
-                IconButton(
-                  tooltip: 'Usuń wydarzenie',
-                  constraints: const BoxConstraints(
-                    minWidth: 48,
-                    minHeight: 48,
-                  ),
-                  onPressed: () => _delete(e),
-                  icon: Icon(Icons.delete_outline, color: c.error),
-                ),
-              ],
+              ),
+            ),
+            const SizedBox(width: Sp.xs),
+            GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () => _delete(e),
+              child: Padding(
+                padding: const EdgeInsets.all(4),
+                child: Icon(Icons.delete_outline, size: 20, color: c.error),
+              ),
             ),
           ],
         ),
@@ -655,3 +614,4 @@ class _CalendarScreenState extends State<CalendarScreen> {
     );
   }
 }
+

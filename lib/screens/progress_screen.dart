@@ -8,30 +8,42 @@ import '../resource.dart';
 import '../theme.dart';
 import '../utils.dart';
 import '../widgets/common.dart';
-import '../services/user_errors.dart';
-import '../services/skill_radar_service.dart';
-import 'coach_screen.dart';
 
+const List<String> _skillKeys = <String>[
+  'Technika',
+  'Strzał',
+  'Taktyka',
+  'Motoryka',
+  'Mentalność',
+];
+
+/// Zakładka "Postęp".
 class ProgressScreen extends StatefulWidget {
   const ProgressScreen({
     super.key,
     required this.selected,
     required this.index,
   });
+
   final ValueNotifier<int> selected;
   final int index;
+
   @override
   State<ProgressScreen> createState() => _ProgressScreenState();
 }
 
 class _ProgressScreenState extends State<ProgressScreen> {
-  late final Resource<Progress> _progress = Resource(Api.progress, _rebuild);
-  late final Resource<WeakSpotsPayload?> _weak = Resource(
+  late final Resource<Progress> _progress = Resource<Progress>(
+    Api.progress,
+    _rebuild,
+  );
+  late final Resource<WeakSpotsPayload?> _weak = Resource<WeakSpotsPayload?>(
     Api.getWeakSpots,
     _rebuild,
   );
+
   bool _analyzing = false;
-  String? _analysisError;
+
   void _rebuild() {
     if (mounted) setState(() {});
   }
@@ -40,12 +52,8 @@ class _ProgressScreenState extends State<ProgressScreen> {
   void initState() {
     super.initState();
     widget.selected.addListener(_onTabChanged);
-    _reload();
-  }
-
-  Future<void> _reload() => Future.wait([_progress.refetch(), _weak.refetch()]);
-  void _onTabChanged() {
-    if (widget.selected.value == widget.index) _reload();
+    _progress.refetch();
+    _weak.refetch();
   }
 
   @override
@@ -56,471 +64,578 @@ class _ProgressScreenState extends State<ProgressScreen> {
     super.dispose();
   }
 
+  void _onTabChanged() {
+    if (widget.selected.value == widget.index) _progress.refetch();
+  }
+
   Future<void> _analyze() async {
     if (_analyzing) return;
-    setState(() {
-      _analyzing = true;
-      _analysisError = null;
-    });
+    setState(() => _analyzing = true);
     try {
       await Api.analyzeWeakSpots();
       await _weak.refetch();
-    } catch (error) {
-      if (mounted) setState(() => _analysisError = friendlyError(error));
+    } catch (_) {
+      // Jak w wersji React - błąd analizy nie jest pokazywany.
     } finally {
       if (mounted) setState(() => _analyzing = false);
     }
   }
 
-  Widget _card(List<Widget> children) => Padding(
-    padding: const EdgeInsets.only(bottom: 16),
-    child: Material(
-      color: context.c.surfaceSecondary,
-      borderRadius: BorderRadius.circular(16),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: withGap(children, height: 8),
-        ),
-      ),
-    ),
-  );
-  Widget _error(String message, VoidCallback retry) => _card([
-    Text(message, style: manrope(color: context.c.error)),
-    TextButton(onPressed: retry, child: const Text('Spróbuj ponownie')),
-  ]);
   @override
   Widget build(BuildContext context) {
     final c = context.c;
+    final top = MediaQuery.of(context).padding.top;
     final stats = _progress.data;
+
     return RefreshIndicator(
-      onRefresh: _reload,
+      color: c.brandPrimary,
+      backgroundColor: c.surfaceSecondary,
+      onRefresh: () => _progress.refetch(),
       child: SingleChildScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
-        padding: EdgeInsets.fromLTRB(
-          16,
-          MediaQuery.paddingOf(context).top + 16,
-          16,
-          32,
-        ),
+        padding: EdgeInsets.fromLTRB(Sp.lg, top + Sp.md, Sp.lg, Sp.xxxl),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text('Twój postęp', style: barlow(size: 34, color: c.onSurface)),
-            const SizedBox(height: 16),
-            if (_progress.error != null)
-              _error(
-                'Nie udało się odczytać statystyk. Twoje dane pozostają zapisane.',
-                _reload,
-              ),
-            if (_progress.isLoading)
-              const Center(child: Spinner())
-            else if (stats != null) ...[
-              _weekSummary(stats),
-              ..._weakSection(c),
-              _activityChart(stats),
-              _details(stats),
-              _areas(stats),
-              _achievements(stats),
-            ],
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _weekSummary(Progress stats) => _card([
-    const SectionTitle('REALIZACJA TYGODNIA'),
-    Text(
-      stats.weekPlanned == 0
-          ? 'Zacznij od planu'
-          : '${stats.weekCompleted} z ${stats.weekPlanned} celów wykonanych',
-      style: manrope(
-        size: 22,
-        weight: FontWeight.w700,
-        color: context.c.onSurface,
-      ),
-    ),
-    if (stats.weekPlanned > 0)
-      LinearProgressIndicator(
-        value: stats.weekCompleted / stats.weekPlanned,
-        semanticsLabel: 'Realizacja tygodnia',
-      ),
-    Text(
-      stats.weekPlanned == 0
-          ? 'Ułóż plan u trenera lub zaplanuj aktywność w kalendarzu.'
-          : 'Treningi, mecze i potwierdzona regeneracja. Przyszłe cele pozostają do wykonania.',
-      style: manrope(size: 14, color: context.c.muted),
-    ),
-    Text(
-      'Seria aktywności: ${stats.streakDays} dni',
-      style: manrope(size: 14, color: context.c.muted),
-    ),
-    const Text(
-      'Seria obejmuje kolejne dni treningów i meczów do dziś lub wczoraj. Odpoczynek jest częścią planu.',
-    ),
-  ]);
-  Widget _activityChart(Progress stats) {
-    final c = context.c;
-    final byType = stats.weekByType;
-    final types = ['training', 'club_training', 'match'];
-    final maxValue = math.max(1, stats.weekSessions.fold<int>(0, math.max));
-    final now = DateTime.now();
-    return _card([
-      const SectionTitle('OSTATNIE 7 DNI'),
-      const Text('Liczba wykonanych aktywności'),
-      Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-        for (final type in types)
-          Padding(padding: const EdgeInsets.symmetric(vertical: 4), child: Row(children: [
-            Icon(Icons.circle, size: 10, color: eventTypeColor(c, type)),
-            const SizedBox(width: 8),
-            Expanded(child: Text(eventTypeLabel(type), style: manrope(size: 12, color: c.onSurface))),
-          ])),
-      ]),
-      for (var i = 0; i < 7; i++)
-        Builder(
-          builder: (context) {
-            final day = DateTime(now.year, now.month, now.day - 6 + i);
-            final values = [
-              for (final type in types)
-                i < (byType[type]?.length ?? 0) ? byType[type]![i] : 0,
-            ];
-            final total = values.fold<int>(0, (a, b) => a + b);
-            final label =
-                '${kWeekDays[day.weekday - 1]} ${day.day}.${day.month}';
-            return Semantics(
-              label:
-                  '$label: treningi ${values[0]}, klubowe ${values[1]}, mecze ${values[2]}',
-              excludeSemantics: true,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text(
-                    '$label · $total',
-                    style: manrope(size: 13, color: c.onSurface),
-                  ),
-                  const SizedBox(height: 4),
-                  SizedBox(
-                    height: 10,
-                    child: Row(
-                      children: [
-                        for (var j = 0; j < types.length; j++)
-                          if (values[j] > 0)
-                            Expanded(
-                              flex: values[j],
-                              child: ColoredBox(
-                                color: eventTypeColor(c, types[j]),
-                              ),
-                            ),
-                        if (maxValue - total > 0)
-                          Expanded(
-                            flex: maxValue - total,
-                            child: ColoredBox(color: c.surfaceTertiary),
-                          ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            );
-          },
-        ),
-    ]);
-  }
-
-  Widget _details(Progress stats) => _card([
-    const SectionTitle('STATYSTYKI · CAŁA HISTORIA'),
-    Wrap(
-      spacing: 24,
-      runSpacing: 16,
-      children: [
-        for (final item in [
-          ('Treningi', '${stats.totalTrainings}'),
-          ('Mecze', '${stats.totalMatches}'),
-          ('Minuty', '${stats.totalMinutes}'),
-          ('Gole', '${stats.totalGoals}'),
-          ('Asysty', '${stats.totalAssists}'),
-        ])
-          Text(
-            '${item.$1}: ${item.$2}',
-            style: manrope(size: 15, color: context.c.onSurface),
-          ),
-      ],
-    ),
-    Text(
-      stats.ratedCount == 0
-          ? 'Samoocena: brak ocen'
-          : 'Średnia samoocena treningów i meczów: ${stats.avgRating.toStringAsFixed(1)}/5 · ${stats.ratedCount} ocen',
-    ),
-  ]);
-  Widget _areas(Progress stats) {
-    final maxCount = math.max(
-      1,
-      [
-        ...stats.skillRadarRecent.values,
-        ...stats.skillRadarPrevious.values,
-      ].fold<int>(0, math.max),
-    );
-    return _card([
-      const SectionTitle('AKTYWNOŚĆ W OBSZARACH'),
-      const Text(
-        'Liczba treningów obejmujących obszar. Jeden trening może dotyczyć kilku obszarów.',
-      ),
-      const Text(
-        'Pokazuje zapisaną pracę, nie poziom umiejętności. Mecze nie są automatycznie przypisywane do obszarów.',
-      ),
-      for (final area in SkillRadarService.axes)
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
             Text(
-              area,
+              'TWÓJ POSTĘP',
               style: manrope(
-                size: 15,
+                size: 11,
                 weight: FontWeight.w700,
-                color: context.c.onSurface,
+                letterSpacing: 1.5,
+                color: c.muted,
               ),
             ),
-            Text(
-              'Ostatnie 14 dni: ${stats.skillRadarRecent[area] ?? 0} · Poprzednie 14 dni: ${stats.skillRadarPrevious[area] ?? 0}',
+            Padding(
+              padding: const EdgeInsets.only(bottom: Sp.lg),
+              child: Text(
+                'Statystyki',
+                style: barlow(size: 34, color: c.onSurface),
+              ),
             ),
-            LinearProgressIndicator(
-              value: (stats.skillRadarRecent[area] ?? 0) / maxCount,
-              semanticsLabel: '$area, ostatnie 14 dni',
+            if (_progress.isLoading)
+              const Padding(
+                padding: EdgeInsets.only(top: 32),
+                child: Center(child: Spinner()),
+              )
+            else
+              ..._content(c, stats),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _section(String text, {double top = Sp.md, double bottom = Sp.sm}) {
+    return Padding(
+      padding: EdgeInsets.only(top: top, bottom: bottom),
+      child: SectionTitle(text),
+    );
+  }
+
+  List<Widget> _content(AppColors c, Progress? stats) {
+    final week = stats?.weekSessions ?? <int>[0, 0, 0, 0, 0, 0, 0];
+    final maxV = math.max(1, week.isEmpty ? 1 : week.reduce(math.max));
+    final avg = stats?.avgRating;
+
+    // Etykiety dni: ostatnie 7 dni kończące się dzisiaj.
+    final now = DateTime.now();
+    final labels = List<String>.generate(7, (i) {
+      final d = DateTime(now.year, now.month, now.day - (6 - i));
+      return kWeekDays[d.weekday - 1];
+    });
+
+    return <Widget>[
+      // ---------- Streak + ocena ----------
+      Padding(
+        padding: const EdgeInsets.only(bottom: Sp.lg),
+        child: Row(
+          children: [
+            Expanded(
+              child: _heroCell(
+                c,
+                bg: c.brandPrimary,
+                icon: Icons.local_fire_department,
+                iconColor: c.onBrandPrimary,
+                value: '${stats?.streakDays ?? 0}',
+                valueColor: c.onBrandPrimary,
+                label: 'DNI Z RZĘDU',
+                labelColor: c.onBrandPrimary,
+              ),
             ),
-            const SizedBox(height: 4),
-            LinearProgressIndicator(
-              value: (stats.skillRadarPrevious[area] ?? 0) / maxCount,
-              color: context.c.muted,
-              semanticsLabel: '$area, poprzednie 14 dni',
+            const SizedBox(width: Sp.sm),
+            Expanded(
+              child: _heroCell(
+                c,
+                bg: c.surfaceSecondary,
+                icon: Icons.star,
+                iconColor: c.brandSecondary,
+                value: avg != null ? avg.toStringAsFixed(1) : '0.0',
+                valueColor: c.onSurface,
+                label: 'ŚR. OCENA TRENINGÓW I MECZÓW',
+                labelColor: c.muted,
+              ),
             ),
           ],
         ),
-    ]);
+      ),
+
+      // ---------- Ostatnie 7 dni ----------
+      _section('OSTATNIE 7 DNI'),
+      Container(
+        height: 160,
+        padding: const EdgeInsets.all(Sp.sm),
+        decoration: BoxDecoration(
+          color: c.surfaceSecondary,
+          borderRadius: BorderRadius.circular(Rad.md),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            for (var i = 0; i < week.length && i < 7; i++)
+              Expanded(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      width: 18,
+                      height: math.max(8.0, (week[i] / maxV) * 100),
+                      decoration: BoxDecoration(
+                        color: week[i] > 0 ? c.brandPrimary : c.surfaceTertiary,
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      labels[i],
+                      style: manrope(
+                        size: 10,
+                        weight: FontWeight.w700,
+                        color: c.muted,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      '${week[i]}',
+                      style: manrope(
+                        size: 11,
+                        weight: FontWeight.w700,
+                        color: c.onSurface,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+          ],
+        ),
+      ),
+
+      // ---------- Metryki ----------
+      _section('METRYKI'),
+      LayoutBuilder(
+        builder: (context, constraints) {
+          final w = constraints.maxWidth * 0.315;
+          return Wrap(
+            spacing: Sp.sm,
+            runSpacing: Sp.sm,
+            children: [
+              _metric(
+                c,
+                w,
+                Icons.directions_run,
+                'Treningi',
+                '${stats?.totalTrainings ?? 0}',
+              ),
+              _metric(
+                c,
+                w,
+                Icons.sports_soccer,
+                'Mecze',
+                '${stats?.totalMatches ?? 0}',
+              ),
+              _metric(
+                c,
+                w,
+                Icons.timer,
+                'Minuty',
+                '${stats?.totalMinutes ?? 0}',
+              ),
+              _metric(
+                c,
+                w,
+                Icons.gps_fixed,
+                'Gole',
+                '${stats?.totalGoals ?? 0}',
+              ),
+              _metric(
+                c,
+                w,
+                Icons.handshake,
+                'Asysty',
+                '${stats?.totalAssists ?? 0}',
+              ),
+              _metric(
+                c,
+                w,
+                Icons.trending_up,
+                'Śr. ocena T+M',
+                avg != null ? avg.toStringAsFixed(1) : '0',
+              ),
+            ],
+          );
+        },
+      ),
+
+      // ---------- Mapa umiejętności ----------
+      Padding(
+        padding: const EdgeInsets.only(top: Sp.md, bottom: Sp.sm),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SectionTitle('AKTYWNOŚĆ W OBSZARACH'),
+            const SizedBox(height: 2),
+            Text(
+              'Jasna = cały czas · Mocna = ostatnie 2 tyg.',
+              style: manrope(size: 11, color: c.muted),
+            ),
+          ],
+        ),
+      ),
+      Container(
+        padding: const EdgeInsets.all(Sp.md),
+        decoration: BoxDecoration(
+          color: c.surfaceSecondary,
+          borderRadius: BorderRadius.circular(Rad.md),
+        ),
+        alignment: Alignment.center,
+        child: SizedBox(
+          width: 260,
+          height: 260,
+          child: CustomPaint(
+            painter: _RadarPainter(
+              values: _skillKeys
+                  .map((k) => (stats?.skillRadarRecent[k] ?? 0) / 100)
+                  .toList(),
+              shadowValues: _skillKeys
+                  .map((k) => (stats?.skillRadarAll[k] ?? 0) / 100)
+                  .toList(),
+              labels: _skillKeys,
+              gridColor: c.border,
+              brandColor: c.brandPrimary,
+              labelColor: c.muted,
+            ),
+          ),
+        ),
+      ),
+
+      // ---------- Słabe punkty (AI) ----------
+      ..._weakSection(c),
+
+      // ---------- Odznaki: realizacja i regeneracja zamiast treningu codziennie ----------
+      _section('ODZNAKI'),
+      Column(
+        children: withGap([
+          _badge(c, active: (stats?.totalTrainings ?? 0) >= 1,
+              icon: Icons.sports_score, title: 'Pierwszy trening',
+              sub: 'Pierwszy zapisany trening.'),
+          _badge(c, active: (stats?.totalTrainings ?? 0) >= 10,
+              icon: Icons.directions_run, title: '10 treningów',
+              sub: 'Rozwijasz systematyczność.'),
+          _badge(c, active: (stats?.totalTrainings ?? 0) >= 30,
+              icon: Icons.fitness_center, title: '30 treningów',
+              sub: 'Treningowa wytrwałość.'),
+          _badge(c, active: (stats?.totalTrainings ?? 0) >= 100,
+              icon: Icons.military_tech, title: '100 treningów',
+              sub: 'Długa droga, wielki postęp.'),
+          _badge(c, active: (stats?.totalMatches ?? 0) >= 1,
+              icon: Icons.sports_soccer, title: 'Pierwszy mecz',
+              sub: 'Pierwszy zapisany występ.'),
+          _badge(c, active: (stats?.totalMatches ?? 0) >= 10,
+              icon: Icons.shield, title: '10 meczów',
+              sub: 'Dziesięć sportowych doświadczeń.'),
+          _badge(c, active: (stats?.totalMinutes ?? 0) >= 300,
+              icon: Icons.timer, title: '5 godzin aktywności',
+              sub: '300 minut treningów i meczów.'),
+          _badge(c, active: (stats?.totalMinutes ?? 0) >= 1200,
+              icon: Icons.access_time_filled, title: '20 godzin aktywności',
+              sub: '1200 minut systematycznej pracy.'),
+          _badge(c, active: (stats?.totalGoals ?? 0) >= 1,
+              icon: Icons.sports_score, title: 'Pierwszy gol',
+              sub: 'Pierwsza bramka w dzienniku.'),
+          _badge(c, active: (stats?.totalGoals ?? 0) >= 5,
+              icon: Icons.emoji_events, title: 'Snajper',
+              sub: '5 bramek łącznie.'),
+          _badge(c, active: (stats?.bestMatchGoals ?? 0) >= 3,
+              icon: Icons.stars, title: 'Hat-trick',
+              sub: '3 gole w jednym meczu.'),
+          _badge(c, active: (stats?.totalAssists ?? 0) >= 1,
+              icon: Icons.handshake, title: 'Pierwsza asysta',
+              sub: 'Pomoc w zdobyciu bramki.'),
+          _badge(c, active: (stats?.totalAssists ?? 0) >= 10,
+              icon: Icons.group, title: '10 asyst',
+              sub: 'Grasz zespołowo.'),
+          _badge(c, active: stats?.hasTopRating == true,
+              icon: Icons.star, title: 'Ocena 5/5',
+              sub: 'Pierwsza najwyższa ocena.'),
+          _badge(c, active: stats?.completedPlanWeek == true,
+              icon: Icons.self_improvement, title: 'Tydzień według planu',
+              sub: 'Realizacja aktywności i zaplanowanej regeneracji.'),
+        ], height: Sp.sm),
+      ),
+    ];
   }
 
   List<Widget> _weakSection(AppColors c) {
     final data = _weak.data;
-    return [
-      _card([
-        const SectionTitle('OBSZAR DO NASTĘPNEGO TRENINGU'),
-        if (data != null)
-          Text(
-            'Analiza z ${first10(data.generatedAt)} · ${data.noteCount} notatek · '
-            '${data.source == 'online'
-                ? 'Online · Gemini'
-                : data.source == 'offline'
-                ? 'Offline'
-                : 'Źródło nieznane'}',
-            style: manrope(size: 13, color: c.muted),
-          ),
-        if (_weak.isLoading)
-          const Center(child: Spinner())
-        else if (data == null || data.weakSpots.isEmpty) ...[
-          Text(
-            data == null ? 'Brak analizy' : 'Za mało danych do wniosków',
-            style: manrope(
-              size: 18,
-              weight: FontWeight.w700,
-              color: c.onSurface,
+    return <Widget>[
+      Padding(
+        padding: const EdgeInsets.only(top: Sp.lg, bottom: Sp.sm),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SectionTitle('SŁABE PUNKTY · AI'),
+                  if (data != null && data.generatedAt.isNotEmpty)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 2),
+                      child: Text(
+                        'Analiza z ${first10(data.generatedAt)} · '
+                        '${data.noteCount} notatek',
+                        style: manrope(size: 11, color: c.muted),
+                      ),
+                    ),
+                ],
+              ),
             ),
-          ),
-          const Text(
-            'Dodaj w podsumowaniu treningu, co chcesz poprawić. Trener poszuka powtarzających się tematów.',
-          ),
-        ] else ...[
-          Text(
-            data.weakSpots.first.area,
-            style: manrope(
-              size: 20,
-              weight: FontWeight.w700,
-              color: c.onSurface,
-            ),
-          ),
-          Text(data.weakSpots.first.insight),
-          PrimaryButton(
-            label: 'Zobacz ćwiczenia',
-            icon: Icons.fitness_center,
-            onTap: () => pushModal<void>(
-              context,
-              Scaffold(
-                appBar: AppBar(title: const Text('Ćwiczenia dla Ciebie')),
-                body: CoachScreen(
-                  selected: widget.selected,
-                  index: widget.index,
-                  initialSection: 1,
-                  initialArea: data.weakSpots.first.area,
+            const SizedBox(width: Sp.sm),
+            GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: _analyzing ? null : _analyze,
+              child: Opacity(
+                opacity: _analyzing ? 0.6 : 1,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 6,
+                  ),
+                  decoration: BoxDecoration(
+                    color: c.brandPrimary,
+                    borderRadius: BorderRadius.circular(Rad.pill),
+                  ),
+                  child: _analyzing
+                      ? Spinner(color: c.onBrandPrimary)
+                      : Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              data != null
+                                  ? Icons.refresh
+                                  : Icons.auto_fix_high,
+                              size: 14,
+                              color: c.onBrandPrimary,
+                            ),
+                            const SizedBox(width: 4),
+                            Text(
+                              data != null ? 'Odśwież' : 'Analizuj',
+                              style: manrope(
+                                size: 10,
+                                weight: FontWeight.w800,
+                                letterSpacing: 1,
+                                color: c.onBrandPrimary,
+                              ),
+                            ),
+                          ],
+                        ),
                 ),
               ),
             ),
-          ),
-          if (data.weakSpots.length > 1)
-            ExpansionTile(
-              title: const Text('Pozostałe obszary'),
-              children: [
-                for (final item in data.weakSpots.skip(1))
-                  ListTile(
-                    title: Text(item.area),
-                    subtitle: Text(item.insight),
-                  ),
-              ],
-            ),
-        ],
-        SecondaryButton(
-          label: _analyzing
-              ? 'Analizowanie…'
-              : data == null
-              ? 'Analizuj notatki'
-              : 'Odśwież analizę',
-          onTap: _analyzing ? null : _analyze,
+          ],
         ),
-        if (_analysisError != null)
-          Text(_analysisError!, style: manrope(color: c.error)),
-        if (_weak.error != null)
-          TextButton(
-            onPressed: () => _weak.refetch(),
-            child: const Text('Ponów odczyt analizy'),
-          ),
-      ]),
+      ),
+      if (_weak.isLoading)
+        const Padding(
+          padding: EdgeInsets.symmetric(vertical: Sp.md),
+          child: Center(child: Spinner()),
+        )
+      else if (data == null)
+        _weakEmpty(
+          c,
+          icon: Icons.auto_fix_high,
+          title: 'Brak analizy',
+          sub: 'Trener AI przeczyta Twoje notatki „Co trzeba poprawić" '
+              'i wyciągnie wnioski niezależnie od zapisanych treningów.',
+        )
+      else if (data.weakSpots.isEmpty)
+        _weakEmpty(
+          c,
+          title: 'Zero słabych punktów!',
+          sub: 'Dodaj kilka notatek w polach „Co trzeba poprawić" żeby '
+              'trener miał z czym pracować.',
+        )
+      else
+        ...data.weakSpots.map((w) => _weakCard(c, w)),
     ];
   }
 
-  Widget _achievements(Progress stats) {
-    final next = stats.totalTrainings < 1
-        ? 1
-        : stats.totalTrainings < 10
-        ? 10
-        : stats.totalTrainings < 30
-        ? 30
-        : stats.totalTrainings < 100
-        ? 100
-        : 0;
-    final c = context.c;
-    return _card([
-      const SectionTitle('ODZNAKI'),
-      Text(
-        next == 0
-            ? 'Masz odznakę za 100 treningów!'
-            : 'Następna odznaka treningowa: ${stats.totalTrainings}/$next',
+  Widget _weakEmpty(
+    AppColors c, {
+    IconData? icon,
+    required String title,
+    required String sub,
+  }) {
+    return Container(
+      padding: const EdgeInsets.all(Sp.lg),
+      decoration: BoxDecoration(
+        color: c.surfaceSecondary,
+        borderRadius: BorderRadius.circular(Rad.md),
+        border: Border.all(color: c.border, width: 1),
       ),
-      if (next > 0)
-        LinearProgressIndicator(
-          value: stats.totalTrainings / next,
-          semanticsLabel: 'Postęp do odznaki',
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: withGap([
+          if (icon != null) Icon(icon, size: 24, color: c.brandPrimary),
+          Text(
+            title,
+            style: manrope(
+              size: 15,
+              weight: FontWeight.w800,
+              color: c.onSurface,
+            ),
+          ),
+          Text(sub, style: manrope(size: 13, height: 1.4, color: c.muted)),
+        ], height: 6),
+      ),
+    );
+  }
+
+  Widget _weakCard(AppColors c, WeakSpot w) {
+    final Color prio;
+    if (w.priority == 'high') {
+      prio = c.brandSecondary;
+    } else if (w.priority == 'medium') {
+      prio = c.warning;
+    } else {
+      prio = c.surfaceTertiary;
+    }
+    return Container(
+      margin: const EdgeInsets.only(bottom: Sp.sm),
+      padding: const EdgeInsets.all(Sp.md),
+      decoration: BoxDecoration(
+        color: c.surfaceSecondary,
+        borderRadius: BorderRadius.circular(Rad.md),
+      ),
+      child: IntrinsicHeight(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Container(
+              width: 6,
+              decoration: BoxDecoration(
+                color: prio,
+                borderRadius: BorderRadius.circular(3),
+              ),
+            ),
+            const SizedBox(width: Sp.md),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    w.area.toUpperCase(),
+                    style: manrope(
+                      size: 10,
+                      weight: FontWeight.w800,
+                      letterSpacing: 1.5,
+                      color: c.brandPrimary,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    w.insight,
+                    style: manrope(size: 14, height: 1.36, color: c.onSurface),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
-      ExpansionTile(
-        tilePadding: EdgeInsets.zero,
-        title: const Text('Zobacz wszystkie odznaki'),
+      ),
+    );
+  }
+
+  Widget _heroCell(
+    AppColors c, {
+    required Color bg,
+    required IconData icon,
+    required Color iconColor,
+    required String value,
+    required Color valueColor,
+    required String label,
+    required Color labelColor,
+  }) {
+    return Container(
+      constraints: const BoxConstraints(minHeight: 110),
+      padding: const EdgeInsets.all(Sp.md),
+      decoration: BoxDecoration(
+        color: bg,
+        borderRadius: BorderRadius.circular(Rad.md),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _badge(
-            c,
-            active: stats.totalTrainings >= 1,
-            icon: Icons.sports_score,
-            title: 'Pierwszy trening',
-            sub: 'Pierwszy zapisany trening.',
-          ),
-          _badge(
-            c,
-            active: stats.totalTrainings >= 10,
-            icon: Icons.directions_run,
-            title: '10 treningów',
-            sub: 'Rozwijasz systematyczność.',
-          ),
-          _badge(
-            c,
-            active: stats.totalTrainings >= 30,
-            icon: Icons.fitness_center,
-            title: '30 treningów',
-            sub: 'Treningowa wytrwałość.',
-          ),
-          _badge(
-            c,
-            active: stats.totalTrainings >= 100,
-            icon: Icons.military_tech,
-            title: '100 treningów',
-            sub: 'Długa droga, wielki postęp.',
-          ),
-          _badge(
-            c,
-            active: stats.totalMatches >= 1,
-            icon: Icons.sports_soccer,
-            title: 'Pierwszy mecz',
-            sub: 'Pierwszy zapisany występ.',
-          ),
-          _badge(
-            c,
-            active: stats.totalMatches >= 10,
-            icon: Icons.shield,
-            title: '10 meczów',
-            sub: 'Dziesięć sportowych doświadczeń.',
-          ),
-          _badge(
-            c,
-            active: stats.totalMinutes >= 300,
-            icon: Icons.timer,
-            title: '5 godzin aktywności',
-            sub: '300 minut treningów i meczów.',
-          ),
-          _badge(
-            c,
-            active: stats.totalMinutes >= 1200,
-            icon: Icons.access_time_filled,
-            title: '20 godzin aktywności',
-            sub: '1200 minut systematycznej pracy.',
-          ),
-          _badge(
-            c,
-            active: stats.totalGoals >= 1,
-            icon: Icons.sports_score,
-            title: 'Pierwszy gol',
-            sub: 'Pierwsza bramka w dzienniku.',
-          ),
-          _badge(
-            c,
-            active: stats.totalGoals >= 5,
-            icon: Icons.emoji_events,
-            title: 'Snajper',
-            sub: '5 bramek łącznie.',
-          ),
-          _badge(
-            c,
-            active: stats.bestMatchGoals >= 3,
-            icon: Icons.stars,
-            title: 'Hat-trick',
-            sub: '3 gole w jednym meczu.',
-          ),
-          _badge(
-            c,
-            active: stats.totalAssists >= 1,
-            icon: Icons.handshake,
-            title: 'Pierwsza asysta',
-            sub: 'Pomoc w zdobyciu bramki.',
-          ),
-          _badge(
-            c,
-            active: stats.totalAssists >= 10,
-            icon: Icons.group,
-            title: '10 asyst',
-            sub: 'Grasz zespołowo.',
-          ),
-          _badge(
-            c,
-            active: stats.hasTopRating,
-            icon: Icons.star,
-            title: 'Ocena 5/5',
-            sub: 'Pierwsza najwyższa ocena.',
-          ),
-          _badge(
-            c,
-            active: stats.completedPlanWeek,
-            icon: Icons.self_improvement,
-            title: 'Tydzień według planu',
-            sub: 'Realizacja aktywności i zaplanowanej regeneracji.',
+          Icon(icon, size: 22, color: iconColor),
+          Text(value, style: barlow(size: 36, color: valueColor)),
+          Text(
+            label,
+            style: manrope(
+              size: 10,
+              weight: FontWeight.w800,
+              letterSpacing: 1.2,
+              color: labelColor,
+            ),
           ),
         ],
       ),
-    ]);
+    );
+  }
+
+  Widget _metric(
+    AppColors c,
+    double width,
+    IconData icon,
+    String label,
+    String value,
+  ) {
+    return Container(
+      width: width,
+      padding: const EdgeInsets.all(Sp.md),
+      decoration: BoxDecoration(
+        color: c.surfaceSecondary,
+        borderRadius: BorderRadius.circular(Rad.md),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: withGap([
+          Icon(icon, size: 18, color: c.brandPrimary),
+          Text(value, style: barlow(size: 22, color: c.onSurface)),
+          Text(
+            label,
+            style: manrope(
+              size: 10,
+              weight: FontWeight.w700,
+              letterSpacing: 1,
+              color: c.muted,
+            ),
+          ),
+        ], height: 4),
+      ),
+    );
   }
 
   Widget _badge(
@@ -529,12 +644,169 @@ class _ProgressScreenState extends State<ProgressScreen> {
     required IconData icon,
     required String title,
     required String sub,
-  }) => ListTile(
-    leading: Icon(
-      active ? Icons.check_circle : icon,
-      color: active ? c.success : c.muted,
-    ),
-    title: Text(title),
-    subtitle: Text('${active ? 'Zdobyta' : 'Do zdobycia'} · $sub'),
-  );
+  }) {
+    return Opacity(
+      opacity: active ? 1 : 0.4,
+      child: Container(
+        padding: const EdgeInsets.all(Sp.md),
+        decoration: BoxDecoration(
+          color: c.surfaceSecondary,
+          borderRadius: BorderRadius.circular(Rad.md),
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 44,
+              height: 44,
+              decoration: BoxDecoration(
+                color: active ? c.brandPrimary : c.surfaceTertiary,
+                borderRadius: BorderRadius.circular(Rad.sm),
+              ),
+              alignment: Alignment.center,
+              child: Icon(
+                icon,
+                size: 22,
+                color: active ? c.onBrandPrimary : c.muted,
+              ),
+            ),
+            const SizedBox(width: Sp.md),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: manrope(
+                      size: 15,
+                      weight: FontWeight.w800,
+                      color: c.onSurface,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(sub, style: manrope(size: 12, color: c.muted)),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Wykres radarowy (pajęczyna) - odpowiednik komponentu `RadarChart` z SVG.
+class _RadarPainter extends CustomPainter {
+  _RadarPainter({
+    required this.values,
+    required this.shadowValues,
+    required this.labels,
+    required this.gridColor,
+    required this.brandColor,
+    required this.labelColor,
+  });
+
+  final List<double> values;
+  final List<double> shadowValues;
+  final List<String> labels;
+  final Color gridColor;
+  final Color brandColor;
+  final Color labelColor;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final cx = size.width / 2;
+    final cy = size.height / 2;
+    final r = size.width / 2 - 32;
+    final n = values.length;
+
+    double angleFor(int i) => (math.pi * 2 * i) / n - math.pi / 2;
+
+    Path polygon(double Function(int) scaleFor) {
+      final path = Path();
+      for (var i = 0; i < n; i++) {
+        final a = angleFor(i);
+        final s = scaleFor(i);
+        final x = cx + math.cos(a) * r * s;
+        final y = cy + math.sin(a) * r * s;
+        if (i == 0) {
+          path.moveTo(x, y);
+        } else {
+          path.lineTo(x, y);
+        }
+      }
+      path.close();
+      return path;
+    }
+
+    final gridPaint = Paint()
+      ..color = gridColor
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1;
+
+    for (final s in <double>[0.25, 0.5, 0.75, 1.0]) {
+      canvas.drawPath(polygon((_) => s), gridPaint);
+    }
+
+    for (var i = 0; i < n; i++) {
+      final a = angleFor(i);
+      canvas.drawLine(
+        Offset(cx, cy),
+        Offset(cx + math.cos(a) * r, cy + math.sin(a) * r),
+        gridPaint,
+      );
+    }
+
+    // Warstwa "cień" - cały czas.
+    final shadow = polygon((i) => math.max(0.02, shadowValues[i]));
+    canvas.drawPath(
+      shadow,
+      Paint()
+        ..color = brandColor.withAlpha(31) // 0.12
+        ..style = PaintingStyle.fill,
+    );
+    canvas.drawPath(
+      shadow,
+      Paint()
+        ..color = brandColor.withAlpha(102) // 0.4
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 1,
+    );
+
+    // Warstwa "mocna" - ostatnie 14 dni.
+    final recent = polygon((i) => math.max(0.02, values[i]));
+    canvas.drawPath(
+      recent,
+      Paint()
+        ..color = brandColor.withAlpha(102) // 0.4
+        ..style = PaintingStyle.fill,
+    );
+    canvas.drawPath(
+      recent,
+      Paint()
+        ..color = brandColor
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 2,
+    );
+
+    // Etykiety osi.
+    for (var i = 0; i < n; i++) {
+      final a = angleFor(i);
+      final lx = cx + math.cos(a) * (r + 18);
+      final ly = cy + math.sin(a) * (r + 18);
+      final tp = TextPainter(
+        text: TextSpan(
+          text: labels[i],
+          style: manrope(size: 10, weight: FontWeight.w700, color: labelColor),
+        ),
+        textDirection: TextDirection.ltr,
+      )..layout();
+      final baseline = tp.computeDistanceToActualBaseline(
+        TextBaseline.alphabetic,
+      );
+      tp.paint(canvas, Offset(lx - tp.width / 2, ly - baseline));
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant _RadarPainter old) => true;
 }

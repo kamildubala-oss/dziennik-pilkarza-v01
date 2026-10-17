@@ -7,7 +7,6 @@ import 'local_db.dart';
 import 'models.dart';
 import 'utils.dart';
 import 'services/progress_calculator.dart';
-import 'services/coach_runtime.dart';
 
 part 'repositories/training_repo.dart';
 part 'repositories/calendar_repo.dart';
@@ -33,20 +32,17 @@ void _check(bool ok, String message) {
   if (!ok) throw ApiException(422, 'Unprocessable Entity', message);
 }
 
+
 /// Data wykonania nie może być przyszła; planowanie może dotyczyć dowolnego dnia.
 void _validateActivityDate(String date, {required bool isPlanned}) {
   final match = RegExp(r'^\d{4}-\d{2}-\d{2}$').hasMatch(date);
   final parsed = DateTime.tryParse(date);
-  _check(
-    match && parsed != null && dateIso(parsed) == date,
-    'Podaj prawidłową datę (RRRR-MM-DD).',
-  );
+  _check(match && parsed != null && dateIso(parsed) == date,
+      'Podaj prawidłową datę (RRRR-MM-DD).');
   if (!isPlanned) {
-    _check(
-      date.compareTo(todayIso()) <= 0,
-      'Nie można zapisać wykonanego treningu ani meczu z datą przyszłą. '
-      'Użyj opcji planowania.',
-    );
+    _check(date.compareTo(todayIso()) <= 0,
+        'Nie można zapisać wykonanego treningu ani meczu z datą przyszłą. '
+        'Użyj opcji planowania.');
   }
 }
 
@@ -211,9 +207,8 @@ List<Map<String, dynamic>> _applyClubDays(
     final d = days[i];
     final date = _s(d['date']);
     final wd = DateTime.tryParse(first10(date))?.weekday ?? (i + 1);
-    final dayName = _s(d['day_name']).isEmpty
-        ? kPolishDays[wd - 1]
-        : _s(d['day_name']);
+    final dayName =
+        _s(d['day_name']).isEmpty ? kPolishDays[wd - 1] : _s(d['day_name']);
     // Dni powiązane z ręcznymi wydarzeniami użytkownika nie są nadpisywane
     // dniami klubowymi - wydarzenie użytkownika ma pierwszeństwo.
     if ((d['calendar_event_ids'] as List?)?.isNotEmpty == true) {
@@ -274,9 +269,7 @@ bool _isUserScheduledActivity(Map<String, dynamic> e) {
 
 /// Zbiera zaplanowane przez użytkownika treningi i mecze w tygodniu planu
 /// (poniedziałek–niedziela, niedziela włącznie).
-Future<Map<String, List<Map<String, dynamic>>>> _scheduledEventsForWeek(
-  DateTime monday,
-) async {
+Future<Map<String, List<Map<String, dynamic>>>> _scheduledEventsForWeek(DateTime monday) async {
   final events = await LocalDb.list('events');
   final byDate = <String, List<Map<String, dynamic>>>{};
   for (var i = 0; i < 7; i++) {
@@ -297,12 +290,9 @@ Future<void> _enrichEventFromDiary(Map<String, dynamic> e) async {
   final sourceId = _s(e['source_id']);
   if (sourceId.isEmpty) return;
   if (source == 'trainings') {
-    final t = await LocalDb.list('trainings').then(
-      (items) => items.firstWhere(
-        (x) => _s(x['id']) == sourceId,
-        orElse: () => <String, dynamic>{},
-      ),
-    );
+    final t = await LocalDb.list('trainings')
+        .then((items) => items.firstWhere((x) => _s(x['id']) == sourceId,
+            orElse: () => <String, dynamic>{}));
     if (t.isNotEmpty) {
       if (_i(t['duration_min']) > 0) e['duration_min'] = _i(t['duration_min']);
       if (_s(t['intensity']).isNotEmpty) e['intensity'] = _s(t['intensity']);
@@ -311,12 +301,9 @@ Future<void> _enrichEventFromDiary(Map<String, dynamic> e) async {
       }
     }
   } else if (source == 'matches') {
-    final m = await LocalDb.list('matches').then(
-      (items) => items.firstWhere(
-        (x) => _s(x['id']) == sourceId,
-        orElse: () => <String, dynamic>{},
-      ),
-    );
+    final m = await LocalDb.list('matches')
+        .then((items) => items.firstWhere((x) => _s(x['id']) == sourceId,
+            orElse: () => <String, dynamic>{}));
     if (m.isNotEmpty) {
       if (_i(m['minutes_played']) > 0) {
         e['duration_min'] = _i(m['minutes_played']);
@@ -346,8 +333,8 @@ List<Map<String, dynamic>> _applyCalendarEvents(
     int rank(String type) => type == 'match'
         ? 0
         : type == 'club_training'
-        ? 1
-        : 2;
+            ? 1
+            : 2;
     final sorted = List<Map<String, dynamic>>.from(scheduled)
       ..sort((a, b) {
         final r = rank(_s(a['type'])).compareTo(rank(_s(b['type'])));
@@ -359,8 +346,10 @@ List<Map<String, dynamic>> _applyCalendarEvents(
     final focus = type == 'match'
         ? 'Mecz'
         : type == 'club_training'
-        ? 'Trening klubowy'
-        : (_s(primary['focus']).isNotEmpty ? _s(primary['focus']) : 'Trening');
+            ? 'Trening klubowy'
+            : (_s(primary['focus']).isNotEmpty
+                ? _s(primary['focus'])
+                : 'Trening');
     // Jeśli brak danych, zostawiamy domyślne (trening/mecz AI może
     // potem dostosować, gdy plan jest przeglądany).
     final duration = _i(primary['duration_min']);
@@ -372,9 +361,7 @@ List<Map<String, dynamic>> _applyCalendarEvents(
       'date': date,
       'day_name': dayName,
       'focus': focus,
-      'title': _s(primary['title']).isNotEmpty
-          ? _s(primary['title'])
-          : 'Trening',
+      'title': _s(primary['title']).isNotEmpty ? _s(primary['title']) : 'Trening',
       'duration_min': duration > 0 ? duration : 60,
       'intensity': intensity.isNotEmpty ? intensity : 'medium',
       'description': _s(primary['description']),
@@ -388,9 +375,8 @@ List<Map<String, dynamic>> _applyCalendarEvents(
   return out;
 }
 
-List<String> _sList(dynamic v) => v is List
-    ? v.map(_s).where((x) => x.trim().isNotEmpty).toList()
-    : <String>[];
+List<String> _sList(dynamic v) =>
+    v is List ? v.map(_s).where((x) => x.trim().isNotEmpty).toList() : <String>[];
 
 /// "Backend" aplikacji - działa w całości na telefonie (bez serwera).
 /// Interfejs jest taki sam jak wcześniej, dlatego ekrany nie wymagały zmian.
@@ -416,53 +402,24 @@ class Api {
     required String notes,
     String kind = 'training',
     String? plannedEventId,
-
     /// True, gdy zapisujemy przyszły plan (Kalendarz → Dodaj), a nie
     /// wykonaną już aktywność. Dzisiejsze planowane treningi nie są
     /// oznaczane jako wykonane.
     bool isPlanned = false,
-  }) => TrainingRepo.createTraining(
-    date: date,
-    durationMin: durationMin,
-    focuses: focuses,
-    intensity: intensity,
-    rating: rating,
-    wentWell: wentWell,
-    toImprove: toImprove,
-    notes: notes,
-    kind: kind,
-    plannedEventId: plannedEventId,
-    isPlanned: isPlanned,
-  );
+  }) => TrainingRepo.createTraining(date: date, durationMin: durationMin, focuses: focuses, intensity: intensity, rating: rating, wentWell: wentWell, toImprove: toImprove, notes: notes, kind: kind, plannedEventId: plannedEventId, isPlanned: isPlanned);
 
-  static Future<Training?> getTraining(String id) =>
-      TrainingRepo.getTraining(id);
+  static Future<Training?> getTraining(String id) => TrainingRepo.getTraining(id);
 
   static Future<MatchEntry?> getMatch(String id) => TrainingRepo.getMatch(id);
 
   /// Pola wykonania w kalendarzu są projekcją rzeczywistego wpisu
   /// w dzienniku. Nie kopiujemy ID wydarzenia ani godziny planu.
-  static Map<String, dynamic> _completedEventFields(
-    Map<String, dynamic> linked,
-  ) {
+  static Map<String, dynamic> _completedEventFields(Map<String, dynamic> linked) {
     const fields = <String>[
-      'date',
-      'title',
-      'description',
-      'type',
-      'duration_min',
-      'focus',
-      'focuses',
-      'intensity',
-      'rating',
-      'opponent',
-      'result',
-      'minutes_played',
-      'goals',
-      'assists',
-      'went_well',
-      'to_improve',
-      'notes',
+      'date', 'title', 'description', 'type', 'duration_min',
+      'focus', 'focuses', 'intensity', 'rating',
+      'opponent', 'result', 'minutes_played', 'goals', 'assists',
+      'went_well', 'to_improve', 'notes',
     ];
     return <String, dynamic>{
       for (final key in fields)
@@ -473,9 +430,7 @@ class Api {
   /// Aktualizuje zarówno opis, jak i dane strukturalne karty kalendarza.
   /// Wywoływane wewnątrz LocalDb.synchronized.
   static Future<void> _refreshLinkedEvents(
-    String sourceId,
-    Map<String, dynamic> linked,
-  ) async {
+      String sourceId, Map<String, dynamic> linked) async {
     final events = await LocalDb.list('events');
     var changed = false;
     for (final e in events) {
@@ -498,17 +453,7 @@ class Api {
     required String wentWell,
     required String toImprove,
     required String notes,
-  }) => TrainingRepo.updateTraining(
-    id,
-    date: date,
-    durationMin: durationMin,
-    focuses: focuses,
-    intensity: intensity,
-    rating: rating,
-    wentWell: wentWell,
-    toImprove: toImprove,
-    notes: notes,
-  );
+  }) => TrainingRepo.updateTraining(id, date: date, durationMin: durationMin, focuses: focuses, intensity: intensity, rating: rating, wentWell: wentWell, toImprove: toImprove, notes: notes);
 
   /// Edycja zapisanego meczu.
   static Future<MatchEntry> updateMatch(
@@ -523,19 +468,7 @@ class Api {
     required String wentWell,
     required String toImprove,
     required String notes,
-  }) => TrainingRepo.updateMatch(
-    id,
-    date: date,
-    opponent: opponent,
-    result: result,
-    minutesPlayed: minutesPlayed,
-    goals: goals,
-    assists: assists,
-    rating: rating,
-    wentWell: wentWell,
-    toImprove: toImprove,
-    notes: notes,
-  );
+  }) => TrainingRepo.updateMatch(id, date: date, opponent: opponent, result: result, minutesPlayed: minutesPlayed, goals: goals, assists: assists, rating: rating, wentWell: wentWell, toImprove: toImprove, notes: notes);
 
   /// Ocena treningu klubowego (ocena, co było dobrze, co poprawić, notatki).
   /// Pierwsza ocena tworzy wpis treningu w dzienniku i oznacza trening
@@ -547,14 +480,7 @@ class Api {
     required String wentWell,
     required String toImprove,
     required String notes,
-  }) => TrainingRepo.rateClubTraining(
-    e,
-    focuses: focuses,
-    rating: rating,
-    wentWell: wentWell,
-    toImprove: toImprove,
-    notes: notes,
-  );
+  }) => TrainingRepo.rateClubTraining(e, focuses: focuses, rating: rating, wentWell: wentWell, toImprove: toImprove, notes: notes);
 
   // ---------------------------------------------------------------------
   // Eksport i kopia zapasowa
@@ -567,12 +493,10 @@ class Api {
 
   /// Sprawdza plik kopii i zwraca liczbę treningów/meczów/wydarzeń.
   /// Rzuca [ApiException], gdy plik nie jest kopią z tej aplikacji.
-  static Map<String, int> inspectBackup(String json) =>
-      BackupService.inspectBackup(json);
+  static Map<String, int> inspectBackup(String json) => BackupService.inspectBackup(json);
 
   /// Przywraca dane z kopii (zastępuje obecne dane w aplikacji).
-  static Future<void> importBackup(String json) =>
-      BackupService.importBackup(json);
+  static Future<void> importBackup(String json) => BackupService.importBackup(json);
 
   static Map<String, dynamic> _parseBackup(String json) {
     dynamic decoded;
@@ -585,20 +509,14 @@ class Api {
         decoded['app'] != _backupApp ||
         decoded['data'] is! Map) {
       throw ApiException(
-        400,
-        'Bad Request',
-        'To nie jest kopia z Dziennika Piłkarza.',
-      );
+          400, 'Bad Request', 'To nie jest kopia z Dziennika Piłkarza.');
     }
     final data = Map<String, dynamic>.from(decoded['data'] as Map);
     try {
       LocalDb.validateImport(data);
     } on FormatException catch (error) {
-      throw ApiException(
-        400,
-        'Bad Request',
-        'Kopia zawiera nieprawidłowe dane: ${error.message}',
-      );
+      throw ApiException(400, 'Bad Request',
+          'Kopia zawiera nieprawidłowe dane: ${error.message}');
     }
     return data;
   }
@@ -623,14 +541,12 @@ class Api {
   }
 
   /// Treningi (własne i klubowe) w CSV - otwiera się w Excelu/Arkuszach.
-  static Future<String> exportTrainingsCsv() =>
-      BackupService.exportTrainingsCsv();
+  static Future<String> exportTrainingsCsv() => BackupService.exportTrainingsCsv();
 
   /// Mecze w CSV.
   static Future<String> exportMatchesCsv() => BackupService.exportMatchesCsv();
 
-  static Future<void> deleteTraining(String id) =>
-      TrainingRepo.deleteTraining(id);
+  static Future<void> deleteTraining(String id) => TrainingRepo.deleteTraining(id);
 
   // ---------------- Mecze ----------------
   static Future<List<MatchEntry>> listMatches() => TrainingRepo.listMatches();
@@ -647,32 +563,17 @@ class Api {
     required String toImprove,
     required String notes,
     String? plannedEventId,
-
     /// True, gdy zapisujemy przyszły plan (Kalendarz → Dodaj), a nie
     /// wykonaną już aktywność. Dzisiejsze planowane mecze nie są
     /// oznaczane jako wykonane.
     bool isPlanned = false,
-  }) => TrainingRepo.createMatch(
-    date: date,
-    opponent: opponent,
-    result: result,
-    minutesPlayed: minutesPlayed,
-    goals: goals,
-    assists: assists,
-    rating: rating,
-    wentWell: wentWell,
-    toImprove: toImprove,
-    notes: notes,
-    plannedEventId: plannedEventId,
-    isPlanned: isPlanned,
-  );
+  }) => TrainingRepo.createMatch(date: date, opponent: opponent, result: result, minutesPlayed: minutesPlayed, goals: goals, assists: assists, rating: rating, wentWell: wentWell, toImprove: toImprove, notes: notes, plannedEventId: plannedEventId, isPlanned: isPlanned);
 
   static Future<void> deleteMatch(String id) => TrainingRepo.deleteMatch(id);
 
   // ---------------- Kalendarz ----------------
   /// Jednorazowa synchronizacja przy uruchomieniu lub zmianie profilu.
-  static Future<void> synchronizeCalendar() =>
-      CalendarRepo.synchronizeCalendar();
+  static Future<void> synchronizeCalendar() => CalendarRepo.synchronizeCalendar();
 
   /// Odczyt nie zmienia stanu aplikacji.
   static Future<List<EventItem>> listEvents() => CalendarRepo.listEvents();
@@ -700,11 +601,8 @@ class Api {
     // Usuń / zaktualizuj przyszłe, niewykonane treningi klubowe.
     final before = events.length;
     events.removeWhere((e) {
-      if (_s(e['source']) != 'club' ||
-          e['done'] == true ||
-          e['club_override'] == true) {
-        return false;
-      }
+      if (_s(e['source']) != 'club' || e['done'] == true ||
+          e['club_override'] == true) return false;
       final d = DateTime.tryParse(first10(_s(e['date'])));
       if (d == null || first10(_s(e['date'])).compareTo(today) < 0) {
         return false;
@@ -713,11 +611,8 @@ class Api {
     });
     if (events.length != before) changed = true;
     for (final e in events) {
-      if (_s(e['source']) != 'club' ||
-          e['done'] == true ||
-          e['club_override'] == true) {
-        continue;
-      }
+      if (_s(e['source']) != 'club' || e['done'] == true ||
+          e['club_override'] == true) continue;
       if (_s(e['time']) != time || _i(e['duration_min']) != dur) {
         e['time'] = time;
         e['duration_min'] = dur;
@@ -763,25 +658,21 @@ class Api {
 
   /// Wszystkie aktywności danego dnia (dziennik: "Dzisiejszy cel").
   /// Najpierw zaplanowane do wykonania, potem wg godziny; notatki na końcu.
-  static Future<List<EventItem>> eventsForDay(String date) =>
-      CalendarRepo.eventsForDay(date);
+  static Future<List<EventItem>> eventsForDay(String date) => CalendarRepo.eventsForDay(date);
 
   /// Zaplanowane, niewykonane treningi i mecze na dziś ("Dzisiejszy cel").
   static Future<List<EventItem>> todayGoals() => CalendarRepo.todayGoals();
 
   /// Dodaje dzień planu tygodnia do kalendarza jako zaplanowany trening.
   /// Zwraca false, jeśli ten dzień planu jest już w kalendarzu.
-  static Future<bool> addPlanDayToCalendar(PlanDay d) =>
-      PlanService.addPlanDayToCalendar(d);
+  static Future<bool> addPlanDayToCalendar(PlanDay d) => PlanService.addPlanDayToCalendar(d);
 
   /// Dodaje cały plan tygodnia (bez dni odpoczynku i dni, które już minęły).
   /// Zwraca liczbę dodanych treningów.
-  static Future<int> addPlanWeekToCalendar(WeeklyPlan plan) =>
-      PlanService.addPlanWeekToCalendar(plan);
+  static Future<int> addPlanWeekToCalendar(WeeklyPlan plan) => PlanService.addPlanWeekToCalendar(plan);
 
   /// Klucz dnia planu: "RRRR-MM-DD|tytuł".
-  static String planKey(String date, String title) =>
-      PlanService.planKey(date, title);
+  static String planKey(String date, String title) => PlanService.planKey(date, title);
 
   /// Wydarzenia w kalendarzu utworzone z planu tygodnia (klucz: [planKey]).
   /// Obejmuje też dni planu powiązane z ręcznymi zaplanowanymi
@@ -791,15 +682,12 @@ class Api {
   /// wykonania) pod kluczem `id:<id>`, żeby dni planu mogły rozpoznać
   /// powiązane wydarzenie po ID, nawet jeśli zostało oznaczone jako
   /// wykonane lub ma powtarzający się tytuł.
-  static Future<Map<String, EventItem>> planEvents() =>
-      PlanService.planEvents();
+  static Future<Map<String, EventItem>> planEvents() => PlanService.planEvents();
 
   /// Wyszukuje powiązane z planem wydarzenie kalendarza po ID.
   /// Zwraca null, gdy nie ma takiego wydarzenia.
   static EventItem? planEventById(
-    Map<String, EventItem> planEvents,
-    String id,
-  ) {
+      Map<String, EventItem> planEvents, String id) {
     if (id.isEmpty) return null;
     return planEvents['id:$id'];
   }
@@ -852,8 +740,8 @@ class Api {
       'type': d.focus == 'Mecz'
           ? 'match'
           : club
-          ? 'club_training'
-          : 'training',
+              ? 'club_training'
+              : 'training',
       'title': d.title,
       'plan_title': d.title,
       'description': d.description,
@@ -894,13 +782,7 @@ class Api {
       ].where((x) => x.isNotEmpty).join(' - '),
       'duration_min': _i(t['duration_min']),
       'focus': _s(t['focus']),
-      'focuses': _sList(t['focuses']).isNotEmpty
-          ? _sList(t['focuses'])
-          : _s(t['focus'])
-                .split(',')
-                .map((x) => x.trim())
-                .where((x) => x.isNotEmpty)
-                .toList(),
+      'focuses': _sList(t['focuses']).isNotEmpty ? _sList(t['focuses']) : _s(t['focus']).split(',').map((x) => x.trim()).where((x) => x.isNotEmpty).toList(),
       'intensity': _s(t['intensity']),
       'rating': _i(t['rating']),
       'went_well': _s(t['went_well']),
@@ -969,14 +851,7 @@ class Api {
     required String title,
     required String description,
     Map<String, dynamic> details = const <String, dynamic>{},
-  }) => CalendarRepo.createEvent(
-    date: date,
-    time: time,
-    type: type,
-    title: title,
-    description: description,
-    details: details,
-  );
+  }) => CalendarRepo.createEvent(date: date, time: time, type: type, title: title, description: description, details: details);
 
   /// Edycja wydarzenia bez wpisu w dzienniku (notatka, trening z planu).
   static Future<EventItem> updateEvent(
@@ -986,14 +861,7 @@ class Api {
     required String title,
     required String description,
     Map<String, dynamic>? details,
-  }) => CalendarRepo.updateEvent(
-    id,
-    date: date,
-    time: time,
-    title: title,
-    description: description,
-    details: details,
-  );
+  }) => CalendarRepo.updateEvent(id, date: date, time: time, title: title, description: description, details: details);
 
   /// Edycja planu bez tworzenia wpisu wykonanego treningu w dzienniku.
   static Future<EventItem> updatePlannedActivity(
@@ -1002,23 +870,13 @@ class Api {
     required String title,
     required String description,
     required Map<String, dynamic> details,
-  }) => CalendarRepo.updatePlannedActivity(
-    id,
-    date: date,
-    title: title,
-    description: description,
-    details: details,
-  );
+  }) => CalendarRepo.updatePlannedActivity(id, date: date, title: title, description: description, details: details);
 
-  static Future<EventItem> toggleEvent(String id, bool done) =>
-      CalendarRepo.toggleEvent(id, done);
+  static Future<EventItem> toggleEvent(String id, bool done) => CalendarRepo.toggleEvent(id, done);
 
   /// Usuwa wydarzenie. Jeśli powstało z treningu lub meczu zapisanego
   /// w dzienniku, usuwa też ten wpis, żeby dziennik i kalendarz były zgodne.
-  static Future<void> deleteEvent(
-    String id, {
-    bool deleteJournalEntry = true,
-  }) => CalendarRepo.deleteEvent(id, deleteJournalEntry: deleteJournalEntry);
+  static Future<void> deleteEvent(String id, {bool deleteJournalEntry = true}) => CalendarRepo.deleteEvent(id, deleteJournalEntry: deleteJournalEntry);
 
   static Future<void> _deleteFrom(
     String collection,
@@ -1037,38 +895,17 @@ class Api {
   }
 
   // ---------------- Postęp ----------------
-  static Future<List<String>> recoveryDays() async {
-    final doc = await LocalDb.getDoc('recovery_days');
-    return (doc?['dates'] as List?)?.map(_s).toList() ?? <String>[];
-  }
-
-  static Future<void> confirmRecovery(String date) async {
-    _validateActivityDate(date, isPlanned: false);
-    final plan = await getWeeklyPlan();
-    _check(
-      plan != null && plan.days.any((d) => first10(d.date) == date && d.isRest),
-      'Potwierdź regenerację w dniu odpoczynku z bieżącego planu.',
-    );
-    await LocalDb.synchronized<void>(() async {
-      final dates = (await recoveryDays()).toSet()..add(date);
-      await LocalDb.setDoc('recovery_days', {'dates': dates.toList()});
-    });
-  }
-
   static Future<Progress> progress() => ProgressCalculator.calculate();
 
   // ---------------- Słabe punkty ----------------
-  static Future<WeakSpotsPayload?> getWeakSpots() =>
-      CoachService.getWeakSpots();
+  static Future<WeakSpotsPayload?> getWeakSpots() => CoachService.getWeakSpots();
 
-  static Future<WeakSpotsPayload> analyzeWeakSpots() =>
-      CoachService.analyzeWeakSpots();
+  static Future<WeakSpotsPayload> analyzeWeakSpots() => CoachService.analyzeWeakSpots();
 
   // ---------------- Profil ----------------
   static Future<Profile> getProfile() => CoachService.getProfile();
 
-  static Future<Profile> updateProfile(Profile p) =>
-      CoachService.updateProfile(p);
+  static Future<Profile> updateProfile(Profile p) => CoachService.updateProfile(p);
 
   // ---------------- Trener ----------------
   static Future<List<Drill>> drills() => CoachService.drills();
@@ -1078,8 +915,7 @@ class Api {
 
   static Future<WeeklyPlan?> getWeeklyPlan() => PlanService.getWeeklyPlan();
 
-  static Future<WeeklyPlan> generateWeeklyPlan() =>
-      PlanService.generateWeeklyPlan();
+  static Future<WeeklyPlan> generateWeeklyPlan() => PlanService.generateWeeklyPlan();
 
   /// Wysyła wiadomość do trenera i zwraca odpowiedź
   /// (model AI, a bez klucza - odpowiedź offline).
@@ -1087,16 +923,10 @@ class Api {
   /// klubowe) i mecze z ocenami i notatkami oraz najbliższe plany.
   static Future<String> _playerContext() async {
     final profile = await LocalDb.getDoc('profile') ?? <String, dynamic>{};
-    final trainings = _sortedBy(
-      await LocalDb.list('trainings'),
-      'date',
-      desc: true,
-    );
-    final matches = _sortedBy(
-      await LocalDb.list('matches'),
-      'date',
-      desc: true,
-    );
+    final trainings =
+        _sortedBy(await LocalDb.list('trainings'), 'date', desc: true);
+    final matches =
+        _sortedBy(await LocalDb.list('matches'), 'date', desc: true);
     final events = await LocalDb.list('events');
     String clip(dynamic v) {
       final t = _s(v).trim().replaceAll('\n', ' ');
@@ -1105,70 +935,58 @@ class Api {
 
     final b = StringBuffer()
       ..writeln(
-        'DANE ZAWODNIKA (z aplikacji - odnoś się do nich, gdy to pomocne; '
-        'nie wymyślaj wpisów, których tu nie ma):',
-      )
-      ..writeln(
-        'Profil: wiek=${_orDefault(profile['age'], '-')}, '
-        'pozycja=${_orDefault(profile['position'], '-')}, '
-        'noga=${_orDefault(profile['dominant_foot'], '-')}, '
-        'cel sezonu=${_orDefault(profile['season_goal'], '-')}. '
-        'Treningi klubowe: ${_clubDays(profile).isEmpty ? 'brak' : (_clubDays(profile).toList()..sort()).map((d) => kPolishDays[d - 1]).join(', ')}.',
-      )
+          'DANE ZAWODNIKA (z aplikacji - odnoś się do nich, gdy to pomocne; '
+          'nie wymyślaj wpisów, których tu nie ma):')
+      ..writeln('Profil: wiek=${_orDefault(profile['age'], '-')}, '
+          'pozycja=${_orDefault(profile['position'], '-')}, '
+          'noga=${_orDefault(profile['dominant_foot'], '-')}, '
+          'cel sezonu=${_orDefault(profile['season_goal'], '-')}. '
+          'Treningi klubowe: ${_clubDays(profile).isEmpty ? 'brak' : (_clubDays(profile).toList()..sort()).map((d) => kPolishDays[d - 1]).join(', ')}.')
       ..writeln('Dzisiaj: ${todayIso()}.');
 
     final lastT = trainings.take(12).toList();
-    b.writeln(
-      lastT.isEmpty
-          ? 'Treningi: brak zapisanych.'
-          : 'Ostatnie treningi (od najnowszego):',
-    );
+    b.writeln(lastT.isEmpty
+        ? 'Treningi: brak zapisanych.'
+        : 'Ostatnie treningi (od najnowszego):');
     for (final t in lastT) {
       final club = _s(t['kind']) == 'club_training';
       b.writeln(
-        '- ${first10(_s(t['date']))} ${club ? 'TRENING KLUBOWY' : 'trening własny'}'
-        '${_s(t['focus']).isNotEmpty ? ' (${_s(t['focus'])})' : ''}, '
-        '${_i(t['duration_min'])} min, intensywność ${_s(t['intensity'])}, '
-        '${_i(t['rating']) > 0 ? 'ocena ${_i(t['rating'])}/5' : 'bez samooceny'}'
-        '${clip(t['went_well']).isNotEmpty ? '; dobrze: ${clip(t['went_well'])}' : ''}'
-        '${clip(t['to_improve']).isNotEmpty ? '; do poprawy: ${clip(t['to_improve'])}' : ''}'
-        '${clip(t['notes']).isNotEmpty ? '; notatki: ${clip(t['notes'])}' : ''}',
-      );
+          '- ${first10(_s(t['date']))} ${club ? 'TRENING KLUBOWY' : 'trening własny'}'
+          '${_s(t['focus']).isNotEmpty ? ' (${_s(t['focus'])})' : ''}, '
+          '${_i(t['duration_min'])} min, intensywność ${_s(t['intensity'])}, '
+          'ocena ${_i(t['rating'])}/5'
+          '${clip(t['went_well']).isNotEmpty ? '; dobrze: ${clip(t['went_well'])}' : ''}'
+          '${clip(t['to_improve']).isNotEmpty ? '; do poprawy: ${clip(t['to_improve'])}' : ''}'
+          '${clip(t['notes']).isNotEmpty ? '; notatki: ${clip(t['notes'])}' : ''}');
     }
     final lastM = matches.take(6).toList();
     if (lastM.isNotEmpty) b.writeln('Ostatnie mecze:');
     for (final m in lastM) {
       b.writeln(
-        '- ${first10(_s(m['date']))} vs ${_orDefault(m['opponent'], '?')}'
-        '${_s(m['result']).isNotEmpty ? ' wynik ${_s(m['result'])}' : ''}, '
-        '${_i(m['minutes_played'])} min, gole ${_i(m['goals'])}, asysty ${_i(m['assists'])}, '
-        '${_i(m['rating']) > 0 ? 'ocena ${_i(m['rating'])}/5' : 'bez samooceny'}'
-        '${clip(m['went_well']).isNotEmpty ? '; dobrze: ${clip(m['went_well'])}' : ''}'
-        '${clip(m['to_improve']).isNotEmpty ? '; do poprawy: ${clip(m['to_improve'])}' : ''}'
-        '${clip(m['notes']).isNotEmpty ? '; notatki: ${clip(m['notes'])}' : ''}',
-      );
+          '- ${first10(_s(m['date']))} vs ${_orDefault(m['opponent'], '?')}'
+          '${_s(m['result']).isNotEmpty ? ' wynik ${_s(m['result'])}' : ''}, '
+          '${_i(m['minutes_played'])} min, gole ${_i(m['goals'])}, asysty ${_i(m['assists'])}, '
+          'ocena ${_i(m['rating'])}/5'
+          '${clip(m['went_well']).isNotEmpty ? '; dobrze: ${clip(m['went_well'])}' : ''}'
+          '${clip(m['to_improve']).isNotEmpty ? '; do poprawy: ${clip(m['to_improve'])}' : ''}'
+          '${clip(m['notes']).isNotEmpty ? '; notatki: ${clip(m['notes'])}' : ''}');
     }
     final today = todayIso();
-    final upcoming =
-        events
-            .where(
-              (e) =>
-                  first10(_s(e['date'])).compareTo(today) >= 0 &&
-                  e['done'] != true,
-            )
-            .toList()
-          ..sort((a, b) => _s(a['date']).compareTo(_s(b['date'])));
+    final upcoming = events
+        .where((e) =>
+            first10(_s(e['date'])).compareTo(today) >= 0 && e['done'] != true)
+        .toList()
+      ..sort((a, b) => _s(a['date']).compareTo(_s(b['date'])));
     final next = upcoming.take(6).toList();
     if (next.isNotEmpty) b.writeln('Najbliższe w kalendarzu:');
     for (final e in next) {
       b.writeln(
-        '- ${first10(_s(e['date']))}${_s(e['time']).isNotEmpty ? ' ${_s(e['time'])}' : ''} '
-        '${_s(e['type'])}: ${_s(e['title'])}',
-      );
+          '- ${first10(_s(e['date']))}${_s(e['time']).isNotEmpty ? ' ${_s(e['time'])}' : ''} '
+          '${_s(e['type'])}: ${_s(e['title'])}');
     }
     return b.toString();
   }
 
-  static Future<String> chat(String sessionId, String message) =>
-      CoachService.chat(sessionId, message);
+  static Future<String> chat(String sessionId, String message) => CoachService.chat(sessionId, message);
 }
+

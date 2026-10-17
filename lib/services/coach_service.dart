@@ -17,11 +17,9 @@ class CoachService {
       final n = _s(t['to_improve']).trim();
       if (n.isNotEmpty) {
         final club = _s(t['kind']) == 'club_training';
-        notes.add(
-          '[${club ? 'Trening klubowy' : 'Trening'} '
-          '${first10(_s(t['date']))}'
-          '${_s(t['focus']).isNotEmpty ? ' · ${_s(t['focus'])}' : ''}] $n',
-        );
+        notes.add('[${club ? 'Trening klubowy' : 'Trening'} '
+            '${first10(_s(t['date']))}'
+            '${_s(t['focus']).isNotEmpty ? ' · ${_s(t['focus'])}' : ''}] $n');
       }
     }
     for (final m in matches) {
@@ -38,20 +36,17 @@ class CoachService {
         'weak_spots': <Map<String, dynamic>>[],
         'generated_at': _nowIso(),
         'note_count': 0,
-        'source': 'offline',
       };
       await LocalDb.setDoc('weak_spots', empty);
       return WeakSpotsPayload.fromJson(empty);
     }
 
     var spots = <Map<String, dynamic>>[];
-    var source = 'offline';
 
     if (Llm.enabled) {
       try {
-        final last = notes.length > 50
-            ? notes.sublist(notes.length - 50)
-            : notes;
+        final last =
+            notes.length > 50 ? notes.sublist(notes.length - 50) : notes;
         final prompt =
             "Przeanalizuj poniższe notatki zawodnika z pola 'Co trzeba poprawić?' "
             'i wskaż 2-5 powtarzających się słabych punktów:\n\n'
@@ -64,7 +59,6 @@ class CoachService {
           ],
         );
         final parsed = _extractJsonObject(raw);
-        source = 'online';
         final items = parsed?['weak_spots'];
         if (items is List) {
           for (final it in items.take(5)) {
@@ -90,7 +84,6 @@ class CoachService {
     }
 
     if (spots.isEmpty) {
-      source = 'offline';
       // Wersja offline - zliczanie słów kluczowych.
       final tally = <String, int>{};
       void bump(String k) => tally[k] = (tally[k] ?? 0) + 1;
@@ -137,7 +130,6 @@ class CoachService {
       'weak_spots': spots,
       'generated_at': _nowIso(),
       'note_count': notes.length,
-      'source': source,
     };
     await LocalDb.setDoc('weak_spots', payload);
     return WeakSpotsPayload.fromJson(payload);
@@ -162,10 +154,8 @@ class CoachService {
   }
 
   static Future<Profile> updateProfile(Profile p) async {
-    _check(
-      p.age == null || (p.age! >= 8 && p.age! <= 21),
-      'Wiek zawodnika powinien mieścić się w przedziale 8–21 lat.',
-    );
+    _check(p.age == null || (p.age! >= 8 && p.age! <= 21),
+        'Wiek zawodnika powinien mieścić się w przedziale 8–21 lat.');
     final data = p.toJson();
     data['updated_at'] = _nowIso();
     await LocalDb.setDoc('profile', data);
@@ -179,8 +169,7 @@ class CoachService {
 
   static Future<String> motivation() async {
     final now = DateTime.now();
-    final ordinal =
-        DateTime.utc(
+    final ordinal = DateTime.utc(
           now.year,
           now.month,
           now.day,
@@ -194,11 +183,9 @@ class CoachService {
     final session = all.where((m) => m['session_id'] == sessionId).toList();
 
     String reply;
-    var source = 'offline';
     if (Llm.enabled) {
-      final recent = session.length > 20
-          ? session.sublist(session.length - 20)
-          : session;
+      final recent =
+          session.length > 20 ? session.sublist(session.length - 20) : session;
       final context = await Api._playerContext();
       try {
         reply = await Llm.complete(
@@ -212,7 +199,6 @@ class CoachService {
             <String, String>{'role': 'user', 'content': message},
           ],
         );
-        source = 'online';
       } catch (e) {
         reply = await OfflineCoach.reply(message);
       }
@@ -220,7 +206,6 @@ class CoachService {
       reply = await OfflineCoach.reply(message);
     }
 
-    CoachRuntime.lastReplySource.value = source;
     await LocalDb.synchronized<void>(() async {
       final items = await LocalDb.list('chat_messages');
       items.add(<String, dynamic>{
@@ -235,12 +220,10 @@ class CoachService {
         'session_id': sessionId,
         'role': 'assistant',
         'content': reply,
-        'source': source,
         'created_at': _nowIso(),
       });
-      final trimmed = items.length > 200
-          ? items.sublist(items.length - 200)
-          : items;
+      final trimmed =
+          items.length > 200 ? items.sublist(items.length - 200) : items;
       await LocalDb.saveList('chat_messages', trimmed);
     });
     return reply;

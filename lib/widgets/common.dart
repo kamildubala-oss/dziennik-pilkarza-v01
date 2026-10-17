@@ -64,9 +64,9 @@ class SectionTitle extends StatelessWidget {
     return Text(
       text,
       style: manrope(
-        size: 13,
+        size: 11,
         weight: FontWeight.w800,
-        letterSpacing: 0.6,
+        letterSpacing: 1.5,
         color: context.c.muted,
       ),
     );
@@ -92,20 +92,22 @@ class ModalHeader extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          IconButton.filledTonal(
-            tooltip: 'Zamknij formularz',
-            onPressed: onClose,
-            constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
-            icon: const Icon(Icons.close),
-          ),
-          Expanded(
-            child: Text(
-              title,
-              textAlign: TextAlign.center,
-              style: barlow(size: 20, color: c.onSurface),
+          GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: onClose,
+            child: Container(
+              width: 36,
+              height: 36,
+              decoration: BoxDecoration(
+                color: c.surfaceSecondary,
+                shape: BoxShape.circle,
+              ),
+              alignment: Alignment.center,
+              child: Icon(Icons.close, size: 22, color: c.onSurface),
             ),
           ),
-          const SizedBox(width: 48),
+          Text(title, style: barlow(size: 18, color: c.onSurface)),
+          const SizedBox(width: 36),
         ],
       ),
     );
@@ -130,9 +132,9 @@ class LabeledField extends StatelessWidget {
           Text(
             label,
             style: manrope(
-              size: 13,
+              size: 11,
               weight: FontWeight.w800,
-              letterSpacing: 0.4,
+              letterSpacing: 1.2,
               color: c.muted,
             ),
           ),
@@ -157,9 +159,9 @@ class FieldLabel extends StatelessWidget {
       child: Text(
         text,
         style: manrope(
-          size: 13,
+          size: 11,
           weight: FontWeight.w800,
-          letterSpacing: 0.4,
+          letterSpacing: 1.2,
           color: context.c.muted,
         ),
       ),
@@ -195,9 +197,9 @@ class AppTextField extends StatelessWidget {
   final ValueChanged<String>? onChanged;
 
   OutlineInputBorder _border(Color color) => OutlineInputBorder(
-    borderRadius: BorderRadius.circular(Rad.md),
-    borderSide: BorderSide(color: color, width: 1),
-  );
+        borderRadius: BorderRadius.circular(Rad.md),
+        borderSide: BorderSide(color: color, width: 1),
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -213,7 +215,6 @@ class AppTextField extends StatelessWidget {
       cursorColor: c.brandPrimary,
       style: manrope(size: 15, color: c.onSurface),
       decoration: InputDecoration(
-        constraints: const BoxConstraints(minHeight: 48),
         isDense: true,
         filled: true,
         fillColor: c.surfaceSecondary,
@@ -229,7 +230,7 @@ class AppTextField extends StatelessWidget {
         ),
         border: _border(c.border),
         enabledBorder: _border(c.border),
-        focusedBorder: _border(c.brandPrimary),
+        focusedBorder: _border(c.border),
       ),
     );
   }
@@ -288,18 +289,28 @@ class ChipOption extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = context.c;
-    return FilterChip(
-      label: Text(label),
-      selected: selected,
-      onSelected: (_) => onTap(),
-      showCheckmark: true,
-      selectedColor: c.brandTertiary,
-      labelStyle: manrope(
-        size: 14,
-        color: selected ? c.onBrandTertiary : c.onSurface,
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        decoration: BoxDecoration(
+          color: selected ? c.brandPrimary : c.surfaceSecondary,
+          borderRadius: BorderRadius.circular(Rad.pill),
+          border: Border.all(
+            color: selected ? c.brandPrimary : c.border,
+            width: 1,
+          ),
+        ),
+        child: Text(
+          label,
+          style: manrope(
+            size: 13,
+            weight: FontWeight.w600,
+            color: selected ? c.onBrandPrimary : c.onSurface,
+          ),
+        ),
       ),
-      materialTapTargetSize: MaterialTapTargetSize.padded,
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
     );
   }
 }
@@ -326,42 +337,22 @@ class RatingStars extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = context.c;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Wrap(
-          children: [
-            for (var n = 1; n <= 5; n++)
-              Semantics(
-                selected: n == rating,
-                child: IconButton(
-                  tooltip: 'Ocena $n z 5',
-                  constraints: const BoxConstraints(
-                    minWidth: 48,
-                    minHeight: 48,
-                  ),
-                  onPressed: () => onChanged(n),
-                  icon: Icon(
-                    n <= rating ? Icons.star : Icons.star_outline,
-                    size: 28,
-                    color: n <= rating ? c.brandPrimary : c.muted,
-                  ),
-                ),
+    return Row(
+      children: withGap([
+        for (var n = 1; n <= 5; n++)
+          GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () => onChanged(n),
+            child: Padding(
+              padding: const EdgeInsets.all(4),
+              child: Icon(
+                n <= rating ? Icons.star : Icons.star_outline,
+                size: 28,
+                color: n <= rating ? c.brandPrimary : c.muted,
               ),
-          ],
-        ),
-        Text(
-          rating == 0
-              ? 'Opcjonalnie · 1 = trudno, 5 = bardzo dobrze'
-              : '$rating/5 · Twoja samoocena',
-          style: manrope(size: 13, color: c.muted),
-        ),
-        if (rating > 0)
-          TextButton(
-            onPressed: () => onChanged(0),
-            child: const Text('Pomiń ocenę'),
+            ),
           ),
-      ],
+      ], width: 4),
     );
   }
 }
@@ -386,17 +377,34 @@ class PrimaryButton extends StatelessWidget {
     final c = context.c;
     return Padding(
       padding: EdgeInsets.only(top: marginTop),
-      child: FilledButton.icon(
-        onPressed: onTap,
-        style: FilledButton.styleFrom(
-          minimumSize: const Size(double.infinity, 48),
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-          backgroundColor: c.brandPrimary,
-          foregroundColor: c.onBrandPrimary,
-          textStyle: manrope(size: 15, weight: FontWeight.w700),
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: onTap,
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 14),
+          decoration: BoxDecoration(
+            color: onTap == null
+                ? c.brandPrimary.withValues(alpha: 0.45)
+                : c.brandPrimary,
+            borderRadius: BorderRadius.circular(Rad.pill),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(icon ?? Icons.check, size: 20, color: c.onBrandPrimary),
+              const SizedBox(width: 6),
+              Text(
+                label,
+                style: manrope(
+                  size: 14,
+                  weight: FontWeight.w800,
+                  letterSpacing: 1.2,
+                  color: c.onBrandPrimary,
+                ),
+              ),
+            ],
+          ),
         ),
-        icon: Icon(icon ?? Icons.check, size: 20),
-        label: Text(label, textAlign: TextAlign.center),
       ),
     );
   }
@@ -420,26 +428,40 @@ class SecondaryButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = context.c;
+    final fg = onTap == null ? c.muted : c.onSurface;
     return Padding(
       padding: EdgeInsets.only(top: marginTop),
-      child: OutlinedButton(
-        onPressed: onTap,
-        style: OutlinedButton.styleFrom(
-          minimumSize: const Size(double.infinity, 48),
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-          foregroundColor: c.onSurface,
-          side: BorderSide(color: c.borderStrong),
-          textStyle: manrope(size: 15, weight: FontWeight.w600),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            if (icon != null) ...[
-              Icon(icon, size: 20),
-              const SizedBox(width: 8),
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: onTap,
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 13),
+          decoration: BoxDecoration(
+            color: c.surfaceSecondary,
+            borderRadius: BorderRadius.circular(Rad.pill),
+            border: Border.all(color: c.borderStrong, width: 1),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (icon != null) ...[
+                Icon(icon, size: 20, color: fg),
+                const SizedBox(width: 6),
+              ],
+              Flexible(
+                child: Text(
+                  label,
+                  textAlign: TextAlign.center,
+                  style: manrope(
+                    size: 14,
+                    weight: FontWeight.w800,
+                    letterSpacing: 1.2,
+                    color: fg,
+                  ),
+                ),
+              ),
             ],
-            Flexible(child: Text(label, textAlign: TextAlign.center)),
-          ],
+          ),
         ),
       ),
     );
@@ -490,44 +512,4 @@ class TimeField extends StatelessWidget {
       suffixIcon: Icons.schedule,
     );
   }
-}
-
-/// Wspólna reakcja na dotyk dla kart, z etykietą i stanem przycisku.
-class AppTapTarget extends StatefulWidget {
-  const AppTapTarget({
-    super.key,
-    this.behavior,
-    required this.onTap,
-    required this.child,
-  });
-  final HitTestBehavior? behavior;
-  final VoidCallback? onTap;
-  final Widget child;
-  @override
-  State<AppTapTarget> createState() => _AppTapTargetState();
-}
-
-class _AppTapTargetState extends State<AppTapTarget> {
-  bool _pressed = false;
-  void _press(bool value) {
-    if (mounted) setState(() => _pressed = value);
-  }
-
-  @override
-  Widget build(BuildContext context) => Semantics(
-    button: true,
-    enabled: widget.onTap != null,
-    child: GestureDetector(
-      behavior: widget.behavior ?? HitTestBehavior.opaque,
-      onTap: widget.onTap,
-      onTapDown: widget.onTap == null ? null : (_) => _press(true),
-      onTapUp: (_) => _press(false),
-      onTapCancel: () => _press(false),
-      child: AnimatedOpacity(
-        opacity: _pressed ? 0.7 : 1,
-        duration: const Duration(milliseconds: 100),
-        child: widget.child,
-      ),
-    ),
-  );
 }

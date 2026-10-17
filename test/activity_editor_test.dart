@@ -30,7 +30,7 @@ void main() {
     await tester.pumpWidget(testApp(AddEventScreen(editing: scheduledEvent(type: 'training'))));
     expect(find.text('Edytuj trening'), findsOneWidget);
     expect(find.text('Edytuj wydarzenie'), findsNothing);
-    expect(find.text('Nad czym chcesz pracować?'), findsOneWidget);
+    expect(find.text('Nad czym pracowałeś? (możesz wybrać kilka)'), findsOneWidget);
   });
 
   testWidgets('edytowanie zaplanowanego meczu otwiera formularz meczu', (tester) async {

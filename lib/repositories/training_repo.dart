@@ -18,7 +18,6 @@ class TrainingRepo {
     required String notes,
     String kind = 'training',
     String? plannedEventId,
-
     /// True, gdy zapisujemy przyszły plan (Kalendarz → Dodaj), a nie
     /// wykonaną już aktywność. Dzisiejsze planowane treningi nie są
     /// oznaczane jako wykonane.
@@ -29,14 +28,9 @@ class TrainingRepo {
       durationMin >= 0 && durationMin <= 600,
       'duration_min must be between 0 and 600',
     );
-    _check(
-      rating >= 0 && rating <= 5,
-      'Ocena musi wynosić 1–5 lub być pominięta (0).',
-    );
-    _check(
-      focuses.isNotEmpty || kind == 'club_training',
-      'focuses must not be empty',
-    );
+    _check(rating >= 1 && rating <= 5, 'rating must be between 1 and 5');
+    _check(focuses.isNotEmpty || kind == 'club_training',
+        'focuses must not be empty');
     final doc = <String, dynamic>{
       'id': LocalDb.newId(),
       'date': date,
@@ -55,22 +49,17 @@ class TrainingRepo {
       final planDetails = <String>[
         'Czas: $durationMin min',
         'Obszary: ${focuses.join(', ')}',
-        'Intensywność: ${intensityLabel(intensity)}',
+        'Intensywność: $intensity',
+        'Planowana ocena: $rating/5',
+        if (wentWell.trim().isNotEmpty) 'Co było dobrze: $wentWell',
+        if (toImprove.trim().isNotEmpty) 'Do poprawy: $toImprove',
         if (notes.trim().isNotEmpty) 'Notatka: $notes',
       ].join('\n');
       await Api.createEvent(
         date: date,
         type: kind,
-        title: kind == 'club_training'
-            ? 'Trening klubowy: ${focuses.join(', ')}'
-            : 'Trening: ${focuses.join(', ')}',
-        details: <String, dynamic>{
-          'focus': focuses.join(', '),
-          'focuses': focuses,
-          'duration_min': durationMin,
-          'intensity': intensity,
-          'notes': notes,
-        },
+        title: kind == 'club_training' ? 'Trening klubowy: ${focuses.join(', ')}' : 'Trening: ${focuses.join(', ')}',
+        details: <String, dynamic>{'focus': focuses.join(', '), 'focuses': focuses, 'duration_min': durationMin, 'intensity': intensity, 'rating': rating, 'went_well': wentWell, 'to_improve': toImprove, 'notes': notes},
         description: planDetails,
       );
       return Training.fromJson(doc);
@@ -84,11 +73,8 @@ class TrainingRepo {
         events = await LocalDb.list('events');
         eventIndex = events.indexWhere((e) => _s(e['id']) == plannedEventId);
         if (eventIndex < 0) {
-          throw ApiException(
-            404,
-            'Not Found',
-            'Nie znaleziono zaplanowanego treningu w kalendarzu.',
-          );
+          throw ApiException(404, 'Not Found',
+              'Nie znaleziono zaplanowanego treningu w kalendarzu.');
         }
         final planned = events[eventIndex];
         final linkedId = _s(planned['source_id']);
@@ -101,19 +87,13 @@ class TrainingRepo {
               }
             }
           }
-          throw ApiException(
-            409,
-            'Conflict',
-            'Ten trening jest już zapisany jako wykonany. Otwórz jego edycję.',
-          );
+          throw ApiException(409, 'Conflict',
+              'Ten trening jest już zapisany jako wykonany. Otwórz jego edycję.');
         }
         if (_s(planned['type']) != 'training' &&
             _s(planned['type']) != 'club_training') {
-          throw ApiException(
-            409,
-            'Conflict',
-            'Wybrane wydarzenie nie jest treningiem.',
-          );
+          throw ApiException(409, 'Conflict',
+              'Wybrane wydarzenie nie jest treningiem.');
         }
       }
       final items = await LocalDb.list('trainings');
@@ -167,15 +147,10 @@ class TrainingRepo {
   }) {
     if (date != null) _validateActivityDate(date, isPlanned: false);
     if (durationMin != null) {
-      _check(
-        durationMin >= 0 && durationMin <= 600,
-        'Czas treningu musi wynosić od 0 do 600 minut.',
-      );
+      _check(durationMin >= 0 && durationMin <= 600,
+          'Czas treningu musi wynosić od 0 do 600 minut.');
     }
-    _check(
-      rating >= 0 && rating <= 5,
-      'Ocena musi wynosić 1–5 lub być pominięta (0).',
-    );
+    _check(rating >= 1 && rating <= 5, 'rating must be between 1 and 5');
     return LocalDb.synchronized<Training>(() async {
       final items = await LocalDb.list('trainings');
       final idx = items.indexWhere((t) => _s(t['id']) == id);
@@ -213,19 +188,12 @@ class TrainingRepo {
     required String notes,
   }) {
     _validateActivityDate(date, isPlanned: false);
-    _check(
-      minutesPlayed >= 0 && minutesPlayed <= 180,
-      'Czas meczu musi wynosić od 0 do 180 minut.',
-    );
+    _check(minutesPlayed >= 0 && minutesPlayed <= 180,
+        'Czas meczu musi wynosić od 0 do 180 minut.');
     _check(goals >= 0 && goals <= 20, 'Liczba goli musi wynosić od 0 do 20.');
-    _check(
-      assists >= 0 && assists <= 20,
-      'Liczba asyst musi wynosić od 0 do 20.',
-    );
-    _check(
-      rating >= 0 && rating <= 5,
-      'Ocena musi wynosić 1–5 lub być pominięta (0).',
-    );
+    _check(assists >= 0 && assists <= 20,
+        'Liczba asyst musi wynosić od 0 do 20.');
+    _check(rating >= 1 && rating <= 5, 'rating must be between 1 and 5');
     return LocalDb.synchronized<MatchEntry>(() async {
       final items = await LocalDb.list('matches');
       final idx = items.indexWhere((m) => _s(m['id']) == id);
@@ -274,8 +242,8 @@ class TrainingRepo {
     final dur = e.durationMin > 0
         ? e.durationMin
         : (_i(profile['club_duration_min']) > 0
-              ? _i(profile['club_duration_min'])
-              : 90);
+            ? _i(profile['club_duration_min'])
+            : 90);
     await Api.createTraining(
       date: first10(e.date),
       durationMin: dur,
@@ -293,9 +261,7 @@ class TrainingRepo {
   static Future<void> deleteTraining(String id) async {
     await LocalDb.synchronized<void>(() async {
       final items = await LocalDb.list('trainings');
-      if (!items.any((e) => e['id'] == id)) {
-        throw ApiException(404, 'Not Found', 'Training not found');
-       }
+      if (!items.any((e) => e['id'] == id)) throw ApiException(404, 'Not Found', 'Training not found');
       items.removeWhere((e) => e['id'] == id);
       final events = await LocalDb.list('events');
       events.removeWhere((e) => e['source_id'] == id);
@@ -325,7 +291,6 @@ class TrainingRepo {
     required String toImprove,
     required String notes,
     String? plannedEventId,
-
     /// True, gdy zapisujemy przyszły plan (Kalendarz → Dodaj), a nie
     /// wykonaną już aktywność. Dzisiejsze planowane mecze nie są
     /// oznaczane jako wykonane.
@@ -338,10 +303,7 @@ class TrainingRepo {
     );
     _check(goals >= 0 && goals <= 20, 'goals must be between 0 and 20');
     _check(assists >= 0 && assists <= 20, 'assists must be between 0 and 20');
-    _check(
-      rating >= 0 && rating <= 5,
-      'Ocena musi wynosić 1–5 lub być pominięta (0).',
-    );
+    _check(rating >= 1 && rating <= 5, 'rating must be between 1 and 5');
     final doc = <String, dynamic>{
       'id': LocalDb.newId(),
       'date': date,
@@ -359,18 +321,20 @@ class TrainingRepo {
     if (isPlanned) {
       final planDetails = <String>[
         'Rywal: $opponent',
+        if (result.trim().isNotEmpty) 'Wynik: $result',
         'Minuty: $minutesPlayed',
+        'Bramki: $goals',
+        'Asysty: $assists',
+        'Planowana ocena: $rating/5',
+        if (wentWell.trim().isNotEmpty) 'Co było dobrze: $wentWell',
+        if (toImprove.trim().isNotEmpty) 'Do poprawy: $toImprove',
         if (notes.trim().isNotEmpty) 'Notatka: $notes',
       ].join('\n');
       await Api.createEvent(
         date: date,
         type: 'match',
         title: opponent.trim().isEmpty ? 'Mecz' : 'Mecz z $opponent',
-        details: <String, dynamic>{
-          'opponent': opponent,
-          'minutes_played': minutesPlayed,
-          'notes': notes,
-        },
+        details: <String, dynamic>{'opponent': opponent, 'result': result, 'minutes_played': minutesPlayed, 'goals': goals, 'assists': assists, 'rating': rating, 'went_well': wentWell, 'to_improve': toImprove, 'notes': notes},
         description: planDetails,
       );
       return MatchEntry.fromJson(doc);
@@ -382,11 +346,8 @@ class TrainingRepo {
         events = await LocalDb.list('events');
         eventIndex = events.indexWhere((e) => _s(e['id']) == plannedEventId);
         if (eventIndex < 0) {
-          throw ApiException(
-            404,
-            'Not Found',
-            'Nie znaleziono zaplanowanego meczu w kalendarzu.',
-          );
+          throw ApiException(404, 'Not Found',
+              'Nie znaleziono zaplanowanego meczu w kalendarzu.');
         }
         final planned = events[eventIndex];
         final linkedId = _s(planned['source_id']);
@@ -399,18 +360,12 @@ class TrainingRepo {
               }
             }
           }
-          throw ApiException(
-            409,
-            'Conflict',
-            'Ten mecz jest już zapisany jako wykonany. Otwórz jego edycję.',
-          );
+          throw ApiException(409, 'Conflict',
+              'Ten mecz jest już zapisany jako wykonany. Otwórz jego edycję.');
         }
         if (_s(planned['type']) != 'match') {
-          throw ApiException(
-            409,
-            'Conflict',
-            'Wybrane wydarzenie nie jest meczem.',
-          );
+          throw ApiException(409, 'Conflict',
+              'Wybrane wydarzenie nie jest meczem.');
         }
       }
       final items = await LocalDb.list('matches');
