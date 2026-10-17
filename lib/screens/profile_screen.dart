@@ -349,7 +349,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     // ---------- Trener AI ----------
                     const Padding(
                       padding: EdgeInsets.only(top: Sp.sm, bottom: Sp.sm),
-                      child: SectionTitle('TRENER AI'),
+                      child: SectionTitle('TRYB TRENERA'),
                     ),
                     Text(
                       LlmSettings.hasKey
@@ -363,9 +363,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       value: LlmSettings.mode,
                       isExpanded: true,
                       items: const [
-                        DropdownMenuItem(value: 'auto', child: Text('Automatyczny — Gemini lub offline')),
+                        DropdownMenuItem(value: 'auto', child: Text('Automatyczny')),
                         DropdownMenuItem(value: 'offline', child: Text('Tylko offline — prywatność')),
-                        DropdownMenuItem(value: 'online', child: Text('Gemini — offline przy awarii')),
                       ],
                       onChanged: (value) async {
                         if (value == null) return;
@@ -374,9 +373,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       },
                     ),
                     Text(
-                      LlmSettings.forceOffline
-                          ? 'Tryb prywatny: żadne pytania ani dane zawodnika nie są wysyłane do Gemini.'
-                          : 'Bez klucza API lub przy awarii połączenia trener korzysta z pakietu offline.',
+                      'Automatyczny próbuje Gemini z Twoim kluczem i przechodzi na offline przy błędzie; Tylko offline zawsze przetwarza dane na telefonie.',
                       style: manrope(size: 12, color: c.muted),
                     ),
                     SecondaryButton(

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../api.dart';
+import '../services/coach_runtime.dart';
+import '../llm_settings.dart';
 import '../config.dart';
 import '../models.dart';
 import '../resource.dart';
@@ -67,6 +69,7 @@ class _CoachScreenState extends State<CoachScreen> {
   void initState() {
     super.initState();
     _input.addListener(_rebuild);
+    CoachRuntime.last.addListener(_rebuild);
     _drills.refetch();
     _plan.refetch();
     _planEvents.refetch();
@@ -135,6 +138,7 @@ class _CoachScreenState extends State<CoachScreen> {
   @override
   void dispose() {
     _input.removeListener(_rebuild);
+    CoachRuntime.last.removeListener(_rebuild);
     _input.dispose();
     _scroll.dispose();
     widget.selected.removeListener(_onTabChanged);
@@ -233,7 +237,7 @@ class _CoachScreenState extends State<CoachScreen> {
                               Padding(
                                 padding: const EdgeInsets.only(top: 2),
                                 child: Text(
-                                  'Od ${plan.weekStart}',
+                                  'Od ${plan.weekStart} · ${CoachRuntime.sourceLabel(plan.source)}',
                                   style: manrope(
                                     size: 12,
                                     weight: FontWeight.w600,
@@ -296,10 +300,12 @@ class _CoachScreenState extends State<CoachScreen> {
   }
 
   Widget _hero(AppColors c) {
+    final execution = CoachRuntime.last.value;
+    final source = execution?.source ?? (LlmSettings.allowNetwork ? '' : 'offline');
     return Padding(
       padding: const EdgeInsets.only(bottom: Sp.lg),
       child: SizedBox(
-        height: 140,
+        height: 48 + MediaQuery.textScalerOf(context).scale(150),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(Rad.lg),
           child: Stack(
@@ -327,13 +333,22 @@ class _CoachScreenState extends State<CoachScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'TWÓJ AI TRENER',
+                      'TWÓJ TRENER',
                       style: manrope(
                         size: 11,
                         weight: FontWeight.w800,
                         letterSpacing: 1.8,
                         color: c.brandPrimary,
                       ),
+                    ),
+                    Text(
+                      source == 'online' ? 'Online' : source == 'offline' ? 'Offline' : 'Połączenie jeszcze niesprawdzone',
+                      style: manrope(size: 14, weight: FontWeight.w800,
+                        color: source == 'online' ? Colors.greenAccent : source == 'offline' ? Colors.redAccent : c.muted),
+                    ),
+                    if (execution != null) Text(
+                      'Ostatni wynik: ${execution.operation} · ${CoachRuntime.dateLabel(execution.createdAt)}',
+                      style: manrope(size: 11, color: c.muted),
                     ),
                     const SizedBox(height: 2),
                     Text(

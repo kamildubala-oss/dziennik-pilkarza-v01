@@ -85,6 +85,7 @@ class PlanService {
     }
 
     List<Map<String, dynamic>>? days;
+    var source = 'offline';
 
     if (Llm.enabled) {
       try {
@@ -175,7 +176,7 @@ class PlanService {
               'tip': _s(d['tip']),
             });
           }
-          if (built.length == 7) days = built;
+          if (built.length == 7) { days = built; source = 'online'; }
         }
       } catch (_) {
         days = null;
@@ -214,8 +215,10 @@ class PlanService {
       'week_start': dateIso(week.monday),
       'days': days,
       'generated_at': _nowIso(),
+      'source': source,
     };
     await LocalDb.setDoc('weekly_plan_${week.id}', plan);
+    CoachRuntime.record(source, 'plan', _s(plan['generated_at']));
     return WeeklyPlan.fromJson(plan);
   }
 }

@@ -1,4 +1,5 @@
 import 'package:shared_preferences/shared_preferences.dart';
+import 'services/coach_runtime.dart';
 
 
 /// Klucz API trenera AI.
@@ -21,15 +22,16 @@ class LlmSettings {
   static Future<void> setMode(String value) async {
     if (!<String>['auto', 'offline', 'online'].contains(value)) return;
     final sp = await SharedPreferences.getInstance();
-    _mode = value;
-    await sp.setString(_modeKey, value);
+    _mode = value == 'online' ? 'auto' : value;
+    CoachRuntime.reset();
+    await sp.setString(_modeKey, _mode);
   }
 
   /// Wczytuje zapisany klucz (wywoływane przy starcie aplikacji).
   static Future<void> load() async {
     final sp = await SharedPreferences.getInstance();
     _custom = (sp.getString(_key) ?? '').trim();
-    _mode = sp.getString(_modeKey) ?? 'auto';
+    _mode = sp.getString(_modeKey) == 'offline' ? 'offline' : 'auto';
   }
 
   /// Klucz używany w zapytaniach do AI.
@@ -52,6 +54,7 @@ class LlmSettings {
   static Future<void> setCustomKey(String key) async {
     final sp = await SharedPreferences.getInstance();
     _custom = key.trim();
+    CoachRuntime.reset();
     await sp.setString(_key, _custom);
   }
 
@@ -59,6 +62,7 @@ class LlmSettings {
   static Future<void> clearCustomKey() async {
     final sp = await SharedPreferences.getInstance();
     _custom = '';
+    CoachRuntime.reset();
     await sp.remove(_key);
   }
 }

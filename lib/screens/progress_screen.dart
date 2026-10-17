@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
 import '../api.dart';
+import '../services/coach_runtime.dart';
 import '../models.dart';
 import '../resource.dart';
 import '../theme.dart';
@@ -398,12 +399,13 @@ class _ProgressScreenState extends State<ProgressScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SectionTitle('SŁABE PUNKTY · AI'),
-                  if (data != null && data.generatedAt.isNotEmpty)
+                  const SectionTitle('SŁABE PUNKTY'),
+                  if (data != null)
                     Padding(
                       padding: const EdgeInsets.only(top: 2),
                       child: Text(
-                        'Analiza z ${first10(data.generatedAt)} · '
+                        '${CoachRuntime.sourceLabel(data.source)}\n'
+                        'Utworzono: ${CoachRuntime.dateLabel(data.generatedAt)} · '
                         '${data.noteCount} notatek',
                         style: manrope(size: 11, color: c.muted),
                       ),
