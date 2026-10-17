@@ -58,12 +58,17 @@ void main() {
     await tester.enterText(duration, '70');
     final save = find.byType(PrimaryButton);
     await tester.ensureVisible(save);
-    await tester.tap(save);
+    // Mutacje bazy muszą zakończyć się w rzeczywistej strefie async:
+    // jej statyczna kolejka jest współdzielona z następnymi testami.
+    await tester.runAsync(() async {
+      await tester.tap(save);
+      await LocalDb.synchronized<void>(() async {});
+    });
     await tester.pumpAndSettle();
   }
 
   testWidgets('calendar card edits completed training in place and synchronizes event', (tester) async {
-    await seed();
+    await tester.runAsync(() => seed());
     final original = (await LocalDb.list('trainings')).single;
     final event = (await LocalDb.list('events')).single;
     await openCalendar(tester);
@@ -81,7 +86,7 @@ void main() {
   }, timeout: const Timeout(Duration(seconds: 30)));
 
   testWidgets('calendar plan uses same form and save does not complete it', (tester) async {
-    await seed(planned: true);
+    await tester.runAsync(() => seed(planned: true));
     final event = (await LocalDb.list('events')).single;
     await openCalendar(tester);
     await saveChangedDuration(tester);
