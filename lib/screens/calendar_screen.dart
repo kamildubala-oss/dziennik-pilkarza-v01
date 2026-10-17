@@ -318,12 +318,14 @@ class _CalendarScreenState extends State<CalendarScreen> {
             // ---------- Siatka dni ----------
             Padding(
               padding: EdgeInsets.zero,
-              child: GridView.count(
-                crossAxisCount: 7,
+              child: GridView(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 7,
+                  mainAxisExtent: (MediaQuery.textScalerOf(context).scale(18) * 1.5 + 12).clamp(48.0, 160.0).toDouble(),
+                ),
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 padding: EdgeInsets.zero,
-                mainAxisExtent: (MediaQuery.textScalerOf(context).scale(18) * 1.5 + 12).clamp(48.0, 160.0),
                 children: [for (final cell in cells) _dayBox(c, cell, byDate)],
               ),
             ),
