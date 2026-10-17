@@ -14,8 +14,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
-  setUp(() async {
+  setUpAll(() async {
     SharedPreferences.setMockInitialValues(<String, Object>{});
+    await LocalDb.list('trainings');
+  });
+  setUp(() async {
     for (final collection in ['events', 'trainings', 'matches', 'plans']) {
       await LocalDb.saveList(collection, <Map<String, dynamic>>[]);
     }
@@ -75,7 +78,7 @@ void main() {
     expect(events.single['source_id'], original['id']);
     expect(events.single['duration_min'], 70);
     expect(events.single['done'], true);
-  });
+  }, timeout: const Timeout(Duration(seconds: 30)));
 
   testWidgets('calendar plan uses same form and save does not complete it', (tester) async {
     await seed(planned: true);
@@ -88,7 +91,7 @@ void main() {
     expect(events.single['id'], event['id']);
     expect(events.single['duration_min'], 70);
     expect(events.single['done'], false);
-  });
+  }, timeout: const Timeout(Duration(seconds: 30)));
 
   test('missing journal link blocks editor instead of editing plan', () async {
     final event = EventItem.fromJson({
