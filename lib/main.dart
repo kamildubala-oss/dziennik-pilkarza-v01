@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -8,27 +9,36 @@ import 'api.dart';
 import 'screens/home_shell.dart';
 import 'screens/export_screen.dart';
 import 'theme.dart';
+import 'widgets/startup_gate.dart';
 
-Future<void> main() async {
+void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  await SystemChrome.setPreferredOrientations(<DeviceOrientation>[
-    DeviceOrientation.portraitUp,
-  ]);
   final themeController = ThemeController();
+  runApp(ChangeNotifierProvider<ThemeController>.value(
+    value: themeController, child: const DziennikApp(),
+  ));
+}
+
+class DatabaseStartupFailure implements Exception {
+  const DatabaseStartupFailure();
+}
+
+Future<void> initializeApplication(ThemeController themeController) async {
+  // Orientacja nie może zatrzymać pierwszego wyświetlenia interfejsu.
+  try {
+    await SystemChrome.setPreferredOrientations(<DeviceOrientation>[
+      DeviceOrientation.portraitUp,
+    ]).timeout(const Duration(seconds: 2));
+  } catch (_) {
+    debugPrint('DziennikStartup: orientation preference unavailable');
+  }
   await themeController.load();
   await LlmSettings.load();
-  Object? startupError;
   try {
     await Api.synchronizeCalendar();
-  } catch (error) {
-    startupError = error;
+  } catch (_) {
+    throw const DatabaseStartupFailure();
   }
-  runApp(
-    ChangeNotifierProvider<ThemeController>.value(
-      value: themeController,
-      child: DziennikApp(startupError: startupError),
-    ),
-  );
 }
 
 class DziennikApp extends StatelessWidget {
@@ -59,7 +69,13 @@ class DziennikApp extends StatelessWidget {
         );
       },
       home: startupError == null
-          ? const HomeShell()
+          ? StartupGate(
+              initialize: () => initializeApplication(controller),
+              failureBuilder: (context, error, retry) => error is DatabaseStartupFailure
+                  ? _DatabaseRecoveryScreen(onRetry: retry)
+                  : StartupErrorView(onRetry: retry, timedOut: error is TimeoutException),
+              child: const HomeShell(),
+            )
           : const _DatabaseRecoveryScreen(),
     );
   }
@@ -68,7 +84,8 @@ class DziennikApp extends StatelessWidget {
 /// Gdy lokalna baza jest uszkodzona i nie ma kopii awaryjnej, nie otwieramy
 /// interfejsu dodawania wpisów. Użytkownik może bezpiecznie przywrócić eksport.
 class _DatabaseRecoveryScreen extends StatefulWidget {
-  const _DatabaseRecoveryScreen();
+  const _DatabaseRecoveryScreen({this.onRetry});
+  final VoidCallback? onRetry;
 
   @override
   State<_DatabaseRecoveryScreen> createState() => _DatabaseRecoveryScreenState();
@@ -124,6 +141,7 @@ class _DatabaseRecoveryScreenState extends State<_DatabaseRecoveryScreen> {
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 24),
+              if (widget.onRetry != null) TextButton(onPressed: widget.onRetry, child: const Text('Spróbuj ponownie')),
               ElevatedButton.icon(
                 onPressed: _busy ? null : _restore,
                 icon: const Icon(Icons.restore),
