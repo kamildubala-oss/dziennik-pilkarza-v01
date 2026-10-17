@@ -8,9 +8,7 @@ import '../theme.dart';
 import '../utils.dart';
 import '../widgets/common.dart';
 import 'add_event_screen.dart';
-import 'club_training_screen.dart';
-import 'log_match_screen.dart';
-import 'log_session_screen.dart';
+import 'activity_editor.dart';
 
 /// Zakładka "Kalendarz".
 class CalendarScreen extends StatefulWidget {
@@ -86,21 +84,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
       return;
     }
 
-    final Widget page;
-    if (e.type == 'club_training' && e.source == 'club') {
-      // Trening generowany z profilu zachowuje specjalny formularz oceny.
-      page = ClubTrainingScreen(event: e);
-    } else if (e.type == 'match') {
-      page = LogMatchScreen(completingEvent: e);
-    } else {
-      page = LogSessionScreen(
-        completingEvent: e,
-        kind: e.type == 'club_training' ? 'club_training' : 'training',
-      );
-    }
-
-    await pushModal<bool>(context, page);
-    if (mounted) await _events.refetch();
+    await _openEditor(e, complete: true);
   }
 
   Future<void> _delete(EventItem e) async {
@@ -146,21 +130,22 @@ class _CalendarScreenState extends State<CalendarScreen> {
   /// Jeden formularz dla nowych i istniejących treningów oraz meczów.
   /// Edycja wpisu dziennika używa jego oryginalnego formularza.
   Future<void> _edit(EventItem e) async {
-    Widget? page;
-    if (e.type == 'club_training' && e.source == 'club') {
-      page = ClubTrainingScreen(event: e);
-    } else if (e.source == 'trainings' && e.sourceId.isNotEmpty) {
-      final t = await Api.getTraining(e.sourceId);
-      if (t != null) page = LogSessionScreen(editing: t, kind: t.kind);
-    } else if (e.source == 'matches' && e.sourceId.isNotEmpty) {
-      final m = await Api.getMatch(e.sourceId);
-      if (m != null) page = LogMatchScreen(editing: m);
+    await _openEditor(e);
+  }
+
+  Future<void> _openEditor(EventItem event, {bool complete = false}) async {
+    try {
+      final page = await activityEditor(event, complete: complete);
+      if (!mounted) return;
+      await pushModal<bool>(context, page);
+    } catch (error) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(friendlyError(error))),
+        );
+      }
     }
-    page ??= AddEventScreen(editing: e, initialType: e.type);
-    // Jedynym wyjątkiem jest trening klubowy generowany z profilu.
-    if (!mounted) return;
-    await pushModal<bool>(context, page);
-    if (mounted) _events.refetch();
+    if (mounted) await _events.refetch();
   }
 
   Future<void> _addEvent() async {
@@ -629,3 +614,4 @@ class _CalendarScreenState extends State<CalendarScreen> {
     );
   }
 }
+

@@ -1,11 +1,12 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:dziennik_pilkarza/services/progress_calculator.dart';
+import 'package:dziennik_pilkarza/services/streak_service.dart';
+import 'package:dziennik_pilkarza/services/skill_radar_service.dart';
 
 void main() {
   final today = DateTime(2026, 10, 15);
 
   group('StreakService', () {
-    test('five historical consecutive training days are a five-day streak', () {
+    test('consecutive days ending yesterday remain active', () {
       expect(
         StreakService.calculate([
           '2026-10-10', '2026-10-11', '2026-10-12',
@@ -56,7 +57,13 @@ void main() {
 
     test('empty journal gives zero, one completed day gives one', () {
       expect(StreakService.calculate([], asOf: today), 0);
-      expect(StreakService.calculate(['2026-10-10'], asOf: today), 1);
+      expect(StreakService.calculate(['2026-10-10'], asOf: today), 0);
+      expect(StreakService.calculate(['2026-10-15'], asOf: today), 1);
+    });
+
+    test('historical streak expires after a gap before yesterday', () {
+      expect(StreakService.calculate(['2026-10-10', '2026-10-11'], asOf: today), 0);
+      expect(StreakService.calculate(['2026-10-13', '2026-10-14', '2026-10-15'], asOf: today), 3);
     });
 
     test('saved date strings including a time are normalized', () {
@@ -77,8 +84,9 @@ void main() {
         'rating': 5,
       },
     ], <Map<String, dynamic>>[]);
-    expect(radar['Technika'], greaterThan(0));
-    expect(radar['Strzał'], greaterThan(0));
+    expect(radar['Technika'], 6);
+    expect(radar['Strzał'], 6);
     expect(radar['Taktyka'], 0);
   });
 }
+
