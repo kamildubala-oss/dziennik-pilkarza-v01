@@ -20,7 +20,8 @@ permissions:
   contents: read
 
 concurrency:
-  group: android-apk-${{ github.ref }}
+  # Nowa grupa nie czeka na sprzątanie starej wersji testu emulatora.
+  group: android-apk-startup-v2-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
