@@ -61,6 +61,19 @@ if source.count(old) != 1:
     raise SystemExit("Nie znaleziono jednoznacznie scenariusza B3.")
 test.write_text(source.replace(old, new), encoding="utf-8")
 
+# W2/G3 mogą wybrać przyszły dzień planu (np. gdy dziś jest regeneracja).
+# Wykonanie zapisujemy z dzisiejszą datą, zachowując ID planu i wszystkie
+# asercje powiązania oraz braku duplikatów. Nie omijamy walidacji dat API.
+for filename, old, expected_count in [
+    ("verify_gaps_test.dart", "date: first10(target.date)", 2),
+    ("audit_test.dart", "date: first10(day.date)", 1),
+]:
+    path = OUT / filename
+    source = path.read_text(encoding="utf-8")
+    if source.count(old) != expected_count:
+        raise SystemExit(f"Nie znaleziono scenariuszy wykonania planu w {filename}.")
+    path.write_text(source.replace(old, "date: todayIso()"), encoding="utf-8")
+
 # P3-1 zmienia nazwę radaru; smoke test ma sprawdzać nową etykietę.
 smoke = OUT / "smoke_screens_test.dart"
 source = smoke.read_text(encoding="utf-8")
@@ -81,3 +94,4 @@ for name in ALLOWED:
     )
 
 print(f"Przygotowano {len(ALLOWED)} pliki źródłowe i 55 testów audytowych.")
+

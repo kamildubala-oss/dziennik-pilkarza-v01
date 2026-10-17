@@ -8,6 +8,8 @@ import '../theme.dart';
 import '../utils.dart';
 import '../widgets/common.dart';
 
+enum TrainingFormMode { create, plan, editTraining, editPlan, complete }
+
 const List<String> _focusOptions = <String>[
   'Prowadzenie',
   'Strzał',
@@ -39,7 +41,14 @@ class LogSessionScreen extends StatefulWidget {
     this.editingEvent,
     this.completingEvent,
     this.isPlanned = false,
-  });
+  }) : assert(editing == null || (editingEvent == null && completingEvent == null && !isPlanned && plannedEventId == null)),
+       assert(editingEvent == null || (completingEvent == null && plannedEventId == null)),
+       assert(completingEvent == null || (!isPlanned && plannedEventId == null));
+
+  TrainingFormMode get mode => editing != null ? TrainingFormMode.editTraining
+      : editingEvent != null ? TrainingFormMode.editPlan
+      : completingEvent != null || plannedEventId != null ? TrainingFormMode.complete
+      : isPlanned ? TrainingFormMode.plan : TrainingFormMode.create;
 
   /// Edytowany trening (tryb edycji). Gdy null - nowy wpis.
   final Training? editing;
@@ -78,9 +87,9 @@ class LogSessionScreen extends StatefulWidget {
 
 class _LogSessionScreenState extends State<LogSessionScreen> {
   late final Training? _e = widget.editing;
-  late final PlannedTrainingDefaults? _planned = widget.completingEvent == null
-      ? null
-      : PlannedTrainingDefaults.fromEvent(widget.completingEvent!);
+  late final PlannedTrainingDefaults? _planned =
+      (widget.completingEvent ?? widget.editingEvent) == null ? null
+      : PlannedTrainingDefaults.fromEvent((widget.completingEvent ?? widget.editingEvent)!);
   late final TextEditingController _date = TextEditingController(
     text: _e != null
         ? first10(_e.date)
@@ -135,7 +144,7 @@ class _LogSessionScreenState extends State<LogSessionScreen> {
     final minutes = int.parse(_duration.text.trim());
     setState(() => _saving = true);
     try {
-      if (widget.editingEvent != null) {
+      if (widget.mode == TrainingFormMode.editPlan) {
         final event = widget.editingEvent!;
         final focusList = _focusOptions.where(_focus.contains).toList();
         await Api.updatePlannedActivity(event.id,
@@ -148,7 +157,7 @@ class _LogSessionScreenState extends State<LogSessionScreen> {
         return;
       }
       final e = _e;
-      if (e != null) {
+      if (widget.mode == TrainingFormMode.editTraining && e != null) {
         await Api.updateTraining(
           e.id,
           date: _date.text,
@@ -196,7 +205,7 @@ class _LogSessionScreenState extends State<LogSessionScreen> {
         children: [
           ModalHeader(
             title: widget.title ??
-                (_e != null
+                (_e != null || widget.editingEvent != null
                     ? 'Edytuj trening'
                     : widget.kind == 'club_training'
                         ? 'Zapisz trening klubowy'
@@ -290,7 +299,7 @@ class _LogSessionScreenState extends State<LogSessionScreen> {
                         ? 'Zapisywanie...'
                         : _focus.isEmpty
                             ? 'Wybierz obszar'
-                            : _e != null
+                            : _e != null || widget.editingEvent != null
                                 ? 'Zapisz zmiany'
                                 : widget.completingEvent != null
                                     ? 'Trening wykonany'
@@ -308,3 +317,4 @@ class _LogSessionScreenState extends State<LogSessionScreen> {
     );
   }
 }
+

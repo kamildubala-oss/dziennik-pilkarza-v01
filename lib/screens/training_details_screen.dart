@@ -5,7 +5,8 @@ import '../models.dart';
 import '../theme.dart';
 import '../utils.dart';
 import '../widgets/common.dart';
-import 'club_training_screen.dart';
+import 'activity_editor.dart';
+import '../services/user_errors.dart';
 import 'log_match_screen.dart';
 import 'log_session_screen.dart';
 
@@ -213,43 +214,33 @@ class _TrainingDetailsScreenState extends State<TrainingDetailsScreen> {
       return;
     }
     final Widget page;
-    if (widget.type == 'club_training' && ev != null) {
-      // Trening klubowy: termin z profilu, zawodnik tylko go ocenia.
-      page = ClubTrainingScreen(event: ev);
+    if (ev != null) {
+      try {
+        page = await activityEditor(ev, complete: true);
+      } catch (error) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(friendlyError(error))),
+          );
+        }
+        return;
+      }
     } else if (widget.type == 'match') {
-      // Jeśli wydarzenie kalendarza już ma wpis meczu w dzienniku,
-      // otwieramy edycję tego wpisu zamiast tworzyć nowy.
-      MatchEntry? editing;
-      if (ev != null && ev.source == 'matches' && ev.sourceId.isNotEmpty) {
-        editing = await Api.getMatch(ev.sourceId);
-      }
-      page = editing != null
-          ? LogMatchScreen(editing: editing)
-          : LogMatchScreen(
-              initialDate: widget.date,
-              completingEvent: ev,
-              plannedEventId: ev?.id ?? widget.plannedEventId,
-            );
+      page = LogMatchScreen(
+        initialDate: widget.date,
+        plannedEventId: widget.plannedEventId,
+      );
     } else {
-      // Jeśli wydarzenie kalendarza już ma wpis treningu w dzienniku,
-      // otwieramy edycję tego wpisu zamiast tworzyć nowy.
-      Training? editing;
-      if (ev != null && ev.source == 'trainings' && ev.sourceId.isNotEmpty) {
-        editing = await Api.getTraining(ev.sourceId);
-      }
-      page = editing != null
-          ? LogSessionScreen(editing: editing)
-          : LogSessionScreen(
-              initialDate: widget.date,
-              completingEvent: ev,
-              kind: widget.type == 'club_training' ? 'club_training' : 'training',
-              initialFocuses: <String>[
-                if (_trainingFocuses.contains(widget.focus)) widget.focus,
-              ],
-              initialDuration: widget.durationMin > 0 ? widget.durationMin : null,
-              initialIntensity: widget.intensity,
-              plannedEventId: ev?.id ?? widget.plannedEventId,
-            );
+      page = LogSessionScreen(
+        initialDate: widget.date,
+        kind: widget.type == 'club_training' ? 'club_training' : 'training',
+        initialFocuses: <String>[
+          if (_trainingFocuses.contains(widget.focus)) widget.focus,
+        ],
+        initialDuration: widget.durationMin > 0 ? widget.durationMin : null,
+        initialIntensity: widget.intensity,
+        plannedEventId: widget.plannedEventId,
+      );
     }
     if (!mounted) return; // Po asynchronicznym odczycie treningu/meczu.
     final saved = await pushModal<bool>(context, page);
@@ -517,3 +508,4 @@ class _TrainingDetailsScreenState extends State<TrainingDetailsScreen> {
     );
   }
 }
+
