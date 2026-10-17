@@ -30,6 +30,9 @@ android {
 
     buildTypes {
         release {
+            if (project.hasProperty("startupSmoke")) {
+                proguardFiles("startup-test.pro")
+            }
             // Podpis kluczem debug - wystarczy do instalacji ręcznej APK.
             // Dla Google Play skonfiguruj własny keystore.
             signingConfig = signingConfigs.getByName("debug")
