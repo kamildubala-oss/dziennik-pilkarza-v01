@@ -216,8 +216,9 @@ class _LogSessionScreenState extends State<LogSessionScreen> {
   Future<void> _save() async {
     if (_saving ||
         _focus.isEmpty ||
-        numberFieldError(_duration.text, 'Czas (min)', 0, 600) != null)
+        numberFieldError(_duration.text, 'Czas (min)', 0, 600) != null) {
       return;
+    }
     final minutes = int.parse(_duration.text.trim());
     setState(() => _saving = true);
     try {

@@ -54,13 +54,15 @@ class ProgressCalculator {
     final events = await LocalDb.list('events');
     final planDays = <Map<String, dynamic>>[];
     for (final entry in history.entries) {
-      if (!entry.key.startsWith('weekly_plan_') || entry.value is! Map)
+      if (!entry.key.startsWith('weekly_plan_') || entry.value is! Map) {
         continue;
+      }
       final days = (entry.value as Map)['days'];
-      if (days is List)
+      if (days is List) {
         planDays.addAll(
           days.whereType<Map>().map((d) => Map<String, dynamic>.from(d)),
         );
+      }
     }
     final recovery = (await LocalDb.getDoc('recovery_days'))?['dates'];
     final recoveryDays = recovery is List

@@ -293,8 +293,9 @@ class TrainingRepo {
   static Future<void> deleteTraining(String id) async {
     await LocalDb.synchronized<void>(() async {
       final items = await LocalDb.list('trainings');
-      if (!items.any((e) => e['id'] == id))
+      if (!items.any((e) => e['id'] == id)) {
         throw ApiException(404, 'Not Found', 'Training not found');
+       }
       items.removeWhere((e) => e['id'] == id);
       final events = await LocalDb.list('events');
       events.removeWhere((e) => e['source_id'] == id);

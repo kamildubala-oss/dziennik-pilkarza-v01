@@ -97,6 +97,11 @@ source = source.replace(
 )
 smoke.write_text(source, encoding="utf-8")
 
+# Stała kopia testowa nie wymaga zmiennej.
+gap = OUT / "verify_gaps_test.dart"
+gap.write_text(gap.read_text(encoding="utf-8").replace(
+    "final backup = '{", "const backup = '{"), encoding="utf-8")
+
 # W oryginalnej paczce znajdowały się nieużywane zmienne/importy
 # przygotowawcze (audyt nie wymagał analizy statycznej). Tłumimy wyłącznie
 # te dwa lintery w importowanych plikach, a nie w kodzie aplikacji.

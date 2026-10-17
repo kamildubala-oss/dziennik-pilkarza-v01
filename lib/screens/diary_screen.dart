@@ -590,9 +590,10 @@ class _DiaryScreenState extends State<DiaryScreen> {
         if (!mounted) return;
         await pushModal<bool>(context, page);
       } catch (error) {
-        if (mounted)
+        if (mounted) {
           ScaffoldMessenger.of(context)
               .showSnackBar(SnackBar(content: Text(friendlyError(error))));
+        }
       }
     } else {
       await pushModal<bool>(context, TrainingDetailsScreen.forEvent(e));
@@ -755,10 +756,11 @@ class _DiaryScreenState extends State<DiaryScreen> {
                 await pushModal<bool>(context, page);
                 if (mounted) _reloadAll();
               } catch (error) {
-                if (mounted)
+                if (mounted) {
                   ScaffoldMessenger.of(
                     context,
                   ).showSnackBar(SnackBar(content: Text(friendlyError(error))));
+                }
               }
             },
           ),

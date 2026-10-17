@@ -702,8 +702,9 @@ class Api {
     events.removeWhere((e) {
       if (_s(e['source']) != 'club' ||
           e['done'] == true ||
-          e['club_override'] == true)
+          e['club_override'] == true) {
         return false;
+      }
       final d = DateTime.tryParse(first10(_s(e['date'])));
       if (d == null || first10(_s(e['date'])).compareTo(today) < 0) {
         return false;
@@ -714,8 +715,9 @@ class Api {
     for (final e in events) {
       if (_s(e['source']) != 'club' ||
           e['done'] == true ||
-          e['club_override'] == true)
+          e['club_override'] == true) {
         continue;
+      }
       if (_s(e['time']) != time || _i(e['duration_min']) != dur) {
         e['time'] = time;
         e['duration_min'] = dur;

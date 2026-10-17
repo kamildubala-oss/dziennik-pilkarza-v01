@@ -128,7 +128,7 @@ class PlanService {
               final intensity = _s(e['intensity']);
               final description = _s(e['description']);
               b.writeln(
-                '- ${entry.key}${time.isNotEmpty ? ' ${time}' : ''}: $label – ${_s(e['title'])}'
+                '- ${entry.key}${time.isNotEmpty ? ' $time' : ''}: $label – ${_s(e['title'])}'
                 '${focus.isNotEmpty ? ' (obszar: $focus)' : ''}'
                 '${dur != 'brak danych' ? ' ($dur)' : ''}'
                 '${intensity.isNotEmpty ? ' (intensywność: $intensity)' : ''}'
@@ -204,8 +204,9 @@ class PlanService {
       for (var i = 0; i < days.length; i++) {
         final day = days[i];
         if (_s(day['focus']) == 'Odpoczynek' ||
-            _clubDays(profile).contains(i + 1))
+            _clubDays(profile).contains(i + 1)) {
           continue;
+        }
         final area = priorities[i % priorities.length];
         final matching = library
             .where((e) => _s(e['area']).toLowerCase() == area)

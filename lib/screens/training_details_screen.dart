@@ -171,9 +171,10 @@ class _TrainingDetailsScreenState extends State<TrainingDetailsScreen> {
       final dates = await Api.recoveryDays();
       if (mounted) setState(() => _recovered = dates.contains(widget.date));
     } catch (error) {
-      if (mounted)
+      if (mounted) {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text(friendlyError(error))));
+      }
     }
   }
 
@@ -184,9 +185,10 @@ class _TrainingDetailsScreenState extends State<TrainingDetailsScreen> {
       await Api.confirmRecovery(widget.date);
       if (mounted) setState(() => _recovered = true);
     } catch (error) {
-      if (mounted)
+      if (mounted) {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text(friendlyError(error))));
+      }
     } finally {
       if (mounted) setState(() => _adding = false);
     }

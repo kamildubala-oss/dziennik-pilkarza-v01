@@ -28,14 +28,16 @@ class WeekPlanProgress {
     for (final e in events) {
       final date = first10(text(e['date']));
       if (!inWeek(date) ||
-          !['training', 'club_training', 'match'].contains(e['type']))
+          !['training', 'club_training', 'match'].contains(e['type'])) {
         continue;
+      }
       if (e['planned'] != true &&
           e['source'] != 'club' &&
           e['source'] != 'plan' &&
           text(e['planned_source']).isEmpty &&
-          e['plan_link'] != true)
+          e['plan_link'] != true) {
         continue;
+      }
       byDate.putIfAbsent(date, () => []).add(e);
       final sourceId = text(e['source_id']);
       final linked = e['source'] == 'matches'
@@ -59,8 +61,9 @@ class WeekPlanProgress {
         // Powiązanie jest po ID także po ręcznej zmianie terminu.
         // Brakującego planu nie zaliczamy automatycznie jako wykonanego.
         for (final id in ids) {
-          if (!events.any((e) => text(e['id']) == id))
+          if (!events.any((e) => text(e['id']) == id)) {
             targets['missing:$id'] = false;
+          }
         }
         continue;
       }

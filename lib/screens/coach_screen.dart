@@ -155,11 +155,12 @@ class _CoachScreenState extends State<CoachScreen> {
         );
       }
     } catch (error) {
-      if (mounted)
+      if (mounted) {
         setState(
           () =>
               _addError = 'Nie udało się dodać planu. ${friendlyError(error)}',
         );
+      }
     } finally {
       if (mounted) setState(() => _addingWeek = false);
     }
@@ -199,11 +200,12 @@ class _CoachScreenState extends State<CoachScreen> {
       // kalendarza, bo plan może teraz odwoływać się do ręcznych treningów.
       await _planEvents.refetch();
     } catch (error) {
-      if (mounted)
+      if (mounted) {
         setState(
           () => _planError =
               'Nie udało się utworzyć planu. Dotychczasowy plan jest zachowany. ${friendlyError(error)}',
         );
+      }
     } finally {
       if (mounted) setState(() => _generating = false);
     }
@@ -221,15 +223,17 @@ class _CoachScreenState extends State<CoachScreen> {
     });
     try {
       final reply = await Api.chat(AppConfig.coachSessionId, msg);
-      if (mounted)
+      if (mounted) {
         setState(() {
           _messages.add(
             _Msg('assistant', reply, CoachRuntime.lastReplySource.value),
           );
-          if (_messages.length > 5)
+          if (_messages.length > 5) {
             _messages.removeRange(0, _messages.length - 5);
+          }
           _retryMessage = null;
         });
+      }
     } catch (e) {
       if (mounted) {
         setState(
