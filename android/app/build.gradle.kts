@@ -30,6 +30,7 @@ android {
 
     buildTypes {
         release {
+            proguardFiles("proguard-rules.pro")
             if (project.hasProperty("startupSmoke")) {
                 proguardFiles("startup-test.pro")
             }
