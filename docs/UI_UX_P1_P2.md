@@ -42,4 +42,9 @@ Do wykonania przed scaleniem: pełne `flutter test`, `flutter analyze`, kompilac
 
 ## Stan publikacji
 
-Nie utworzono PR i nie zmieniono zdalnego `main`. Automatyczna kontrola zablokowała lokalne uruchomienie Fluttera z powodu odwołania do metadanych środowiska chmurowego, a wysłanie gałęzi do GitHuba uznała za wymagające osobnej zgody użytkownika. Weryfikacja CI czeka na zgodę na wysłanie gałęzi i utworzenie PR. Próba rozwiązania zależności całkowicie offline wykazała brak pakietu `flutter_lints` w pamięci lokalnej.
+Za zgodą użytkownika gałąź została wysłana do GitHuba i utworzono PR #11:
+https://github.com/kamildubala-oss/dziennik-pilkarza-v01/pull/11
+
+GitHub Actions sprawdza pełne testy, analizę Dart i budowę APK ARM64. Dodano 12 scenariuszy układu głównych ekranów przy szerokości 320 px i skali tekstu 150%, w obu motywach. Pierwsze przebiegi wykryły nieprawidłowe opisy semantyczne pasków postępu, brak podłoża Material oraz przepełnienia wąskich układów; poprawki pozostają w tej samej gałęzi. Zdalny `main` nie został zmieniony.
+
+Pełna ocena na fizycznym telefonie, w tym z TalkBack, pozostaje osobnym sprawdzeniem ręcznym.

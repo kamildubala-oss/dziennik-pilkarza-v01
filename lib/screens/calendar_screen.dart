@@ -205,8 +205,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
             // ---------- Nagłówek ----------
             Padding(
               padding: const EdgeInsets.only(bottom: Sp.lg),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              child: Wrap(
+                alignment: WrapAlignment.spaceBetween,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                spacing: 16, runSpacing: 8,
                 children: [
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -239,6 +241,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                         borderRadius: BorderRadius.circular(Rad.pill),
                       ),
                       child: Row(
+                        mainAxisSize: MainAxisSize.min,
                         children: [
                           Icon(Icons.add, size: 18, color: c.onBrandPrimary),
                           const SizedBox(width: 4),
@@ -271,14 +274,15 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       _cursor = DateTime(_cursor.year, _cursor.month - 1, 1);
                     }),
                   ),
-                  Text(
+                  Expanded(child: Text(
                     '${kMonths[_cursor.month - 1]} ${_cursor.year}',
+                    textAlign: TextAlign.center,
                     style: manrope(
                       size: 16,
                       weight: FontWeight.w700,
                       color: c.onSurface,
                     ),
-                  ),
+                  )),
                   _chevron(
                     c,
                     Icons.chevron_right,
@@ -319,7 +323,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 padding: EdgeInsets.zero,
-                childAspectRatio: 1,
+                mainAxisExtent: (MediaQuery.textScalerOf(context).scale(18) * 1.5 + 12).clamp(48.0, 160.0),
                 children: [for (final cell in cells) _dayBox(c, cell, byDate)],
               ),
             ),
@@ -329,8 +333,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
             // ---------- Wydarzenia wybranego dnia ----------
             Padding(
               padding: const EdgeInsets.only(bottom: Sp.sm),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              child: Wrap(
+                alignment: WrapAlignment.spaceBetween,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                spacing: 12, runSpacing: 8,
                 children: [
                   Text(
                     _selectedDate,
@@ -408,14 +414,14 @@ class _CalendarScreenState extends State<CalendarScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
+            FittedBox(fit: BoxFit.scaleDown, child: Text(
               '${cell.day}',
               style: manrope(
                 size: 15,
                 weight: FontWeight.w600,
                 color: isSelected ? c.onBrandPrimary : c.onSurface,
               ),
-            ),
+            )),
             const SizedBox(height: 2),
             SizedBox(
               height: 4,

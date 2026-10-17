@@ -170,24 +170,14 @@ class _ProgressScreenState extends State<ProgressScreen> {
     return _card([
       const SectionTitle('OSTATNIE 7 DNI'),
       const Text('Liczba wykonanych aktywności'),
-      Wrap(
-        spacing: 12,
-        runSpacing: 8,
-        children: [
-          for (final type in types)
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(Icons.circle, size: 10, color: eventTypeColor(c, type)),
-                const SizedBox(width: 4),
-                Text(
-                  eventTypeLabel(type),
-                  style: manrope(size: 12, color: c.onSurface),
-                ),
-              ],
-            ),
-        ],
-      ),
+      Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+        for (final type in types)
+          Padding(padding: const EdgeInsets.symmetric(vertical: 4), child: Row(children: [
+            Icon(Icons.circle, size: 10, color: eventTypeColor(c, type)),
+            const SizedBox(width: 8),
+            Expanded(child: Text(eventTypeLabel(type), style: manrope(size: 12, color: c.onSurface))),
+          ])),
+      ]),
       for (var i = 0; i < 7; i++)
         Builder(
           builder: (context) {

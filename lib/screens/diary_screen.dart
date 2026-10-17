@@ -397,8 +397,10 @@ class _DiaryScreenState extends State<DiaryScreen> {
             // ---------- Ostatnie wpisy ----------
             Padding(
               padding: const EdgeInsets.only(bottom: Sp.sm),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              child: Wrap(
+                alignment: WrapAlignment.spaceBetween,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                spacing: 12, runSpacing: 8,
                 children: [
                   const SectionTitle('OSTATNIE WPISY'),
                   Text(
