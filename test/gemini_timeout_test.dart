@@ -8,7 +8,7 @@ import 'package:dziennik_pilkarza/llm.dart';
 
 http.Response answer(String value) => http.Response(jsonEncode({
   'candidates': [{'content': {'parts': [{'text': value}]}}],
-}), 200);
+}), 200, headers: {'content-type': 'application/json; charset=utf-8'});
 
 class TrackingClient extends MockClient {
   TrackingClient(Future<http.Response> Function(http.Request) handler) : super(handler);
@@ -20,10 +20,11 @@ class TrackingClient extends MockClient {
 void main() {
   testWidgets('key verification accepts an answer after the old 25 second cutoff', (tester) async {
     var requests = 0;
+    String? requestedPath;
     ({String? error, bool networkError})? result;
     final work = http.runWithClient(() => Llm.testKey('slow-valid-key'), () => MockClient((request) async {
       requests++;
-      expect(request.url.path, contains(AppConfig.llmFastModel));
+      requestedPath = request.url.path;
       await Future<void>.delayed(const Duration(seconds: 30));
       return answer('OK');
     })).then((value) { result = value; });
@@ -32,6 +33,7 @@ void main() {
     expect(result, isNotNull);
     expect(result!.error, isNull);
     expect(requests, 1);
+    expect(requestedPath, contains(AppConfig.llmFastModel));
     await work;
   });
 
