@@ -74,6 +74,19 @@ for filename, old, expected_count in [
         raise SystemExit(f"Nie znaleziono scenariuszy wykonania planu w {filename}.")
     path.write_text(source.replace(old, "date: todayIso()"), encoding="utf-8")
 
+# W10 bada powiązanie z wydarzeniem w planie bieżącego tygodnia.
+# W niedzielę "jutro" wypada już poza tym planem; używamy wtedy dzisiaj.
+# Wszystkie asercje powiązań i usunięcia wydarzenia pozostają bez zmian.
+path = OUT / "verify_gaps_test.dart"
+source = path.read_text(encoding="utf-8")
+old = "final t = DateTime.now().add(const Duration(days: 1));"
+new = """final now = DateTime.now();
+    final t = now.weekday == DateTime.sunday
+        ? now : now.add(const Duration(days: 1));"""
+if source.count(old) != 1:
+    raise SystemExit("Nie znaleziono jednoznacznie daty scenariusza W10.")
+path.write_text(source.replace(old, new), encoding="utf-8")
+
 # P3-1 zmienia nazwę radaru; smoke test ma sprawdzać nową etykietę.
 smoke = OUT / "smoke_screens_test.dart"
 source = smoke.read_text(encoding="utf-8")

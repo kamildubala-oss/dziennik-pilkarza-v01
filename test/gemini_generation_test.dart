@@ -12,6 +12,7 @@ import 'package:dziennik_pilkarza/screens/ai_key_screen.dart';
 import 'package:dziennik_pilkarza/services/coach_runtime.dart';
 import 'package:dziennik_pilkarza/theme.dart';
 import 'package:dziennik_pilkarza/utils.dart';
+import 'package:dziennik_pilkarza/widgets/common.dart';
 
 http.Response answer(String text) => http.Response(jsonEncode({
   'candidates': [{'content': {'parts': [{'text': text}]}}],
@@ -181,14 +182,18 @@ void main() {
     final check = find.text('Sprawdź generowanie Gemini');
     await tester.ensureVisible(check);
     await tester.runAsync(() => http.runWithClient(() async {
-      await tester.tap(check);
+      final button = tester.widget<SecondaryButton>(find.widgetWithText(SecondaryButton, 'Sprawdź generowanie Gemini'));
+      await (button.onTap! as Future<void> Function())();
     }, () => MockClient((_) async => answer('OK'))));
     await tester.pumpAndSettle();
     expect(find.text('Generowanie Gemini działa, ale wybrano Tylko offline.'), findsOneWidget);
     expect(LlmSettings.forceOffline, true);
     final enable = find.text('Włącz tryb automatyczny');
     await tester.ensureVisible(enable);
-    await tester.runAsync(() async { await tester.tap(enable); });
+    await tester.runAsync(() async {
+      final button = tester.widget<SecondaryButton>(find.widgetWithText(SecondaryButton, 'Włącz tryb automatyczny'));
+      await (button.onTap! as Future<void> Function())();
+    });
     await tester.pumpAndSettle();
     expect(LlmSettings.mode, 'auto');
   });
