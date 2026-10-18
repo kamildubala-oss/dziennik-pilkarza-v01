@@ -76,7 +76,8 @@ class _ProgressScreenState extends State<ProgressScreen> {
       await Api.analyzeWeakSpots();
       await _weak.refetch();
     } catch (_) {
-      // Jak w wersji React - błąd analizy nie jest pokazywany.
+      if (mounted) ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Nie udało się utworzyć analizy. Spróbuj ponownie.')));
     } finally {
       if (mounted) setState(() => _analyzing = false);
     }
@@ -400,6 +401,8 @@ class _ProgressScreenState extends State<ProgressScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SectionTitle('SŁABE PUNKTY'),
+                  if (data != null && data.notice.isNotEmpty)
+                    Text(data.notice, style: manrope(size: 12, color: c.muted)),
                   if (data != null)
                     Padding(
                       padding: const EdgeInsets.only(top: 2),

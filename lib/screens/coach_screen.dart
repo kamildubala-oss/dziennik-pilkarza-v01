@@ -167,7 +167,8 @@ class _CoachScreenState extends State<CoachScreen> {
       // kalendarza, bo plan może teraz odwoływać się do ręcznych treningów.
       await _planEvents.refetch();
     } catch (_) {
-      // Jak w wersji React - błąd generowania nie jest pokazywany.
+      if (mounted) ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Nie udało się utworzyć planu. Spróbuj ponownie.')));
     } finally {
       if (mounted) setState(() => _generating = false);
     }
@@ -219,6 +220,10 @@ class _CoachScreenState extends State<CoachScreen> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 _hero(c),
+                if (CoachRuntime.last.value?.notice.isNotEmpty ?? false)
+                  Padding(padding: const EdgeInsets.only(bottom: Sp.md),
+                    child: Text(CoachRuntime.last.value!.notice,
+                      style: manrope(size: 13, color: c.onSurface))),
 
                 // ---------- Plan tygodnia ----------
                 Padding(

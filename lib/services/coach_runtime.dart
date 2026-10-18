@@ -2,16 +2,17 @@ import 'package:flutter/foundation.dart';
 
 /// Potwierdzone źródło konkretnego wyniku, a nie dostępność internetu/klucza.
 class CoachExecution {
-  const CoachExecution(this.source, this.operation, this.createdAt);
+  const CoachExecution(this.source, this.operation, this.createdAt, {this.notice = ''});
   final String source;
   final String operation;
   final String createdAt;
+  final String notice;
 }
 
 class CoachRuntime {
   static final last = ValueNotifier<CoachExecution?>(null);
-  static void record(String source, String operation, String createdAt) {
-    last.value = CoachExecution(source, operation, createdAt);
+  static void record(String source, String operation, String createdAt, {String notice = ''}) {
+    last.value = CoachExecution(source, operation, createdAt, notice: notice);
   }
   static void reset() => last.value = null;
   static String sourceLabel(String source) => switch (source) {
