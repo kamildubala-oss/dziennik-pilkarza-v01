@@ -43,7 +43,8 @@ void main() {
     final work = http.runWithClient(() => Llm.testKey('alternate-after-timeout'), () {
       final client = TrackingClient((request) async {
         models.add(request.url.path);
-        return models.length == 1 ? late.future : answer('OK');
+        if (models.length == 1) return await late.future;
+        return answer('OK');
       });
       clients.add(client);
       return client;
