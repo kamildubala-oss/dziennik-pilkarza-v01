@@ -200,7 +200,7 @@ class _AiKeyScreenState extends State<AiKeyScreen> {
                         size: 12, height: 1.45, color: c.onSurfaceSecondary),
                   ),
                   const SizedBox(height: Sp.md),
-                  Text('Sprawdzenie generuje krótką odpowiedź bez danych dziennika i zużywa niewielką część limitu API.',
+                  Text('Sprawdzenie generuje krótką odpowiedź bez danych dziennika i zużywa limit API. Może potrwać do 2 minut.',
                     style: manrope(size: 12, color: c.muted)),
                   TextField(
                     controller: _key,
@@ -250,6 +250,8 @@ class _AiKeyScreenState extends State<AiKeyScreen> {
                     marginTop: Sp.md,
                     onTap: _busy || _key.text.trim().isEmpty ? null : _save,
                   ),
+                  if (_busy) Text('Oczekiwanie na Gemini — maksymalnie 2 minuty.',
+                    style: manrope(size: 12, color: c.muted)),
                   if (_message != null) ...[
                     const SizedBox(height: Sp.md),
                     Row(

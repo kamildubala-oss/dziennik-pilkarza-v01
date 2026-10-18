@@ -5,10 +5,11 @@ import 'config.dart';
 import 'llm_settings.dart';
 
 class LlmException implements Exception {
-  LlmException(this.message, {this.statusCode, this.networkError = false});
+  LlmException(this.message, {this.statusCode, this.networkError = false, this.timedOut = false});
   final String message;
   final int? statusCode;
   final bool networkError;
+  final bool timedOut;
   @override
   String toString() => message;
 }
@@ -26,13 +27,13 @@ class Llm {
   static String explain(Object error) => error is LlmException
       ? error.message : 'Nie udało się odczytać odpowiedzi Gemini. Użyto trenera offline.';
 
-  /// Krótkie, rzeczywiste generowanie; może zużyć niewielką część limitu API.
+  /// Krótkie, rzeczywiste generowanie; zużywa limit generowania API.
   /// Nie zapisuje klucza ani nie wysyła danych zawodnika.
   static Future<({String? error, bool networkError})> testKey(String key) async {
     try {
       await _complete(key.trim(), 'Odpowiedz krótko.', [
         {'role': 'user', 'content': 'Napisz tylko OK.'},
-      ], false, false);
+      ], true, false);
       return (error: null, networkError: false);
     } on LlmException catch (e) {
       return (error: e.message, networkError: e.networkError);
@@ -42,55 +43,61 @@ class Llm {
   static Future<String> complete({
     required String system,
     required List<Map<String, String>> messages,
-    bool fast = false,
+    bool fast = true,
     bool json = false,
   }) => _complete(LlmSettings.activeKey, system, messages, fast, json);
 
   static Future<String> _complete(String key, String system,
       List<Map<String, String>> messages, bool fast, bool json) async {
     if (key.isEmpty) throw LlmException('Brak klucza API Gemini.');
+    final watch = Stopwatch()..start();
+    Duration remaining({bool catalog = false}) {
+      final left = const Duration(minutes: 2) - watch.elapsed;
+      if (left <= Duration.zero) throw _timeout();
+      final limit = Duration(seconds: catalog ? 15 : 60);
+      return left < limit ? left : limit;
+    }
     final models = <String>{
       if (_workingKeyFingerprint == key.hashCode && _workingModel != null) _workingModel!,
       if (fast) AppConfig.llmFastModel,
       AppConfig.llmModel,
       if (!fast) AppConfig.llmFastModel,
-    };
+    }.toList();
     LlmException? failure;
-    var missingModel = false;
-    Future<String> attempt(String model) async {
-      final result = await _completeWith(model, key, system, messages, json);
-      _workingKeyFingerprint = key.hashCode;
-      _workingModel = model;
-      return result;
-    }
-    for (final model in models) {
+    var discovered = false;
+    final tried = <String>{};
+    while (models.isNotEmpty && tried.length < 4) {
+      final model = models.removeAt(0);
+      if (!tried.add(model)) continue;
       try {
-        return await attempt(model);
+        final result = await _completeWith(model, key, system, messages, json,
+          timeout: remaining());
+        _workingKeyFingerprint = key.hashCode;
+        _workingModel = model;
+        return result;
       } on LlmException catch (e) {
-        // Bez kolejnych prób modeli, jeśli samo połączenie nie działa.
-        if (e.networkError) rethrow;
-        missingModel = missingModel || e.statusCode == 404;
-        // Nie zastępuj użytecznej informacji o limicie/uprawnieniach błędem 404.
+        // Brak sieci kończy próbę; opóźnienie modelu pozwala użyć zapasowego.
+        if (e.networkError && !e.timedOut) rethrow;
         if (failure == null || e.statusCode != 404) failure = e;
-      }
-    }
-    if (missingModel) {
-      try {
-        final available = await _availableModels(key);
-        for (final model in available.where((m) => !models.contains(m)).take(2)) {
+        if (e.statusCode == 404 && !discovered) {
+          discovered = true;
           try {
-            return await attempt(model);
-          } on LlmException catch (e) {
-            if (e.networkError) rethrow;
-            if (failure == null || e.statusCode != 404) failure = e;
+            final available = await _availableModels(key, () => remaining(catalog: true));
+            final fresh = available.where((m) => !tried.contains(m) && !models.contains(m)).take(2);
+            models.insertAll(0, fresh);
+          } on LlmException catch (catalogError) {
+            if (catalogError.networkError && !catalogError.timedOut) rethrow;
+            if (failure.statusCode == 404) failure = catalogError;
           }
         }
-      } on LlmException catch (e) {
-        if (failure == null || e.networkError) failure = e;
       }
     }
     throw failure ?? LlmException('Brak dostępnego modelu tekstowego Gemini dla tego klucza.');
   }
+
+  static LlmException _timeout() => LlmException(
+    'Przekroczono czas oczekiwania na Gemini. Usługa lub połączenie mogą być opóźnione. Spróbuj ponownie później.',
+    networkError: true, timedOut: true);
 
   static LlmException _httpFailure(int code) => LlmException(switch (code) {
     400 => 'Gemini odrzucił żądanie (400). Sprawdź klucz i konfigurację projektu Google AI Studio.',
@@ -102,14 +109,18 @@ class Llm {
     _ => 'Gemini odrzucił żądanie ($code). Sprawdź ustawienia API w Google AI Studio.',
   }, statusCode: code);
 
-  static Future<Map<String, dynamic>> _send(Future<http.Response> Function() request) async {
+  static Future<Map<String, dynamic>> _send(
+      Future<http.Response> Function(http.Client) request, {required Duration timeout}) async {
     http.Response res;
+    final client = http.Client();
     try {
-      res = await request().timeout(const Duration(seconds: 25));
+      res = await request(client).timeout(timeout);
     } on TimeoutException {
-      throw LlmException('Gemini nie odpowiedziało na czas. Sprawdź połączenie i spróbuj ponownie.', networkError: true);
+      throw _timeout();
     } catch (_) {
       throw LlmException('Nie udało się połączyć z Gemini. Sprawdź internet i spróbuj ponownie.', networkError: true);
+    } finally {
+      client.close();
     }
     if (res.statusCode < 200 || res.statusCode >= 300) throw _httpFailure(res.statusCode);
     try {
@@ -119,14 +130,14 @@ class Llm {
     throw LlmException('Gemini zwróciło nieprawidłową odpowiedź. Spróbuj ponownie.');
   }
 
-  static Future<List<String>> _availableModels(String key) async {
+  static Future<List<String>> _availableModels(String key, Duration Function() timeout) async {
     final names = <String>{};
     String? token;
     for (var page = 0; page < 3; page++) {
       final uri = Uri.parse('${AppConfig.llmBaseUrl}/models').replace(queryParameters: {
         'pageSize': '1000', if (token != null) 'pageToken': token,
       });
-      final data = await _send(() => http.get(uri, headers: {'x-goog-api-key': key}));
+      final data = await _send((client) => client.get(uri, headers: {'x-goog-api-key': key}), timeout: timeout());
       final raw = data['models'];
       if (raw is List) {
         for (final model in raw.whereType<Map>()) {
@@ -151,9 +162,9 @@ class Llm {
   }
 
   static Future<String> _completeWith(String model, String key, String system,
-      List<Map<String, String>> messages, bool json) async {
+      List<Map<String, String>> messages, bool json, {required Duration timeout}) async {
     final uri = Uri.parse('${AppConfig.llmBaseUrl}/models/$model:generateContent');
-    final data = await _send(() => http.post(uri,
+    final data = await _send((client) => client.post(uri,
       headers: {'Content-Type': 'application/json', 'x-goog-api-key': key},
       body: jsonEncode({
         'systemInstruction': {'parts': [{'text': system}]},
@@ -165,7 +176,7 @@ class Llm {
         ],
         if (json) 'generationConfig': {'responseMimeType': 'application/json'},
       }),
-    ));
+    ), timeout: timeout);
     final candidates = data['candidates'];
     if (candidates is List && candidates.isNotEmpty && candidates.first is Map) {
       final content = (candidates.first as Map)['content'];
