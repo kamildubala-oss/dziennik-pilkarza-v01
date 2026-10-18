@@ -37,15 +37,18 @@ class CoachService {
         'generated_at': _nowIso(),
         'note_count': 0,
         'source': 'offline',
+        'fallback_reason': 'Brak notatek „Co trzeba poprawić?” do analizy.',
       };
       await LocalDb.setDoc('weak_spots', empty);
-      CoachRuntime.record('offline', 'analiza', _s(empty['generated_at']));
+      CoachRuntime.record('offline', 'analiza', _s(empty['generated_at']), notice: _s(empty['fallback_reason']));
       return WeakSpotsPayload.fromJson(empty);
     }
 
     var spots = <Map<String, dynamic>>[];
     var source = 'offline';
+    var notice = Llm.enabled ? '' : Llm.offlineReason;
 
+    var onlineAnalysis = false;
     if (Llm.enabled) {
       try {
         final last =
@@ -81,13 +84,18 @@ class CoachService {
             });
           }
         }
-      } catch (_) {
+        if (items is! List || (items.isNotEmpty && spots.isEmpty)) {
+          throw LlmException('Gemini zwróciło nieprawidłowy format analizy. Użyto analizy offline.');
+        }
+        onlineAnalysis = true;
+        source = 'online';
+      } catch (error) {
+        notice = Llm.explain(error);
         spots = <Map<String, dynamic>>[];
       }
     }
 
-    if (spots.isNotEmpty) source = 'online';
-    if (spots.isEmpty) {
+    if (!onlineAnalysis) {
       // Wersja offline - zliczanie słów kluczowych.
       final tally = <String, int>{};
       void bump(String k) => tally[k] = (tally[k] ?? 0) + 1;
@@ -135,9 +143,10 @@ class CoachService {
       'generated_at': _nowIso(),
       'note_count': notes.length,
       'source': source,
+      'fallback_reason': notice,
     };
     await LocalDb.setDoc('weak_spots', payload);
-    CoachRuntime.record(source, 'analiza', _s(payload['generated_at']));
+    CoachRuntime.record(source, 'analiza', _s(payload['generated_at']), notice: notice);
     return WeakSpotsPayload.fromJson(payload);
   }
 
@@ -190,6 +199,7 @@ class CoachService {
 
     String reply;
     var source = 'offline';
+    var notice = Llm.enabled ? '' : Llm.offlineReason;
     if (Llm.enabled) {
       final recent =
           session.length > 20 ? session.sublist(session.length - 20) : session;
@@ -207,7 +217,8 @@ class CoachService {
           ],
         );
         source = 'online';
-      } catch (e) {
+      } catch (error) {
+        notice = Llm.explain(error);
         reply = await OfflineCoach.reply(message);
       }
     } else {
@@ -230,13 +241,14 @@ class CoachService {
         'role': 'assistant',
         'content': reply,
         'source': source,
+        'fallback_reason': notice,
         'created_at': generatedAt,
       });
       final trimmed =
           items.length > 200 ? items.sublist(items.length - 200) : items;
       await LocalDb.saveList('chat_messages', trimmed);
     });
-    CoachRuntime.record(source, 'rozmowa', generatedAt);
+    CoachRuntime.record(source, 'rozmowa', generatedAt, notice: notice);
     return reply;
   }
 }

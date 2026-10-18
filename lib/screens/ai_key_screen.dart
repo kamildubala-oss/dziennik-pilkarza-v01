@@ -54,7 +54,9 @@ class _AiKeyScreenState extends State<AiKeyScreen> {
       if (r.error == null) {
         await LlmSettings.setCustomKey(key);
         _key.clear();
-        _show('Klucz działa i został zapisany.', ok: true);
+        _show(LlmSettings.forceOffline
+            ? 'Generowanie Gemini działa. Klucz zapisany, ale trener ma włączone Tylko offline.'
+            : 'Generowanie Gemini działa. Klucz został zapisany.', ok: true);
         return;
       }
       if (!r.networkError) {
@@ -97,7 +99,9 @@ class _AiKeyScreenState extends State<AiKeyScreen> {
     });
     try {
       final r = await Llm.testKey(LlmSettings.activeKey);
-      _show(r.error ?? 'Obecny klucz działa.', ok: r.error == null);
+      _show(r.error ?? (LlmSettings.forceOffline
+          ? 'Generowanie Gemini działa, ale wybrano Tylko offline.'
+          : 'Generowanie Gemini działa.'), ok: r.error == null);
     } finally {
       if (mounted) setState(() => _busy = false);
     }
@@ -167,10 +171,16 @@ class _AiKeyScreenState extends State<AiKeyScreen> {
                   ),
                   if (LlmSettings.hasKey)
                     SecondaryButton(
-                      label: 'Sprawdź klucz',
+                      label: 'Sprawdź generowanie Gemini',
                       icon: Icons.wifi_tethering,
                       onTap: _busy ? null : _testCurrent,
                     ),
+                  if (LlmSettings.hasKey && LlmSettings.forceOffline)
+                    SecondaryButton(label: 'Włącz tryb automatyczny',
+                      onTap: _busy ? null : () async {
+                        await LlmSettings.setMode('auto');
+                        _show('Tryb automatyczny włączony. Trener będzie korzystał z Gemini.', ok: true);
+                      }),
                   if (custom)
                     SecondaryButton(
                       label: 'Usuń klucz',
@@ -190,6 +200,8 @@ class _AiKeyScreenState extends State<AiKeyScreen> {
                         size: 12, height: 1.45, color: c.onSurfaceSecondary),
                   ),
                   const SizedBox(height: Sp.md),
+                  Text('Sprawdzenie generuje krótką odpowiedź bez danych dziennika i zużywa limit API. Może potrwać do 2 minut.',
+                    style: manrope(size: 12, color: c.muted)),
                   TextField(
                     controller: _key,
                     obscureText: _obscure,
@@ -234,10 +246,12 @@ class _AiKeyScreenState extends State<AiKeyScreen> {
                     ),
                   ),
                   PrimaryButton(
-                    label: _busy ? 'Sprawdzanie...' : 'Sprawdź i zapisz',
+                    label: _busy ? 'Sprawdzanie...' : 'Sprawdź generowanie i zapisz',
                     marginTop: Sp.md,
                     onTap: _busy || _key.text.trim().isEmpty ? null : _save,
                   ),
+                  if (_busy) Text('Oczekiwanie na Gemini — maksymalnie 2 minuty.',
+                    style: manrope(size: 12, color: c.muted)),
                   if (_message != null) ...[
                     const SizedBox(height: Sp.md),
                     Row(

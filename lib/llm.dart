@@ -1,150 +1,192 @@
+import 'dart:async';
 import 'dart:convert';
-
 import 'package:http/http.dart' as http;
-
 import 'config.dart';
 import 'llm_settings.dart';
 
 class LlmException implements Exception {
-  LlmException(this.message);
-
+  LlmException(this.message, {this.statusCode, this.networkError = false, this.timedOut = false});
   final String message;
-
+  final int? statusCode;
+  final bool networkError;
+  final bool timedOut;
   @override
   String toString() => message;
 }
 
-/// Klient modelu językowego Google Gemini (natywne API `generateContent`).
-/// Klucze w formacie `AQ.` wymagają nagłówka `x-goog-api-key`.
-/// Klucz: wyłącznie własny, podany w ustawieniach.
-/// Gdy nie ma żadnego, aplikacja używa trybu offline.
+/// Ten sam klient generateContent służy do testu klucza i pracy trenera.
 class Llm {
   Llm._();
-
+  static int? _workingKeyFingerprint;
+  static String? _workingModel;
   static bool get enabled => LlmSettings.allowNetwork;
+  static String get offlineReason => LlmSettings.forceOffline
+      ? 'Włączony tryb Tylko offline. Wybierz Automatyczny w profilu, aby używać Gemini.'
+      : 'Brak zapisanego klucza API. Trener korzysta z pakietu offline.';
 
-  /// Sprawdza klucz API (lista modeli - nie zużywa limitu zapytań).
-  /// Zwraca null, gdy klucz działa; w przeciwnym razie opis problemu.
-  /// [networkError] = true, gdy nie udało się połączyć.
-  static Future<({String? error, bool networkError})> testKey(
-      String key) async {
+  static String explain(Object error) => error is LlmException
+      ? error.message : 'Nie udało się odczytać odpowiedzi Gemini. Użyto trenera offline.';
+
+  /// Krótkie, rzeczywiste generowanie; zużywa limit generowania API.
+  /// Nie zapisuje klucza ani nie wysyła danych zawodnika.
+  static Future<({String? error, bool networkError})> testKey(String key) async {
     try {
-      final res = await http.get(
-        Uri.parse('${AppConfig.llmBaseUrl}/models?pageSize=1'),
-        headers: <String, String>{'x-goog-api-key': key.trim()},
-      ).timeout(const Duration(seconds: 20));
-      if (res.statusCode >= 200 && res.statusCode < 300) {
-        return (error: null, networkError: false);
-      }
-      if (res.statusCode == 400 ||
-          res.statusCode == 401 ||
-          res.statusCode == 403) {
-        return (
-          error: 'Klucz jest nieprawidłowy lub nie ma dostępu do Gemini API.',
-          networkError: false,
-        );
-      }
-      if (res.statusCode == 429) {
-        return (
-          error:
-              'Klucz działa, ale przekroczono limit zapytań. Spróbuj później.',
-          networkError: false,
-        );
-      }
-      return (
-        error: 'Serwer Google zwrócił błąd ${res.statusCode}.',
-        networkError: true,
-      );
-    } catch (_) {
-      return (
-        error: 'Nie udało się połączyć z serwerem Google. Sprawdź internet.',
-        networkError: true,
-      );
+      await _complete(key.trim(), 'Odpowiedz krótko.', [
+        {'role': 'user', 'content': 'Napisz tylko OK.'},
+      ], true, false);
+      return (error: null, networkError: false);
+    } on LlmException catch (e) {
+      return (error: e.message, networkError: e.networkError);
     }
   }
 
-  /// [fast] - najpierw szybszy model (np. plan tygodnia).
-  /// [json] - wymusza odpowiedź w formacie JSON.
-  /// Gdy pierwszy model jest przeciążony / nie odpowiada, próbuje drugiego.
   static Future<String> complete({
     required String system,
     required List<Map<String, String>> messages,
-    bool fast = false,
+    bool fast = true,
     bool json = false,
-  }) async {
-    final models = fast
-        ? <String>[AppConfig.llmFastModel, AppConfig.llmModel]
-        : <String>[AppConfig.llmModel, AppConfig.llmFastModel];
-    for (final model in models) {
+  }) => _complete(LlmSettings.activeKey, system, messages, fast, json);
+
+  static Future<String> _complete(String key, String system,
+      List<Map<String, String>> messages, bool fast, bool json) async {
+    if (key.isEmpty) throw LlmException('Brak klucza API Gemini.');
+    final watch = Stopwatch()..start();
+    Duration remaining({bool catalog = false}) {
+      final left = const Duration(minutes: 2) - watch.elapsed;
+      if (left <= Duration.zero) throw _timeout();
+      final limit = Duration(seconds: catalog ? 15 : 60);
+      return left < limit ? left : limit;
+    }
+    final models = <String>{
+      if (_workingKeyFingerprint == key.hashCode && _workingModel != null) _workingModel!,
+      if (fast) AppConfig.llmFastModel,
+      AppConfig.llmModel,
+      if (!fast) AppConfig.llmFastModel,
+    }.toList();
+    LlmException? failure;
+    var discovered = false;
+    final tried = <String>{};
+    while (models.isNotEmpty && tried.length < 4) {
+      final model = models.removeAt(0);
+      if (!tried.add(model)) continue;
       try {
-        return await _completeWith(model, system, messages, json);
-      } catch (_) {
-        // Spróbuj alternatywnego modelu.
+        final result = await _completeWith(model, key, system, messages, json,
+          timeout: remaining());
+        _workingKeyFingerprint = key.hashCode;
+        _workingModel = model;
+        return result;
+      } on LlmException catch (e) {
+        // Brak sieci kończy próbę; opóźnienie modelu pozwala użyć zapasowego.
+        if (e.networkError && !e.timedOut) rethrow;
+        if (failure == null || e.statusCode != 404) failure = e;
+        if (e.statusCode == 404 && !discovered) {
+          discovered = true;
+          try {
+            final available = await _availableModels(key, () => remaining(catalog: true));
+            final fresh = available.where((m) => !tried.contains(m) && !models.contains(m)).take(2);
+            models.insertAll(0, fresh);
+          } on LlmException catch (catalogError) {
+            if (catalogError.networkError && !catalogError.timedOut) rethrow;
+            if (failure.statusCode == 404) failure = catalogError;
+          }
+        }
       }
     }
-    throw LlmException('Nie udało się uzyskać odpowiedzi trenera AI. Sprawdź połączenie i spróbuj ponownie.');
+    throw failure ?? LlmException('Brak dostępnego modelu tekstowego Gemini dla tego klucza.');
   }
 
-  static Future<String> _completeWith(
-    String model,
-    String system,
-    List<Map<String, String>> messages,
-    bool json,
-  ) async {
-    final uri = Uri.parse(
-      '${AppConfig.llmBaseUrl}/models/$model:generateContent',
-    );
+  static LlmException _timeout() => LlmException(
+    'Przekroczono czas oczekiwania na Gemini. Usługa lub połączenie mogą być opóźnione. Spróbuj ponownie później.',
+    networkError: true, timedOut: true);
 
-    final contents = <Map<String, dynamic>>[
-      for (final m in messages)
-        if ((m['content'] ?? '').trim().isNotEmpty)
-          <String, dynamic>{
-            'role': m['role'] == 'assistant' ? 'model' : 'user',
-            'parts': <Map<String, String>>[
-              <String, String>{'text': m['content']!},
-            ],
-          },
-    ];
+  static LlmException _httpFailure(int code) => LlmException(switch (code) {
+    400 => 'Gemini odrzucił żądanie (400). Sprawdź klucz i konfigurację projektu Google AI Studio.',
+    401 => 'Gemini nie uwierzytelnił klucza (401). Sprawdź klucz API.',
+    403 => 'Brak uprawnień do generowania Gemini (403). Sprawdź ograniczenia klucza i dostęp projektu w Google AI Studio.',
+    404 => 'Wybrany model Gemini nie jest dostępny dla tego klucza (404).',
+    429 => 'Przekroczony lub niedostępny limit generowania Gemini (429). Sprawdź limity projektu w Google AI Studio lub spróbuj później.',
+    500 || 502 || 503 || 504 => 'Gemini jest chwilowo niedostępne ($code). Spróbuj ponownie później.',
+    _ => 'Gemini odrzucił żądanie ($code). Sprawdź ustawienia API w Google AI Studio.',
+  }, statusCode: code);
 
-    final res = await http
-        .post(
-          uri,
-          headers: <String, String>{
-            'Content-Type': 'application/json',
-            'x-goog-api-key': LlmSettings.activeKey,
-          },
-          body: jsonEncode(<String, dynamic>{
-            'systemInstruction': <String, dynamic>{
-              'parts': <Map<String, String>>[
-                <String, String>{'text': system},
-              ],
-            },
-            'contents': contents,
-            if (json)
-              'generationConfig': <String, dynamic>{
-                'responseMimeType': 'application/json',
-              },
-          }),
-        )
-        .timeout(const Duration(seconds: 25));
-
-    final text = utf8.decode(res.bodyBytes, allowMalformed: true);
-    if (res.statusCode < 200 || res.statusCode >= 300) {
-      throw LlmException('${res.statusCode} ${res.reasonPhrase ?? ''}: $text');
+  static Future<Map<String, dynamic>> _send(
+      Future<http.Response> Function(http.Client) request, {required Duration timeout}) async {
+    http.Response res;
+    final client = http.Client();
+    try {
+      res = await request(client).timeout(timeout);
+    } on TimeoutException {
+      throw _timeout();
+    } catch (_) {
+      throw LlmException('Nie udało się połączyć z Gemini. Sprawdź internet i spróbuj ponownie.', networkError: true);
+    } finally {
+      client.close();
     }
-    final data = jsonDecode(text) as Map<String, dynamic>;
+    if (res.statusCode < 200 || res.statusCode >= 300) throw _httpFailure(res.statusCode);
+    try {
+      final decoded = jsonDecode(utf8.decode(res.bodyBytes, allowMalformed: true));
+      if (decoded is Map<String, dynamic>) return decoded;
+    } catch (_) { /* Nie ujawniamy treści odpowiedzi ani klucza w błędzie. */ }
+    throw LlmException('Gemini zwróciło nieprawidłową odpowiedź. Spróbuj ponownie.');
+  }
+
+  static Future<List<String>> _availableModels(String key, Duration Function() timeout) async {
+    final names = <String>{};
+    String? token;
+    for (var page = 0; page < 3; page++) {
+      final uri = Uri.parse('${AppConfig.llmBaseUrl}/models').replace(queryParameters: {
+        'pageSize': '1000', if (token != null) 'pageToken': token,
+      });
+      final data = await _send((client) => client.get(uri, headers: {'x-goog-api-key': key}), timeout: timeout());
+      final raw = data['models'];
+      if (raw is List) {
+        for (final model in raw.whereType<Map>()) {
+          final name = model['name'];
+          final methods = model['supportedGenerationMethods'];
+          if (name is! String || methods is! List || !methods.contains('generateContent')) continue;
+          final id = name.replaceFirst(RegExp(r'^models/'), '');
+          if (!RegExp(r'^gemini-[a-zA-Z0-9._-]*flash[a-zA-Z0-9._-]*$').hasMatch(id)) continue;
+          if (RegExp(r'image|audio|tts|live|robotics|computer-use').hasMatch(id)) continue;
+          names.add(id);
+        }
+      }
+      token = data['nextPageToken'] is String ? data['nextPageToken'] as String : null;
+      if (token == null || token.isEmpty) break;
+    }
+    final sorted = names.toList()..sort((a, b) {
+      int score(String m) => (m.contains('lite') ? 0 : 2) + (m.contains('preview') || m.contains('exp') ? 1 : 0);
+      final byType = score(a).compareTo(score(b));
+      return byType == 0 ? b.compareTo(a) : byType;
+    });
+    return sorted;
+  }
+
+  static Future<String> _completeWith(String model, String key, String system,
+      List<Map<String, String>> messages, bool json, {required Duration timeout}) async {
+    final uri = Uri.parse('${AppConfig.llmBaseUrl}/models/$model:generateContent');
+    final data = await _send((client) => client.post(uri,
+      headers: {'Content-Type': 'application/json', 'x-goog-api-key': key},
+      body: jsonEncode({
+        'systemInstruction': {'parts': [{'text': system}]},
+        'contents': [for (final m in messages)
+          if ((m['content'] ?? '').trim().isNotEmpty) {
+            'role': m['role'] == 'assistant' ? 'model' : 'user',
+            'parts': [{'text': m['content']}],
+          },
+        ],
+        if (json) 'generationConfig': {'responseMimeType': 'application/json'},
+      }),
+    ), timeout: timeout);
     final candidates = data['candidates'];
-    if (candidates is List && candidates.isNotEmpty) {
-      final content = (candidates.first as Map<String, dynamic>)['content'];
+    if (candidates is List && candidates.isNotEmpty && candidates.first is Map) {
+      final content = (candidates.first as Map)['content'];
       if (content is Map && content['parts'] is List) {
-        final out = (content['parts'] as List)
-            .whereType<Map>()
-            .where((p) => p['thought'] != true && p['text'] != null)
-            .map((p) => p['text'].toString())
-            .join();
-        if (out.trim().isNotEmpty) return out.trim();
+        final out = (content['parts'] as List).whereType<Map>()
+            .where((p) => p['thought'] != true && p['text'] is String)
+            .map((p) => p['text'] as String).join().trim();
+        if (out.isNotEmpty) return out;
       }
     }
-    throw LlmException('Pusta odpowiedź modelu');
+    throw LlmException('Gemini nie zwróciło odpowiedzi tekstowej. Zapytanie mogło zostać zablokowane lub przerwane.');
   }
 }

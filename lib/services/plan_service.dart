@@ -86,6 +86,7 @@ class PlanService {
 
     List<Map<String, dynamic>>? days;
     var source = 'offline';
+    var notice = Llm.enabled ? '' : Llm.offlineReason;
 
     if (Llm.enabled) {
       try {
@@ -178,7 +179,9 @@ class PlanService {
           }
           if (built.length == 7) { days = built; source = 'online'; }
         }
-      } catch (_) {
+        if (days == null) throw LlmException('Gemini zwróciło nieprawidłowy format planu. Użyto planu offline.');
+      } catch (error) {
+        notice = Llm.explain(error);
         days = null;
       }
     }
@@ -216,9 +219,10 @@ class PlanService {
       'days': days,
       'generated_at': _nowIso(),
       'source': source,
+      'fallback_reason': notice,
     };
     await LocalDb.setDoc('weekly_plan_${week.id}', plan);
-    CoachRuntime.record(source, 'plan', _s(plan['generated_at']));
+    CoachRuntime.record(source, 'plan', _s(plan['generated_at']), notice: notice);
     return WeeklyPlan.fromJson(plan);
   }
 }
