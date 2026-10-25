@@ -192,6 +192,7 @@ class CoachService {
             'Uczestnicy: ${e['participants_max']}.',
             'Sprzęt: ${(e['equipment'] as List).join(', ')}.',
             'Przestrzeń: ${e['space']}.',
+            'Wiek: od ${e['min_age']} lat.',
             if (e['source_intensity'] == 'none') 'Zadanie refleksyjne, bez obciążenia fizycznego.',
             '${e['age_policy']}',
             '${e['limitations']}',

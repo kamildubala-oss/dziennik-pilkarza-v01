@@ -44,6 +44,7 @@ void main() {
       expect(card.steps.first, e['instructions']);
       expect(card.description, contains('Uczestnicy: ${e['participants_max']}'));
       expect(card.description, contains('Sprzęt:'));
+      expect(card.description, contains('Wiek: od ${e['min_age']} lat.'));
       expect(card.durationMin, e['session_block_minutes']);
       expect(card.focus, isIn(['Prowadzenie', 'Strzał', 'Decyzyjność', 'Siła', 'Mentalność']));
       expect(card.source, isNot(contains('PZPN')));
