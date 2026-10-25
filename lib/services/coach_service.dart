@@ -179,7 +179,27 @@ class CoachService {
   }
 
   static Future<List<Drill>> drills() async {
-    return kDrills.map(Drill.fromJson).toList();
+    final library = await OfflineCoach.exercises();
+    return <Drill>[
+      ...kDrills.map(Drill.fromJson),
+      for (final e in library.where((e) => e['import_package'] == 'baza_dziennika_pilkarza_v1'))
+        Drill.fromJson({
+          'id': e['id'], 'title': e['title'], 'focus': e['journal_focus'],
+          'duration_min': e['duration_min'], 'intensity': e['intensity'],
+          'source': 'Ćwiczenie z bazy offline',
+          'description': <String>[
+            'Cel: ${e['goal']}',
+            'Uczestnicy: ${e['participants_max']}.',
+            'Sprzęt: ${(e['equipment'] as List).join(', ')}.',
+            'Przestrzeń: ${e['space']}.',
+            if (e['source_intensity'] == 'none') 'Zadanie refleksyjne, bez obciążenia fizycznego.',
+            '${e['age_policy']}',
+            '${e['limitations']}',
+            'Dawkowanie i dopasowanie zadania omów z trenerem.',
+          ].join('\n\n'),
+          'steps': e['steps'],
+        }),
+    ];
   }
 
   static Future<String> motivation() async {

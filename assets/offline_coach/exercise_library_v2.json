@@ -1,8 +1,8 @@
 {
-  "schema_version": "2.2.0",
+  "schema_version": "2.3.0",
   "language": "pl-PL",
-  "title": "Biblioteka 60 ćwiczeń — maksymalnie zawodnik i trener",
-  "count": 60,
+  "title": "Biblioteka 72 ćwiczeń — maksymalnie zawodnik i trener",
+  "count": 72,
   "license_note": "Autorskie opisy ćwiczeń. Biblioteka nie stanowi oficjalnego programu żadnej federacji ani organizacji szkoleniowej.",
   "areas": [
     "technika",
@@ -184,49 +184,63 @@
     },
     {
       "id": "tech_weak_foot",
-      "title": "Słabsza noga – kontakt i podanie",
+      "title": "Słabsza noga do celu",
       "area": "technika",
-      "subarea": "podanie",
+      "subarea": "podania",
       "age_band": {
-        "min": 10,
-        "max": 18
+        "min": 8,
+        "max": null
       },
-      "duration_min": 12,
-      "intensity": "low",
+      "duration_min": 8,
+      "intensity": "medium",
       "solo": true,
       "equipment": [
         "piłka",
-        "ściana lub partner"
+        "ściana",
+        "cel"
       ],
-      "space": "mała przestrzeń",
+      "space": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
       "goal": "Buduj pewność w używaniu obu nóg.",
-      "setup": "Ustaw prosty układ z bezpiecznymi odległościami; dostosuj wielkość pola do poziomu zawodnika.",
+      "setup": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
       "steps": [
-        "Rozpocznij od 2-4 min spokojnej rozgrzewki z piłką.",
-        "Wykonuj krótkie serie z przerwą, utrzymując jakość techniczną.",
-        "Zwiększaj tempo dopiero wtedy, gdy kontrola jest stabilna.",
-        "Na koniec zapisz jedną obserwację i ocenę jakości 1-5."
+        "Podawaj słabszą nogą do zaznaczonego celu. Przyjmij wygodnie; nie zwiększaj tempa kosztem dokładności.",
+        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+        "Obserwuj: Celne podania / 20 prób"
       ],
       "coaching_cues": [
-        "Jakość przed szybkością.",
-        "Obserwuj przestrzeń, nie tylko piłkę.",
-        "Zakończ serię, jeśli technika wyraźnie się pogarsza."
+        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+        "Autorski filtr treści, nie norma rozwojowa; przy dziecku nadzór dorosłego.",
+        "Nie zastępuje gry zespołowej ani oceny trenera."
       ],
       "regression": "Zwolnij, zwiększ odstępy lub skróć serię.",
       "progression": "Dodaj presję czasową, zmianę kierunku albo partnera dopiero po opanowaniu podstaw.",
       "trackable_metrics": [
         "jakość_1_5",
         "udane_powtórzenia",
-        "dominująca_noga"
+        "dominująca_noga",
+        "Celne podania / 20 prób"
       ],
       "tags": [
         "technika",
-        "piłka"
+        "piłka",
+        "podanie"
       ],
       "provenance": {
-        "type": "autorskie opracowanie",
-        "alignment_theme": "NMG: technika i rozumienie gry",
-        "source_reference": "sources_and_rights.json"
+        "type": "autorskie_zadanie_inspirowane_koncepcja",
+        "source_refs": [
+          {
+            "source_id": "S2",
+            "pdf_page_start": 12,
+            "pdf_page_end": 14
+          },
+          {
+            "source_id": "S2",
+            "pdf_page_start": 27,
+            "pdf_page_end": 27
+          }
+        ],
+        "source_catalog": "docs/offline_coach/import_sources_v1.json",
+        "package": "baza_dziennika_pilkarza_v1"
       },
       "participation_mode": "solo",
       "participants_min": 1,
@@ -237,7 +251,58 @@
       ],
       "environment_options": [
         "samodzielnie"
-      ]
+      ],
+      "skills": [
+        "podanie"
+      ],
+      "persons_total": 1,
+      "partner_role": null,
+      "instructions": "Podawaj słabszą nogą do zaznaczonego celu. Przyjmij wygodnie; nie zwiększaj tempa kosztem dokładności.",
+      "success_metric": "Celne podania / 20 prób",
+      "session_block_minutes": 8,
+      "work_rest": "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+      "min_age": 8,
+      "age_policy": "Autorski filtr treści, nie norma rozwojowa; przy dziecku nadzór dorosłego.",
+      "eligible_roles": [
+        "GK",
+        "CB",
+        "FB",
+        "DM",
+        "CM",
+        "AM",
+        "WB"
+      ],
+      "phase": "individual_preparation",
+      "evidence_type": "autorskie_zadanie_inspirowane_koncepcja",
+      "source_refs": [
+        {
+          "source_id": "S2",
+          "pdf_page_start": 12,
+          "pdf_page_end": 14
+        },
+        {
+          "source_id": "S2",
+          "pdf_page_start": 27,
+          "pdf_page_end": 27
+        }
+      ],
+      "limitations": "Nie zastępuje gry zespołowej ani oceny trenera.",
+      "review_status": "do_weryfikacji_trenerskiej",
+      "import_origin": "baza_dziennika_pilkarza_v1/EX013",
+      "import_package": "baza_dziennika_pilkarza_v1",
+      "source_exercise_id": "EX013",
+      "journal_focus": "Prowadzenie",
+      "source_intensity": "low_to_moderate",
+      "previous_title": "Słabsza noga – kontakt i podanie",
+      "previous_age_band": {
+        "min": 10,
+        "max": 18
+      },
+      "previous_provenance": {
+        "type": "autorskie opracowanie",
+        "alignment_theme": "NMG: technika i rozumienie gry",
+        "source_reference": "sources_and_rights.json"
+      }
     },
     {
       "id": "tech_wall_pass",
@@ -298,49 +363,63 @@
     },
     {
       "id": "tech_first_touch",
-      "title": "Przyjęcie kierunkowe",
+      "title": "Przyjęcie do dwóch bramek",
       "area": "technika",
       "subarea": "przyjęcie",
       "age_band": {
-        "min": 11,
-        "max": 18
+        "min": 8,
+        "max": null
       },
-      "duration_min": 12,
-      "intensity": "low",
+      "duration_min": 8,
+      "intensity": "medium",
       "solo": true,
       "equipment": [
         "piłka",
-        "ściana lub partner"
+        "ściana",
+        "4 znaczniki"
       ],
-      "space": "mała przestrzeń",
+      "space": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
       "goal": "Przygotuj piłkę do kolejnego działania pierwszym kontaktem.",
-      "setup": "Ustaw prosty układ z bezpiecznymi odległościami; dostosuj wielkość pola do poziomu zawodnika.",
+      "setup": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
       "steps": [
-        "Rozpocznij od 2-4 min spokojnej rozgrzewki z piłką.",
-        "Wykonuj krótkie serie z przerwą, utrzymując jakość techniczną.",
-        "Zwiększaj tempo dopiero wtedy, gdy kontrola jest stabilna.",
-        "Na koniec zapisz jedną obserwację i ocenę jakości 1-5."
+        "Odbij piłkę o ścianę. Pierwszym kontaktem skieruj ją raz w lewą, raz w prawą bramkę.",
+        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+        "Obserwuj: Celne przyjęcia / 20 prób"
       ],
       "coaching_cues": [
-        "Jakość przed szybkością.",
-        "Obserwuj przestrzeń, nie tylko piłkę.",
-        "Zakończ serię, jeśli technika wyraźnie się pogarsza."
+        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+        "Autorski filtr treści, nie norma rozwojowa; przy dziecku nadzór dorosłego.",
+        "Nie zastępuje gry zespołowej ani oceny trenera."
       ],
       "regression": "Zwolnij, zwiększ odstępy lub skróć serię.",
       "progression": "Dodaj presję czasową, zmianę kierunku albo partnera dopiero po opanowaniu podstaw.",
       "trackable_metrics": [
         "jakość_1_5",
         "udane_powtórzenia",
-        "dominująca_noga"
+        "dominująca_noga",
+        "Celne przyjęcia / 20 prób"
       ],
       "tags": [
         "technika",
-        "piłka"
+        "piłka",
+        "przyjecie"
       ],
       "provenance": {
-        "type": "autorskie opracowanie",
-        "alignment_theme": "NMG: technika i rozumienie gry",
-        "source_reference": "sources_and_rights.json"
+        "type": "autorskie_zadanie_inspirowane_koncepcja",
+        "source_refs": [
+          {
+            "source_id": "S2",
+            "pdf_page_start": 12,
+            "pdf_page_end": 14
+          },
+          {
+            "source_id": "S2",
+            "pdf_page_start": 27,
+            "pdf_page_end": 27
+          }
+        ],
+        "source_catalog": "docs/offline_coach/import_sources_v1.json",
+        "package": "baza_dziennika_pilkarza_v1"
       },
       "participation_mode": "solo",
       "participants_min": 1,
@@ -351,7 +430,55 @@
       ],
       "environment_options": [
         "samodzielnie"
-      ]
+      ],
+      "skills": [
+        "przyjecie"
+      ],
+      "persons_total": 1,
+      "partner_role": null,
+      "instructions": "Odbij piłkę o ścianę. Pierwszym kontaktem skieruj ją raz w lewą, raz w prawą bramkę.",
+      "success_metric": "Celne przyjęcia / 20 prób",
+      "session_block_minutes": 8,
+      "work_rest": "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+      "min_age": 8,
+      "age_policy": "Autorski filtr treści, nie norma rozwojowa; przy dziecku nadzór dorosłego.",
+      "eligible_roles": [
+        "GK",
+        "DM",
+        "AM",
+        "ST"
+      ],
+      "phase": "individual_preparation",
+      "evidence_type": "autorskie_zadanie_inspirowane_koncepcja",
+      "source_refs": [
+        {
+          "source_id": "S2",
+          "pdf_page_start": 12,
+          "pdf_page_end": 14
+        },
+        {
+          "source_id": "S2",
+          "pdf_page_start": 27,
+          "pdf_page_end": 27
+        }
+      ],
+      "limitations": "Nie zastępuje gry zespołowej ani oceny trenera.",
+      "review_status": "do_weryfikacji_trenerskiej",
+      "import_origin": "baza_dziennika_pilkarza_v1/EX001",
+      "import_package": "baza_dziennika_pilkarza_v1",
+      "source_exercise_id": "EX001",
+      "journal_focus": "Prowadzenie",
+      "source_intensity": "low_to_moderate",
+      "previous_title": "Przyjęcie kierunkowe",
+      "previous_age_band": {
+        "min": 11,
+        "max": 18
+      },
+      "previous_provenance": {
+        "type": "autorskie opracowanie",
+        "alignment_theme": "NMG: technika i rozumienie gry",
+        "source_reference": "sources_and_rights.json"
+      }
     },
     {
       "id": "tech_scan_receive",
@@ -535,49 +662,62 @@
     },
     {
       "id": "tech_dribble_accel",
-      "title": "Zwód i wyjście z przyspieszeniem",
+      "title": "Zwód i wyjście",
       "area": "technika",
       "subarea": "drybling",
       "age_band": {
-        "min": 11,
-        "max": 18
+        "min": 8,
+        "max": null
       },
-      "duration_min": 15,
+      "duration_min": 8,
       "intensity": "medium",
       "solo": true,
       "equipment": [
         "piłka",
-        "2 znaczniki"
+        "3 znaczniki"
       ],
-      "space": "średnia przestrzeń",
+      "space": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
       "goal": "Po zwodzie wykonaj zdecydowane kolejne działanie.",
-      "setup": "Ustaw prosty układ z bezpiecznymi odległościami; dostosuj wielkość pola do poziomu zawodnika.",
+      "setup": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
       "steps": [
-        "Rozpocznij od 2-4 min spokojnej rozgrzewki z piłką.",
-        "Wykonuj krótkie serie z przerwą, utrzymując jakość techniczną.",
-        "Zwiększaj tempo dopiero wtedy, gdy kontrola jest stabilna.",
-        "Na koniec zapisz jedną obserwację i ocenę jakości 1-5."
+        "Przed znacznikiem wykonaj jeden zwód, wyjdź z piłką w bok i zatrzymaj ją w wyznaczonym polu.",
+        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+        "Obserwuj: Udane wyjścia / 12 prób"
       ],
       "coaching_cues": [
-        "Jakość przed szybkością.",
-        "Obserwuj przestrzeń, nie tylko piłkę.",
-        "Zakończ serię, jeśli technika wyraźnie się pogarsza."
+        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+        "Autorski filtr treści, nie norma rozwojowa; przy dziecku nadzór dorosłego.",
+        "Nie zastępuje gry zespołowej ani oceny trenera."
       ],
       "regression": "Zwolnij, zwiększ odstępy lub skróć serię.",
       "progression": "Dodaj presję czasową, zmianę kierunku albo partnera dopiero po opanowaniu podstaw.",
       "trackable_metrics": [
         "jakość_1_5",
         "udane_powtórzenia",
-        "dominująca_noga"
+        "dominująca_noga",
+        "Udane wyjścia / 12 prób"
       ],
       "tags": [
         "technika",
-        "piłka"
+        "piłka",
+        "drybling"
       ],
       "provenance": {
-        "type": "autorskie opracowanie",
-        "alignment_theme": "NMG: technika i rozumienie gry",
-        "source_reference": "sources_and_rights.json"
+        "type": "autorskie_zadanie_inspirowane_koncepcja",
+        "source_refs": [
+          {
+            "source_id": "S2",
+            "pdf_page_start": 12,
+            "pdf_page_end": 14
+          },
+          {
+            "source_id": "S2",
+            "pdf_page_start": 27,
+            "pdf_page_end": 27
+          }
+        ],
+        "source_catalog": "docs/offline_coach/import_sources_v1.json",
+        "package": "baza_dziennika_pilkarza_v1"
       },
       "participation_mode": "solo",
       "participants_min": 1,
@@ -588,54 +728,111 @@
       ],
       "environment_options": [
         "samodzielnie"
-      ]
+      ],
+      "skills": [
+        "drybling"
+      ],
+      "persons_total": 1,
+      "partner_role": null,
+      "instructions": "Przed znacznikiem wykonaj jeden zwód, wyjdź z piłką w bok i zatrzymaj ją w wyznaczonym polu.",
+      "success_metric": "Udane wyjścia / 12 prób",
+      "session_block_minutes": 8,
+      "work_rest": "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+      "min_age": 8,
+      "age_policy": "Autorski filtr treści, nie norma rozwojowa; przy dziecku nadzór dorosłego.",
+      "eligible_roles": [
+        "W"
+      ],
+      "phase": "individual_preparation",
+      "evidence_type": "autorskie_zadanie_inspirowane_koncepcja",
+      "source_refs": [
+        {
+          "source_id": "S2",
+          "pdf_page_start": 12,
+          "pdf_page_end": 14
+        },
+        {
+          "source_id": "S2",
+          "pdf_page_start": 27,
+          "pdf_page_end": 27
+        }
+      ],
+      "limitations": "Nie zastępuje gry zespołowej ani oceny trenera.",
+      "review_status": "do_weryfikacji_trenerskiej",
+      "import_origin": "baza_dziennika_pilkarza_v1/EX007",
+      "import_package": "baza_dziennika_pilkarza_v1",
+      "source_exercise_id": "EX007",
+      "journal_focus": "Prowadzenie",
+      "source_intensity": "low_to_moderate",
+      "previous_title": "Zwód i wyjście z przyspieszeniem",
+      "previous_age_band": {
+        "min": 11,
+        "max": 18
+      },
+      "previous_provenance": {
+        "type": "autorskie opracowanie",
+        "alignment_theme": "NMG: technika i rozumienie gry",
+        "source_reference": "sources_and_rights.json"
+      }
     },
     {
       "id": "tech_1v1_gate",
-      "title": "Pojedynek 1 na 1 z trenerem do dwóch bramek",
+      "title": "Pojedynek do dwóch wyjść",
       "area": "technika",
       "subarea": "drybling",
       "age_band": {
-        "min": 12,
-        "max": 18
+        "min": 10,
+        "max": null
       },
-      "duration_min": 15,
-      "intensity": "high",
+      "duration_min": 8,
+      "intensity": "medium",
       "solo": false,
       "equipment": [
         "piłka",
-        "znaczniki",
-        "partner",
-        "2 małe bramki"
+        "4 znaczniki"
       ],
-      "space": "małe pole",
+      "space": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
       "goal": "Ćwicz zwód i decyzję przeciw jednemu obrońcy.",
-      "setup": "Ustaw dwie bramki po bokach pola 8×10 m; trener jest jedynym obrońcą.",
+      "setup": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
       "steps": [
-        "Trener podaje piłkę zawodnikowi i zajmuje pozycję obronną.",
-        "Zawodnik próbuje minąć trenera i przeprowadzić piłkę przez wybraną bramkę.",
-        "Po 20–30 s odpocznij; trener zmienia poziom presji."
+        "Partner broni dwóch bramek początkowo pasywnie. Wybierz wolne wyjście i przeprowadź przez nie piłkę.",
+        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+        "Obserwuj: Wygrane pojedynki / 8 prób"
       ],
       "coaching_cues": [
-        "Maksymalnie zawodnik i trener; brak dodatkowych uczestników.",
-        "Stosuj kontrolowany kontakt i dopasuj intensywność do wieku.",
-        "Liczy się jakość decyzji i techniki, nie wynik pojedynku."
+        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+        "Autorski filtr treści, nie norma rozwojowa; przy dziecku nadzór dorosłego.",
+        "Nie zastępuje gry zespołowej ani oceny trenera."
       ],
       "regression": "Zwiększ przestrzeń, zmniejsz presję trenera i skróć serię.",
       "progression": "Skróć czas decyzji lub zmniejsz pole bez dodawania zawodników.",
       "trackable_metrics": [
         "jakość_1_5",
         "udane_powtórzenia",
-        "dominująca_noga"
+        "dominująca_noga",
+        "Wygrane pojedynki / 8 prób"
       ],
       "tags": [
         "technika",
-        "piłka"
+        "piłka",
+        "drybling"
       ],
       "provenance": {
-        "type": "autorskie opracowanie",
-        "alignment_theme": "NMG: technika i rozumienie gry",
-        "source_reference": "sources_and_rights.json"
+        "type": "autorskie_zadanie_inspirowane_koncepcja",
+        "source_refs": [
+          {
+            "source_id": "S2",
+            "pdf_page_start": 12,
+            "pdf_page_end": 14
+          },
+          {
+            "source_id": "S2",
+            "pdf_page_start": 27,
+            "pdf_page_end": 27
+          }
+        ],
+        "source_catalog": "docs/offline_coach/import_sources_v1.json",
+        "package": "baza_dziennika_pilkarza_v1"
       },
       "original_group_title": "Pojedynek 1 na 1 do bramek",
       "participation_mode": "coach",
@@ -645,11 +842,56 @@
       "requires_team": false,
       "required_human_roles": [
         "zawodnik",
-        "trener"
+        "trener lub partner"
       ],
       "environment_options": [
-        "trener"
-      ]
+        "zawodnik i trener lub partner"
+      ],
+      "skills": [
+        "drybling"
+      ],
+      "persons_total": 2,
+      "partner_role": "trener_lub_partner",
+      "instructions": "Partner broni dwóch bramek początkowo pasywnie. Wybierz wolne wyjście i przeprowadź przez nie piłkę.",
+      "success_metric": "Wygrane pojedynki / 8 prób",
+      "session_block_minutes": 8,
+      "work_rest": "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+      "min_age": 10,
+      "age_policy": "Autorski filtr treści, nie norma rozwojowa; przy dziecku nadzór dorosłego.",
+      "eligible_roles": [
+        "W"
+      ],
+      "phase": "individual_preparation",
+      "evidence_type": "autorskie_zadanie_inspirowane_koncepcja",
+      "source_refs": [
+        {
+          "source_id": "S2",
+          "pdf_page_start": 12,
+          "pdf_page_end": 14
+        },
+        {
+          "source_id": "S2",
+          "pdf_page_start": 27,
+          "pdf_page_end": 27
+        }
+      ],
+      "limitations": "Nie zastępuje gry zespołowej ani oceny trenera.",
+      "review_status": "do_weryfikacji_trenerskiej",
+      "import_origin": "baza_dziennika_pilkarza_v1/EX008",
+      "import_package": "baza_dziennika_pilkarza_v1",
+      "source_exercise_id": "EX008",
+      "journal_focus": "Prowadzenie",
+      "source_intensity": "low_to_moderate",
+      "previous_title": "Pojedynek 1 na 1 z trenerem do dwóch bramek",
+      "previous_age_band": {
+        "min": 12,
+        "max": 18
+      },
+      "previous_provenance": {
+        "type": "autorskie opracowanie",
+        "alignment_theme": "NMG: technika i rozumienie gry",
+        "source_reference": "sources_and_rights.json"
+      }
     },
     {
       "id": "tech_shield_ball",
@@ -713,49 +955,63 @@
     },
     {
       "id": "tech_passing_gates",
-      "title": "Podania przez bramki",
+      "title": "Podanie przez okno",
       "area": "technika",
-      "subarea": "podanie",
+      "subarea": "podania",
       "age_band": {
-        "min": 10,
-        "max": 18
+        "min": 8,
+        "max": null
       },
-      "duration_min": 12,
-      "intensity": "low",
+      "duration_min": 8,
+      "intensity": "medium",
       "solo": true,
       "equipment": [
         "piłka",
-        "znaczniki"
+        "ściana",
+        "2 znaczniki"
       ],
-      "space": "mała przestrzeń",
+      "space": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
       "goal": "Popraw precyzję podania do celu.",
-      "setup": "Ustaw prosty układ z bezpiecznymi odległościami; dostosuj wielkość pola do poziomu zawodnika.",
+      "setup": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
       "steps": [
-        "Rozpocznij od 2-4 min spokojnej rozgrzewki z piłką.",
-        "Wykonuj krótkie serie z przerwą, utrzymując jakość techniczną.",
-        "Zwiększaj tempo dopiero wtedy, gdy kontrola jest stabilna.",
-        "Na koniec zapisz jedną obserwację i ocenę jakości 1-5."
+        "Ustaw okno przed ścianą. Podawaj przez nie i kontroluj powracającą piłkę obiema nogami.",
+        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+        "Obserwuj: Celne podania / 20 prób"
       ],
       "coaching_cues": [
-        "Jakość przed szybkością.",
-        "Obserwuj przestrzeń, nie tylko piłkę.",
-        "Zakończ serię, jeśli technika wyraźnie się pogarsza."
+        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+        "Autorski filtr treści, nie norma rozwojowa; przy dziecku nadzór dorosłego.",
+        "Nie zastępuje gry zespołowej ani oceny trenera."
       ],
       "regression": "Zwolnij, zwiększ odstępy lub skróć serię.",
       "progression": "Dodaj presję czasową, zmianę kierunku albo partnera dopiero po opanowaniu podstaw.",
       "trackable_metrics": [
         "jakość_1_5",
         "udane_powtórzenia",
-        "dominująca_noga"
+        "dominująca_noga",
+        "Celne podania / 20 prób"
       ],
       "tags": [
         "technika",
-        "piłka"
+        "piłka",
+        "podanie"
       ],
       "provenance": {
-        "type": "autorskie opracowanie",
-        "alignment_theme": "NMG: technika i rozumienie gry",
-        "source_reference": "sources_and_rights.json"
+        "type": "autorskie_zadanie_inspirowane_koncepcja",
+        "source_refs": [
+          {
+            "source_id": "S2",
+            "pdf_page_start": 12,
+            "pdf_page_end": 14
+          },
+          {
+            "source_id": "S2",
+            "pdf_page_start": 27,
+            "pdf_page_end": 27
+          }
+        ],
+        "source_catalog": "docs/offline_coach/import_sources_v1.json",
+        "package": "baza_dziennika_pilkarza_v1"
       },
       "participation_mode": "solo",
       "participants_min": 1,
@@ -766,7 +1022,58 @@
       ],
       "environment_options": [
         "samodzielnie"
-      ]
+      ],
+      "skills": [
+        "podanie"
+      ],
+      "persons_total": 1,
+      "partner_role": null,
+      "instructions": "Ustaw okno przed ścianą. Podawaj przez nie i kontroluj powracającą piłkę obiema nogami.",
+      "success_metric": "Celne podania / 20 prób",
+      "session_block_minutes": 8,
+      "work_rest": "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+      "min_age": 8,
+      "age_policy": "Autorski filtr treści, nie norma rozwojowa; przy dziecku nadzór dorosłego.",
+      "eligible_roles": [
+        "GK",
+        "CB",
+        "FB",
+        "DM",
+        "CM",
+        "AM",
+        "WB"
+      ],
+      "phase": "individual_preparation",
+      "evidence_type": "autorskie_zadanie_inspirowane_koncepcja",
+      "source_refs": [
+        {
+          "source_id": "S2",
+          "pdf_page_start": 12,
+          "pdf_page_end": 14
+        },
+        {
+          "source_id": "S2",
+          "pdf_page_start": 27,
+          "pdf_page_end": 27
+        }
+      ],
+      "limitations": "Nie zastępuje gry zespołowej ani oceny trenera.",
+      "review_status": "do_weryfikacji_trenerskiej",
+      "import_origin": "baza_dziennika_pilkarza_v1/EX003",
+      "import_package": "baza_dziennika_pilkarza_v1",
+      "source_exercise_id": "EX003",
+      "journal_focus": "Prowadzenie",
+      "source_intensity": "low_to_moderate",
+      "previous_title": "Podania przez bramki",
+      "previous_age_band": {
+        "min": 10,
+        "max": 18
+      },
+      "previous_provenance": {
+        "type": "autorskie opracowanie",
+        "alignment_theme": "NMG: technika i rozumienie gry",
+        "source_reference": "sources_and_rights.json"
+      }
     },
     {
       "id": "tech_long_pass",
@@ -831,49 +1138,63 @@
     },
     {
       "id": "tech_finish_zones",
-      "title": "Strzały do stref",
+      "title": "Strzał po bocznym przyjęciu",
       "area": "technika",
       "subarea": "strzał",
       "age_band": {
-        "min": 11,
-        "max": 18
+        "min": 8,
+        "max": null
       },
-      "duration_min": 18,
+      "duration_min": 8,
       "intensity": "medium",
       "solo": true,
       "equipment": [
         "piłka",
-        "bramka lub cele"
+        "bezpieczny cel",
+        "2 znaczniki"
       ],
-      "space": "boisko",
+      "space": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
       "goal": "Popraw celność przed zwiększaniem siły.",
-      "setup": "Ustaw prosty układ z bezpiecznymi odległościami; dostosuj wielkość pola do poziomu zawodnika.",
+      "setup": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
       "steps": [
-        "Rozpocznij od 2-4 min spokojnej rozgrzewki z piłką.",
-        "Wykonuj krótkie serie z przerwą, utrzymując jakość techniczną.",
-        "Zwiększaj tempo dopiero wtedy, gdy kontrola jest stabilna.",
-        "Na koniec zapisz jedną obserwację i ocenę jakości 1-5."
+        "Przetocz piłkę, przyjmij w bok i uderz do wyznaczonej części celu. Sprawdź, czy za celem nikogo nie ma.",
+        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+        "Obserwuj: Trafienia / 12 prób"
       ],
       "coaching_cues": [
-        "Jakość przed szybkością.",
-        "Obserwuj przestrzeń, nie tylko piłkę.",
-        "Zakończ serię, jeśli technika wyraźnie się pogarsza."
+        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+        "Autorski filtr treści, nie norma rozwojowa; przy dziecku nadzór dorosłego.",
+        "Nie zastępuje gry zespołowej ani oceny trenera."
       ],
       "regression": "Zwolnij, zwiększ odstępy lub skróć serię.",
       "progression": "Dodaj presję czasową, zmianę kierunku albo partnera dopiero po opanowaniu podstaw.",
       "trackable_metrics": [
         "jakość_1_5",
         "udane_powtórzenia",
-        "dominująca_noga"
+        "dominująca_noga",
+        "Trafienia / 12 prób"
       ],
       "tags": [
         "technika",
-        "piłka"
+        "piłka",
+        "strzal"
       ],
       "provenance": {
-        "type": "autorskie opracowanie",
-        "alignment_theme": "NMG: technika i rozumienie gry",
-        "source_reference": "sources_and_rights.json"
+        "type": "autorskie_zadanie_inspirowane_koncepcja",
+        "source_refs": [
+          {
+            "source_id": "S2",
+            "pdf_page_start": 12,
+            "pdf_page_end": 14
+          },
+          {
+            "source_id": "S2",
+            "pdf_page_start": 27,
+            "pdf_page_end": 27
+          }
+        ],
+        "source_catalog": "docs/offline_coach/import_sources_v1.json",
+        "package": "baza_dziennika_pilkarza_v1"
       },
       "participation_mode": "solo",
       "participants_min": 1,
@@ -884,70 +1205,174 @@
       ],
       "environment_options": [
         "samodzielnie"
-      ]
+      ],
+      "skills": [
+        "strzal"
+      ],
+      "persons_total": 1,
+      "partner_role": null,
+      "instructions": "Przetocz piłkę, przyjmij w bok i uderz do wyznaczonej części celu. Sprawdź, czy za celem nikogo nie ma.",
+      "success_metric": "Trafienia / 12 prób",
+      "session_block_minutes": 8,
+      "work_rest": "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+      "min_age": 8,
+      "age_policy": "Autorski filtr treści, nie norma rozwojowa; przy dziecku nadzór dorosłego.",
+      "eligible_roles": [
+        "AM",
+        "W",
+        "ST"
+      ],
+      "phase": "individual_preparation",
+      "evidence_type": "autorskie_zadanie_inspirowane_koncepcja",
+      "source_refs": [
+        {
+          "source_id": "S2",
+          "pdf_page_start": 12,
+          "pdf_page_end": 14
+        },
+        {
+          "source_id": "S2",
+          "pdf_page_start": 27,
+          "pdf_page_end": 27
+        }
+      ],
+      "limitations": "Nie zastępuje gry zespołowej ani oceny trenera.",
+      "review_status": "do_weryfikacji_trenerskiej",
+      "import_origin": "baza_dziennika_pilkarza_v1/EX011",
+      "import_package": "baza_dziennika_pilkarza_v1",
+      "source_exercise_id": "EX011",
+      "journal_focus": "Strzał",
+      "source_intensity": "low_to_moderate",
+      "previous_title": "Strzały do stref",
+      "previous_age_band": {
+        "min": 11,
+        "max": 18
+      },
+      "previous_provenance": {
+        "type": "autorskie opracowanie",
+        "alignment_theme": "NMG: technika i rozumienie gry",
+        "source_reference": "sources_and_rights.json"
+      }
     },
     {
       "id": "tac_support_angle",
-      "title": "Kąt wsparcia — podanie i zmiana pozycji",
+      "title": "Podaj i zmień kąt",
       "area": "taktyka",
-      "subarea": "wsparcie",
+      "subarea": "ruch bez piłki",
       "age_band": {
-        "min": 12,
-        "max": 18
+        "min": 10,
+        "max": null
       },
-      "duration_min": 15,
+      "duration_min": 8,
       "intensity": "medium",
       "solo": false,
       "equipment": [
         "piłka",
-        "partner",
-        "znaczniki",
-        "ściana lub trener",
         "3 znaczniki"
       ],
-      "space": "małe pole",
+      "space": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
       "goal": "Naucz się tworzyć kąt wsparcia po podaniu.",
-      "setup": "Ustaw trójkąt z trzech znaczników; trener stoi przy jednym wierzchołku albo użyj ściany.",
+      "setup": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
       "steps": [
-        "Podaj do trenera lub ściany.",
-        "Przemieść się ukośnie do kolejnego znacznika, by otworzyć linię podania.",
-        "Przyjmij i powtórz z drugiej strony."
+        "Po podaniu do partnera przemieść się poza linię znacznika, pokaż nowy kąt i odbierz podanie zwrotne.",
+        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+        "Obserwuj: Udane pokazania / 10 prób"
       ],
       "coaching_cues": [
-        "Maksymalnie zawodnik i trener; brak dodatkowych uczestników.",
-        "Stosuj kontrolowany kontakt i dopasuj intensywność do wieku.",
-        "Liczy się jakość decyzji i techniki, nie wynik pojedynku."
+        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+        "Autorski filtr treści, nie norma rozwojowa; przy dziecku nadzór dorosłego.",
+        "Nie zastępuje gry zespołowej ani oceny trenera."
       ],
       "regression": "Zwiększ przestrzeń, zmniejsz presję trenera i skróć serię.",
       "progression": "Skróć czas decyzji lub zmniejsz pole bez dodawania zawodników.",
       "trackable_metrics": [
         "decyzje_udane",
         "utrzymane_posiadania",
-        "jakość_1_5"
+        "jakość_1_5",
+        "Udane pokazania / 10 prób"
       ],
       "tags": [
         "taktyka",
         "gra",
-        "decyzje"
+        "decyzje",
+        "ruch_bez_pilki"
       ],
       "provenance": {
-        "type": "autorskie opracowanie",
-        "alignment_theme": "NMG: gry zadaniowe, trening pozycyjny, formacyjny i struktura gry",
-        "source_reference": "sources_and_rights.json"
+        "type": "autorskie_zadanie_inspirowane_koncepcja",
+        "source_refs": [
+          {
+            "source_id": "S2",
+            "pdf_page_start": 12,
+            "pdf_page_end": 14
+          },
+          {
+            "source_id": "S2",
+            "pdf_page_start": 27,
+            "pdf_page_end": 27
+          }
+        ],
+        "source_catalog": "docs/offline_coach/import_sources_v1.json",
+        "package": "baza_dziennika_pilkarza_v1"
       },
       "original_group_title": "Ustawienie pod kątem wsparcia",
-      "participation_mode": "wall_or_coach",
+      "participation_mode": "coach",
       "adapted_from_group_drill": true,
-      "participants_min": 1,
+      "participants_min": 2,
       "participants_max": 2,
       "requires_team": false,
       "required_human_roles": [
-        "zawodnik"
+        "zawodnik",
+        "trener lub partner"
       ],
       "environment_options": [
-        "ściana",
-        "trener"
-      ]
+        "zawodnik i trener lub partner"
+      ],
+      "skills": [
+        "ruch_bez_pilki"
+      ],
+      "persons_total": 2,
+      "partner_role": "trener_lub_partner",
+      "instructions": "Po podaniu do partnera przemieść się poza linię znacznika, pokaż nowy kąt i odbierz podanie zwrotne.",
+      "success_metric": "Udane pokazania / 10 prób",
+      "session_block_minutes": 8,
+      "work_rest": "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+      "min_age": 10,
+      "age_policy": "Autorski filtr treści, nie norma rozwojowa; przy dziecku nadzór dorosłego.",
+      "eligible_roles": [
+        "CM",
+        "ST"
+      ],
+      "phase": "individual_preparation",
+      "evidence_type": "autorskie_zadanie_inspirowane_koncepcja",
+      "source_refs": [
+        {
+          "source_id": "S2",
+          "pdf_page_start": 12,
+          "pdf_page_end": 14
+        },
+        {
+          "source_id": "S2",
+          "pdf_page_start": 27,
+          "pdf_page_end": 27
+        }
+      ],
+      "limitations": "Nie zastępuje gry zespołowej ani oceny trenera.",
+      "review_status": "do_weryfikacji_trenerskiej",
+      "import_origin": "baza_dziennika_pilkarza_v1/EX004",
+      "import_package": "baza_dziennika_pilkarza_v1",
+      "source_exercise_id": "EX004",
+      "journal_focus": "Decyzyjność",
+      "source_intensity": "low_to_moderate",
+      "previous_title": "Kąt wsparcia — podanie i zmiana pozycji",
+      "previous_age_band": {
+        "min": 12,
+        "max": 18
+      },
+      "previous_provenance": {
+        "type": "autorskie opracowanie",
+        "alignment_theme": "NMG: gry zadaniowe, trening pozycyjny, formacyjny i struktura gry",
+        "source_reference": "sources_and_rights.json"
+      }
     },
     {
       "id": "tac_third_man",
@@ -1198,51 +1623,63 @@
     },
     {
       "id": "tac_transition_3v2",
-      "title": "Przejście atak–obrona 1 na 1 z trenerem",
+      "title": "Reakcja po utracie",
       "area": "taktyka",
-      "subarea": "przejście",
+      "subarea": "ruch bez piłki",
       "age_band": {
-        "min": 13,
-        "max": 18
+        "min": 10,
+        "max": null
       },
-      "duration_min": 18,
-      "intensity": "high",
+      "duration_min": 8,
+      "intensity": "medium",
       "solo": false,
       "equipment": [
-        "piłki",
-        "bramki",
-        "zawodnicy",
-        "2 bramki"
+        "piłka",
+        "3 znaczniki"
       ],
-      "space": "średnie pole",
+      "space": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
       "goal": "Ćwicz szybką zmianę zachowania po stracie piłki.",
-      "setup": "Ustaw dwie bramki 8–12 m od siebie; zawodnik i trener to jedyne osoby. Nie jest to gra 3 na 2.",
+      "setup": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
       "steps": [
-        "Zawodnik atakuje jedną bramkę, trener lekko broni.",
-        "Po przechwycie trener próbuje przeprowadzić piłkę przez przeciwną bramkę.",
-        "Zawodnik natychmiast reaguje i wraca do obrony."
+        "Po sygnale oddaj piłkę partnerowi i wróć między niego a oznaczony cel. Partner nie podejmuje pojedynku.",
+        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+        "Obserwuj: Poprawne ustawienia / 10 prób"
       ],
       "coaching_cues": [
-        "Maksymalnie zawodnik i trener; brak dodatkowych uczestników.",
-        "Stosuj kontrolowany kontakt i dopasuj intensywność do wieku.",
-        "Liczy się jakość decyzji i techniki, nie wynik pojedynku."
+        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+        "Autorski filtr treści, nie norma rozwojowa; przy dziecku nadzór dorosłego.",
+        "Nie zastępuje gry zespołowej ani oceny trenera."
       ],
       "regression": "Zwiększ przestrzeń, zmniejsz presję trenera i skróć serię.",
       "progression": "Skróć czas decyzji lub zmniejsz pole bez dodawania zawodników.",
       "trackable_metrics": [
         "decyzje_udane",
         "utrzymane_posiadania",
-        "jakość_1_5"
+        "jakość_1_5",
+        "Poprawne ustawienia / 10 prób"
       ],
       "tags": [
         "taktyka",
         "gra",
-        "decyzje"
+        "decyzje",
+        "ruch_bez_pilki"
       ],
       "provenance": {
-        "type": "autorskie opracowanie",
-        "alignment_theme": "NMG: gry zadaniowe, trening pozycyjny, formacyjny i struktura gry",
-        "source_reference": "sources_and_rights.json"
+        "type": "autorskie_zadanie_inspirowane_koncepcja",
+        "source_refs": [
+          {
+            "source_id": "S2",
+            "pdf_page_start": 12,
+            "pdf_page_end": 14
+          },
+          {
+            "source_id": "S2",
+            "pdf_page_start": 27,
+            "pdf_page_end": 27
+          }
+        ],
+        "source_catalog": "docs/offline_coach/import_sources_v1.json",
+        "package": "baza_dziennika_pilkarza_v1"
       },
       "original_group_title": "Przejście 3 na 2",
       "participation_mode": "coach",
@@ -1252,11 +1689,57 @@
       "requires_team": false,
       "required_human_roles": [
         "zawodnik",
-        "trener"
+        "trener lub partner"
       ],
       "environment_options": [
-        "trener"
-      ]
+        "zawodnik i trener lub partner"
+      ],
+      "skills": [
+        "ruch_bez_pilki"
+      ],
+      "persons_total": 2,
+      "partner_role": "trener_lub_partner",
+      "instructions": "Po sygnale oddaj piłkę partnerowi i wróć między niego a oznaczony cel. Partner nie podejmuje pojedynku.",
+      "success_metric": "Poprawne ustawienia / 10 prób",
+      "session_block_minutes": 8,
+      "work_rest": "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+      "min_age": 10,
+      "age_policy": "Autorski filtr treści, nie norma rozwojowa; przy dziecku nadzór dorosłego.",
+      "eligible_roles": [
+        "CM",
+        "ST"
+      ],
+      "phase": "individual_preparation",
+      "evidence_type": "autorskie_zadanie_inspirowane_koncepcja",
+      "source_refs": [
+        {
+          "source_id": "S2",
+          "pdf_page_start": 12,
+          "pdf_page_end": 14
+        },
+        {
+          "source_id": "S2",
+          "pdf_page_start": 27,
+          "pdf_page_end": 27
+        }
+      ],
+      "limitations": "Nie zastępuje gry zespołowej ani oceny trenera.",
+      "review_status": "do_weryfikacji_trenerskiej",
+      "import_origin": "baza_dziennika_pilkarza_v1/EX018",
+      "import_package": "baza_dziennika_pilkarza_v1",
+      "source_exercise_id": "EX018",
+      "journal_focus": "Decyzyjność",
+      "source_intensity": "low_to_moderate",
+      "previous_title": "Przejście atak–obrona 1 na 1 z trenerem",
+      "previous_age_band": {
+        "min": 13,
+        "max": 18
+      },
+      "previous_provenance": {
+        "type": "autorskie opracowanie",
+        "alignment_theme": "NMG: gry zadaniowe, trening pozycyjny, formacyjny i struktura gry",
+        "source_reference": "sources_and_rights.json"
+      }
     },
     {
       "id": "tac_press_cues",
@@ -1322,50 +1805,63 @@
     },
     {
       "id": "tac_defend_channel",
-      "title": "Kierowanie trenera na zewnątrz — 1 na 1",
+      "title": "Obrońca kieruje na bok",
       "area": "taktyka",
-      "subarea": "obrona",
+      "subarea": "obrona 1 na 1",
       "age_band": {
-        "min": 12,
-        "max": 18
+        "min": 10,
+        "max": null
       },
-      "duration_min": 15,
+      "duration_min": 8,
       "intensity": "medium",
       "solo": false,
       "equipment": [
         "piłka",
-        "partner",
-        "znaczniki"
+        "4 znaczniki"
       ],
-      "space": "małe pole",
+      "space": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
       "goal": "Ćwicz ustawienie ciała w obronie indywidualnej.",
-      "setup": "Wyznacz korytarz 5×12 m z bramką na końcu; trener prowadzi piłkę.",
+      "setup": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
       "steps": [
-        "Ustaw się bokiem i opóźniaj akcję.",
-        "Prowadź trenera w stronę bocznej linii korytarza.",
-        "Spróbuj odebrać piłkę dopiero przy bezpiecznej okazji."
+        "Atakujący prowadzi spokojnie. Obrońca utrzymuje dystans i ustawia ciało tak, by ograniczyć drogę do środka. Bez wślizgów.",
+        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+        "Obserwuj: Skierowania na bok / 8 prób"
       ],
       "coaching_cues": [
-        "Maksymalnie zawodnik i trener; brak dodatkowych uczestników.",
-        "Stosuj kontrolowany kontakt i dopasuj intensywność do wieku.",
-        "Liczy się jakość decyzji i techniki, nie wynik pojedynku."
+        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+        "Autorski filtr treści, nie norma rozwojowa; przy dziecku nadzór dorosłego.",
+        "Nie zastępuje gry zespołowej ani oceny trenera."
       ],
       "regression": "Zwiększ przestrzeń, zmniejsz presję trenera i skróć serię.",
       "progression": "Skróć czas decyzji lub zmniejsz pole bez dodawania zawodników.",
       "trackable_metrics": [
         "decyzje_udane",
         "utrzymane_posiadania",
-        "jakość_1_5"
+        "jakość_1_5",
+        "Skierowania na bok / 8 prób"
       ],
       "tags": [
         "taktyka",
         "gra",
-        "decyzje"
+        "decyzje",
+        "obrona_1v1"
       ],
       "provenance": {
-        "type": "autorskie opracowanie",
-        "alignment_theme": "NMG: gry zadaniowe, trening pozycyjny, formacyjny i struktura gry",
-        "source_reference": "sources_and_rights.json"
+        "type": "autorskie_zadanie_inspirowane_koncepcja",
+        "source_refs": [
+          {
+            "source_id": "S2",
+            "pdf_page_start": 12,
+            "pdf_page_end": 14
+          },
+          {
+            "source_id": "S2",
+            "pdf_page_start": 27,
+            "pdf_page_end": 27
+          }
+        ],
+        "source_catalog": "docs/offline_coach/import_sources_v1.json",
+        "package": "baza_dziennika_pilkarza_v1"
       },
       "original_group_title": "Kierowanie atakującego na zewnątrz",
       "participation_mode": "coach",
@@ -1375,11 +1871,58 @@
       "requires_team": false,
       "required_human_roles": [
         "zawodnik",
-        "trener"
+        "trener lub partner"
       ],
       "environment_options": [
-        "trener"
-      ]
+        "zawodnik i trener lub partner"
+      ],
+      "skills": [
+        "obrona_1v1"
+      ],
+      "persons_total": 2,
+      "partner_role": "trener_lub_partner",
+      "instructions": "Atakujący prowadzi spokojnie. Obrońca utrzymuje dystans i ustawia ciało tak, by ograniczyć drogę do środka. Bez wślizgów.",
+      "success_metric": "Skierowania na bok / 8 prób",
+      "session_block_minutes": 8,
+      "work_rest": "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+      "min_age": 10,
+      "age_policy": "Autorski filtr treści, nie norma rozwojowa; przy dziecku nadzór dorosłego.",
+      "eligible_roles": [
+        "CB",
+        "FB",
+        "WB"
+      ],
+      "phase": "individual_preparation",
+      "evidence_type": "autorskie_zadanie_inspirowane_koncepcja",
+      "source_refs": [
+        {
+          "source_id": "S2",
+          "pdf_page_start": 12,
+          "pdf_page_end": 14
+        },
+        {
+          "source_id": "S2",
+          "pdf_page_start": 27,
+          "pdf_page_end": 27
+        }
+      ],
+      "limitations": "Nie zastępuje gry zespołowej ani oceny trenera.",
+      "review_status": "do_weryfikacji_trenerskiej",
+      "import_origin": "baza_dziennika_pilkarza_v1/EX009",
+      "import_package": "baza_dziennika_pilkarza_v1",
+      "source_exercise_id": "EX009",
+      "journal_focus": "Decyzyjność",
+      "source_intensity": "low_to_moderate",
+      "previous_title": "Kierowanie trenera na zewnątrz — 1 na 1",
+      "previous_age_band": {
+        "min": 12,
+        "max": 18
+      },
+      "previous_provenance": {
+        "type": "autorskie opracowanie",
+        "alignment_theme": "NMG: gry zadaniowe, trening pozycyjny, formacyjny i struktura gry",
+        "source_reference": "sources_and_rights.json"
+      }
     },
     {
       "id": "tac_switch_play",
@@ -1756,51 +2299,63 @@
     },
     {
       "id": "tac_finish_after_combination",
-      "title": "Podanie–odegranie–strzał z trenerem",
-      "area": "taktyka",
-      "subarea": "atak",
+      "title": "Wykończenie po odegraniu",
+      "area": "technika",
+      "subarea": "strzał",
       "age_band": {
-        "min": 12,
-        "max": 18
+        "min": 10,
+        "max": null
       },
-      "duration_min": 18,
+      "duration_min": 8,
       "intensity": "medium",
       "solo": false,
       "equipment": [
-        "piłki",
-        "bramka",
-        "3-5 zawodników",
-        "bramka lub cel"
+        "piłka",
+        "bezpieczny cel"
       ],
-      "space": "średnie pole",
+      "space": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
       "goal": "Ćwicz zakończenie akcji po dwójkowej kombinacji.",
-      "setup": "Trener stoi 5–8 m od zawodnika, przed bramką lub bezpiecznym celem.",
+      "setup": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
       "steps": [
-        "Zawodnik podaje do trenera i wykonuje ruch w wolną przestrzeń.",
-        "Trener odgrywa piłkę na dobieg.",
-        "Zawodnik oddaje kontrolowany strzał do wybranej strefy."
+        "Podaj do partnera, zmień pozycję i po podaniu zwrotnym uderz do celu.",
+        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+        "Obserwuj: Celne uderzenia / 12 prób"
       ],
       "coaching_cues": [
-        "Maksymalnie zawodnik i trener; brak dodatkowych uczestników.",
-        "Stosuj kontrolowany kontakt i dopasuj intensywność do wieku.",
-        "Liczy się jakość decyzji i techniki, nie wynik pojedynku."
+        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+        "Autorski filtr treści, nie norma rozwojowa; przy dziecku nadzór dorosłego.",
+        "Nie zastępuje gry zespołowej ani oceny trenera."
       ],
       "regression": "Zwiększ przestrzeń, zmniejsz presję trenera i skróć serię.",
       "progression": "Skróć czas decyzji lub zmniejsz pole bez dodawania zawodników.",
       "trackable_metrics": [
         "decyzje_udane",
         "utrzymane_posiadania",
-        "jakość_1_5"
+        "jakość_1_5",
+        "Celne uderzenia / 12 prób"
       ],
       "tags": [
         "taktyka",
         "gra",
-        "decyzje"
+        "decyzje",
+        "strzal"
       ],
       "provenance": {
-        "type": "autorskie opracowanie",
-        "alignment_theme": "NMG: gry zadaniowe, trening pozycyjny, formacyjny i struktura gry",
-        "source_reference": "sources_and_rights.json"
+        "type": "autorskie_zadanie_inspirowane_koncepcja",
+        "source_refs": [
+          {
+            "source_id": "S2",
+            "pdf_page_start": 12,
+            "pdf_page_end": 14
+          },
+          {
+            "source_id": "S2",
+            "pdf_page_start": 27,
+            "pdf_page_end": 27
+          }
+        ],
+        "source_catalog": "docs/offline_coach/import_sources_v1.json",
+        "package": "baza_dziennika_pilkarza_v1"
       },
       "original_group_title": "Kombinacja i zakończenie",
       "participation_mode": "coach",
@@ -1810,56 +2365,111 @@
       "requires_team": false,
       "required_human_roles": [
         "zawodnik",
-        "trener"
+        "trener lub partner"
       ],
       "environment_options": [
-        "trener"
-      ]
+        "zawodnik i trener lub partner"
+      ],
+      "skills": [
+        "strzal"
+      ],
+      "persons_total": 2,
+      "partner_role": "trener_lub_partner",
+      "instructions": "Podaj do partnera, zmień pozycję i po podaniu zwrotnym uderz do celu.",
+      "success_metric": "Celne uderzenia / 12 prób",
+      "session_block_minutes": 8,
+      "work_rest": "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+      "min_age": 10,
+      "age_policy": "Autorski filtr treści, nie norma rozwojowa; przy dziecku nadzór dorosłego.",
+      "eligible_roles": [
+        "AM",
+        "W",
+        "ST"
+      ],
+      "phase": "individual_preparation",
+      "evidence_type": "autorskie_zadanie_inspirowane_koncepcja",
+      "source_refs": [
+        {
+          "source_id": "S2",
+          "pdf_page_start": 12,
+          "pdf_page_end": 14
+        },
+        {
+          "source_id": "S2",
+          "pdf_page_start": 27,
+          "pdf_page_end": 27
+        }
+      ],
+      "limitations": "Nie zastępuje gry zespołowej ani oceny trenera.",
+      "review_status": "do_weryfikacji_trenerskiej",
+      "import_origin": "baza_dziennika_pilkarza_v1/EX012",
+      "import_package": "baza_dziennika_pilkarza_v1",
+      "source_exercise_id": "EX012",
+      "journal_focus": "Strzał",
+      "source_intensity": "low_to_moderate",
+      "previous_title": "Podanie–odegranie–strzał z trenerem",
+      "previous_age_band": {
+        "min": 12,
+        "max": 18
+      },
+      "previous_provenance": {
+        "type": "autorskie opracowanie",
+        "alignment_theme": "NMG: gry zadaniowe, trening pozycyjny, formacyjny i struktura gry",
+        "source_reference": "sources_and_rights.json"
+      }
     },
     {
       "id": "phy_dynamic_warmup",
-      "title": "Rozgrzewka dynamiczna piłkarza",
-      "area": "rozgrzewka",
-      "subarea": "przygotowanie ruchowe",
+      "title": "Przygotowanie ruchowe",
+      "area": "motoryka",
+      "subarea": "koordynacja",
       "age_band": {
-        "min": 10,
-        "max": 18
+        "min": 8,
+        "max": null
       },
       "duration_min": 8,
-      "intensity": "low",
+      "intensity": "medium",
       "solo": true,
       "equipment": [
-        "znaczniki opcjonalnie"
+        "wolna przestrzeń"
       ],
-      "space": "bezpieczna przestrzeń",
+      "space": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
       "goal": "Stopniowo przygotuj ciało do ruchu.",
-      "setup": "Zapewnij bezpieczną nawierzchnię, miejsce i odpowiednie obuwie. Młodsi zawodnicy powinni ćwiczyć pod nadzorem dorosłego.",
+      "setup": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
       "steps": [
-        "Zacznij od spokojnego przygotowania ruchowego.",
-        "Wykonuj niewielką liczbę jakościowych powtórzeń i odpoczywaj według samopoczucia.",
-        "Nie zwiększaj jednocześnie czasu, tempa i trudności.",
-        "Przerwij przy bólu, zawrotach głowy lub nietypowym osłabieniu."
+        "Wykonaj marsz, łagodny trucht, krążenia ramion i spokojne kroki boczne. Zwiększaj tempo stopniowo, bez bólu.",
+        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+        "Obserwuj: Samopoczucie przed i po"
       ],
       "coaching_cues": [
-        "Kontrola i technika przed intensywnością.",
-        "Nie wykonuj ćwiczenia przez ból.",
-        "Maksymalne sprinty i obciążenia wymagają odpowiedniego przygotowania i nadzoru."
+        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+        "Autorski filtr treści, nie norma rozwojowa; przy dziecku nadzór dorosłego.",
+        "Nie zastępuje gry zespołowej ani oceny trenera."
       ],
       "regression": "Skróć serię, zmniejsz zakres ruchu albo wybierz spacer.",
       "progression": "Zwiększaj trudność stopniowo i tylko jeśli technika oraz samopoczucie są dobre.",
       "trackable_metrics": [
         "czas_min",
         "odczuwana_trudnosc_1_5",
-        "jakość_1_5"
+        "jakość_1_5",
+        "Samopoczucie przed i po"
       ],
       "tags": [
         "motoryka",
-        "bezpieczeństwo"
+        "bezpieczeństwo",
+        "koordynacja"
       ],
       "provenance": {
-        "type": "autorskie opracowanie",
-        "alignment_theme": "NMG: przygotowanie motoryczne; autorskie ćwiczenia ogólnorozwojowe",
-        "source_reference": "sources_and_rights.json"
+        "type": "autorskie_zadanie_inspirowane_koncepcja",
+        "source_refs": [
+          {
+            "source_id": "S6",
+            "pdf_page_start": 207,
+            "pdf_page_end": 207
+          }
+        ],
+        "source_catalog": "docs/offline_coach/import_sources_v1.json",
+        "package": "baza_dziennika_pilkarza_v1"
       },
       "participation_mode": "solo",
       "participants_min": 1,
@@ -1870,52 +2480,100 @@
       ],
       "environment_options": [
         "samodzielnie"
-      ]
+      ],
+      "skills": [
+        "koordynacja"
+      ],
+      "persons_total": 1,
+      "partner_role": null,
+      "instructions": "Wykonaj marsz, łagodny trucht, krążenia ramion i spokojne kroki boczne. Zwiększaj tempo stopniowo, bez bólu.",
+      "success_metric": "Samopoczucie przed i po",
+      "session_block_minutes": 8,
+      "work_rest": "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+      "min_age": 8,
+      "age_policy": "Autorski filtr treści, nie norma rozwojowa; przy dziecku nadzór dorosłego.",
+      "eligible_roles": [
+        "ALL"
+      ],
+      "phase": "individual_preparation",
+      "evidence_type": "autorskie_zadanie_inspirowane_koncepcja",
+      "source_refs": [
+        {
+          "source_id": "S6",
+          "pdf_page_start": 207,
+          "pdf_page_end": 207
+        }
+      ],
+      "limitations": "Nie zastępuje gry zespołowej ani oceny trenera.",
+      "review_status": "do_weryfikacji_trenerskiej",
+      "import_origin": "baza_dziennika_pilkarza_v1/EX023",
+      "import_package": "baza_dziennika_pilkarza_v1",
+      "source_exercise_id": "EX023",
+      "journal_focus": "Siła",
+      "source_intensity": "low_to_moderate",
+      "previous_title": "Rozgrzewka dynamiczna piłkarza",
+      "previous_age_band": {
+        "min": 10,
+        "max": 18
+      },
+      "previous_provenance": {
+        "type": "autorskie opracowanie",
+        "alignment_theme": "NMG: przygotowanie motoryczne; autorskie ćwiczenia ogólnorozwojowe",
+        "source_reference": "sources_and_rights.json"
+      }
     },
     {
       "id": "phy_coordination_ladder",
-      "title": "Koordynacja – rytm kroków",
+      "title": "Koordynacyjna ścieżka",
       "area": "motoryka",
-      "subarea": "rytm i kontrola",
+      "subarea": "koordynacja",
       "age_band": {
-        "min": 10,
-        "max": 18
+        "min": 8,
+        "max": null
       },
-      "duration_min": 10,
-      "intensity": "low",
+      "duration_min": 8,
+      "intensity": "medium",
       "solo": true,
       "equipment": [
-        "linie lub znaczniki"
+        "6 znaczników"
       ],
-      "space": "płaska nawierzchnia",
+      "space": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
       "goal": "Ćwicz rytm i kontrolę stóp bez pośpiechu.",
-      "setup": "Zapewnij bezpieczną nawierzchnię, miejsce i odpowiednie obuwie. Młodsi zawodnicy powinni ćwiczyć pod nadzorem dorosłego.",
+      "setup": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
       "steps": [
-        "Zacznij od spokojnego przygotowania ruchowego.",
-        "Wykonuj niewielką liczbę jakościowych powtórzeń i odpoczywaj według samopoczucia.",
-        "Nie zwiększaj jednocześnie czasu, tempa i trudności.",
-        "Przerwij przy bólu, zawrotach głowy lub nietypowym osłabieniu."
+        "Przejdź między znacznikami przodem i bokiem, a następnie dodaj spokojne prowadzenie piłki.",
+        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+        "Obserwuj: Przejścia bez dotknięcia / 6 prób"
       ],
       "coaching_cues": [
-        "Kontrola i technika przed intensywnością.",
-        "Nie wykonuj ćwiczenia przez ból.",
-        "Maksymalne sprinty i obciążenia wymagają odpowiedniego przygotowania i nadzoru."
+        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+        "Autorski filtr treści, nie norma rozwojowa; przy dziecku nadzór dorosłego.",
+        "Nie zastępuje gry zespołowej ani oceny trenera."
       ],
       "regression": "Skróć serię, zmniejsz zakres ruchu albo wybierz spacer.",
       "progression": "Zwiększaj trudność stopniowo i tylko jeśli technika oraz samopoczucie są dobre.",
       "trackable_metrics": [
         "czas_min",
         "odczuwana_trudnosc_1_5",
-        "jakość_1_5"
+        "jakość_1_5",
+        "Przejścia bez dotknięcia / 6 prób"
       ],
       "tags": [
         "motoryka",
-        "bezpieczeństwo"
+        "bezpieczeństwo",
+        "koordynacja"
       ],
       "provenance": {
-        "type": "autorskie opracowanie",
-        "alignment_theme": "NMG: przygotowanie motoryczne; autorskie ćwiczenia ogólnorozwojowe",
-        "source_reference": "sources_and_rights.json"
+        "type": "autorskie_zadanie_inspirowane_koncepcja",
+        "source_refs": [
+          {
+            "source_id": "S6",
+            "pdf_page_start": 207,
+            "pdf_page_end": 207
+          }
+        ],
+        "source_catalog": "docs/offline_coach/import_sources_v1.json",
+        "package": "baza_dziennika_pilkarza_v1"
       },
       "participation_mode": "solo",
       "participants_min": 1,
@@ -1926,7 +2584,47 @@
       ],
       "environment_options": [
         "samodzielnie"
-      ]
+      ],
+      "skills": [
+        "koordynacja"
+      ],
+      "persons_total": 1,
+      "partner_role": null,
+      "instructions": "Przejdź między znacznikami przodem i bokiem, a następnie dodaj spokojne prowadzenie piłki.",
+      "success_metric": "Przejścia bez dotknięcia / 6 prób",
+      "session_block_minutes": 8,
+      "work_rest": "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+      "min_age": 8,
+      "age_policy": "Autorski filtr treści, nie norma rozwojowa; przy dziecku nadzór dorosłego.",
+      "eligible_roles": [
+        "ALL"
+      ],
+      "phase": "individual_preparation",
+      "evidence_type": "autorskie_zadanie_inspirowane_koncepcja",
+      "source_refs": [
+        {
+          "source_id": "S6",
+          "pdf_page_start": 207,
+          "pdf_page_end": 207
+        }
+      ],
+      "limitations": "Nie zastępuje gry zespołowej ani oceny trenera.",
+      "review_status": "do_weryfikacji_trenerskiej",
+      "import_origin": "baza_dziennika_pilkarza_v1/EX022",
+      "import_package": "baza_dziennika_pilkarza_v1",
+      "source_exercise_id": "EX022",
+      "journal_focus": "Siła",
+      "source_intensity": "low_to_moderate",
+      "previous_title": "Koordynacja – rytm kroków",
+      "previous_age_band": {
+        "min": 10,
+        "max": 18
+      },
+      "previous_provenance": {
+        "type": "autorskie opracowanie",
+        "alignment_theme": "NMG: przygotowanie motoryczne; autorskie ćwiczenia ogólnorozwojowe",
+        "source_reference": "sources_and_rights.json"
+      }
     },
     {
       "id": "phy_balance_single",
@@ -2478,100 +3176,56 @@
     },
     {
       "id": "men_pre_session_goal",
-      "title": "Cel przed treningiem",
-      "area": "mentalność",
-      "subarea": "cel",
-      "age_band": {
-        "min": 10,
-        "max": 18
-      },
-      "duration_min": 4,
-      "intensity": "low",
-      "solo": true,
-      "equipment": [],
-      "space": "spokojne miejsce",
-      "goal": "Wybierz jeden cel, na który masz wpływ.",
-      "setup": "Zawodnik może zapisać odpowiedzi w dzienniku; nie wymuszaj dzielenia się prywatnymi notatkami.",
-      "steps": [
-        "Zatrzymaj się na chwilę i opisz sytuację konkretnie.",
-        "Wskaż jedno działanie, na które masz wpływ.",
-        "Zapisz krótki wniosek bez etykietowania siebie.",
-        "Jeśli emocje są silne lub długotrwałe, porozmawiaj z zaufanym dorosłym."
-      ],
-      "coaching_cues": [
-        "Błąd jest informacją, nie etykietą.",
-        "Unikaj zawstydzania i porównywania zawodników.",
-        "Skupiaj się na procesie i działaniu."
-      ],
-      "regression": "Odpowiedz na jedno pytanie zamiast wykonywać cały zestaw.",
-      "progression": "Porównaj refleksje z kilku tygodni, aby zauważyć własne wzorce.",
-      "trackable_metrics": [
-        "cel_zapisany",
-        "samoocena_1_5",
-        "wniosek"
-      ],
-      "tags": [
-        "mentalność",
-        "refleksja"
-      ],
-      "provenance": {
-        "type": "autorskie opracowanie",
-        "alignment_theme": "NMG: przygotowanie psychologiczne; autorskie ćwiczenia mentalne",
-        "source_reference": "sources_and_rights.json"
-      },
-      "participation_mode": "solo",
-      "participants_min": 1,
-      "participants_max": 1,
-      "requires_team": false,
-      "required_human_roles": [
-        "zawodnik"
-      ],
-      "environment_options": [
-        "samodzielnie"
-      ]
-    },
-    {
-      "id": "men_post_session_reflection",
-      "title": "Refleksja po treningu",
+      "title": "Jeden cel na trening",
       "area": "mentalność",
       "subarea": "refleksja",
       "age_band": {
-        "min": 10,
-        "max": 18
+        "min": 8,
+        "max": null
       },
       "duration_min": 5,
       "intensity": "low",
       "solo": true,
-      "equipment": [],
-      "space": "spokojne miejsce",
-      "goal": "Zapisz mocną stronę i jedną rzecz do poprawy.",
-      "setup": "Zawodnik może zapisać odpowiedzi w dzienniku; nie wymuszaj dzielenia się prywatnymi notatkami.",
+      "equipment": [
+        "notatnik"
+      ],
+      "space": "Kartka/ekran",
+      "goal": "Wybierz jeden cel, na który masz wpływ.",
+      "setup": "Kartka/ekran",
       "steps": [
-        "Zatrzymaj się na chwilę i opisz sytuację konkretnie.",
-        "Wskaż jedno działanie, na które masz wpływ.",
-        "Zapisz krótki wniosek bez etykietowania siebie.",
-        "Jeśli emocje są silne lub długotrwałe, porozmawiaj z zaufanym dorosłym."
+        "Zapisz jedno zachowanie, które chcesz dziś powtarzać, i sposób jego policzenia. Po treningu dopisz obserwację.",
+        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+        "Obserwuj: Cel zapisany i podsumowany"
       ],
       "coaching_cues": [
-        "Błąd jest informacją, nie etykietą.",
-        "Unikaj zawstydzania i porównywania zawodników.",
-        "Skupiaj się na procesie i działaniu."
+        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+        "Autorski filtr treści, nie norma rozwojowa; przy dziecku nadzór dorosłego.",
+        "Nie zastępuje gry zespołowej ani oceny trenera."
       ],
       "regression": "Odpowiedz na jedno pytanie zamiast wykonywać cały zestaw.",
       "progression": "Porównaj refleksje z kilku tygodni, aby zauważyć własne wzorce.",
       "trackable_metrics": [
         "cel_zapisany",
         "samoocena_1_5",
-        "wniosek"
+        "wniosek",
+        "Cel zapisany i podsumowany"
       ],
       "tags": [
         "mentalność",
-        "refleksja"
+        "refleksja",
+        "mental"
       ],
       "provenance": {
-        "type": "autorskie opracowanie",
-        "alignment_theme": "NMG: przygotowanie psychologiczne; autorskie ćwiczenia mentalne",
-        "source_reference": "sources_and_rights.json"
+        "type": "autorskie_zadanie_inspirowane_koncepcja",
+        "source_refs": [
+          {
+            "source_id": "S5",
+            "pdf_page_start": 9,
+            "pdf_page_end": 13
+          }
+        ],
+        "source_catalog": "docs/offline_coach/import_sources_v1.json",
+        "package": "baza_dziennika_pilkarza_v1"
       },
       "participation_mode": "solo",
       "participants_min": 1,
@@ -2582,50 +3236,100 @@
       ],
       "environment_options": [
         "samodzielnie"
-      ]
-    },
-    {
-      "id": "men_reset_after_error",
-      "title": "Reset po błędzie",
-      "area": "mentalność",
-      "subarea": "emocje",
-      "age_band": {
+      ],
+      "skills": [
+        "mental"
+      ],
+      "persons_total": 1,
+      "partner_role": null,
+      "instructions": "Zapisz jedno zachowanie, które chcesz dziś powtarzać, i sposób jego policzenia. Po treningu dopisz obserwację.",
+      "success_metric": "Cel zapisany i podsumowany",
+      "session_block_minutes": 5,
+      "work_rest": "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+      "min_age": 8,
+      "age_policy": "Autorski filtr treści, nie norma rozwojowa; przy dziecku nadzór dorosłego.",
+      "eligible_roles": [
+        "ALL"
+      ],
+      "phase": "reflection",
+      "evidence_type": "autorskie_zadanie_inspirowane_koncepcja",
+      "source_refs": [
+        {
+          "source_id": "S5",
+          "pdf_page_start": 9,
+          "pdf_page_end": 13
+        }
+      ],
+      "limitations": "Nie zastępuje gry zespołowej ani oceny trenera.",
+      "review_status": "do_weryfikacji_trenerskiej",
+      "import_origin": "baza_dziennika_pilkarza_v1/EX025",
+      "import_package": "baza_dziennika_pilkarza_v1",
+      "source_exercise_id": "EX025",
+      "journal_focus": "Mentalność",
+      "source_intensity": "none",
+      "previous_title": "Cel przed treningiem",
+      "previous_age_band": {
         "min": 10,
         "max": 18
       },
-      "duration_min": 4,
+      "previous_provenance": {
+        "type": "autorskie opracowanie",
+        "alignment_theme": "NMG: przygotowanie psychologiczne; autorskie ćwiczenia mentalne",
+        "source_reference": "sources_and_rights.json"
+      }
+    },
+    {
+      "id": "men_post_session_reflection",
+      "title": "Pomeczowa refleksja",
+      "area": "mentalność",
+      "subarea": "refleksja",
+      "age_band": {
+        "min": 8,
+        "max": null
+      },
+      "duration_min": 5,
       "intensity": "low",
       "solo": true,
-      "equipment": [],
-      "space": "spokojne miejsce",
-      "goal": "Po błędzie wróć uwagą do kolejnego działania.",
-      "setup": "Zawodnik może zapisać odpowiedzi w dzienniku; nie wymuszaj dzielenia się prywatnymi notatkami.",
+      "equipment": [
+        "notatnik"
+      ],
+      "space": "Kartka/ekran",
+      "goal": "Zapisz mocną stronę i jedną rzecz do poprawy.",
+      "setup": "Kartka/ekran",
       "steps": [
-        "Zatrzymaj się na chwilę i opisz sytuację konkretnie.",
-        "Wskaż jedno działanie, na które masz wpływ.",
-        "Zapisz krótki wniosek bez etykietowania siebie.",
-        "Jeśli emocje są silne lub długotrwałe, porozmawiaj z zaufanym dorosłym."
+        "Opisz jedno udane działanie, jedną trudność i jedną rzecz do przećwiczenia. Oddziel wynik od własnych zachowań.",
+        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+        "Obserwuj: Trzy uzupełnione pola"
       ],
       "coaching_cues": [
-        "Błąd jest informacją, nie etykietą.",
-        "Unikaj zawstydzania i porównywania zawodników.",
-        "Skupiaj się na procesie i działaniu."
+        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+        "Autorski filtr treści, nie norma rozwojowa; przy dziecku nadzór dorosłego.",
+        "Nie zastępuje gry zespołowej ani oceny trenera."
       ],
       "regression": "Odpowiedz na jedno pytanie zamiast wykonywać cały zestaw.",
       "progression": "Porównaj refleksje z kilku tygodni, aby zauważyć własne wzorce.",
       "trackable_metrics": [
         "cel_zapisany",
         "samoocena_1_5",
-        "wniosek"
+        "wniosek",
+        "Trzy uzupełnione pola"
       ],
       "tags": [
         "mentalność",
-        "refleksja"
+        "refleksja",
+        "mental"
       ],
       "provenance": {
-        "type": "autorskie opracowanie",
-        "alignment_theme": "NMG: przygotowanie psychologiczne; autorskie ćwiczenia mentalne",
-        "source_reference": "sources_and_rights.json"
+        "type": "autorskie_zadanie_inspirowane_koncepcja",
+        "source_refs": [
+          {
+            "source_id": "S5",
+            "pdf_page_start": 9,
+            "pdf_page_end": 13
+          }
+        ],
+        "source_catalog": "docs/offline_coach/import_sources_v1.json",
+        "package": "baza_dziennika_pilkarza_v1"
       },
       "participation_mode": "solo",
       "participants_min": 1,
@@ -2636,50 +3340,204 @@
       ],
       "environment_options": [
         "samodzielnie"
-      ]
+      ],
+      "skills": [
+        "mental"
+      ],
+      "persons_total": 1,
+      "partner_role": null,
+      "instructions": "Opisz jedno udane działanie, jedną trudność i jedną rzecz do przećwiczenia. Oddziel wynik od własnych zachowań.",
+      "success_metric": "Trzy uzupełnione pola",
+      "session_block_minutes": 5,
+      "work_rest": "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+      "min_age": 8,
+      "age_policy": "Autorski filtr treści, nie norma rozwojowa; przy dziecku nadzór dorosłego.",
+      "eligible_roles": [
+        "ALL"
+      ],
+      "phase": "reflection",
+      "evidence_type": "autorskie_zadanie_inspirowane_koncepcja",
+      "source_refs": [
+        {
+          "source_id": "S5",
+          "pdf_page_start": 9,
+          "pdf_page_end": 13
+        }
+      ],
+      "limitations": "Nie zastępuje gry zespołowej ani oceny trenera.",
+      "review_status": "do_weryfikacji_trenerskiej",
+      "import_origin": "baza_dziennika_pilkarza_v1/EX028",
+      "import_package": "baza_dziennika_pilkarza_v1",
+      "source_exercise_id": "EX028",
+      "journal_focus": "Mentalność",
+      "source_intensity": "none",
+      "previous_title": "Refleksja po treningu",
+      "previous_age_band": {
+        "min": 10,
+        "max": 18
+      },
+      "previous_provenance": {
+        "type": "autorskie opracowanie",
+        "alignment_theme": "NMG: przygotowanie psychologiczne; autorskie ćwiczenia mentalne",
+        "source_reference": "sources_and_rights.json"
+      }
+    },
+    {
+      "id": "men_reset_after_error",
+      "title": "Powrót po błędzie",
+      "area": "mentalność",
+      "subarea": "refleksja",
+      "age_band": {
+        "min": 8,
+        "max": null
+      },
+      "duration_min": 5,
+      "intensity": "low",
+      "solo": true,
+      "equipment": [
+        "notatnik"
+      ],
+      "space": "Kartka/ekran",
+      "goal": "Po błędzie wróć uwagą do kolejnego działania.",
+      "setup": "Kartka/ekran",
+      "steps": [
+        "Przypomnij błąd. Zapisz neutralny opis, krótkie hasło powrotu do zadania i następną pomocną czynność.",
+        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+        "Obserwuj: Zapisana kolejna czynność"
+      ],
+      "coaching_cues": [
+        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+        "Autorski filtr treści, nie norma rozwojowa; przy dziecku nadzór dorosłego.",
+        "Nie zastępuje gry zespołowej ani oceny trenera."
+      ],
+      "regression": "Odpowiedz na jedno pytanie zamiast wykonywać cały zestaw.",
+      "progression": "Porównaj refleksje z kilku tygodni, aby zauważyć własne wzorce.",
+      "trackable_metrics": [
+        "cel_zapisany",
+        "samoocena_1_5",
+        "wniosek",
+        "Zapisana kolejna czynność"
+      ],
+      "tags": [
+        "mentalność",
+        "refleksja",
+        "mental"
+      ],
+      "provenance": {
+        "type": "autorskie_zadanie_inspirowane_koncepcja",
+        "source_refs": [
+          {
+            "source_id": "S5",
+            "pdf_page_start": 9,
+            "pdf_page_end": 13
+          }
+        ],
+        "source_catalog": "docs/offline_coach/import_sources_v1.json",
+        "package": "baza_dziennika_pilkarza_v1"
+      },
+      "participation_mode": "solo",
+      "participants_min": 1,
+      "participants_max": 1,
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik"
+      ],
+      "environment_options": [
+        "samodzielnie"
+      ],
+      "skills": [
+        "mental"
+      ],
+      "persons_total": 1,
+      "partner_role": null,
+      "instructions": "Przypomnij błąd. Zapisz neutralny opis, krótkie hasło powrotu do zadania i następną pomocną czynność.",
+      "success_metric": "Zapisana kolejna czynność",
+      "session_block_minutes": 5,
+      "work_rest": "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+      "min_age": 8,
+      "age_policy": "Autorski filtr treści, nie norma rozwojowa; przy dziecku nadzór dorosłego.",
+      "eligible_roles": [
+        "ALL"
+      ],
+      "phase": "reflection",
+      "evidence_type": "autorskie_zadanie_inspirowane_koncepcja",
+      "source_refs": [
+        {
+          "source_id": "S5",
+          "pdf_page_start": 9,
+          "pdf_page_end": 13
+        }
+      ],
+      "limitations": "Nie zastępuje gry zespołowej ani oceny trenera.",
+      "review_status": "do_weryfikacji_trenerskiej",
+      "import_origin": "baza_dziennika_pilkarza_v1/EX026",
+      "import_package": "baza_dziennika_pilkarza_v1",
+      "source_exercise_id": "EX026",
+      "journal_focus": "Mentalność",
+      "source_intensity": "none",
+      "previous_title": "Reset po błędzie",
+      "previous_age_band": {
+        "min": 10,
+        "max": 18
+      },
+      "previous_provenance": {
+        "type": "autorskie opracowanie",
+        "alignment_theme": "NMG: przygotowanie psychologiczne; autorskie ćwiczenia mentalne",
+        "source_reference": "sources_and_rights.json"
+      }
     },
     {
       "id": "men_confidence_evidence",
-      "title": "Pewność siebie oparta na faktach",
+      "title": "Trzy dowody przygotowania",
       "area": "mentalność",
-      "subarea": "pewność siebie",
+      "subarea": "refleksja",
       "age_band": {
-        "min": 12,
-        "max": 18
+        "min": 8,
+        "max": null
       },
-      "duration_min": 6,
+      "duration_min": 5,
       "intensity": "low",
       "solo": true,
-      "equipment": [],
-      "space": "spokojne miejsce",
+      "equipment": [
+        "notatnik"
+      ],
+      "space": "Kartka/ekran",
       "goal": "Zapisuj konkretne przykłady własnego postępu.",
-      "setup": "Zawodnik może zapisać odpowiedzi w dzienniku; nie wymuszaj dzielenia się prywatnymi notatkami.",
+      "setup": "Kartka/ekran",
       "steps": [
-        "Zatrzymaj się na chwilę i opisz sytuację konkretnie.",
-        "Wskaż jedno działanie, na które masz wpływ.",
-        "Zapisz krótki wniosek bez etykietowania siebie.",
-        "Jeśli emocje są silne lub długotrwałe, porozmawiaj z zaufanym dorosłym."
+        "Zapisz trzy konkretne działania z przygotowań, na których możesz oprzeć pewność przed meczem.",
+        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+        "Obserwuj: Trzy konkretne przykłady"
       ],
       "coaching_cues": [
-        "Błąd jest informacją, nie etykietą.",
-        "Unikaj zawstydzania i porównywania zawodników.",
-        "Skupiaj się na procesie i działaniu."
+        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+        "Autorski filtr treści, nie norma rozwojowa; przy dziecku nadzór dorosłego.",
+        "Nie zastępuje gry zespołowej ani oceny trenera."
       ],
       "regression": "Odpowiedz na jedno pytanie zamiast wykonywać cały zestaw.",
       "progression": "Porównaj refleksje z kilku tygodni, aby zauważyć własne wzorce.",
       "trackable_metrics": [
         "cel_zapisany",
         "samoocena_1_5",
-        "wniosek"
+        "wniosek",
+        "Trzy konkretne przykłady"
       ],
       "tags": [
         "mentalność",
-        "refleksja"
+        "refleksja",
+        "mental"
       ],
       "provenance": {
-        "type": "autorskie opracowanie",
-        "alignment_theme": "NMG: przygotowanie psychologiczne; autorskie ćwiczenia mentalne",
-        "source_reference": "sources_and_rights.json"
+        "type": "autorskie_zadanie_inspirowane_koncepcja",
+        "source_refs": [
+          {
+            "source_id": "S5",
+            "pdf_page_start": 9,
+            "pdf_page_end": 13
+          }
+        ],
+        "source_catalog": "docs/offline_coach/import_sources_v1.json",
+        "package": "baza_dziennika_pilkarza_v1"
       },
       "participation_mode": "solo",
       "participants_min": 1,
@@ -2690,7 +3548,47 @@
       ],
       "environment_options": [
         "samodzielnie"
-      ]
+      ],
+      "skills": [
+        "mental"
+      ],
+      "persons_total": 1,
+      "partner_role": null,
+      "instructions": "Zapisz trzy konkretne działania z przygotowań, na których możesz oprzeć pewność przed meczem.",
+      "success_metric": "Trzy konkretne przykłady",
+      "session_block_minutes": 5,
+      "work_rest": "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+      "min_age": 8,
+      "age_policy": "Autorski filtr treści, nie norma rozwojowa; przy dziecku nadzór dorosłego.",
+      "eligible_roles": [
+        "ALL"
+      ],
+      "phase": "reflection",
+      "evidence_type": "autorskie_zadanie_inspirowane_koncepcja",
+      "source_refs": [
+        {
+          "source_id": "S5",
+          "pdf_page_start": 9,
+          "pdf_page_end": 13
+        }
+      ],
+      "limitations": "Nie zastępuje gry zespołowej ani oceny trenera.",
+      "review_status": "do_weryfikacji_trenerskiej",
+      "import_origin": "baza_dziennika_pilkarza_v1/EX027",
+      "import_package": "baza_dziennika_pilkarza_v1",
+      "source_exercise_id": "EX027",
+      "journal_focus": "Mentalność",
+      "source_intensity": "none",
+      "previous_title": "Pewność siebie oparta na faktach",
+      "previous_age_band": {
+        "min": 12,
+        "max": 18
+      },
+      "previous_provenance": {
+        "type": "autorskie opracowanie",
+        "alignment_theme": "NMG: przygotowanie psychologiczne; autorskie ćwiczenia mentalne",
+        "source_reference": "sources_and_rights.json"
+      }
     },
     {
       "id": "men_pre_match_routine",
@@ -2967,120 +3865,245 @@
     },
     {
       "id": "v21_wall_gate_switch",
-      "title": "Ściana: podanie i zmiana bramki",
+      "title": "Zmiana strony przez ścianę",
       "area": "technika",
       "subarea": "podania",
       "age_band": {
-        "min": 10,
-        "max": 18
+        "min": 8,
+        "max": null
       },
-      "duration_min": 14,
+      "duration_min": 8,
       "intensity": "medium",
       "solo": true,
       "participants_min": 1,
-      "participants_max": 2,
-      "participation_mode": "solo_or_coach",
+      "participants_max": 1,
+      "participation_mode": "solo",
       "equipment": [
         "piłka",
         "ściana",
         "4 znaczniki"
       ],
-      "space": "3–6 m od bezpiecznej ściany",
+      "space": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
       "goal": "Popraw celność podania i ustawienie po odbiciu.",
-      "setup": "Wyznacz dwa cele na ścianie oraz dwie bramki do przyjęcia przed nią.",
+      "setup": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
       "steps": [
-        "Podaj do pierwszego celu.",
-        "Przyjmij odbicie przez lewą bramkę, ustaw piłkę i podaj do drugiego celu.",
-        "Wykonaj 4 serie po 12 podań, naprzemiennie obiema nogami."
+        "Po odbiciu od ściany przyjmij w kierunku przeciwnej bramki i podaj ponownie z nowego kąta.",
+        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+        "Obserwuj: Udane zmiany / 12 prób"
       ],
       "coaching_cues": [
-        "Ustaw ciało bokiem.",
-        "Pierwszy kontakt kieruj poza linię powrotu piłki."
+        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+        "Autorski filtr treści, nie norma rozwojowa; przy dziecku nadzór dorosłego.",
+        "Nie zastępuje gry zespołowej ani oceny trenera."
       ],
       "regression": "Powiększ bramki i graj dwoma kontaktami.",
       "progression": "Zmniejsz cele i graj maksymalnie dwoma kontaktami.",
       "trackable_metrics": [
         "celne_podania",
         "liczba_kontaktów",
-        "słabsza_noga_celność"
+        "słabsza_noga_celność",
+        "Udane zmiany / 12 prób"
       ],
       "tags": [
         "ściana",
-        "podania"
+        "podania",
+        "podanie"
       ],
       "provenance": {
-        "type": "autorska adaptacja koncepcji treningowej",
-        "alignment_theme": "technika i decyzje w grze",
-        "source_url": "https://www.thefa.com/bootroom/resources/coaching/coaching-players-during-covid-19-part-two",
-        "source_reference": "sources_and_rights_v2.json"
+        "type": "autorskie_zadanie_inspirowane_koncepcja",
+        "source_refs": [
+          {
+            "source_id": "S2",
+            "pdf_page_start": 12,
+            "pdf_page_end": 14
+          },
+          {
+            "source_id": "S2",
+            "pdf_page_start": 27,
+            "pdf_page_end": 27
+          }
+        ],
+        "source_catalog": "docs/offline_coach/import_sources_v1.json",
+        "package": "baza_dziennika_pilkarza_v1"
       },
       "requires_team": false,
       "required_human_roles": [
         "zawodnik"
       ],
       "environment_options": [
-        "samodzielnie",
-        "trener"
-      ]
-    },
-    {
-      "id": "v21_scan_number",
-      "title": "Skanowanie numerów przed przyjęciem",
-      "area": "taktyka",
-      "subarea": "decyzje",
-      "age_band": {
+        "samodzielnie"
+      ],
+      "skills": [
+        "podanie"
+      ],
+      "persons_total": 1,
+      "partner_role": null,
+      "instructions": "Po odbiciu od ściany przyjmij w kierunku przeciwnej bramki i podaj ponownie z nowego kąta.",
+      "success_metric": "Udane zmiany / 12 prób",
+      "session_block_minutes": 8,
+      "work_rest": "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+      "min_age": 8,
+      "age_policy": "Autorski filtr treści, nie norma rozwojowa; przy dziecku nadzór dorosłego.",
+      "eligible_roles": [
+        "GK",
+        "CB",
+        "FB",
+        "DM",
+        "CM",
+        "AM",
+        "WB"
+      ],
+      "phase": "individual_preparation",
+      "evidence_type": "autorskie_zadanie_inspirowane_koncepcja",
+      "source_refs": [
+        {
+          "source_id": "S2",
+          "pdf_page_start": 12,
+          "pdf_page_end": 14
+        },
+        {
+          "source_id": "S2",
+          "pdf_page_start": 27,
+          "pdf_page_end": 27
+        }
+      ],
+      "limitations": "Nie zastępuje gry zespołowej ani oceny trenera.",
+      "review_status": "do_weryfikacji_trenerskiej",
+      "import_origin": "baza_dziennika_pilkarza_v1/EX014",
+      "import_package": "baza_dziennika_pilkarza_v1",
+      "source_exercise_id": "EX014",
+      "journal_focus": "Prowadzenie",
+      "source_intensity": "low_to_moderate",
+      "previous_title": "Ściana: podanie i zmiana bramki",
+      "previous_age_band": {
         "min": 10,
         "max": 18
       },
-      "duration_min": 10,
-      "intensity": "low",
-      "solo": true,
-      "participants_min": 1,
+      "previous_provenance": {
+        "type": "autorska adaptacja koncepcji treningowej",
+        "alignment_theme": "technika i decyzje w grze",
+        "source_url": "https://www.thefa.com/bootroom/resources/coaching/coaching-players-during-covid-19-part-two",
+        "source_reference": "sources_and_rights_v2.json"
+      }
+    },
+    {
+      "id": "v21_scan_number",
+      "title": "Skan przed odbiorem",
+      "area": "taktyka",
+      "subarea": "obserwacja",
+      "age_band": {
+        "min": 10,
+        "max": null
+      },
+      "duration_min": 8,
+      "intensity": "medium",
+      "solo": false,
+      "participants_min": 2,
       "participants_max": 2,
-      "participation_mode": "solo_or_coach",
+      "participation_mode": "coach",
       "equipment": [
         "piłka",
-        "3 znaczniki z numerami",
-        "ściana opcjonalnie"
+        "2 kolorowe znaczniki"
       ],
-      "space": "5 × 5 m",
+      "space": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
       "goal": "Wyrobić nawyk spojrzenia przez ramię przed kontaktem z piłką.",
-      "setup": "Ustaw trzy numerowane znaczniki za plecami zawodnika. Trener wskazuje numer podczas podania; solo ustaw kartoniki i przed każdym powtórzeniem odwróć się, odczytaj numer, następnie zagraj piłkę o ścianę.",
+      "setup": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
       "steps": [
-        "Spójrz przez ramię przed przyjęciem.",
-        "Przyjmij piłkę od trenera albo odbicie od ściany.",
-        "Wypowiedz widziany numer i wyprowadź piłkę do odpowiedniej bramki.",
-        "Wykonaj 3 serie po 8 powtórzeń."
+        "Partner pokazuje kolor przed podaniem. Spójrz za ramię, nazwij kolor i przyjmij w odpowiadającą mu stronę.",
+        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+        "Obserwuj: Poprawne odczyty / 20 prób"
       ],
       "coaching_cues": [
-        "Skanuj przed dotknięciem piłki.",
-        "Otwórz ustawienie bioder."
+        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+        "Autorski filtr treści, nie norma rozwojowa; przy dziecku nadzór dorosłego.",
+        "Nie zastępuje gry zespołowej ani oceny trenera."
       ],
       "regression": "Bez piłki przećwicz kolejność ruchów.",
       "progression": "Trener zmienia numer w ostatniej chwili.",
       "trackable_metrics": [
         "prawidłowe_odczyty",
         "udane_przyjęcia",
-        "jakość_1_5"
+        "jakość_1_5",
+        "Poprawne odczyty / 20 prób"
       ],
       "tags": [
         "skanowanie",
-        "pierwszy_kontakt"
+        "pierwszy_kontakt",
+        "obserwacja"
       ],
       "provenance": {
+        "type": "autorskie_zadanie_inspirowane_koncepcja",
+        "source_refs": [
+          {
+            "source_id": "S2",
+            "pdf_page_start": 12,
+            "pdf_page_end": 14
+          },
+          {
+            "source_id": "S2",
+            "pdf_page_start": 27,
+            "pdf_page_end": 27
+          }
+        ],
+        "source_catalog": "docs/offline_coach/import_sources_v1.json",
+        "package": "baza_dziennika_pilkarza_v1"
+      },
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik",
+        "trener lub partner"
+      ],
+      "environment_options": [
+        "zawodnik i trener lub partner"
+      ],
+      "skills": [
+        "obserwacja"
+      ],
+      "persons_total": 2,
+      "partner_role": "trener_lub_partner",
+      "instructions": "Partner pokazuje kolor przed podaniem. Spójrz za ramię, nazwij kolor i przyjmij w odpowiadającą mu stronę.",
+      "success_metric": "Poprawne odczyty / 20 prób",
+      "session_block_minutes": 8,
+      "work_rest": "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+      "min_age": 10,
+      "age_policy": "Autorski filtr treści, nie norma rozwojowa; przy dziecku nadzór dorosłego.",
+      "eligible_roles": [
+        "CB",
+        "DM",
+        "CM"
+      ],
+      "phase": "individual_preparation",
+      "evidence_type": "autorskie_zadanie_inspirowane_koncepcja",
+      "source_refs": [
+        {
+          "source_id": "S2",
+          "pdf_page_start": 12,
+          "pdf_page_end": 14
+        },
+        {
+          "source_id": "S2",
+          "pdf_page_start": 27,
+          "pdf_page_end": 27
+        }
+      ],
+      "limitations": "Nie zastępuje gry zespołowej ani oceny trenera.",
+      "review_status": "do_weryfikacji_trenerskiej",
+      "import_origin": "baza_dziennika_pilkarza_v1/EX002",
+      "import_package": "baza_dziennika_pilkarza_v1",
+      "source_exercise_id": "EX002",
+      "journal_focus": "Decyzyjność",
+      "source_intensity": "low_to_moderate",
+      "previous_title": "Skanowanie numerów przed przyjęciem",
+      "previous_age_band": {
+        "min": 10,
+        "max": 18
+      },
+      "previous_provenance": {
         "type": "autorska adaptacja koncepcji treningowej",
         "alignment_theme": "technika i decyzje w grze",
         "source_url": "https://www.thefa.com/bootroom/resources/coaching/how-to-coach-passing-in-football",
         "source_reference": "sources_and_rights_v2.json"
-      },
-      "requires_team": false,
-      "required_human_roles": [
-        "zawodnik"
-      ],
-      "environment_options": [
-        "samodzielnie",
-        "trener"
-      ]
+      }
     },
     {
       "id": "v21_first_touch_halfturn",
@@ -3484,6 +4507,1204 @@
         "samodzielnie",
         "trener"
       ]
+    },
+    {
+      "id": "v23_ex005",
+      "title": "Wyjście z przyjęciem",
+      "skills": [
+        "przyjecie"
+      ],
+      "persons_total": 2,
+      "partner_role": "trener_lub_partner",
+      "equipment": [
+        "piłka",
+        "4 znaczniki"
+      ],
+      "space": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
+      "instructions": "Podejdź do podania od partnera i przyjmij na bok, omijając nieruchomy znacznik imitujący presję.",
+      "success_metric": "Udane wyjścia / 12 prób",
+      "session_block_minutes": 8,
+      "work_rest": "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+      "min_age": 10,
+      "age_policy": "Autorski filtr treści, nie norma rozwojowa; przy dziecku nadzór dorosłego.",
+      "intensity": "medium",
+      "eligible_roles": [
+        "GK",
+        "DM",
+        "AM",
+        "ST"
+      ],
+      "phase": "individual_preparation",
+      "evidence_type": "autorskie_zadanie_inspirowane_koncepcja",
+      "source_refs": [
+        {
+          "source_id": "S2",
+          "pdf_page_start": 12,
+          "pdf_page_end": 14
+        },
+        {
+          "source_id": "S2",
+          "pdf_page_start": 27,
+          "pdf_page_end": 27
+        }
+      ],
+      "limitations": "Nie zastępuje gry zespołowej ani oceny trenera.",
+      "review_status": "do_weryfikacji_trenerskiej",
+      "import_origin": "baza_dziennika_pilkarza_v1/EX005",
+      "import_package": "baza_dziennika_pilkarza_v1",
+      "source_exercise_id": "EX005",
+      "area": "technika",
+      "subarea": "przyjęcie",
+      "journal_focus": "Prowadzenie",
+      "age_band": {
+        "min": 10,
+        "max": null
+      },
+      "duration_min": 8,
+      "source_intensity": "low_to_moderate",
+      "solo": false,
+      "participation_mode": "coach",
+      "participants_min": 2,
+      "participants_max": 2,
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik",
+        "trener lub partner"
+      ],
+      "environment_options": [
+        "zawodnik i trener lub partner"
+      ],
+      "goal": "Przećwicz zadanie: Wyjście z przyjęciem.",
+      "setup": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
+      "steps": [
+        "Podejdź do podania od partnera i przyjmij na bok, omijając nieruchomy znacznik imitujący presję.",
+        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+        "Obserwuj: Udane wyjścia / 12 prób"
+      ],
+      "regression": "Wykonaj zadanie spokojnie, z pomocą trenera.",
+      "progression": "Omów zmianę trudności z trenerem; nie dodawaj uczestników.",
+      "coaching_cues": [
+        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+        "Autorski filtr treści, nie norma rozwojowa; przy dziecku nadzór dorosłego.",
+        "Nie zastępuje gry zespołowej ani oceny trenera."
+      ],
+      "trackable_metrics": [
+        "Udane wyjścia / 12 prób"
+      ],
+      "tags": [
+        "przyjecie"
+      ],
+      "provenance": {
+        "type": "autorskie_zadanie_inspirowane_koncepcja",
+        "source_refs": [
+          {
+            "source_id": "S2",
+            "pdf_page_start": 12,
+            "pdf_page_end": 14
+          },
+          {
+            "source_id": "S2",
+            "pdf_page_start": 27,
+            "pdf_page_end": 27
+          }
+        ],
+        "source_catalog": "docs/offline_coach/import_sources_v1.json",
+        "package": "baza_dziennika_pilkarza_v1"
+      }
+    },
+    {
+      "id": "v23_ex006",
+      "title": "Zmiana kierunku przy pachołku",
+      "skills": [
+        "prowadzenie"
+      ],
+      "persons_total": 1,
+      "partner_role": null,
+      "equipment": [
+        "piłka",
+        "3 znaczniki"
+      ],
+      "space": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
+      "instructions": "Prowadź piłkę do znacznika, wykonaj zwrot i wróć inną linią. Zmieniaj nogę prowadzącą.",
+      "success_metric": "Kontrolowane zwroty / 12 prób",
+      "session_block_minutes": 8,
+      "work_rest": "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+      "min_age": 8,
+      "age_policy": "Autorski filtr treści, nie norma rozwojowa; przy dziecku nadzór dorosłego.",
+      "intensity": "medium",
+      "eligible_roles": [
+        "FB",
+        "W",
+        "WB"
+      ],
+      "phase": "individual_preparation",
+      "evidence_type": "autorskie_zadanie_inspirowane_koncepcja",
+      "source_refs": [
+        {
+          "source_id": "S2",
+          "pdf_page_start": 12,
+          "pdf_page_end": 14
+        },
+        {
+          "source_id": "S2",
+          "pdf_page_start": 27,
+          "pdf_page_end": 27
+        }
+      ],
+      "limitations": "Nie zastępuje gry zespołowej ani oceny trenera.",
+      "review_status": "do_weryfikacji_trenerskiej",
+      "import_origin": "baza_dziennika_pilkarza_v1/EX006",
+      "import_package": "baza_dziennika_pilkarza_v1",
+      "source_exercise_id": "EX006",
+      "area": "technika",
+      "subarea": "prowadzenie",
+      "journal_focus": "Prowadzenie",
+      "age_band": {
+        "min": 8,
+        "max": null
+      },
+      "duration_min": 8,
+      "source_intensity": "low_to_moderate",
+      "solo": true,
+      "participation_mode": "solo",
+      "participants_min": 1,
+      "participants_max": 1,
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik"
+      ],
+      "environment_options": [
+        "samodzielnie"
+      ],
+      "goal": "Przećwicz zadanie: Zmiana kierunku przy pachołku.",
+      "setup": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
+      "steps": [
+        "Prowadź piłkę do znacznika, wykonaj zwrot i wróć inną linią. Zmieniaj nogę prowadzącą.",
+        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+        "Obserwuj: Kontrolowane zwroty / 12 prób"
+      ],
+      "regression": "Wykonaj zadanie spokojnie, z pomocą trenera.",
+      "progression": "Omów zmianę trudności z trenerem; nie dodawaj uczestników.",
+      "coaching_cues": [
+        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+        "Autorski filtr treści, nie norma rozwojowa; przy dziecku nadzór dorosłego.",
+        "Nie zastępuje gry zespołowej ani oceny trenera."
+      ],
+      "trackable_metrics": [
+        "Kontrolowane zwroty / 12 prób"
+      ],
+      "tags": [
+        "prowadzenie"
+      ],
+      "provenance": {
+        "type": "autorskie_zadanie_inspirowane_koncepcja",
+        "source_refs": [
+          {
+            "source_id": "S2",
+            "pdf_page_start": 12,
+            "pdf_page_end": 14
+          },
+          {
+            "source_id": "S2",
+            "pdf_page_start": 27,
+            "pdf_page_end": 27
+          }
+        ],
+        "source_catalog": "docs/offline_coach/import_sources_v1.json",
+        "package": "baza_dziennika_pilkarza_v1"
+      }
+    },
+    {
+      "id": "v23_ex010",
+      "title": "Cień napastnika",
+      "skills": [
+        "obrona_1v1"
+      ],
+      "persons_total": 2,
+      "partner_role": "trener_lub_partner",
+      "equipment": [
+        "4 znaczniki"
+      ],
+      "space": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
+      "instructions": "Partner porusza się między znacznikami. Utrzymuj ustawienie między nim a umowną bramką, bez kontaktu fizycznego.",
+      "success_metric": "Utrzymane ustawienia / 10 prób",
+      "session_block_minutes": 8,
+      "work_rest": "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+      "min_age": 10,
+      "age_policy": "Autorski filtr treści, nie norma rozwojowa; przy dziecku nadzór dorosłego.",
+      "intensity": "medium",
+      "eligible_roles": [
+        "CB",
+        "FB",
+        "WB"
+      ],
+      "phase": "individual_preparation",
+      "evidence_type": "autorskie_zadanie_inspirowane_koncepcja",
+      "source_refs": [
+        {
+          "source_id": "S2",
+          "pdf_page_start": 12,
+          "pdf_page_end": 14
+        },
+        {
+          "source_id": "S2",
+          "pdf_page_start": 27,
+          "pdf_page_end": 27
+        }
+      ],
+      "limitations": "Nie zastępuje gry zespołowej ani oceny trenera.",
+      "review_status": "do_weryfikacji_trenerskiej",
+      "import_origin": "baza_dziennika_pilkarza_v1/EX010",
+      "import_package": "baza_dziennika_pilkarza_v1",
+      "source_exercise_id": "EX010",
+      "area": "taktyka",
+      "subarea": "obrona 1 na 1",
+      "journal_focus": "Decyzyjność",
+      "age_band": {
+        "min": 10,
+        "max": null
+      },
+      "duration_min": 8,
+      "source_intensity": "low_to_moderate",
+      "solo": false,
+      "participation_mode": "coach",
+      "participants_min": 2,
+      "participants_max": 2,
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik",
+        "trener lub partner"
+      ],
+      "environment_options": [
+        "zawodnik i trener lub partner"
+      ],
+      "goal": "Przećwicz zadanie: Cień napastnika.",
+      "setup": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
+      "steps": [
+        "Partner porusza się między znacznikami. Utrzymuj ustawienie między nim a umowną bramką, bez kontaktu fizycznego.",
+        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+        "Obserwuj: Utrzymane ustawienia / 10 prób"
+      ],
+      "regression": "Wykonaj zadanie spokojnie, z pomocą trenera.",
+      "progression": "Omów zmianę trudności z trenerem; nie dodawaj uczestników.",
+      "coaching_cues": [
+        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+        "Autorski filtr treści, nie norma rozwojowa; przy dziecku nadzór dorosłego.",
+        "Nie zastępuje gry zespołowej ani oceny trenera."
+      ],
+      "trackable_metrics": [
+        "Utrzymane ustawienia / 10 prób"
+      ],
+      "tags": [
+        "obrona_1v1"
+      ],
+      "provenance": {
+        "type": "autorskie_zadanie_inspirowane_koncepcja",
+        "source_refs": [
+          {
+            "source_id": "S2",
+            "pdf_page_start": 12,
+            "pdf_page_end": 14
+          },
+          {
+            "source_id": "S2",
+            "pdf_page_start": 27,
+            "pdf_page_end": 27
+          }
+        ],
+        "source_catalog": "docs/offline_coach/import_sources_v1.json",
+        "package": "baza_dziennika_pilkarza_v1"
+      }
+    },
+    {
+      "id": "v23_ex015",
+      "title": "Podanie po prowadzeniu",
+      "skills": [
+        "podanie"
+      ],
+      "persons_total": 2,
+      "partner_role": "trener_lub_partner",
+      "equipment": [
+        "piłka",
+        "3 znaczniki"
+      ],
+      "space": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
+      "instructions": "Wprowadź piłkę obok znacznika i zagraj do partnera przez wyznaczone okno.",
+      "success_metric": "Celne podania / 12 prób",
+      "session_block_minutes": 8,
+      "work_rest": "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+      "min_age": 10,
+      "age_policy": "Autorski filtr treści, nie norma rozwojowa; przy dziecku nadzór dorosłego.",
+      "intensity": "medium",
+      "eligible_roles": [
+        "GK",
+        "CB",
+        "FB",
+        "DM",
+        "CM",
+        "AM",
+        "WB"
+      ],
+      "phase": "individual_preparation",
+      "evidence_type": "autorskie_zadanie_inspirowane_koncepcja",
+      "source_refs": [
+        {
+          "source_id": "S2",
+          "pdf_page_start": 12,
+          "pdf_page_end": 14
+        },
+        {
+          "source_id": "S2",
+          "pdf_page_start": 27,
+          "pdf_page_end": 27
+        }
+      ],
+      "limitations": "Nie zastępuje gry zespołowej ani oceny trenera.",
+      "review_status": "do_weryfikacji_trenerskiej",
+      "import_origin": "baza_dziennika_pilkarza_v1/EX015",
+      "import_package": "baza_dziennika_pilkarza_v1",
+      "source_exercise_id": "EX015",
+      "area": "technika",
+      "subarea": "podania",
+      "journal_focus": "Prowadzenie",
+      "age_band": {
+        "min": 10,
+        "max": null
+      },
+      "duration_min": 8,
+      "source_intensity": "low_to_moderate",
+      "solo": false,
+      "participation_mode": "coach",
+      "participants_min": 2,
+      "participants_max": 2,
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik",
+        "trener lub partner"
+      ],
+      "environment_options": [
+        "zawodnik i trener lub partner"
+      ],
+      "goal": "Przećwicz zadanie: Podanie po prowadzeniu.",
+      "setup": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
+      "steps": [
+        "Wprowadź piłkę obok znacznika i zagraj do partnera przez wyznaczone okno.",
+        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+        "Obserwuj: Celne podania / 12 prób"
+      ],
+      "regression": "Wykonaj zadanie spokojnie, z pomocą trenera.",
+      "progression": "Omów zmianę trudności z trenerem; nie dodawaj uczestników.",
+      "coaching_cues": [
+        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+        "Autorski filtr treści, nie norma rozwojowa; przy dziecku nadzór dorosłego.",
+        "Nie zastępuje gry zespołowej ani oceny trenera."
+      ],
+      "trackable_metrics": [
+        "Celne podania / 12 prób"
+      ],
+      "tags": [
+        "podanie"
+      ],
+      "provenance": {
+        "type": "autorskie_zadanie_inspirowane_koncepcja",
+        "source_refs": [
+          {
+            "source_id": "S2",
+            "pdf_page_start": 12,
+            "pdf_page_end": 14
+          },
+          {
+            "source_id": "S2",
+            "pdf_page_start": 27,
+            "pdf_page_end": 27
+          }
+        ],
+        "source_catalog": "docs/offline_coach/import_sources_v1.json",
+        "package": "baza_dziennika_pilkarza_v1"
+      }
+    },
+    {
+      "id": "v23_ex016",
+      "title": "Ruch od i do piłki",
+      "skills": [
+        "ruch_bez_pilki"
+      ],
+      "persons_total": 2,
+      "partner_role": "trener_lub_partner",
+      "equipment": [
+        "piłka",
+        "2 znaczniki"
+      ],
+      "space": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
+      "instructions": "Odejdź od partnera, zmień kierunek i pokaż linię podania. Partner podaje dopiero po pokazaniu się.",
+      "success_metric": "Podania w tempo / 10 prób",
+      "session_block_minutes": 8,
+      "work_rest": "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+      "min_age": 10,
+      "age_policy": "Autorski filtr treści, nie norma rozwojowa; przy dziecku nadzór dorosłego.",
+      "intensity": "medium",
+      "eligible_roles": [
+        "CM",
+        "ST"
+      ],
+      "phase": "individual_preparation",
+      "evidence_type": "autorskie_zadanie_inspirowane_koncepcja",
+      "source_refs": [
+        {
+          "source_id": "S2",
+          "pdf_page_start": 12,
+          "pdf_page_end": 14
+        },
+        {
+          "source_id": "S2",
+          "pdf_page_start": 27,
+          "pdf_page_end": 27
+        }
+      ],
+      "limitations": "Nie zastępuje gry zespołowej ani oceny trenera.",
+      "review_status": "do_weryfikacji_trenerskiej",
+      "import_origin": "baza_dziennika_pilkarza_v1/EX016",
+      "import_package": "baza_dziennika_pilkarza_v1",
+      "source_exercise_id": "EX016",
+      "area": "taktyka",
+      "subarea": "ruch bez piłki",
+      "journal_focus": "Decyzyjność",
+      "age_band": {
+        "min": 10,
+        "max": null
+      },
+      "duration_min": 8,
+      "source_intensity": "low_to_moderate",
+      "solo": false,
+      "participation_mode": "coach",
+      "participants_min": 2,
+      "participants_max": 2,
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik",
+        "trener lub partner"
+      ],
+      "environment_options": [
+        "zawodnik i trener lub partner"
+      ],
+      "goal": "Przećwicz zadanie: Ruch od i do piłki.",
+      "setup": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
+      "steps": [
+        "Odejdź od partnera, zmień kierunek i pokaż linię podania. Partner podaje dopiero po pokazaniu się.",
+        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+        "Obserwuj: Podania w tempo / 10 prób"
+      ],
+      "regression": "Wykonaj zadanie spokojnie, z pomocą trenera.",
+      "progression": "Omów zmianę trudności z trenerem; nie dodawaj uczestników.",
+      "coaching_cues": [
+        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+        "Autorski filtr treści, nie norma rozwojowa; przy dziecku nadzór dorosłego.",
+        "Nie zastępuje gry zespołowej ani oceny trenera."
+      ],
+      "trackable_metrics": [
+        "Podania w tempo / 10 prób"
+      ],
+      "tags": [
+        "ruch_bez_pilki"
+      ],
+      "provenance": {
+        "type": "autorskie_zadanie_inspirowane_koncepcja",
+        "source_refs": [
+          {
+            "source_id": "S2",
+            "pdf_page_start": 12,
+            "pdf_page_end": 14
+          },
+          {
+            "source_id": "S2",
+            "pdf_page_start": 27,
+            "pdf_page_end": 27
+          }
+        ],
+        "source_catalog": "docs/offline_coach/import_sources_v1.json",
+        "package": "baza_dziennika_pilkarza_v1"
+      }
+    },
+    {
+      "id": "v23_ex017",
+      "title": "Odbiór i pierwsze podanie",
+      "skills": [
+        "podanie"
+      ],
+      "persons_total": 2,
+      "partner_role": "trener_lub_partner",
+      "equipment": [
+        "piłka",
+        "cel na ścianie"
+      ],
+      "space": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
+      "instructions": "Partner spokojnie oddaje piłkę. Po przejęciu spójrz na cel i podaj do niego. To uproszczenie, bez realnego odbioru.",
+      "success_metric": "Celne pierwsze podania / 12 prób",
+      "session_block_minutes": 8,
+      "work_rest": "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+      "min_age": 10,
+      "age_policy": "Autorski filtr treści, nie norma rozwojowa; przy dziecku nadzór dorosłego.",
+      "intensity": "medium",
+      "eligible_roles": [
+        "GK",
+        "CB",
+        "FB",
+        "DM",
+        "CM",
+        "AM",
+        "WB"
+      ],
+      "phase": "individual_preparation",
+      "evidence_type": "autorskie_zadanie_inspirowane_koncepcja",
+      "source_refs": [
+        {
+          "source_id": "S2",
+          "pdf_page_start": 12,
+          "pdf_page_end": 14
+        },
+        {
+          "source_id": "S2",
+          "pdf_page_start": 27,
+          "pdf_page_end": 27
+        }
+      ],
+      "limitations": "Nie zastępuje gry zespołowej ani oceny trenera.",
+      "review_status": "do_weryfikacji_trenerskiej",
+      "import_origin": "baza_dziennika_pilkarza_v1/EX017",
+      "import_package": "baza_dziennika_pilkarza_v1",
+      "source_exercise_id": "EX017",
+      "area": "technika",
+      "subarea": "podania",
+      "journal_focus": "Prowadzenie",
+      "age_band": {
+        "min": 10,
+        "max": null
+      },
+      "duration_min": 8,
+      "source_intensity": "low_to_moderate",
+      "solo": false,
+      "participation_mode": "coach",
+      "participants_min": 2,
+      "participants_max": 2,
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik",
+        "trener lub partner"
+      ],
+      "environment_options": [
+        "zawodnik i trener lub partner"
+      ],
+      "goal": "Przećwicz zadanie: Odbiór i pierwsze podanie.",
+      "setup": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
+      "steps": [
+        "Partner spokojnie oddaje piłkę. Po przejęciu spójrz na cel i podaj do niego. To uproszczenie, bez realnego odbioru.",
+        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+        "Obserwuj: Celne pierwsze podania / 12 prób"
+      ],
+      "regression": "Wykonaj zadanie spokojnie, z pomocą trenera.",
+      "progression": "Omów zmianę trudności z trenerem; nie dodawaj uczestników.",
+      "coaching_cues": [
+        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+        "Autorski filtr treści, nie norma rozwojowa; przy dziecku nadzór dorosłego.",
+        "Nie zastępuje gry zespołowej ani oceny trenera."
+      ],
+      "trackable_metrics": [
+        "Celne pierwsze podania / 12 prób"
+      ],
+      "tags": [
+        "podanie"
+      ],
+      "provenance": {
+        "type": "autorskie_zadanie_inspirowane_koncepcja",
+        "source_refs": [
+          {
+            "source_id": "S2",
+            "pdf_page_start": 12,
+            "pdf_page_end": 14
+          },
+          {
+            "source_id": "S2",
+            "pdf_page_start": 27,
+            "pdf_page_end": 27
+          }
+        ],
+        "source_catalog": "docs/offline_coach/import_sources_v1.json",
+        "package": "baza_dziennika_pilkarza_v1"
+      }
+    },
+    {
+      "id": "v23_ex019",
+      "title": "Wybór wolnej bramki",
+      "skills": [
+        "obserwacja"
+      ],
+      "persons_total": 2,
+      "partner_role": "trener_lub_partner",
+      "equipment": [
+        "piłka",
+        "4 znaczniki"
+      ],
+      "space": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
+      "instructions": "Partner zasłania jedno wyjście. Przed przyjęciem rozpoznaj wolną stronę i poprowadź tam piłkę.",
+      "success_metric": "Trafne decyzje / 12 prób",
+      "session_block_minutes": 8,
+      "work_rest": "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+      "min_age": 10,
+      "age_policy": "Autorski filtr treści, nie norma rozwojowa; przy dziecku nadzór dorosłego.",
+      "intensity": "medium",
+      "eligible_roles": [
+        "CB",
+        "DM",
+        "CM"
+      ],
+      "phase": "individual_preparation",
+      "evidence_type": "autorskie_zadanie_inspirowane_koncepcja",
+      "source_refs": [
+        {
+          "source_id": "S2",
+          "pdf_page_start": 12,
+          "pdf_page_end": 14
+        },
+        {
+          "source_id": "S2",
+          "pdf_page_start": 27,
+          "pdf_page_end": 27
+        }
+      ],
+      "limitations": "Nie zastępuje gry zespołowej ani oceny trenera.",
+      "review_status": "do_weryfikacji_trenerskiej",
+      "import_origin": "baza_dziennika_pilkarza_v1/EX019",
+      "import_package": "baza_dziennika_pilkarza_v1",
+      "source_exercise_id": "EX019",
+      "area": "taktyka",
+      "subarea": "obserwacja",
+      "journal_focus": "Decyzyjność",
+      "age_band": {
+        "min": 10,
+        "max": null
+      },
+      "duration_min": 8,
+      "source_intensity": "low_to_moderate",
+      "solo": false,
+      "participation_mode": "coach",
+      "participants_min": 2,
+      "participants_max": 2,
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik",
+        "trener lub partner"
+      ],
+      "environment_options": [
+        "zawodnik i trener lub partner"
+      ],
+      "goal": "Przećwicz zadanie: Wybór wolnej bramki.",
+      "setup": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
+      "steps": [
+        "Partner zasłania jedno wyjście. Przed przyjęciem rozpoznaj wolną stronę i poprowadź tam piłkę.",
+        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+        "Obserwuj: Trafne decyzje / 12 prób"
+      ],
+      "regression": "Wykonaj zadanie spokojnie, z pomocą trenera.",
+      "progression": "Omów zmianę trudności z trenerem; nie dodawaj uczestników.",
+      "coaching_cues": [
+        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+        "Autorski filtr treści, nie norma rozwojowa; przy dziecku nadzór dorosłego.",
+        "Nie zastępuje gry zespołowej ani oceny trenera."
+      ],
+      "trackable_metrics": [
+        "Trafne decyzje / 12 prób"
+      ],
+      "tags": [
+        "obserwacja"
+      ],
+      "provenance": {
+        "type": "autorskie_zadanie_inspirowane_koncepcja",
+        "source_refs": [
+          {
+            "source_id": "S2",
+            "pdf_page_start": 12,
+            "pdf_page_end": 14
+          },
+          {
+            "source_id": "S2",
+            "pdf_page_start": 27,
+            "pdf_page_end": 27
+          }
+        ],
+        "source_catalog": "docs/offline_coach/import_sources_v1.json",
+        "package": "baza_dziennika_pilkarza_v1"
+      }
+    },
+    {
+      "id": "v23_ex020",
+      "title": "Komunikat przed podaniem",
+      "skills": [
+        "komunikacja"
+      ],
+      "persons_total": 2,
+      "partner_role": "trener_lub_partner",
+      "equipment": [
+        "piłka",
+        "2 znaczniki"
+      ],
+      "space": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
+      "instructions": "Przed podaniem nazwij wybraną stronę. Partner potwierdza odbiór komunikatu i odgrywa piłkę.",
+      "success_metric": "Zrozumiane komunikaty / 12 prób",
+      "session_block_minutes": 8,
+      "work_rest": "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+      "min_age": 10,
+      "age_policy": "Autorski filtr treści, nie norma rozwojowa; przy dziecku nadzór dorosłego.",
+      "intensity": "medium",
+      "eligible_roles": [
+        "GK"
+      ],
+      "phase": "individual_preparation",
+      "evidence_type": "autorskie_zadanie_inspirowane_koncepcja",
+      "source_refs": [
+        {
+          "source_id": "S2",
+          "pdf_page_start": 12,
+          "pdf_page_end": 14
+        },
+        {
+          "source_id": "S2",
+          "pdf_page_start": 27,
+          "pdf_page_end": 27
+        }
+      ],
+      "limitations": "Nie zastępuje gry zespołowej ani oceny trenera.",
+      "review_status": "do_weryfikacji_trenerskiej",
+      "import_origin": "baza_dziennika_pilkarza_v1/EX020",
+      "import_package": "baza_dziennika_pilkarza_v1",
+      "source_exercise_id": "EX020",
+      "area": "taktyka",
+      "subarea": "komunikacja",
+      "journal_focus": "Decyzyjność",
+      "age_band": {
+        "min": 10,
+        "max": null
+      },
+      "duration_min": 8,
+      "source_intensity": "low_to_moderate",
+      "solo": false,
+      "participation_mode": "coach",
+      "participants_min": 2,
+      "participants_max": 2,
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik",
+        "trener lub partner"
+      ],
+      "environment_options": [
+        "zawodnik i trener lub partner"
+      ],
+      "goal": "Przećwicz zadanie: Komunikat przed podaniem.",
+      "setup": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
+      "steps": [
+        "Przed podaniem nazwij wybraną stronę. Partner potwierdza odbiór komunikatu i odgrywa piłkę.",
+        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+        "Obserwuj: Zrozumiane komunikaty / 12 prób"
+      ],
+      "regression": "Wykonaj zadanie spokojnie, z pomocą trenera.",
+      "progression": "Omów zmianę trudności z trenerem; nie dodawaj uczestników.",
+      "coaching_cues": [
+        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+        "Autorski filtr treści, nie norma rozwojowa; przy dziecku nadzór dorosłego.",
+        "Nie zastępuje gry zespołowej ani oceny trenera."
+      ],
+      "trackable_metrics": [
+        "Zrozumiane komunikaty / 12 prób"
+      ],
+      "tags": [
+        "komunikacja"
+      ],
+      "provenance": {
+        "type": "autorskie_zadanie_inspirowane_koncepcja",
+        "source_refs": [
+          {
+            "source_id": "S2",
+            "pdf_page_start": 12,
+            "pdf_page_end": 14
+          },
+          {
+            "source_id": "S2",
+            "pdf_page_start": 27,
+            "pdf_page_end": 27
+          }
+        ],
+        "source_catalog": "docs/offline_coach/import_sources_v1.json",
+        "package": "baza_dziennika_pilkarza_v1"
+      }
+    },
+    {
+      "id": "v23_ex021",
+      "title": "Równowaga z piłką",
+      "skills": [
+        "koordynacja"
+      ],
+      "persons_total": 1,
+      "partner_role": null,
+      "equipment": [
+        "piłka"
+      ],
+      "space": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
+      "instructions": "Przenoś ciężar ciała i zatrzymuj piłkę podeszwą naprzemiennie. Utrzymuj spokojne tempo i stabilność.",
+      "success_metric": "Poprawne zatrzymania / 20 prób",
+      "session_block_minutes": 8,
+      "work_rest": "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+      "min_age": 8,
+      "age_policy": "Autorski filtr treści, nie norma rozwojowa; przy dziecku nadzór dorosłego.",
+      "intensity": "medium",
+      "eligible_roles": [
+        "ALL"
+      ],
+      "phase": "individual_preparation",
+      "evidence_type": "autorskie_zadanie_inspirowane_koncepcja",
+      "source_refs": [
+        {
+          "source_id": "S6",
+          "pdf_page_start": 207,
+          "pdf_page_end": 207
+        }
+      ],
+      "limitations": "Nie zastępuje gry zespołowej ani oceny trenera.",
+      "review_status": "do_weryfikacji_trenerskiej",
+      "import_origin": "baza_dziennika_pilkarza_v1/EX021",
+      "import_package": "baza_dziennika_pilkarza_v1",
+      "source_exercise_id": "EX021",
+      "area": "motoryka",
+      "subarea": "koordynacja",
+      "journal_focus": "Siła",
+      "age_band": {
+        "min": 8,
+        "max": null
+      },
+      "duration_min": 8,
+      "source_intensity": "low_to_moderate",
+      "solo": true,
+      "participation_mode": "solo",
+      "participants_min": 1,
+      "participants_max": 1,
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik"
+      ],
+      "environment_options": [
+        "samodzielnie"
+      ],
+      "goal": "Przećwicz zadanie: Równowaga z piłką.",
+      "setup": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
+      "steps": [
+        "Przenoś ciężar ciała i zatrzymuj piłkę podeszwą naprzemiennie. Utrzymuj spokojne tempo i stabilność.",
+        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+        "Obserwuj: Poprawne zatrzymania / 20 prób"
+      ],
+      "regression": "Wykonaj zadanie spokojnie, z pomocą trenera.",
+      "progression": "Omów zmianę trudności z trenerem; nie dodawaj uczestników.",
+      "coaching_cues": [
+        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+        "Autorski filtr treści, nie norma rozwojowa; przy dziecku nadzór dorosłego.",
+        "Nie zastępuje gry zespołowej ani oceny trenera."
+      ],
+      "trackable_metrics": [
+        "Poprawne zatrzymania / 20 prób"
+      ],
+      "tags": [
+        "koordynacja"
+      ],
+      "provenance": {
+        "type": "autorskie_zadanie_inspirowane_koncepcja",
+        "source_refs": [
+          {
+            "source_id": "S6",
+            "pdf_page_start": 207,
+            "pdf_page_end": 207
+          }
+        ],
+        "source_catalog": "docs/offline_coach/import_sources_v1.json",
+        "package": "baza_dziennika_pilkarza_v1"
+      }
+    },
+    {
+      "id": "v23_ex024",
+      "title": "Dokładność bez pośpiechu",
+      "skills": [
+        "przyjecie"
+      ],
+      "persons_total": 1,
+      "partner_role": null,
+      "equipment": [
+        "piłka",
+        "ściana"
+      ],
+      "space": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
+      "instructions": "Odbij piłkę i zatrzymaj ją w oznaczonym polu. Wybierz tempo pozwalające utrzymać jakość.",
+      "success_metric": "Celne zatrzymania / 20 prób",
+      "session_block_minutes": 8,
+      "work_rest": "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+      "min_age": 8,
+      "age_policy": "Autorski filtr treści, nie norma rozwojowa; przy dziecku nadzór dorosłego.",
+      "intensity": "medium",
+      "eligible_roles": [
+        "GK",
+        "DM",
+        "AM",
+        "ST"
+      ],
+      "phase": "individual_preparation",
+      "evidence_type": "autorskie_zadanie_inspirowane_koncepcja",
+      "source_refs": [
+        {
+          "source_id": "S2",
+          "pdf_page_start": 12,
+          "pdf_page_end": 14
+        },
+        {
+          "source_id": "S2",
+          "pdf_page_start": 27,
+          "pdf_page_end": 27
+        }
+      ],
+      "limitations": "Nie zastępuje gry zespołowej ani oceny trenera.",
+      "review_status": "do_weryfikacji_trenerskiej",
+      "import_origin": "baza_dziennika_pilkarza_v1/EX024",
+      "import_package": "baza_dziennika_pilkarza_v1",
+      "source_exercise_id": "EX024",
+      "area": "technika",
+      "subarea": "przyjęcie",
+      "journal_focus": "Prowadzenie",
+      "age_band": {
+        "min": 8,
+        "max": null
+      },
+      "duration_min": 8,
+      "source_intensity": "low_to_moderate",
+      "solo": true,
+      "participation_mode": "solo",
+      "participants_min": 1,
+      "participants_max": 1,
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik"
+      ],
+      "environment_options": [
+        "samodzielnie"
+      ],
+      "goal": "Przećwicz zadanie: Dokładność bez pośpiechu.",
+      "setup": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
+      "steps": [
+        "Odbij piłkę i zatrzymaj ją w oznaczonym polu. Wybierz tempo pozwalające utrzymać jakość.",
+        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+        "Obserwuj: Celne zatrzymania / 20 prób"
+      ],
+      "regression": "Wykonaj zadanie spokojnie, z pomocą trenera.",
+      "progression": "Omów zmianę trudności z trenerem; nie dodawaj uczestników.",
+      "coaching_cues": [
+        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+        "Autorski filtr treści, nie norma rozwojowa; przy dziecku nadzór dorosłego.",
+        "Nie zastępuje gry zespołowej ani oceny trenera."
+      ],
+      "trackable_metrics": [
+        "Celne zatrzymania / 20 prób"
+      ],
+      "tags": [
+        "przyjecie"
+      ],
+      "provenance": {
+        "type": "autorskie_zadanie_inspirowane_koncepcja",
+        "source_refs": [
+          {
+            "source_id": "S2",
+            "pdf_page_start": 12,
+            "pdf_page_end": 14
+          },
+          {
+            "source_id": "S2",
+            "pdf_page_start": 27,
+            "pdf_page_end": 27
+          }
+        ],
+        "source_catalog": "docs/offline_coach/import_sources_v1.json",
+        "package": "baza_dziennika_pilkarza_v1"
+      }
+    },
+    {
+      "id": "v23_ex029",
+      "title": "Zrozumieć rolę wahadłowego",
+      "skills": [
+        "taktyka"
+      ],
+      "persons_total": 1,
+      "partner_role": null,
+      "equipment": [
+        "kartka lub ekran boiska"
+      ],
+      "space": "Kartka/ekran",
+      "instructions": "Narysuj własne ustawienie z piłką i po jej stracie. Zaznacz partnera, z którym musisz uzgodnić asekurację.",
+      "success_metric": "Dwa szkice; omówienie z trenerem",
+      "session_block_minutes": 5,
+      "work_rest": "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+      "min_age": 8,
+      "age_policy": "Autorski filtr treści, nie norma rozwojowa; przy dziecku nadzór dorosłego.",
+      "intensity": "low",
+      "eligible_roles": [
+        "ALL"
+      ],
+      "phase": "reflection",
+      "evidence_type": "autorskie_zadanie_inspirowane_koncepcja",
+      "source_refs": [
+        {
+          "source_id": "S4",
+          "pdf_page_start": 24,
+          "pdf_page_end": 24
+        }
+      ],
+      "limitations": "Nie zastępuje gry zespołowej ani oceny trenera.",
+      "review_status": "do_weryfikacji_trenerskiej",
+      "import_origin": "baza_dziennika_pilkarza_v1/EX029",
+      "import_package": "baza_dziennika_pilkarza_v1",
+      "source_exercise_id": "EX029",
+      "area": "taktyka",
+      "subarea": "rozumienie gry",
+      "journal_focus": "Decyzyjność",
+      "age_band": {
+        "min": 8,
+        "max": null
+      },
+      "duration_min": 5,
+      "source_intensity": "none",
+      "solo": true,
+      "participation_mode": "solo",
+      "participants_min": 1,
+      "participants_max": 1,
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik"
+      ],
+      "environment_options": [
+        "samodzielnie"
+      ],
+      "goal": "Przećwicz zadanie: Zrozumieć rolę wahadłowego.",
+      "setup": "Kartka/ekran",
+      "steps": [
+        "Narysuj własne ustawienie z piłką i po jej stracie. Zaznacz partnera, z którym musisz uzgodnić asekurację.",
+        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+        "Obserwuj: Dwa szkice; omówienie z trenerem"
+      ],
+      "regression": "Wykonaj zadanie spokojnie, z pomocą trenera.",
+      "progression": "Omów zmianę trudności z trenerem; nie dodawaj uczestników.",
+      "coaching_cues": [
+        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+        "Autorski filtr treści, nie norma rozwojowa; przy dziecku nadzór dorosłego.",
+        "Nie zastępuje gry zespołowej ani oceny trenera."
+      ],
+      "trackable_metrics": [
+        "Dwa szkice; omówienie z trenerem"
+      ],
+      "tags": [
+        "taktyka"
+      ],
+      "provenance": {
+        "type": "autorskie_zadanie_inspirowane_koncepcja",
+        "source_refs": [
+          {
+            "source_id": "S4",
+            "pdf_page_start": 24,
+            "pdf_page_end": 24
+          }
+        ],
+        "source_catalog": "docs/offline_coach/import_sources_v1.json",
+        "package": "baza_dziennika_pilkarza_v1"
+      }
+    },
+    {
+      "id": "v23_ex030",
+      "title": "Współpraca między liniami",
+      "skills": [
+        "taktyka"
+      ],
+      "persons_total": 1,
+      "partner_role": null,
+      "equipment": [
+        "kartka lub własne nagranie meczu"
+      ],
+      "space": "Kartka/ekran",
+      "instructions": "Zatrzymaj obraz przed podaniem. Wskaż możliwą linię podania i ruch partnera. Sprawdź pomysł z trenerem.",
+      "success_metric": "Trzy opisane sytuacje",
+      "session_block_minutes": 5,
+      "work_rest": "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+      "min_age": 8,
+      "age_policy": "Autorski filtr treści, nie norma rozwojowa; przy dziecku nadzór dorosłego.",
+      "intensity": "low",
+      "eligible_roles": [
+        "ALL"
+      ],
+      "phase": "reflection",
+      "evidence_type": "autorskie_zadanie_inspirowane_koncepcja",
+      "source_refs": [
+        {
+          "source_id": "S3",
+          "pdf_page_start": 9,
+          "pdf_page_end": 10
+        }
+      ],
+      "limitations": "Nie zastępuje gry zespołowej ani oceny trenera.",
+      "review_status": "do_weryfikacji_trenerskiej",
+      "import_origin": "baza_dziennika_pilkarza_v1/EX030",
+      "import_package": "baza_dziennika_pilkarza_v1",
+      "source_exercise_id": "EX030",
+      "area": "taktyka",
+      "subarea": "rozumienie gry",
+      "journal_focus": "Decyzyjność",
+      "age_band": {
+        "min": 8,
+        "max": null
+      },
+      "duration_min": 5,
+      "source_intensity": "none",
+      "solo": true,
+      "participation_mode": "solo",
+      "participants_min": 1,
+      "participants_max": 1,
+      "requires_team": false,
+      "required_human_roles": [
+        "zawodnik"
+      ],
+      "environment_options": [
+        "samodzielnie"
+      ],
+      "goal": "Przećwicz zadanie: Współpraca między liniami.",
+      "setup": "Kartka/ekran",
+      "steps": [
+        "Zatrzymaj obraz przed podaniem. Wskaż możliwą linię podania i ruch partnera. Sprawdź pomysł z trenerem.",
+        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+        "Obserwuj: Trzy opisane sytuacje"
+      ],
+      "regression": "Wykonaj zadanie spokojnie, z pomocą trenera.",
+      "progression": "Omów zmianę trudności z trenerem; nie dodawaj uczestników.",
+      "coaching_cues": [
+        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
+        "Autorski filtr treści, nie norma rozwojowa; przy dziecku nadzór dorosłego.",
+        "Nie zastępuje gry zespołowej ani oceny trenera."
+      ],
+      "trackable_metrics": [
+        "Trzy opisane sytuacje"
+      ],
+      "tags": [
+        "taktyka"
+      ],
+      "provenance": {
+        "type": "autorskie_zadanie_inspirowane_koncepcja",
+        "source_refs": [
+          {
+            "source_id": "S3",
+            "pdf_page_start": 9,
+            "pdf_page_end": 10
+          }
+        ],
+        "source_catalog": "docs/offline_coach/import_sources_v1.json",
+        "package": "baza_dziennika_pilkarza_v1"
+      }
     }
   ],
   "new_exercises_v2_1": {
@@ -3517,5 +5738,8 @@
     ],
     "maximum_human_participants": 2,
     "note": "Ćwiczenia oparte na grach grupowych są wariantami indywidualnymi; nie odtwarzają w pełni zespołowego kontekstu taktycznego."
-  }
+  },
+  "import_packages": [
+    "baza_dziennika_pilkarza_v1"
+  ]
 }

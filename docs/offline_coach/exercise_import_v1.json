@@ -1,0 +1,158 @@
+{
+  "package": "baza_dziennika_pilkarza_v1",
+  "package_sha256": "6610d1ef2c830c749419cea14c78d3e74723ba25832dad976dc2b770e7031f06",
+  "incoming_count": 30,
+  "canonical_count": 72,
+  "entries": [
+    {
+      "incoming_id": "EX001",
+      "canonical_id": "tech_first_touch",
+      "action": "merged"
+    },
+    {
+      "incoming_id": "EX002",
+      "canonical_id": "v21_scan_number",
+      "action": "merged"
+    },
+    {
+      "incoming_id": "EX003",
+      "canonical_id": "tech_passing_gates",
+      "action": "merged"
+    },
+    {
+      "incoming_id": "EX004",
+      "canonical_id": "tac_support_angle",
+      "action": "merged"
+    },
+    {
+      "incoming_id": "EX005",
+      "canonical_id": "v23_ex005",
+      "action": "added"
+    },
+    {
+      "incoming_id": "EX006",
+      "canonical_id": "v23_ex006",
+      "action": "added"
+    },
+    {
+      "incoming_id": "EX007",
+      "canonical_id": "tech_dribble_accel",
+      "action": "merged"
+    },
+    {
+      "incoming_id": "EX008",
+      "canonical_id": "tech_1v1_gate",
+      "action": "merged"
+    },
+    {
+      "incoming_id": "EX009",
+      "canonical_id": "tac_defend_channel",
+      "action": "merged"
+    },
+    {
+      "incoming_id": "EX010",
+      "canonical_id": "v23_ex010",
+      "action": "added"
+    },
+    {
+      "incoming_id": "EX011",
+      "canonical_id": "tech_finish_zones",
+      "action": "merged"
+    },
+    {
+      "incoming_id": "EX012",
+      "canonical_id": "tac_finish_after_combination",
+      "action": "merged"
+    },
+    {
+      "incoming_id": "EX013",
+      "canonical_id": "tech_weak_foot",
+      "action": "merged"
+    },
+    {
+      "incoming_id": "EX014",
+      "canonical_id": "v21_wall_gate_switch",
+      "action": "merged"
+    },
+    {
+      "incoming_id": "EX015",
+      "canonical_id": "v23_ex015",
+      "action": "added"
+    },
+    {
+      "incoming_id": "EX016",
+      "canonical_id": "v23_ex016",
+      "action": "added"
+    },
+    {
+      "incoming_id": "EX017",
+      "canonical_id": "v23_ex017",
+      "action": "added"
+    },
+    {
+      "incoming_id": "EX018",
+      "canonical_id": "tac_transition_3v2",
+      "action": "merged"
+    },
+    {
+      "incoming_id": "EX019",
+      "canonical_id": "v23_ex019",
+      "action": "added"
+    },
+    {
+      "incoming_id": "EX020",
+      "canonical_id": "v23_ex020",
+      "action": "added"
+    },
+    {
+      "incoming_id": "EX021",
+      "canonical_id": "v23_ex021",
+      "action": "added"
+    },
+    {
+      "incoming_id": "EX022",
+      "canonical_id": "phy_coordination_ladder",
+      "action": "merged"
+    },
+    {
+      "incoming_id": "EX023",
+      "canonical_id": "phy_dynamic_warmup",
+      "action": "merged"
+    },
+    {
+      "incoming_id": "EX024",
+      "canonical_id": "v23_ex024",
+      "action": "added"
+    },
+    {
+      "incoming_id": "EX025",
+      "canonical_id": "men_pre_session_goal",
+      "action": "merged"
+    },
+    {
+      "incoming_id": "EX026",
+      "canonical_id": "men_reset_after_error",
+      "action": "merged"
+    },
+    {
+      "incoming_id": "EX027",
+      "canonical_id": "men_confidence_evidence",
+      "action": "merged"
+    },
+    {
+      "incoming_id": "EX028",
+      "canonical_id": "men_post_session_reflection",
+      "action": "merged"
+    },
+    {
+      "incoming_id": "EX029",
+      "canonical_id": "v23_ex029",
+      "action": "added"
+    },
+    {
+      "incoming_id": "EX030",
+      "canonical_id": "v23_ex030",
+      "action": "added"
+    }
+  ]
+}
