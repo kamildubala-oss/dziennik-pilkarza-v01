@@ -9,6 +9,7 @@ import '../resource.dart';
 import '../theme.dart';
 import '../utils.dart';
 import '../widgets/common.dart';
+import '../services/drill_batch.dart';
 import 'drill_screen.dart';
 import 'training_details_screen.dart';
 
@@ -49,6 +50,7 @@ class _CoachScreenState extends State<CoachScreen> {
   late final Resource<Map<String, EventItem>> _planEvents =
       Resource<Map<String, EventItem>>(Api.planEvents, _rebuild);
   bool _addingWeek = false;
+  final DrillBatch _drillBatch = DrillBatch();
 
   final TextEditingController _input = TextEditingController();
   final ScrollController _scroll = ScrollController();
@@ -215,7 +217,7 @@ class _CoachScreenState extends State<CoachScreen> {
         Expanded(
           child: SingleChildScrollView(
             controller: _scroll,
-            padding: EdgeInsets.fromLTRB(Sp.lg, top + Sp.md, Sp.lg, Sp.xxxl),
+            padding: EdgeInsets.fromLTRB(Sp.lg, top + 4, Sp.lg, Sp.xxxl),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -281,9 +283,14 @@ class _CoachScreenState extends State<CoachScreen> {
                 ],
 
                 // ---------- Gotowe treningi ----------
-                const Padding(
-                  padding: EdgeInsets.only(top: Sp.sm),
-                  child: SectionTitle('GOTOWE TRENINGI'),
+                Padding(
+                  padding: const EdgeInsets.only(top: Sp.sm),
+                  child: Row(children: [
+                    const Expanded(child: SectionTitle('GOTOWE TRENINGI')),
+                    const SizedBox(width: Sp.sm),
+                    _planAction(c, true, forDrills: true, onTap: (_drills.data?.length ?? 0) > 7
+                      ? () => setState(() => _drillBatch.next(_drills.data!)) : null),
+                  ]),
                 ),
                 _drillsRail(c),
 
@@ -327,14 +334,14 @@ class _CoachScreenState extends State<CoachScreen> {
                   gradient: LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
-                    colors: <Color>[Color(0x4D0F1115), Color(0xF20F1115)],
+                    colors: <Color>[Color(0xC40F1115), Color(0xF20F1115)],
                   ),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.all(Sp.lg),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
@@ -343,27 +350,27 @@ class _CoachScreenState extends State<CoachScreen> {
                         size: 11,
                         weight: FontWeight.w800,
                         letterSpacing: 1.8,
-                        color: c.brandPrimary,
+                        color: const Color(0xFFD4FF26),
                       ),
                     ),
                     Text(
                       source == 'online' ? 'Online' : source == 'offline' ? 'Offline' : 'Połączenie jeszcze niesprawdzone',
                       style: manrope(size: 14, weight: FontWeight.w800,
-                        color: source == 'online' ? Colors.greenAccent : source == 'offline' ? Colors.redAccent : c.muted),
+                        color: source == 'online' ? Colors.greenAccent : source == 'offline' ? Colors.redAccent : Colors.white70),
                     ),
                     if (execution != null) Text(
                       'Ostatni wynik: ${execution.operation} · ${CoachRuntime.dateLabel(execution.createdAt)}',
-                      style: manrope(size: 11, color: c.muted),
+                      style: manrope(size: 11, color: Colors.white70),
                     ),
                     const SizedBox(height: 2),
                     Text(
                       'Trener indywidualny',
-                      style: barlow(size: 28, color: c.onSurface),
+                      style: barlow(size: 28, color: Colors.white),
                     ),
                     const SizedBox(height: 4),
                     Text(
                       'Indywidualny trening · Rozwój umiejętności',
-                      style: manrope(size: 12, color: c.muted),
+                      style: manrope(size: 12, color: Colors.white70),
                     ),
                   ],
                 ),
@@ -375,19 +382,20 @@ class _CoachScreenState extends State<CoachScreen> {
     );
   }
 
-  Widget _planAction(AppColors c, bool hasPlan) {
+  Widget _planAction(AppColors c, bool hasPlan, {VoidCallback? onTap, bool forDrills = false}) {
+    final busy = !forDrills && _generating;
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
-      onTap: _generating ? null : _generatePlan,
+      onTap: forDrills ? onTap : (busy ? null : _generatePlan),
       child: Opacity(
-        opacity: _generating ? 0.6 : 1,
+        opacity: busy ? 0.6 : 1,
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
           decoration: BoxDecoration(
             color: c.brandPrimary,
             borderRadius: BorderRadius.circular(Rad.pill),
           ),
-          child: _generating
+          child: busy
               ? Spinner(color: c.onBrandPrimary)
               : Row(
                   mainAxisSize: MainAxisSize.min,
@@ -591,8 +599,9 @@ class _CoachScreenState extends State<CoachScreen> {
   }
 
   Widget _drillsRail(AppColors c) {
-    final drills = _drills.data ?? <Drill>[];
+    final drills = _drillBatch.current(_drills.data ?? <Drill>[]);
     return SingleChildScrollView(
+      key: ValueKey(drills.map((d) => d.id).join(',')),
       scrollDirection: Axis.horizontal,
       padding: const EdgeInsets.symmetric(vertical: Sp.sm),
       child: IntrinsicHeight(

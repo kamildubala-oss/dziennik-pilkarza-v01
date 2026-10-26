@@ -44,6 +44,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
   );
 
   bool _analyzing = false;
+  bool _badgesExpanded = false;
 
   void _rebuild() {
     if (mounted) setState(() {});
@@ -354,7 +355,20 @@ class _ProgressScreenState extends State<ProgressScreen> {
 
       // ---------- Odznaki: realizacja i regeneracja zamiast treningu codziennie ----------
       _section('ODZNAKI'),
-      Column(
+      InkWell(
+        borderRadius: BorderRadius.circular(Rad.md),
+        onTap: () => setState(() => _badgesExpanded = !_badgesExpanded),
+        child: Row(children: [
+          Expanded(child: _badge(c,
+            active: (stats?.latestBadgeTitle ?? '').isNotEmpty,
+            icon: Icons.emoji_events,
+            title: (stats?.latestBadgeTitle ?? '').isNotEmpty
+              ? stats!.latestBadgeTitle : 'Twoja pierwsza odznaka czeka',
+            sub: _badgesExpanded ? 'Zwiń odznaki' : 'Dotknij, aby zobaczyć wszystkie odznaki')),
+          Icon(_badgesExpanded ? Icons.expand_less : Icons.expand_more, color: c.muted),
+        ]),
+      ),
+      if (_badgesExpanded) Column(
         children: withGap([
           _badge(c, active: (stats?.totalTrainings ?? 0) >= 1,
               icon: Icons.sports_score, title: 'Pierwszy trening',
