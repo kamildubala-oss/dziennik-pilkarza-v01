@@ -16,6 +16,7 @@ const List<String> _focusOptions = <String>[
   'Decyzyjność',
   'Siła',
   'Mentalność',
+  'Gierka',
 ];
 const List<String> _intensities = <String>['low', 'medium', 'high'];
 
