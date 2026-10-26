@@ -346,6 +346,7 @@ class Progress {
     required this.skillRadarRecent,
     required this.weekSessions,
     this.weekSessionTypes = const <Map<String, int>>[],
+    this.latestBadgeTitle = '',
     this.bestMatchGoals = 0,
     this.hasTopRating = false,
     this.completedPlanWeek = false,
@@ -363,6 +364,7 @@ class Progress {
   final Map<String, int> skillRadarRecent;
   final List<int> weekSessions;
   final List<Map<String, int>> weekSessionTypes;
+  final String latestBadgeTitle;
   final int bestMatchGoals;
   final bool hasTopRating;
   final bool completedPlanWeek;
@@ -371,6 +373,7 @@ class Progress {
     final rawWeek = j['week_sessions'];
     final rawTypes = j['week_session_types'];
     return Progress(
+      latestBadgeTitle: _asString(j['latest_badge_title']),
       bestMatchGoals: _asInt(j['best_match_goals']),
       hasTopRating: j['has_top_rating'] == true,
       completedPlanWeek: j['completed_plan_week'] == true,
@@ -453,6 +456,8 @@ class Profile {
     required this.seasonGoal,
     required this.theme,
     required this.updatedAt,
+    this.jerseyColor = 0xFF2563EB,
+    this.jerseyNumberColor = 0xFFFFFFFF,
     this.clubDays = const <int>[],
     this.clubTime = '',
     this.clubDurationMin = 90,
@@ -464,6 +469,8 @@ class Profile {
   final String dominantFoot;
   final String club;
   final int? jerseyNumber;
+  final int jerseyColor;
+  final int jerseyNumberColor;
   final String seasonGoal;
   final String theme;
   final String updatedAt;
@@ -484,6 +491,8 @@ class Profile {
         dominantFoot: _asString(j['dominant_foot']),
         club: _asString(j['club']),
         jerseyNumber: _asIntOrNull(j['jersey_number']),
+        jerseyColor: _asInt(j['jersey_color'], 0xFF2563EB),
+        jerseyNumberColor: _asInt(j['jersey_number_color'], 0xFFFFFFFF),
         seasonGoal: _asString(j['season_goal']),
         theme: _asString(j['theme']),
         updatedAt: _asString(j['updated_at']),
@@ -499,6 +508,8 @@ class Profile {
         'dominant_foot': dominantFoot,
         'club': club,
         'jersey_number': jerseyNumber,
+        'jersey_color': jerseyColor,
+        'jersey_number_color': jerseyNumberColor,
         'season_goal': seasonGoal,
         'theme': theme,
         'updated_at': updatedAt,

@@ -7,6 +7,7 @@ import '../resource.dart';
 import '../theme.dart';
 import '../utils.dart';
 import '../widgets/common.dart';
+import '../widgets/player_jersey.dart';
 import 'add_event_screen.dart';
 import 'profile_screen.dart';
 import 'training_details_screen.dart';
@@ -209,6 +210,10 @@ class _DiaryScreenState extends State<DiaryScreen> {
               padding: const EdgeInsets.only(bottom: Sp.lg),
               child: Row(
                 children: [
+                  PlayerJersey(number: _profile.data?.jerseyNumber,
+                    color: Color(_profile.data?.jerseyColor ?? 0xFF2563EB),
+                    numberColor: Color(_profile.data?.jerseyNumberColor ?? 0xFFFFFFFF)),
+                  const SizedBox(width: Sp.sm),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,

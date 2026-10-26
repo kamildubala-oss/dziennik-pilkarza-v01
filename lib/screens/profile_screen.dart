@@ -10,6 +10,7 @@ import '../utils.dart';
 import 'ai_key_screen.dart';
 import 'export_screen.dart';
 import '../widgets/common.dart';
+import '../widgets/player_jersey.dart';
 
 const List<String> _positions = <String>[
   'Bramkarz',
@@ -45,6 +46,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final TextEditingController _clubDuration = TextEditingController(text: '90');
   final Set<int> _clubDays = <int>{};
 
+  int _jerseyColor = 0xFF2563EB;
+  int _numberColor = 0xFFFFFFFF;
   String _position = '';
   String _foot = '';
   bool _loading = true;
@@ -54,6 +57,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void initState() {
     super.initState();
     _name.addListener(_onNameChanged);
+    _jersey.addListener(_onNameChanged);
     _load();
   }
 
@@ -64,6 +68,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void dispose() {
     _name.removeListener(_onNameChanged);
+    _jersey.removeListener(_onNameChanged);
     _name.dispose();
     _age.dispose();
     _jersey.dispose();
@@ -81,6 +86,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
       _name.text = p.name;
       _age.text = p.age != null ? '${p.age}' : '';
       _jersey.text = p.jerseyNumber != null ? '${p.jerseyNumber}' : '';
+      _jerseyColor = p.jerseyColor;
+      _numberColor = p.jerseyNumberColor;
       _club.text = p.club;
       _goal.text = p.seasonGoal;
       _position = p.position;
@@ -94,6 +101,34 @@ class _ProfileScreenState extends State<ProfileScreen> {
       // Jak w wersji React - przy błędzie formularz jest po prostu pusty.
     }
     if (mounted) setState(() => _loading = false);
+  }
+
+  Widget _colorChoice(String label, int value, ValueChanged<int> onChanged) {
+    return OutlinedButton(
+      onPressed: () async {
+        final selected = await showDialog<int>(context: context,
+          builder: (context) => AlertDialog(
+            title: Text('Kolor: $label'),
+            content: Wrap(spacing: 8, runSpacing: 8, children: [
+              for (final color in jerseyPalette)
+                Semantics(label: color.name, selected: value == color.value,
+                  child: InkWell(onTap: () => Navigator.pop(context, color.value),
+                    child: Container(width: 44, height: 44,
+                      decoration: BoxDecoration(color: Color(color.value), shape: BoxShape.circle,
+                        border: Border.all(color: context.c.muted)),
+                      child: value == color.value ? Icon(Icons.check,
+                        color: Color(color.value).computeLuminance() > 0.5 ? Colors.black : Colors.white) : null))),
+            ]),
+            actions: [TextButton(onPressed: () => Navigator.pop(context), child: const Text('Anuluj'))],
+          ));
+        if (selected != null && mounted) onChanged(selected);
+      },
+      child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+        Container(width: 18, height: 18, decoration: BoxDecoration(color: Color(value),
+          shape: BoxShape.circle, border: Border.all(color: context.c.muted))),
+        const SizedBox(width: 6), Flexible(child: Text(label, maxLines: 1)),
+      ]),
+    );
   }
 
   Future<void> _save() async {
@@ -113,6 +148,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
           jerseyNumber: _jersey.text.trim().isNotEmpty
               ? int.tryParse(_jersey.text.trim())
               : null,
+          jerseyColor: _jerseyColor,
+          jerseyNumberColor: _numberColor,
           seasonGoal: _goal.text.trim(),
           theme: pref.name,
           updatedAt: DateTime.now().toUtc().toIso8601String(),
@@ -170,21 +207,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       padding: const EdgeInsets.only(bottom: Sp.xl),
                       child: Row(
                         children: [
-                          Container(
-                            width: 64,
-                            height: 64,
-                            decoration: BoxDecoration(
-                              color: c.brandPrimary,
-                              shape: BoxShape.circle,
-                            ),
-                            alignment: Alignment.center,
-                            child: Text(
-                              (name.isNotEmpty ? name : 'P')
-                                  .substring(0, 1)
-                                  .toUpperCase(),
-                              style: barlow(size: 28, color: c.onBrandPrimary),
-                            ),
-                          ),
+                          PlayerJersey(size: 64, number: int.tryParse(_jersey.text),
+                            color: Color(_jerseyColor), numberColor: Color(_numberColor)),
                           const SizedBox(width: Sp.md),
                           Expanded(
                             child: Column(
@@ -292,6 +316,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ),
 
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: Sp.md),
+                      child: Row(children: [
+                        Expanded(child: _colorChoice('Koszulka', _jerseyColor,
+                          (value) => setState(() => _jerseyColor = value))),
+                        const SizedBox(width: Sp.sm),
+                        Expanded(child: _colorChoice('Numer', _numberColor,
+                          (value) => setState(() => _numberColor = value))),
+                      ]),
+                    ),
                     // ---------- Treningi klubowe ----------
                     const Padding(
                       padding: EdgeInsets.only(top: Sp.sm, bottom: Sp.sm),

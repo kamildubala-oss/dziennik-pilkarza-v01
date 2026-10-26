@@ -29,6 +29,7 @@ class ProgressCalculator {
     );
     final weekSessions = <int>[for (var i = 6; i >= 0; i--) trainings.where((t) => day(t) == dayAgo(i)).length + matches.where((m) => day(m) == dayAgo(i)).length];
     return Progress.fromJson(<String, dynamic>{
+      'latest_badge_title': AchievementService.latestBadgeTitle(history, trainings, matches, asOf: now),
       'best_match_goals': AchievementService.maxGoals(matches),
       'has_top_rating': AchievementService.hasFiveStarRating(trainings, matches),
       'completed_plan_week': completedPlanWeek,
