@@ -345,6 +345,7 @@ class Progress {
     required this.skillRadarAll,
     required this.skillRadarRecent,
     required this.weekSessions,
+    this.weekSessionTypes = const <Map<String, int>>[],
     this.bestMatchGoals = 0,
     this.hasTopRating = false,
     this.completedPlanWeek = false,
@@ -361,12 +362,14 @@ class Progress {
   final Map<String, int> skillRadarAll;
   final Map<String, int> skillRadarRecent;
   final List<int> weekSessions;
+  final List<Map<String, int>> weekSessionTypes;
   final int bestMatchGoals;
   final bool hasTopRating;
   final bool completedPlanWeek;
 
   factory Progress.fromJson(Map<String, dynamic> j) {
     final rawWeek = j['week_sessions'];
+    final rawTypes = j['week_session_types'];
     return Progress(
       bestMatchGoals: _asInt(j['best_match_goals']),
       hasTopRating: j['has_top_rating'] == true,
@@ -380,6 +383,9 @@ class Progress {
       avgRating: _asDouble(j['avg_rating']),
       skillRadarAll: _asIntMap(j['skill_radar_all']),
       skillRadarRecent: _asIntMap(j['skill_radar_recent']),
+      weekSessionTypes: rawTypes is List
+          ? rawTypes.map((e) => _asIntMap(e)).toList()
+          : <Map<String, int>>[],
       weekSessions: rawWeek is List
           ? rawWeek.map((e) => _asInt(e)).toList()
           : <int>[0, 0, 0, 0, 0, 0, 0],

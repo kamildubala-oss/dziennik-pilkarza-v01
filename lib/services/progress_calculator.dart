@@ -42,6 +42,13 @@ class ProgressCalculator {
       'skill_radar_all': SkillRadarService.calculate(trainings, matches),
       'skill_radar_recent': SkillRadarService.calculate(trainings, matches, since: dayAgo(14)),
       'week_sessions': weekSessions,
+      'week_session_types': <Map<String, int>>[
+        for (var i = 6; i >= 0; i--) <String, int>{
+          'training': trainings.where((t) => day(t) == dayAgo(i) && t['kind'] != 'club_training').length,
+          'club_training': trainings.where((t) => day(t) == dayAgo(i) && t['kind'] == 'club_training').length,
+          'match': matches.where((m) => day(m) == dayAgo(i)).length,
+        },
+      ],
     });
   }
 }
