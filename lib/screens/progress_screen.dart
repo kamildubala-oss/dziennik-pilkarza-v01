@@ -200,12 +200,30 @@ class _ProgressScreenState extends State<ProgressScreen> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Container(
-                      width: 18,
-                      height: math.max(8.0, (week[i] / maxV) * 100),
-                      decoration: BoxDecoration(
-                        color: week[i] > 0 ? c.brandPrimary : c.surfaceTertiary,
-                        borderRadius: BorderRadius.circular(4),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(4),
+                      child: SizedBox(
+                        width: 18,
+                        height: math.max(8.0, (week[i] / maxV) * 100),
+                        child: i < (stats?.weekSessionTypes.length ?? 0) && week[i] > 0
+                            ? Column(
+                                children: [
+                                  for (final type in kEventTypes.where((t) =>
+                                      (stats!.weekSessionTypes[i][t] ?? 0) > 0))
+                                    Expanded(
+                                      flex: stats!.weekSessionTypes[i][type]!,
+                                      child: ColoredBox(
+                                        color: eventTypeColor(c, type),
+                                        child: const SizedBox.expand(),
+                                      ),
+                                    ),
+                                ],
+                              )
+                            : ColoredBox(
+                                color: week[i] > 0
+                                    ? eventTypeColor(c, 'training')
+                                    : c.surfaceTertiary,
+                              ),
                       ),
                     ),
                     const SizedBox(height: 4),
