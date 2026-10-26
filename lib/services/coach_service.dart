@@ -37,15 +37,18 @@ class CoachService {
         'generated_at': _nowIso(),
         'note_count': 0,
         'source': 'offline',
+        'fallback_reason': 'Brak notatek „Co trzeba poprawić?” do analizy.',
       };
       await LocalDb.setDoc('weak_spots', empty);
-      CoachRuntime.record('offline', 'analiza', _s(empty['generated_at']));
+      CoachRuntime.record('offline', 'analiza', _s(empty['generated_at']), notice: _s(empty['fallback_reason']));
       return WeakSpotsPayload.fromJson(empty);
     }
 
     var spots = <Map<String, dynamic>>[];
     var source = 'offline';
+    var notice = Llm.enabled ? '' : Llm.offlineReason;
 
+    var onlineAnalysis = false;
     if (Llm.enabled) {
       try {
         final last =
@@ -81,13 +84,18 @@ class CoachService {
             });
           }
         }
-      } catch (_) {
+        if (items is! List || (items.isNotEmpty && spots.isEmpty)) {
+          throw LlmException('Gemini zwróciło nieprawidłowy format analizy. Użyto analizy offline.');
+        }
+        onlineAnalysis = true;
+        source = 'online';
+      } catch (error) {
+        notice = Llm.explain(error);
         spots = <Map<String, dynamic>>[];
       }
     }
 
-    if (spots.isNotEmpty) source = 'online';
-    if (spots.isEmpty) {
+    if (!onlineAnalysis) {
       // Wersja offline - zliczanie słów kluczowych.
       final tally = <String, int>{};
       void bump(String k) => tally[k] = (tally[k] ?? 0) + 1;
@@ -135,9 +143,10 @@ class CoachService {
       'generated_at': _nowIso(),
       'note_count': notes.length,
       'source': source,
+      'fallback_reason': notice,
     };
     await LocalDb.setDoc('weak_spots', payload);
-    CoachRuntime.record(source, 'analiza', _s(payload['generated_at']));
+    CoachRuntime.record(source, 'analiza', _s(payload['generated_at']), notice: notice);
     return WeakSpotsPayload.fromJson(payload);
   }
 
@@ -170,7 +179,28 @@ class CoachService {
   }
 
   static Future<List<Drill>> drills() async {
-    return kDrills.map(Drill.fromJson).toList();
+    final library = await OfflineCoach.exercises();
+    return <Drill>[
+      ...kDrills.map(Drill.fromJson),
+      for (final e in library.where((e) => e['import_package'] == 'baza_dziennika_pilkarza_v1'))
+        Drill.fromJson({
+          'id': e['id'], 'title': e['title'], 'focus': e['journal_focus'],
+          'duration_min': e['duration_min'], 'intensity': e['intensity'],
+          'source': 'Ćwiczenie z bazy offline',
+          'description': <String>[
+            'Cel: ${e['goal']}',
+            'Uczestnicy: ${e['participants_max']}.',
+            'Sprzęt: ${(e['equipment'] as List).join(', ')}.',
+            'Przestrzeń: ${e['space']}.',
+            'Wiek: od ${e['min_age']} lat.',
+            if (e['source_intensity'] == 'none') 'Zadanie refleksyjne, bez obciążenia fizycznego.',
+            '${e['age_policy']}',
+            '${e['limitations']}',
+            'Dawkowanie i dopasowanie zadania omów z trenerem.',
+          ].join('\n\n'),
+          'steps': e['steps'],
+        }),
+    ];
   }
 
   static Future<String> motivation() async {
@@ -190,6 +220,7 @@ class CoachService {
 
     String reply;
     var source = 'offline';
+    var notice = Llm.enabled ? '' : Llm.offlineReason;
     if (Llm.enabled) {
       final recent =
           session.length > 20 ? session.sublist(session.length - 20) : session;
@@ -207,7 +238,8 @@ class CoachService {
           ],
         );
         source = 'online';
-      } catch (e) {
+      } catch (error) {
+        notice = Llm.explain(error);
         reply = await OfflineCoach.reply(message);
       }
     } else {
@@ -230,13 +262,14 @@ class CoachService {
         'role': 'assistant',
         'content': reply,
         'source': source,
+        'fallback_reason': notice,
         'created_at': generatedAt,
       });
       final trimmed =
           items.length > 200 ? items.sublist(items.length - 200) : items;
       await LocalDb.saveList('chat_messages', trimmed);
     });
-    CoachRuntime.record(source, 'rozmowa', generatedAt);
+    CoachRuntime.record(source, 'rozmowa', generatedAt, notice: notice);
     return reply;
   }
 }

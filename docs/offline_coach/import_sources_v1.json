@@ -1,0 +1,62 @@
+[
+  {
+    "id": "S1",
+    "title": "Narodowy Model Gry",
+    "url": "https://pzpn.pl/public/system/files/site_content/635/4361-Narodowy%20Model%20Gry.pdf",
+    "pdf_pages": 336,
+    "sha256": "1ca0cf7c0d1f1af3bd88a9a0e6c377993cc70cb102b6d733ce308eeb277e7ff8",
+    "accessed": "2026-10-25",
+    "rights": "© PZPN; nie potwierdzono otwartej licencji",
+    "review_scope": "Przegląd struktury i wybranych sekcji; nie pełna ekstrakcja ćwiczeń"
+  },
+  {
+    "id": "S2",
+    "title": "Trening pozycyjny",
+    "url": "https://pzpn.pl/public/system/files/site_content/635/3151-2647-NMG%20TRENING%20POZYCYJNY.pdf",
+    "pdf_pages": 142,
+    "sha256": "90266c32406d5c5989c62d60fd2cc20f445a77a0736b8018283105d1606e7929",
+    "accessed": "2026-10-25",
+    "rights": "© PZPN; nie potwierdzono otwartej licencji",
+    "review_scope": "Przegląd struktury i wybranych sekcji; nie pełna ekstrakcja ćwiczeń"
+  },
+  {
+    "id": "S3",
+    "title": "Trening formacyjny",
+    "url": "https://pzpn.pl/public/system/files/site_content/635/3401-NMG%20PZPN%20Trening%20Formacyjny.pdf",
+    "pdf_pages": 138,
+    "sha256": "cadf07fd786d71e67295153189e045d55a769e373514a04a9f99ce2acf2474f6",
+    "accessed": "2026-10-25",
+    "rights": "© PZPN; nie potwierdzono otwartej licencji",
+    "review_scope": "Przegląd struktury i wybranych sekcji; nie pełna ekstrakcja ćwiczeń"
+  },
+  {
+    "id": "S4",
+    "title": "System 1–3–5–2",
+    "url": "https://pzpn.pl/public/system/files/site_content/635/3721-NMG-System-1-3-5-2__NET.pdf",
+    "pdf_pages": 255,
+    "sha256": "a9a0185100a5ebda7837b00c4adaa907ba21a64972f3d88a78ba333d23c794bc",
+    "accessed": "2026-10-25",
+    "rights": "© PZPN; nie potwierdzono otwartej licencji",
+    "review_scope": "Przegląd struktury i wybranych sekcji; nie pełna ekstrakcja ćwiczeń"
+  },
+  {
+    "id": "S5",
+    "title": "Przygotowanie psychologiczne",
+    "url": "https://pzpn.pl/public/system/files/site_content/635/3732-NMG%20Przygotowanie%20psychologiczne.pdf",
+    "pdf_pages": 122,
+    "sha256": "714b8dbc91f7706d7ec1dd61dbb7baf380b4932ebad79627cbf498c01f838c1a",
+    "accessed": "2026-10-25",
+    "rights": "© PZPN; nie potwierdzono otwartej licencji",
+    "review_scope": "Przegląd struktury i wybranych sekcji; nie pełna ekstrakcja ćwiczeń"
+  },
+  {
+    "id": "S6",
+    "title": "Przygotowanie motoryczne",
+    "url": "https://pzpn.pl/public/system/files/site_content/635/7085-NMG%20Przygotowanie%20Motoryczne.pdf",
+    "pdf_pages": 319,
+    "sha256": "3de6189952d34da0978192cd757ba9a1f730ad312d8a7345507d1a80ee444d32",
+    "accessed": "2026-10-25",
+    "rights": "© PZPN; nie potwierdzono otwartej licencji",
+    "review_scope": "Przegląd struktury i wybranych sekcji; nie pełna ekstrakcja ćwiczeń"
+  }
+]

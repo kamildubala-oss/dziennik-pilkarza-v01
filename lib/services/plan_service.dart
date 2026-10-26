@@ -86,6 +86,7 @@ class PlanService {
 
     List<Map<String, dynamic>>? days;
     var source = 'offline';
+    var notice = Llm.enabled ? '' : Llm.offlineReason;
 
     if (Llm.enabled) {
       try {
@@ -178,14 +179,16 @@ class PlanService {
           }
           if (built.length == 7) { days = built; source = 'online'; }
         }
-      } catch (_) {
+        if (days == null) throw LlmException('Gemini zwróciło nieprawidłowy format planu. Użyto planu offline.');
+      } catch (error) {
+        notice = Llm.explain(error);
         days = null;
       }
     }
 
     if (days == null) {
       days = _fallbackPlan(week.monday, profile);
-      // Tryb offline: rzeczywiste ćwiczenia z pakietu 60 pozycji.
+      // Tryb offline: rzeczywiste ćwiczenia z lokalnej biblioteki.
       final library = await OfflineCoach.exercises();
       final priorities = <String>['technika', 'taktyka', 'motoryka'];
       for (var i = 0; i < days.length; i++) {
@@ -197,7 +200,7 @@ class PlanService {
         final exercise = matching[(week.monday.day + i) % matching.length];
         day['title'] = _s(exercise['title']);
         day['focus'] = _s(exercise['area']);
-        day['duration_min'] = _i(exercise['duration_min']).clamp(10, 60);
+        day['duration_min'] = _i(exercise['duration_min']).clamp(1, 60);
         day['intensity'] = _s(exercise['intensity']);
         day['description'] = _s(exercise['goal']);
         day['steps'] = (exercise['steps'] as List?)?.map(_s).toList() ?? <String>[];
@@ -216,9 +219,10 @@ class PlanService {
       'days': days,
       'generated_at': _nowIso(),
       'source': source,
+      'fallback_reason': notice,
     };
     await LocalDb.setDoc('weekly_plan_${week.id}', plan);
-    CoachRuntime.record(source, 'plan', _s(plan['generated_at']));
+    CoachRuntime.record(source, 'plan', _s(plan['generated_at']), notice: notice);
     return WeeklyPlan.fromJson(plan);
   }
 }

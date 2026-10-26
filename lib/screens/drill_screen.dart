@@ -79,6 +79,8 @@ class DrillScreen extends StatelessWidget {
                         modalRoute<bool>(
                           LogSessionScreen(
                             initialFocuses: <String>[drill.focus],
+                            initialDuration: drill.durationMin,
+                            initialIntensity: drill.intensity,
                           ),
                         ),
                       );

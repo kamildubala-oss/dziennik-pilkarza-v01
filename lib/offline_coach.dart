@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/services.dart';
 
-/// Autorska baza ćwiczeń v2.2, w całości dostępna bez sieci.
+/// Autorska baza ćwiczeń v2.3, w całości dostępna bez sieci.
 class OfflineCoach {
   OfflineCoach._();
   static List<Map<String, dynamic>>? _exercises;
