@@ -9,6 +9,7 @@ import '../resource.dart';
 import '../theme.dart';
 import '../utils.dart';
 import '../widgets/common.dart';
+import '../widgets/card_snap_physics.dart';
 import '../services/drill_batch.dart';
 import 'drill_screen.dart';
 import 'training_details_screen.dart';
@@ -598,10 +599,13 @@ class _CoachScreenState extends State<CoachScreen> {
 
   Widget _drillsRail(AppColors c) {
     final drills = _drillBatch.current(_drills.data ?? <Drill>[]);
-    return SingleChildScrollView(
+    return LayoutBuilder(builder: (context, constraints) {
+      final trailing = (constraints.maxWidth - 180).clamp(0.0, double.infinity).toDouble();
+      return SingleChildScrollView(
       key: ValueKey(drills.map((d) => d.id).join(',')),
       scrollDirection: Axis.horizontal,
-      padding: const EdgeInsets.symmetric(vertical: Sp.sm),
+      physics: const CardSnapPhysics(itemExtent: 180 + Sp.sm),
+      padding: EdgeInsets.only(top: Sp.sm, bottom: Sp.sm, right: trailing),
       child: IntrinsicHeight(
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -611,11 +615,13 @@ class _CoachScreenState extends State<CoachScreen> {
           ], width: Sp.sm),
         ),
       ),
-    );
+      );
+    });
   }
 
   Widget _drillCard(AppColors c, Drill d) {
     return GestureDetector(
+      key: ValueKey('drill-${d.id}'),
       behavior: HitTestBehavior.opaque,
       onTap: () => pushModal<void>(context, DrillScreen(drill: d)),
       child: Container(
@@ -629,16 +635,6 @@ class _CoachScreenState extends State<CoachScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              d.source,
-              style: manrope(
-                size: 10,
-                weight: FontWeight.w800,
-                letterSpacing: 1.2,
-                color: c.brandPrimary,
-              ),
-            ),
-            const SizedBox(height: 6),
             Text(
               d.title,
               style: manrope(
@@ -662,17 +658,17 @@ class _CoachScreenState extends State<CoachScreen> {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(Icons.play_arrow, size: 14, color: c.onBrandPrimary),
+                  Icon(Icons.menu_book_outlined, size: 14, color: c.onBrandPrimary),
                   const SizedBox(width: 4),
-                  Text(
-                    'Start',
+                  Flexible(child: Text(
+                    'Zobacz ćwiczenie',
                     style: manrope(
                       size: 10,
                       weight: FontWeight.w800,
-                      letterSpacing: 1,
+                      letterSpacing: 0,
                       color: c.onBrandPrimary,
                     ),
-                  ),
+                  )),
                 ],
               ),
             ),

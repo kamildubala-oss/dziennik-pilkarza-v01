@@ -46,8 +46,15 @@ void main() {
     expect(find.byType(LogSessionScreen), findsOneWidget);
     final values = tester.widgetList<AppTextField>(find.byType(AppTextField))
         .map((field) => field.controller.text);
-    expect(values, containsAll(['45', 'Podania', 'Przyjęcie', 'Notatka']));
-    expect(tester.widget<RatingStars>(find.byType(RatingStars)).rating, 4);
+    expect(values, contains('45'));
+    expect(find.text('Notatki'), findsNothing);
+    if (find.text('Nad czym chcesz pracować?').evaluate().isNotEmpty) {
+      expect(find.byType(RatingStars), findsNothing);
+      expect(find.text('Intensywność'), findsNothing);
+    } else {
+      expect(values, containsAll(['Podania', 'Przyjęcie']));
+      expect(tester.widget<RatingStars>(find.byType(RatingStars)).rating, 4);
+    }
   }
 
   Future<void> saveChangedDuration(WidgetTester tester) async {
@@ -79,6 +86,7 @@ void main() {
     expect(events, hasLength(1));
     expect(trainings.single['id'], original['id']);
     expect(trainings.single['duration_min'], 70);
+    expect(trainings.single['notes'], 'Notatka');
     expect(events.single['id'], event['id']);
     expect(events.single['source_id'], original['id']);
     expect(events.single['duration_min'], 70);

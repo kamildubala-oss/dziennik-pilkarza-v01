@@ -105,7 +105,7 @@ void main() {
         .map((w) => w.controller.text)
         .toList();
     expect(values, containsAll(<String>[
-      '60', 'Dokładne podania', 'Gra słabszą nogą', 'Ćwiczenie podań',
+      '60', 'Dokładne podania', 'Gra słabszą nogą',
     ]));
     expect(tester.widget<PrimaryButton>(find.byType(PrimaryButton)).label,
         'Trening wykonany');
@@ -163,5 +163,6 @@ void main() {
     expect(trainings.single['rating'], 4);
     expect(trainings.single['went_well'], 'Dokładne podania');
     expect(trainings.single['to_improve'], 'Gra słabszą nogą');
+    expect(trainings.single['notes'], 'Ćwiczenie podań');
   });
 }

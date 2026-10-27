@@ -17,6 +17,7 @@ class _Session {
     required this.id,
     required this.isMatch,
     required this.title,
+    this.focus = '',
     required this.date,
     required this.duration,
     required this.rating,
@@ -27,6 +28,7 @@ class _Session {
   final String id;
   final bool isMatch;
   final String title;
+  final String focus;
   final String date;
   final int duration;
   final int rating;
@@ -143,7 +145,8 @@ class _DiaryScreenState extends State<DiaryScreen> {
         _Session(
           id: t.id,
           isMatch: false,
-          title: t.isClub ? 'Trening klubowy: ${t.focus}' : t.focus,
+          title: t.isClub ? 'Trening klubowy' : 'Trening indywidualny',
+          focus: t.focus,
           date: t.date,
           duration: t.durationMin,
           rating: t.rating,
@@ -190,6 +193,7 @@ class _DiaryScreenState extends State<DiaryScreen> {
       typesByDay.putIfAbsent(first10(e.date), () => <String>{}).add(e.type);
     }
     final todayStr = dateIso(today);
+    final futureDay = _selectedDay.compareTo(todayStr) > 0;
 
     return RefreshIndicator(
       color: c.brandPrimary,
@@ -254,7 +258,7 @@ class _DiaryScreenState extends State<DiaryScreen> {
                             ),
                             const SizedBox(width: 6),
                             Text(
-                              '${_progress.data?.streakDays ?? 0} dni',
+                              streakDayLabel(_progress.data?.streakDays ?? 0),
                               style: manrope(
                                 size: 13,
                                 weight: FontWeight.w700,
@@ -337,8 +341,8 @@ class _DiaryScreenState extends State<DiaryScreen> {
                       iconColor: c.brandPrimary,
                       textColor: c.brandPrimary,
                       bg: c.brandTertiary,
-                      label: 'Zapisz trening',
-                      onTap: () => _openModal(AddEventScreen(initialDate: _selectedDay, initialType: 'training', isPlanned: false)),
+                      label: futureDay ? 'Zaplanuj trening' : 'Zapisz trening',
+                      onTap: () => _openModal(AddEventScreen(initialDate: _selectedDay, initialType: 'training', isPlanned: futureDay)),
                     ),
                   ),
                   const SizedBox(width: Sp.sm),
@@ -349,8 +353,8 @@ class _DiaryScreenState extends State<DiaryScreen> {
                       iconColor: c.brandSecondary,
                       textColor: c.onSurfaceSecondary,
                       bg: c.surfaceSecondary,
-                      label: 'Zapisz mecz',
-                      onTap: () => _openModal(AddEventScreen(initialDate: _selectedDay, initialType: 'match', isPlanned: false)),
+                      label: futureDay ? 'Zaplanuj mecz' : 'Zapisz mecz',
+                      onTap: () => _openModal(AddEventScreen(initialDate: _selectedDay, initialType: 'match', isPlanned: futureDay)),
                     ),
                   ),
                 ],
@@ -378,16 +382,7 @@ class _DiaryScreenState extends State<DiaryScreen> {
             // ---------- Ostatnie wpisy ----------
             Padding(
               padding: const EdgeInsets.only(bottom: Sp.sm),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const SectionTitle('OSTATNIE WPISY'),
-                  Text(
-                    '${sessions.length}',
-                    style: manrope(size: 12, color: c.muted),
-                  ),
-                ],
-              ),
+              child: const SectionTitle('OSTATNIE 5 WPISÓW'),
             ),
             if (loading)
               const Padding(
@@ -416,7 +411,11 @@ class _DiaryScreenState extends State<DiaryScreen> {
     required Set<String> types,
     required VoidCallback onTap,
   }) {
-    return GestureDetector(
+    return Semantics(
+      label: '${isToday ? "Dzisiaj, " : ""}${dateIso(date)}',
+      selected: isSelected,
+      button: true,
+      child: GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: onTap,
       child: Container(
@@ -429,6 +428,8 @@ class _DiaryScreenState extends State<DiaryScreen> {
                   ? c.surfaceSecondary
                   : Colors.transparent,
           borderRadius: BorderRadius.circular(Rad.md),
+          border: isToday ? Border.all(
+            color: isSelected ? c.onBrandPrimary : c.brandPrimary, width: 1.5) : null,
         ),
         child: Column(
           children: [
@@ -477,6 +478,7 @@ class _DiaryScreenState extends State<DiaryScreen> {
             ),
           ],
         ),
+      ),
       ),
     );
   }
@@ -612,10 +614,13 @@ class _DiaryScreenState extends State<DiaryScreen> {
           const SizedBox(height: Sp.md),
           _heroButton(
             c,
-            label: 'Zapytaj trenera',
-            icon: Icons.arrow_forward,
-            onTap: widget.onOpenCoach,
+            label: 'Zaplanuj aktywność',
+            icon: Icons.add,
+            onTap: () => _openModal(AddEventScreen(initialDate: _selectedDay)),
           ),
+          TextButton(onPressed: widget.onOpenCoach,
+            style: TextButton.styleFrom(foregroundColor: Colors.white),
+            child: const Text('Zapytaj trenera')),
         ],
       );
     }
@@ -775,7 +780,7 @@ class _DiaryScreenState extends State<DiaryScreen> {
             Expanded(
               child: Text(
                 label,
-                maxLines: 1,
+                maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: manrope(
                   size: 14,
@@ -861,6 +866,11 @@ class _DiaryScreenState extends State<DiaryScreen> {
                     color: c.onSurface,
                   ),
                 ),
+                if (s.focus.isNotEmpty) ...[
+                  const SizedBox(height: 3),
+                  Text(s.focus, maxLines: 2, overflow: TextOverflow.ellipsis,
+                    style: manrope(size: 12, color: c.muted)),
+                ],
                 const SizedBox(height: 2),
                 Text(
                   '${first10(s.date)} · ${s.duration} min · ${s.rating > 0 ? 'ocena ${s.rating}/5' : 'bez oceny'}',

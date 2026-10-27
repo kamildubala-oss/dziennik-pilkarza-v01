@@ -41,3 +41,6 @@ String trainingMeta(int durationMin, String intensity) => <String>[
       if (durationMin > 0) '$durationMin min',
       if (intensity.isNotEmpty) 'intensywność ${intensityLabel(intensity)}',
     ].join(' · ');
+
+/// Polish label for the diary streak counter.
+String streakDayLabel(int count) => '$count ${count == 1 ? 'dzień' : 'dni'}';
