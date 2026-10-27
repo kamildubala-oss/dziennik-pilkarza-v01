@@ -208,35 +208,31 @@ class _DiaryScreenState extends State<DiaryScreen> {
             // ---------- Nagłówek ----------
             Padding(
               padding: const EdgeInsets.only(bottom: Sp.lg),
-              child: Row(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 52, bottom: 2),
+                    child: Text(profileName.isNotEmpty ? 'CZEŚĆ' : 'CZEŚĆ, PIŁKARZU',
+                      style: manrope(size: 11, weight: FontWeight.w700,
+                        letterSpacing: 1.5, color: c.muted)),
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
                   PlayerJersey(number: _profile.data?.jerseyNumber,
                     color: Color(_profile.data?.jerseyColor ?? 0xFF2563EB),
                     numberColor: Color(_profile.data?.jerseyNumberColor ?? 0xFFFFFFFF)),
                   const SizedBox(width: Sp.sm),
                   Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          profileName.isNotEmpty ? 'CZEŚĆ' : 'CZEŚĆ, PIŁKARZU',
-                          style: manrope(
-                            size: 11,
-                            weight: FontWeight.w700,
-                            letterSpacing: 1.5,
-                            color: c.muted,
-                          ),
-                        ),
-                        const SizedBox(height: 2),
-                        Text(
-                          profileName.isNotEmpty ? profileName : 'Dziennik',
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: barlow(size: 34, color: c.onSurface),
-                        ),
-                      ],
+                    child: Text(
+                      profileName.isNotEmpty ? profileName : 'Dziennik',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: barlow(size: 32, height: 1, color: c.onSurface),
                     ),
                   ),
+                  const SizedBox(width: Sp.sm),
                   Row(
                     children: [
                       Container(
@@ -293,6 +289,8 @@ class _DiaryScreenState extends State<DiaryScreen> {
                                 ),
                         ),
                       ),
+                    ],
+                  ),
                     ],
                   ),
                 ],
