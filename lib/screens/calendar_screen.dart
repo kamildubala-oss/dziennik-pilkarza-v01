@@ -482,33 +482,23 @@ class _CalendarScreenState extends State<CalendarScreen> {
   Widget _empty(AppColors c) {
     return Container(
       padding: const EdgeInsets.all(Sp.md),
-      decoration: BoxDecoration(
-        color: c.surfaceSecondary,
-        borderRadius: BorderRadius.circular(Rad.md),
-      ),
-      child: Column(
-        children: [
-          Icon(Icons.calendar_today_outlined, size: 24, color: c.muted),
-          const SizedBox(height: Sp.sm),
-          Text(
-            'Brak wydarzeń',
-            style: manrope(
-              size: 16,
-              weight: FontWeight.w700,
-              color: c.onSurface,
-            ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            'Dodaj aktywność na wybrany dzień.',
-            textAlign: TextAlign.center,
-            style: manrope(size: 13, color: c.muted),
-          ),
-          const SizedBox(height: Sp.sm),
-          TextButton.icon(onPressed: _addEvent, icon: const Icon(Icons.add),
-            label: const Text('Dodaj na ten dzień')),
-        ],
-      ),
+      decoration: BoxDecoration(color: c.surfaceSecondary,
+        borderRadius: BorderRadius.circular(Rad.md)),
+      child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Padding(padding: const EdgeInsets.only(top: 4),
+          child: Icon(Icons.calendar_today_outlined, size: 24, color: c.muted)),
+        const SizedBox(width: Sp.md),
+        Expanded(child: Column(mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Text('Brak wydarzeń', style: manrope(size: 16,
+              weight: FontWeight.w700, color: c.onSurface)),
+            const SizedBox(height: 4),
+            Text('Dodaj aktywność na wybrany dzień.',
+              style: manrope(size: 13, color: c.muted)),
+            TextButton.icon(onPressed: _addEvent, icon: const Icon(Icons.add),
+              label: const Text('Dodaj na ten dzień')),
+          ])),
+      ]),
     );
   }
 
