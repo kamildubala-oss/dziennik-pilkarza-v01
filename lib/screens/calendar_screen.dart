@@ -394,14 +394,19 @@ class _CalendarScreenState extends State<CalendarScreen> {
     final iso = dateIso(cell);
     final dayEvents = byDate[iso] ?? <EventItem>[];
     final isSelected = iso == _selectedDate;
+    final isToday = iso == todayIso();
     final types = <String>{for (final e in dayEvents) e.type};
-    return GestureDetector(
+    return Semantics(label: '${isToday ? "Dzisiaj, " : ""}$iso',
+      selected: isSelected, button: true,
+      child: GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () => setState(() => _selectedDate = iso),
       child: Container(
         decoration: BoxDecoration(
           color: isSelected ? c.brandPrimary : Colors.transparent,
           borderRadius: BorderRadius.circular(Rad.sm),
+          border: isToday ? Border.all(
+            color: isSelected ? c.onBrandPrimary : c.brandPrimary, width: 1.5) : null,
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -431,6 +436,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
             ),
           ],
         ),
+      ),
       ),
     );
   }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../api.dart';
+import '../services/user_errors.dart';
+import 'activity_editor.dart';
 import '../coach_content.dart';
 import '../models.dart';
 import '../resource.dart';
@@ -18,6 +20,7 @@ class _Session {
     required this.isMatch,
     required this.title,
     this.focus = '',
+    this.kind = 'training',
     required this.date,
     required this.duration,
     required this.rating,
@@ -29,6 +32,7 @@ class _Session {
   final bool isMatch;
   final String title;
   final String focus;
+  final String kind;
   final String date;
   final int duration;
   final int rating;
@@ -138,6 +142,35 @@ class _DiaryScreenState extends State<DiaryScreen> {
     if (mounted) _reloadAll();
   }
 
+  Future<void> _editSession(_Session session) async {
+    try {
+      final page = await activityEditor(EventItem.fromJson({
+        'id': 'journal-${session.id}', 'date': session.date,
+        'type': session.isMatch ? 'match' : session.kind,
+        'source': session.isMatch ? 'matches' : 'trainings',
+        'source_id': session.id, 'done': true,
+      }));
+      if (!mounted) return;
+      await _openModal(page);
+    } catch (error) {
+      if (mounted) ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(friendlyError(error))));
+    }
+  }
+
+  double _quickFontSize(double width) {
+    final available = ((width - Sp.sm) / 2) - 2 * Sp.md - 22 - 8;
+    final painter = TextPainter(
+      text: TextSpan(text: 'Zaplanuj trening',
+        style: manrope(size: 14, weight: FontWeight.w700)),
+      textDirection: Directionality.of(context),
+      textScaler: MediaQuery.textScalerOf(context),
+    )..layout();
+    final size = (14 * available / painter.width).clamp(1.0, 14.0).toDouble();
+    painter.dispose();
+    return size;
+  }
+
   List<_Session> _sessions() {
     final list = <_Session>[];
     for (final t in _trainings.data ?? <Training>[]) {
@@ -147,6 +180,7 @@ class _DiaryScreenState extends State<DiaryScreen> {
           isMatch: false,
           title: t.isClub ? 'Trening klubowy' : 'Trening indywidualny',
           focus: t.focus,
+          kind: t.kind,
           date: t.date,
           duration: t.durationMin,
           rating: t.rating,
@@ -332,11 +366,14 @@ class _DiaryScreenState extends State<DiaryScreen> {
             // ---------- Szybkie akcje ----------
             Padding(
               padding: const EdgeInsets.only(bottom: Sp.lg),
-              child: Row(
+              child: LayoutBuilder(builder: (context, constraints) {
+                final fontSize = _quickFontSize(constraints.maxWidth);
+                return Row(
                 children: [
                   Expanded(
                     child: _quickCard(
                       c,
+                      fontSize: fontSize,
                       icon: Icons.directions_run,
                       iconColor: c.brandPrimary,
                       textColor: c.brandPrimary,
@@ -349,6 +386,7 @@ class _DiaryScreenState extends State<DiaryScreen> {
                   Expanded(
                     child: _quickCard(
                       c,
+                      fontSize: fontSize,
                       icon: Icons.sports_soccer,
                       iconColor: c.brandSecondary,
                       textColor: c.onSurfaceSecondary,
@@ -358,7 +396,8 @@ class _DiaryScreenState extends State<DiaryScreen> {
                     ),
                   ),
                 ],
-              ),
+                );
+              }),
             ),
 
             // ---------- Awaria odczytu lokalnych danych ----------
@@ -619,7 +658,11 @@ class _DiaryScreenState extends State<DiaryScreen> {
             onTap: () => _openModal(AddEventScreen(initialDate: _selectedDay)),
           ),
           TextButton(onPressed: widget.onOpenCoach,
-            style: TextButton.styleFrom(foregroundColor: Colors.white),
+            style: TextButton.styleFrom(foregroundColor: Colors.white,
+              backgroundColor: const Color(0xE61B2633),
+              padding: const EdgeInsets.symmetric(horizontal: Sp.md, vertical: Sp.sm),
+              side: const BorderSide(color: Color(0xFF8796A5)),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(Rad.pill))),
             child: const Text('Zapytaj trenera')),
         ],
       );
@@ -758,6 +801,7 @@ class _DiaryScreenState extends State<DiaryScreen> {
   Widget _quickCard(
     AppColors c, {
     required IconData icon,
+    required double fontSize,
     required Color iconColor,
     required Color textColor,
     required Color bg,
@@ -768,6 +812,7 @@ class _DiaryScreenState extends State<DiaryScreen> {
       behavior: HitTestBehavior.opaque,
       onTap: onTap,
       child: Container(
+        constraints: const BoxConstraints(minHeight: 48),
         padding: const EdgeInsets.all(Sp.md),
         decoration: BoxDecoration(
           color: bg,
@@ -780,10 +825,11 @@ class _DiaryScreenState extends State<DiaryScreen> {
             Expanded(
               child: Text(
                 label,
-                maxLines: 2,
+                maxLines: 1,
+                softWrap: false,
                 overflow: TextOverflow.ellipsis,
                 style: manrope(
-                  size: 14,
+                  size: fontSize,
                   weight: FontWeight.w700,
                   color: textColor,
                 ),
@@ -827,7 +873,13 @@ class _DiaryScreenState extends State<DiaryScreen> {
   }
 
   Widget _sessionCard(AppColors c, _Session s) {
-    return Container(
+    final type = s.isMatch ? 'match' : s.kind == 'club_training' ? 'club_training' : 'training';
+    final color = eventTypeColor(c, type);
+    return GestureDetector(
+      key: ValueKey('journal-entry-${s.id}'),
+      behavior: HitTestBehavior.opaque,
+      onTap: () => _editSession(s),
+      child: Container(
       margin: const EdgeInsets.only(bottom: Sp.sm),
       padding: const EdgeInsets.all(Sp.md),
       decoration: BoxDecoration(
@@ -841,14 +893,14 @@ class _DiaryScreenState extends State<DiaryScreen> {
             width: 40,
             height: 40,
             decoration: BoxDecoration(
-              color: s.isMatch ? c.brandSecondary : c.brandTertiary,
+              color: color,
               borderRadius: BorderRadius.circular(Rad.sm),
             ),
             alignment: Alignment.center,
             child: Icon(
-              s.isMatch ? Icons.sports_soccer : Icons.directions_run,
+              s.isMatch ? Icons.sports_soccer : s.kind == 'club_training' ? Icons.groups : Icons.directions_run,
               size: 18,
-              color: s.isMatch ? c.onBrandSecondary : c.brandPrimary,
+              color: onEventTypeColor(type, color),
             ),
           ),
           const SizedBox(width: Sp.md),
@@ -898,6 +950,7 @@ class _DiaryScreenState extends State<DiaryScreen> {
             ),
           ),
         ],
+      ),
       ),
     );
   }
