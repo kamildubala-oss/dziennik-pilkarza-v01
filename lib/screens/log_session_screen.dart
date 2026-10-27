@@ -160,6 +160,14 @@ class _LogSessionScreenState extends State<LogSessionScreen> {
         final details = <String, dynamic>{'focus': focusList.join(', '),
           'focuses': focusList, 'duration_min': minutes};
         if (widget.mode == TrainingFormMode.editPlan) {
+          // Preserve legacy execution hints that existed only in the old description.
+          if (_preservedNotes.isNotEmpty) details['notes'] = _preservedNotes;
+          if (_wentWell.text.isNotEmpty) details['went_well'] = _wentWell.text;
+          if (_toImprove.text.isNotEmpty) details['to_improve'] = _toImprove.text;
+          if (_rating > 0) details['rating'] = _rating;
+          if (widget.editingEvent!.description.contains('Intensywność:')) {
+            details['intensity'] = _intensity;
+          }
           await Api.updatePlannedActivity(widget.editingEvent!.id,
             date: _date.text, title: title, description: description, details: details);
         } else {
