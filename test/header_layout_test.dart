@@ -57,7 +57,9 @@ void main() {
         builder: (context, child) => MediaQuery(data: MediaQuery.of(context).copyWith(
           textScaler: TextScaler.linear(scale)), child: child!),
         home: Scaffold(body: CoachScreen(selected: selected, index: 2))));
-      await tester.pumpAndSettle();
+      // The hero layout does not depend on asynchronous workout loading.
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 50));
       final subtitle = find.text('Indywidualny trening · Rozwój umiejętności');
       final card = find.ancestor(of: subtitle, matching: find.byType(ClipRRect)).first;
       expect(tester.getRect(card).bottom - tester.getRect(subtitle).bottom, closeTo(15, .5));
