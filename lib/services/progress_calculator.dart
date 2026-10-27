@@ -34,6 +34,8 @@ class ProgressCalculator {
       'has_top_rating': AchievementService.hasFiveStarRating(trainings, matches),
       'completed_plan_week': completedPlanWeek,
       'total_trainings': trainings.length,
+      'total_club_trainings': trainings.where((t) => t['kind'] == 'club_training').length,
+      'rated_entries_count': ratings.length,
       'total_matches': matches.length,
       'total_minutes': totalMinutes,
       'total_goals': totalGoals,

@@ -336,6 +336,8 @@ class WeeklyPlan {
 class Progress {
   const Progress({
     required this.totalTrainings,
+    this.totalClubTrainings = 0,
+    this.ratedEntriesCount = 0,
     required this.totalMatches,
     required this.totalMinutes,
     required this.totalGoals,
@@ -353,6 +355,10 @@ class Progress {
   });
 
   final int totalTrainings;
+  final int totalClubTrainings;
+  final int ratedEntriesCount;
+  int get totalIndividualTrainings =>
+      (totalTrainings - totalClubTrainings).clamp(0, totalTrainings).toInt();
   final int totalMatches;
   final int totalMinutes;
   final int totalGoals;
@@ -378,6 +384,8 @@ class Progress {
       hasTopRating: j['has_top_rating'] == true,
       completedPlanWeek: j['completed_plan_week'] == true,
       totalTrainings: _asInt(j['total_trainings']),
+      totalClubTrainings: _asInt(j['total_club_trainings']),
+      ratedEntriesCount: _asInt(j['rated_entries_count']),
       totalMatches: _asInt(j['total_matches']),
       totalMinutes: _asInt(j['total_minutes']),
       totalGoals: _asInt(j['total_goals']),

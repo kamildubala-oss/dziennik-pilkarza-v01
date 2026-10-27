@@ -66,8 +66,11 @@ class _LogMatchScreenState extends State<LogMatchScreen> {
       TextEditingController(text: _e?.wentWell ?? (_sourceEvent?.details['went_well'] as String?) ?? '');
   late final TextEditingController _toImprove =
       TextEditingController(text: _e?.toImprove ?? (_sourceEvent?.details['to_improve'] as String?) ?? '');
-  late final TextEditingController _notes =
-      TextEditingController(text: _e?.notes ?? (_sourceEvent?.details['notes'] as String?) ?? '');
+  late final String _preservedNotes =
+      _e?.notes ?? (_sourceEvent?.details['notes'] as String?) ?? '';
+
+  bool get _planning => _e == null && widget.completingEvent == null &&
+      (widget.isPlanned || widget.editingEvent != null);
 
   late int _rating = _e != null && _e.rating >= 0 ? _e.rating : (_sourceEvent?.details['rating'] as int?) ?? 0;
   bool _saving = false;
@@ -82,29 +85,32 @@ class _LogMatchScreenState extends State<LogMatchScreen> {
     _assists.dispose();
     _wentWell.dispose();
     _toImprove.dispose();
-    _notes.dispose();
     super.dispose();
   }
 
   int _num(TextEditingController c) => int.parse(c.text.trim());
 
-  bool get _fieldsValid =>
+  bool get _fieldsValid => _planning || (
       numberFieldError(_minutes.text, 'Minuty', 0, 180) == null &&
       numberFieldError(_goals.text, 'Gole', 0, 20) == null &&
-      numberFieldError(_assists.text, 'Asysty', 0, 20) == null;
+      numberFieldError(_assists.text, 'Asysty', 0, 20) == null);
 
   Future<void> _save() async {
     if (_saving || !_fieldsValid) return;
     setState(() => _saving = true);
     try {
-      if (widget.editingEvent != null) {
-        final event = widget.editingEvent!;
-        await Api.updatePlannedActivity(event.id,
-          date: _date.text,
-          title: _opponent.text.trim().isEmpty ? 'Mecz' : 'Mecz z ${_opponent.text.trim()}',
-          description: 'Rywal: ${_opponent.text} · Minuty: ${_minutes.text}',
-          details: <String, dynamic>{'opponent': _opponent.text, 'result': _result.text, 'duration_min': _num(_minutes), 'minutes_played': _num(_minutes), 'goals': _num(_goals), 'assists': _num(_assists), 'rating': _rating, 'went_well': _wentWell.text, 'to_improve': _toImprove.text, 'notes': _notes.text},
-        );
+      if (_planning) {
+        final opponent = _opponent.text.trim();
+        final title = opponent.isEmpty ? 'Mecz' : 'Mecz z $opponent';
+        if (widget.editingEvent != null) {
+          await Api.updatePlannedActivity(widget.editingEvent!.id,
+            date: _date.text, title: title, description: opponent.isEmpty ? '' : 'Rywal: $opponent',
+            details: <String, dynamic>{'opponent': opponent});
+        } else {
+          await Api.createEvent(date: _date.text, type: 'match', title: title,
+            description: opponent.isEmpty ? '' : 'Rywal: $opponent',
+            details: <String, dynamic>{'opponent': opponent});
+        }
         if (mounted) Navigator.of(context).pop(true);
         return;
       }
@@ -121,7 +127,7 @@ class _LogMatchScreenState extends State<LogMatchScreen> {
           rating: _rating,
           wentWell: _wentWell.text,
           toImprove: _toImprove.text,
-          notes: _notes.text,
+          notes: _preservedNotes,
         );
         if (mounted) Navigator.of(context).pop(true);
         return;
@@ -136,7 +142,7 @@ class _LogMatchScreenState extends State<LogMatchScreen> {
         rating: _rating,
         wentWell: _wentWell.text,
         toImprove: _toImprove.text,
-        notes: _notes.text,
+        notes: _preservedNotes,
         plannedEventId: widget.completingEvent?.id ?? widget.plannedEventId,
         isPlanned: widget.isPlanned,
       );
@@ -158,7 +164,8 @@ class _LogMatchScreenState extends State<LogMatchScreen> {
       body: Column(
         children: [
           ModalHeader(
-            title: widget.title ?? (_e != null ? 'Edytuj mecz' : 'Zapisz mecz'),
+            title: widget.title ?? (_e != null || widget.editingEvent != null
+                ? 'Edytuj mecz' : _planning ? 'Zaplanuj mecz' : 'Zapisz mecz'),
             onClose: () => Navigator.of(context).pop(),
           ),
           Expanded(
@@ -167,7 +174,8 @@ class _LogMatchScreenState extends State<LogMatchScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  if (widget.header != null) widget.header!,
+                  if (widget.header != null && _e == null &&
+                      widget.editingEvent == null && widget.completingEvent == null) widget.header!,
                   LabeledField(
                     label: 'Data',
                     child: DateField(controller: _date),
@@ -179,6 +187,7 @@ class _LogMatchScreenState extends State<LogMatchScreen> {
                       hint: 'np. Legia U15',
                     ),
                   ),
+                  if (!_planning) ...[
                   LabeledField(
                     label: 'Wynik',
                     child: AppTextField(controller: _result, hint: 'np. 3:1'),
@@ -247,22 +256,15 @@ class _LogMatchScreenState extends State<LogMatchScreen> {
                       minLines: 3,
                     ),
                   ),
-                  LabeledField(
-                    label: 'Notatki',
-                    child: AppTextField(
-                      controller: _notes,
-                      multiline: true,
-                      minLines: 2,
-                    ),
-                  ),
+                  ],
                   PrimaryButton(
                     label: _saving
                         ? 'Zapisywanie...'
-                        : _e != null
+                        : _e != null || widget.editingEvent != null
                             ? 'Zapisz zmiany'
                             : widget.completingEvent != null
                                 ? 'Mecz wykonany'
-                                : 'Zapisz mecz',
+                                : _planning ? 'Zaplanuj mecz' : 'Zapisz mecz',
                     onTap: _saving || !_fieldsValid ? null : _save,
                   ),
                 ],

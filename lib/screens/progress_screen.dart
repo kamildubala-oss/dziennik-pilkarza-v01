@@ -140,6 +140,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
     final week = stats?.weekSessions ?? <int>[0, 0, 0, 0, 0, 0, 0];
     final maxV = math.max(1, week.isEmpty ? 1 : week.reduce(math.max));
     final avg = stats?.avgRating;
+    final ratedCount = stats?.ratedEntriesCount ?? 0;
 
     // Etykiety dni: ostatnie 7 dni kończące się dzisiaj.
     final now = DateTime.now();
@@ -176,6 +177,9 @@ class _ProgressScreenState extends State<ProgressScreen> {
                 value: avg != null && avg > 0 ? avg.toStringAsFixed(1) : '—',
                 valueColor: c.onSurface,
                 label: 'ŚR. OCENA TRENINGÓW I MECZÓW',
+                subtitle: ratedCount == 0
+                    ? 'Ocena jest opcjonalna'
+                    : 'Na podstawie $ratedCount ${ratedCount == 1 ? 'oceny' : 'ocen'}',
                 labelColor: c.muted,
               ),
             ),
@@ -185,6 +189,8 @@ class _ProgressScreenState extends State<ProgressScreen> {
 
       // ---------- Ostatnie 7 dni ----------
       _section('OSTATNIE 7 DNI'),
+      Padding(padding: const EdgeInsets.only(bottom: Sp.sm),
+        child: Text('Liczba aktywności', style: manrope(size: 12, color: c.muted))),
       Container(
         height: 160,
         padding: const EdgeInsets.all(Sp.sm),
@@ -204,8 +210,9 @@ class _ProgressScreenState extends State<ProgressScreen> {
                     ClipRRect(
                       borderRadius: BorderRadius.circular(4),
                       child: SizedBox(
+                        key: ValueKey('week-bar-$i'),
                         width: 18,
-                        height: math.max(8.0, (week[i] / maxV) * 100),
+                        height: week[i] > 0 ? (week[i] / maxV) * 100 : 0,
                         child: i < (stats?.weekSessionTypes.length ?? 0) && week[i] > 0
                             ? Column(
                                 children: [
@@ -261,48 +268,14 @@ class _ProgressScreenState extends State<ProgressScreen> {
             spacing: Sp.sm,
             runSpacing: Sp.sm,
             children: [
-              _metric(
-                c,
-                w,
-                Icons.directions_run,
-                'Treningi',
-                '${stats?.totalTrainings ?? 0}',
-              ),
-              _metric(
-                c,
-                w,
-                Icons.sports_soccer,
-                'Mecze',
-                '${stats?.totalMatches ?? 0}',
-              ),
-              _metric(
-                c,
-                w,
-                Icons.timer,
-                'Minuty',
-                '${stats?.totalMinutes ?? 0}',
-              ),
-              _metric(
-                c,
-                w,
-                Icons.gps_fixed,
-                'Gole',
-                '${stats?.totalGoals ?? 0}',
-              ),
-              _metric(
-                c,
-                w,
-                Icons.handshake,
-                'Asysty',
-                '${stats?.totalAssists ?? 0}',
-              ),
-              _metric(
-                c,
-                w,
-                Icons.trending_up,
-                'Śr. ocena T+M',
-                avg != null && avg > 0 ? avg.toStringAsFixed(1) : '—',
-              ),
+              _metric(c, w, Icons.directions_run, 'Treningi indywidualne',
+                '${stats?.totalIndividualTrainings ?? 0}'),
+              _metric(c, w, Icons.groups, 'Treningi klubowe',
+                '${stats?.totalClubTrainings ?? 0}'),
+              _metric(c, w, Icons.sports_soccer, 'Mecze', '${stats?.totalMatches ?? 0}'),
+              _metric(c, w, Icons.timer, 'Minuty', '${stats?.totalMinutes ?? 0}'),
+              _metric(c, w, Icons.gps_fixed, 'Gole', '${stats?.totalGoals ?? 0}'),
+              _metric(c, w, Icons.handshake, 'Asysty', '${stats?.totalAssists ?? 0}'),
             ],
           );
         },
@@ -432,7 +405,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SectionTitle('SŁABE PUNKTY'),
+                  const SectionTitle('NAD CZYM WARTO POPRACOWAĆ'),
                   if (data != null && data.notice.isNotEmpty)
                     Text(data.notice, style: manrope(size: 12, color: c.muted)),
                   if (data != null)
@@ -503,8 +476,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
           c,
           icon: Icons.auto_fix_high,
           title: 'Brak analizy',
-          sub: 'Trener AI przeczyta Twoje notatki „Co trzeba poprawić" '
-              'i wyciągnie wnioski niezależnie od zapisanych treningów.',
+          sub: 'Dodaj obserwacje po treningach, aby otrzymać wskazówki',
         )
       else if (data.weakSpots.isEmpty)
         _weakEmpty(
@@ -614,6 +586,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
     required Color valueColor,
     required String label,
     required Color labelColor,
+    String? subtitle,
   }) {
     return Container(
       constraints: const BoxConstraints(minHeight: 110),
@@ -637,6 +610,10 @@ class _ProgressScreenState extends State<ProgressScreen> {
               color: labelColor,
             ),
           ),
+          if (subtitle != null) ...[
+            const SizedBox(height: 4),
+            Text(subtitle, style: manrope(size: 11, color: labelColor)),
+          ],
         ],
       ),
     );
