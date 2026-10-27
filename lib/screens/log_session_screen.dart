@@ -110,8 +110,11 @@ class _LogSessionScreenState extends State<LogSessionScreen> {
       TextEditingController(text: _e?.wentWell ?? _planned?.wentWell ?? (widget.editingEvent?.details['went_well'] as String?) ?? '');
   late final TextEditingController _toImprove =
       TextEditingController(text: _e?.toImprove ?? _planned?.toImprove ?? (widget.editingEvent?.details['to_improve'] as String?) ?? '');
-  late final TextEditingController _notes =
-      TextEditingController(text: _e?.notes ?? _planned?.notes ?? (widget.editingEvent?.details['notes'] as String?) ?? '');
+  late final String _preservedNotes =
+      _e?.notes ?? _planned?.notes ?? (widget.editingEvent?.details['notes'] as String?) ?? '';
+
+  bool get _planning => widget.mode == TrainingFormMode.plan ||
+      widget.mode == TrainingFormMode.editPlan;
 
   List<String> _initialFocuses() {
     if (_e != null) return _e.focuses;
@@ -141,7 +144,6 @@ class _LogSessionScreenState extends State<LogSessionScreen> {
     _duration.dispose();
     _wentWell.dispose();
     _toImprove.dispose();
-    _notes.dispose();
     super.dispose();
   }
 
@@ -151,15 +153,27 @@ class _LogSessionScreenState extends State<LogSessionScreen> {
     final minutes = int.parse(_duration.text.trim());
     setState(() => _saving = true);
     try {
-      if (widget.mode == TrainingFormMode.editPlan) {
-        final event = widget.editingEvent!;
+      if (_planning) {
         final focusList = _focusOptions.where(_focus.contains).toList();
-        await Api.updatePlannedActivity(event.id,
-          date: _date.text,
-          title: '${widget.kind == 'club_training' ? 'Trening klubowy' : 'Trening'}: ${focusList.join(', ')}',
-          description: 'Czas: ${_duration.text} min · Obszary: ${focusList.join(', ')}',
-          details: <String, dynamic>{'focus': focusList.join(', '), 'focuses': focusList, 'duration_min': minutes, 'intensity': _intensity, 'rating': _rating, 'went_well': _wentWell.text, 'to_improve': _toImprove.text, 'notes': _notes.text},
-        );
+        final title = '${widget.kind == 'club_training' ? 'Trening klubowy' : 'Trening'}: ${focusList.join(', ')}';
+        final description = 'Czas: $minutes min · Obszary: ${focusList.join(', ')}';
+        final details = <String, dynamic>{'focus': focusList.join(', '),
+          'focuses': focusList, 'duration_min': minutes};
+        if (widget.mode == TrainingFormMode.editPlan) {
+          // Preserve legacy execution hints that existed only in the old description.
+          if (_preservedNotes.isNotEmpty) details['notes'] = _preservedNotes;
+          if (_wentWell.text.isNotEmpty) details['went_well'] = _wentWell.text;
+          if (_toImprove.text.isNotEmpty) details['to_improve'] = _toImprove.text;
+          if (_rating > 0) details['rating'] = _rating;
+          if (widget.editingEvent!.description.contains('Intensywność:')) {
+            details['intensity'] = _intensity;
+          }
+          await Api.updatePlannedActivity(widget.editingEvent!.id,
+            date: _date.text, title: title, description: description, details: details);
+        } else {
+          await Api.createEvent(date: _date.text, type: widget.kind,
+            title: title, description: description, details: details);
+        }
         if (mounted) Navigator.of(context).pop(true);
         return;
       }
@@ -174,7 +188,7 @@ class _LogSessionScreenState extends State<LogSessionScreen> {
           rating: _rating,
           wentWell: _wentWell.text,
           toImprove: _toImprove.text,
-          notes: _notes.text,
+          notes: _preservedNotes,
         );
         if (mounted) Navigator.of(context).pop(true);
         return;
@@ -191,7 +205,7 @@ class _LogSessionScreenState extends State<LogSessionScreen> {
         rating: _rating,
         wentWell: _wentWell.text,
         toImprove: _toImprove.text,
-        notes: _notes.text,
+        notes: _preservedNotes,
       );
       if (!mounted) return;
       Navigator.of(context).pop(true);
@@ -214,7 +228,7 @@ class _LogSessionScreenState extends State<LogSessionScreen> {
             title: widget.title ??
                 (_e != null || widget.editingEvent != null
                     ? 'Edytuj trening'
-                    : widget.kind == 'club_training'
+                    : _planning ? 'Zaplanuj trening' : widget.kind == 'club_training'
                         ? 'Zapisz trening klubowy'
                         : 'Zapisz trening'),
             onClose: () => Navigator.of(context).pop(),
@@ -241,7 +255,7 @@ class _LogSessionScreenState extends State<LogSessionScreen> {
                     ),
                   ),
                   LabeledField(
-                    label: 'Nad czym pracowałeś? (możesz wybrać kilka)',
+                    label: _planning ? 'Nad czym chcesz pracować?' : 'Nad czym pracowałeś',
                     child: ChipsWrap(
                       children: [
                         for (final f in _focusOptions)
@@ -255,6 +269,7 @@ class _LogSessionScreenState extends State<LogSessionScreen> {
                       ],
                     ),
                   ),
+                  if (!_planning) ...[
                   LabeledField(
                     label: 'Intensywność',
                     child: ChipsWrap(
@@ -293,14 +308,7 @@ class _LogSessionScreenState extends State<LogSessionScreen> {
                       hint: 'np. Celność strzału z dystansu...',
                     ),
                   ),
-                  LabeledField(
-                    label: 'Notatki',
-                    child: AppTextField(
-                      controller: _notes,
-                      multiline: true,
-                      minLines: 2,
-                    ),
-                  ),
+                  ],
                   PrimaryButton(
                     label: _saving
                         ? 'Zapisywanie...'
@@ -310,7 +318,7 @@ class _LogSessionScreenState extends State<LogSessionScreen> {
                                 ? 'Zapisz zmiany'
                                 : widget.completingEvent != null
                                     ? 'Trening wykonany'
-                                    : 'Zapisz trening',
+                                    : _planning ? 'Zaplanuj trening' : 'Zapisz trening',
                     onTap: _saving || _focus.isEmpty ||
                             numberFieldError(_duration.text, 'Czas (min)', 0, 600) != null
                         ? null : _save,
