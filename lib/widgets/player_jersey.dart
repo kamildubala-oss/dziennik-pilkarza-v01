@@ -23,11 +23,13 @@ class PlayerJersey extends StatelessWidget {
     label: number == null ? 'Koszulka zawodnika bez numeru' : 'Koszulka zawodnika, numer $number',
     child: SizedBox(width: size, height: size,
       child: CustomPaint(painter: _JerseyPainter(color),
-        child: Align(alignment: const Alignment(0, 0.22),
-          child: Padding(padding: EdgeInsets.symmetric(horizontal: size * 0.24),
-            child: FittedBox(fit: BoxFit.scaleDown,
-              child: Text(number?.toString() ?? '–',
-                style: barlow(size: size * 0.4, color: numberColor))))))));
+        child: Stack(children: [
+          Positioned(left: size * .27, right: size * .27,
+            top: size * .36, bottom: size * .09,
+            child: Center(child: FittedBox(fit: BoxFit.scaleDown,
+              child: Text(number?.toString() ?? '–', maxLines: 1,
+                style: barlow(size: size * .42, height: 1, color: numberColor))))),
+        ]))));
 }
 
 class _JerseyPainter extends CustomPainter {

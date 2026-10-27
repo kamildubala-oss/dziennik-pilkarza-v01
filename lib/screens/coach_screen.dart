@@ -316,31 +316,30 @@ class _CoachScreenState extends State<CoachScreen> {
     final source = execution?.source ?? (LlmSettings.allowNetwork ? '' : 'offline');
     return Padding(
       padding: const EdgeInsets.only(bottom: Sp.lg),
-      child: SizedBox(
-        height: 48 + MediaQuery.textScalerOf(context).scale(150),
-        child: ClipRRect(
+      child: ClipRRect(
           borderRadius: BorderRadius.circular(Rad.lg),
           child: Stack(
-            fit: StackFit.expand,
             children: [
-              Image.asset(
+              Positioned.fill(child: Image.asset(
                 'assets/images/coach_field.jpg',
                 fit: BoxFit.cover,
+                alignment: const Alignment(0, 0),
                 errorBuilder: (context, error, stack) =>
                     Container(color: c.surfaceSecondary),
-              ),
-              const DecoratedBox(
+              )),
+              const Positioned.fill(child: DecoratedBox(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
-                    colors: <Color>[Color(0xC40F1115), Color(0xF20F1115)],
+                    colors: <Color>[Color(0x990F1115), Color(0xD90F1115)],
                   ),
                 ),
-              ),
+              )),
               Padding(
-                padding: const EdgeInsets.all(Sp.lg),
+                padding: const EdgeInsets.fromLTRB(Sp.md, Sp.md, Sp.md, 15),
                 child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -377,7 +376,6 @@ class _CoachScreenState extends State<CoachScreen> {
               ),
             ],
           ),
-        ),
       ),
     );
   }
