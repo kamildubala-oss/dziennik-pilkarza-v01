@@ -26,6 +26,7 @@ void main() {
     home: Scaffold(body: child));
 
   testWidgets('all diary quick actions keep one shared font size and one line', (tester) async {
+    addTearDown(() => tester.binding.setSurfaceSize(null));
     for (final width in [320.0, 390.0]) {
       await tester.binding.setSurfaceSize(Size(width, 850));
       final selected = ValueNotifier(0);

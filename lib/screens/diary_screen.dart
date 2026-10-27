@@ -342,7 +342,7 @@ class _DiaryScreenState extends State<DiaryScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   for (var i = 0; i < 7; i++)
-                    _dayCell(
+                    Expanded(child: _dayCell(
                       c,
                       label: kWeekDays[i],
                       date: weekDates[i],
@@ -352,7 +352,7 @@ class _DiaryScreenState extends State<DiaryScreen> {
                       onTap: () => setState(
                         () => _selectedDay = dateIso(weekDates[i]),
                       ),
-                    ),
+                    )),
                 ],
               ),
             ),
@@ -780,15 +780,16 @@ class _DiaryScreenState extends State<DiaryScreen> {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(
+              Flexible(child: Text(
                 label,
+                maxLines: 2,
                 style: manrope(
                   size: 12,
                   weight: FontWeight.w800,
                   letterSpacing: 1,
                   color: c.onBrandPrimary,
                 ),
-              ),
+              )),
               const SizedBox(width: 6),
               Icon(icon, size: 16, color: c.onBrandPrimary),
             ],
