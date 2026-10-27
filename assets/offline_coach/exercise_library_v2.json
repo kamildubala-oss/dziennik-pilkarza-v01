@@ -1,5 +1,5 @@
 {
-  "schema_version": "2.3.0",
+  "schema_version": "2.4.0",
   "language": "pl-PL",
   "title": "Biblioteka 72 ćwiczeń — maksymalnie zawodnik i trener",
   "count": 72,
@@ -32,10 +32,10 @@
       "goal": "Zwiększ kontrolę piłki przy częstych zmianach kierunku.",
       "setup": "Ustaw prosty układ z bezpiecznymi odległościami; dostosuj wielkość pola do poziomu zawodnika.",
       "steps": [
-        "Rozpocznij od 2-4 min spokojnej rozgrzewki z piłką.",
-        "Wykonuj krótkie serie z przerwą, utrzymując jakość techniczną.",
-        "Zwiększaj tempo dopiero wtedy, gdy kontrola jest stabilna.",
-        "Na koniec zapisz jedną obserwację i ocenę jakości 1-5."
+        "Zaznacz kwadrat około 4 × 4 m i zacznij od spokojnego prowadzenia po jego obwodzie.",
+        "Przejdź po jednej długości prawą i lewą nogą, dotykając piłki przy każdym kroku.",
+        "Przetaczaj piłkę między wewnętrznymi częściami obu stóp, przemieszczając się przez środek kwadratu.",
+        "Przy narożniku zatrzymaj piłkę podeszwą, obróć ciało i rusz w inną stronę; nie wychodź poza pole."
       ],
       "coaching_cues": [
         "Jakość przed szybkością.",
@@ -67,7 +67,9 @@
       ],
       "environment_options": [
         "samodzielnie"
-      ]
+      ],
+      "description": "Prowadź piłkę krótkimi kontaktami, zmieniając nogę i kierunek bez wypuszczania jej poza zasięg kolejnego kroku.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "tech_slalom",
@@ -89,10 +91,10 @@
       "goal": "Prowadź piłkę i regularnie obserwuj otoczenie.",
       "setup": "Ustaw prosty układ z bezpiecznymi odległościami; dostosuj wielkość pola do poziomu zawodnika.",
       "steps": [
-        "Rozpocznij od 2-4 min spokojnej rozgrzewki z piłką.",
-        "Wykonuj krótkie serie z przerwą, utrzymując jakość techniczną.",
-        "Zwiększaj tempo dopiero wtedy, gdy kontrola jest stabilna.",
-        "Na koniec zapisz jedną obserwację i ocenę jakości 1-5."
+        "Ustaw 6 pachołków w linii co około 1,5 m, a za ostatnim zostaw miejsce na nawrót.",
+        "Przeprowadź piłkę slalomem, mijając znaczniki naprzemiennie z lewej i prawej strony.",
+        "Po minięciu każdego pachołka unieś na chwilę wzrok i znajdź następny znacznik.",
+        "Wróć slalomem drugą nogą; jeśli tracisz kontrolę przy patrzeniu przed siebie, zwolnij i ponów przejście."
       ],
       "coaching_cues": [
         "Jakość przed szybkością.",
@@ -124,7 +126,9 @@
       ],
       "environment_options": [
         "samodzielnie"
-      ]
+      ],
+      "description": "Pokonaj slalom z piłką i sprawdzaj otoczenie w przerwach między kontaktami, zamiast stale patrzeć pod nogi.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "tech_sole_roll",
@@ -145,10 +149,10 @@
       "goal": "Rozwijaj kontrolę piłki w ciasnej przestrzeni.",
       "setup": "Ustaw prosty układ z bezpiecznymi odległościami; dostosuj wielkość pola do poziomu zawodnika.",
       "steps": [
-        "Rozpocznij od 2-4 min spokojnej rozgrzewki z piłką.",
-        "Wykonuj krótkie serie z przerwą, utrzymując jakość techniczną.",
-        "Zwiększaj tempo dopiero wtedy, gdy kontrola jest stabilna.",
-        "Na koniec zapisz jedną obserwację i ocenę jakości 1-5."
+        "Stań za piłką z lekko ugiętymi kolanami; stopy ustaw trochę szerzej niż biodra.",
+        "Prawą podeszwą przetocz piłkę w lewo i zatrzymaj ją lewą stopą, nie pochylając całego ciała nad piłką.",
+        "Wykonaj ten sam ruch w prawo, stopniowo łącząc przetoczenia bez długiego zatrzymania.",
+        "Dodaj wyjście: po przetoczeniu prawą podeszwą popchnij piłkę zewnętrzną częścią lewej stopy w lewo; potem odwróć strony."
       ],
       "coaching_cues": [
         "Jakość przed szybkością.",
@@ -180,7 +184,9 @@
       ],
       "environment_options": [
         "samodzielnie"
-      ]
+      ],
+      "description": "Przetaczaj piłkę podeszwą w poprzek ciała, a następnie łącz przetoczenie z wyprowadzeniem jej bokiem stopy.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "tech_weak_foot",
@@ -203,9 +209,10 @@
       "goal": "Buduj pewność w używaniu obu nóg.",
       "setup": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
       "steps": [
-        "Podawaj słabszą nogą do zaznaczonego celu. Przyjmij wygodnie; nie zwiększaj tempa kosztem dokładności.",
-        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
-        "Obserwuj: Celne podania / 20 prób"
+        "Zaznacz na ścianie cel szerokości około metra i ustaw piłkę 3–4 m przed nim.",
+        "Postaw nogę podporową obok piłki, skieruj jej palce w cel i podaj wewnętrzną częścią słabszej stopy.",
+        "Zatrzymaj odbicie, popraw ustawienie i ponów podanie; nie próbuj jeszcze grać bez przyjęcia.",
+        "Po kilku celnych podaniach przyjmuj piłkę słabszą nogą lekko w bok i z tej pozycji ponownie trafiaj w cel."
       ],
       "coaching_cues": [
         "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
@@ -302,7 +309,9 @@
         "type": "autorskie opracowanie",
         "alignment_theme": "NMG: technika i rozumienie gry",
         "source_reference": "sources_and_rights.json"
-      }
+      },
+      "description": "Podawaj słabszą nogą do niewielkiego celu i poprawiaj ustawienie stopy na podstawie kierunku odbicia.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "tech_wall_pass",
@@ -324,10 +333,10 @@
       "goal": "Popraw dokładność i rytm podań.",
       "setup": "Ustaw prosty układ z bezpiecznymi odległościami; dostosuj wielkość pola do poziomu zawodnika.",
       "steps": [
-        "Rozpocznij od 2-4 min spokojnej rozgrzewki z piłką.",
-        "Wykonuj krótkie serie z przerwą, utrzymując jakość techniczną.",
-        "Zwiększaj tempo dopiero wtedy, gdy kontrola jest stabilna.",
-        "Na koniec zapisz jedną obserwację i ocenę jakości 1-5."
+        "Stań 3–4 m od równej ściany i zaznacz na niej cel na wysokości ziemi.",
+        "Podaj prawą nogą, przyjmij odbicie wewnętrzną częścią lewej i odstaw piłkę pół kroku przed siebie.",
+        "Odegraj lewą nogą, a kolejne odbicie przygotuj prawą.",
+        "Po każdym podaniu zrób mały krok w bok i skoryguj ustawienie względem wracającej piłki."
       ],
       "coaching_cues": [
         "Jakość przed szybkością.",
@@ -359,7 +368,9 @@
       ],
       "environment_options": [
         "samodzielnie"
-      ]
+      ],
+      "description": "Podania o ścianę na dwa kontakty: pierwszy przygotowuje piłkę, drugi odsyła ją do wybranego miejsca.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "tech_first_touch",
@@ -382,9 +393,10 @@
       "goal": "Przygotuj piłkę do kolejnego działania pierwszym kontaktem.",
       "setup": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
       "steps": [
-        "Odbij piłkę o ścianę. Pierwszym kontaktem skieruj ją raz w lewą, raz w prawą bramkę.",
-        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
-        "Obserwuj: Celne przyjęcia / 20 prób"
+        "Stań 3–4 m od ściany i ustaw obok siebie dwie bramki z pachołków, po jednej z każdej strony.",
+        "Podaj po ziemi do ściany i ustaw się półbokiem do nadlatującego odbicia.",
+        "Przyjmij dalszą nogą przez wybraną bramkę, tak aby piłka pozostała o jeden krok od Ciebie.",
+        "Zatrzymaj piłkę za bramką, wróć na środek i następnym przyjęciem wyjdź w przeciwną stronę."
       ],
       "coaching_cues": [
         "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
@@ -478,7 +490,9 @@
         "type": "autorskie opracowanie",
         "alignment_theme": "NMG: technika i rozumienie gry",
         "source_reference": "sources_and_rights.json"
-      }
+      },
+      "description": "Pierwszym kontaktem kieruj wracającą piłkę przez lewą lub prawą bramkę, przygotowując sobie miejsce do następnego podania.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "tech_scan_receive",
@@ -501,10 +515,10 @@
       "goal": "Zbieraj informację przed otrzymaniem piłki.",
       "setup": "Ustaw prosty układ z bezpiecznymi odległościami; dostosuj wielkość pola do poziomu zawodnika.",
       "steps": [
-        "Rozpocznij od 2-4 min spokojnej rozgrzewki z piłką.",
-        "Wykonuj krótkie serie z przerwą, utrzymując jakość techniczną.",
-        "Zwiększaj tempo dopiero wtedy, gdy kontrola jest stabilna.",
-        "Na koniec zapisz jedną obserwację i ocenę jakości 1-5."
+        "Ustaw dwie bramki po swoich bokach, 3–4 m od ściany, i podaj do niej po ziemi.",
+        "Zaraz po podaniu obróć głowę przez jedno ramię i odnajdź bramkę po tej stronie.",
+        "Wróć wzrokiem do piłki, otwórz biodra i przyjmij odbicie w kierunku obejrzanej bramki.",
+        "W następnej próbie spójrz przez drugie ramię i wyjdź w przeciwną stronę, bez obracania się plecami do odbicia."
       ],
       "coaching_cues": [
         "Jakość przed szybkością.",
@@ -536,7 +550,9 @@
       ],
       "environment_options": [
         "samodzielnie"
-      ]
+      ],
+      "description": "Przed przyjęciem sprawdź przestrzeń za plecami i wróć wzrokiem do piłki na czas pierwszego kontaktu.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "tech_pass_move",
@@ -561,9 +577,10 @@
       "goal": "Łącz celne podanie z ruchem po podaniu.",
       "setup": "Ustaw dwie bramki 3–5 m od ściany; trener może stać zamiast ściany.",
       "steps": [
-        "Podaj do ściany lub trenera z bramki A.",
-        "Po podaniu przebiegnij do bramki B i przyjmij piłkę kierunkowo.",
-        "Zmień kierunek i nogę podającą po każdej serii."
+        "Ustaw dwie bramki A i B około 2 m od siebie oraz 3–4 m od partnera lub ściany.",
+        "Z bramki A podaj lekko po skosie w stronę B i natychmiast przemieść się do B.",
+        "Ustaw się za torem wracającej piłki i pierwszym kontaktem skieruj ją przed siebie.",
+        "Z B odegraj w stronę A i powtórz ruch; jeśli odbicie wyprzedza Twój bieg, zwolnij podanie lub zmniejsz odległość między bramkami."
       ],
       "coaching_cues": [
         "Maksymalnie zawodnik i trener; brak dodatkowych uczestników.",
@@ -598,7 +615,9 @@
       "environment_options": [
         "ściana",
         "trener"
-      ]
+      ],
+      "description": "Po podaniu od razu zmień miejsce i odbierz piłkę pod innym kątem. Ćwicz z partnerem albo z przewidywalnym odbiciem od ściany.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "tech_receive_turn",
@@ -621,9 +640,10 @@
       "goal": "Ćwicz orientację i przyjęcie kierunkowe.",
       "setup": "Ustaw dwie bramki wyjściowe po bokach i źródło podania przed zawodnikiem.",
       "steps": [
-        "Spójrz przez ramię przed kontaktem.",
-        "Przyjmij podanie od trenera lub odbicie od ściany dalszą nogą.",
-        "Obróć się i przeprowadź piłkę przez wskazaną bramkę."
+        "Ustaw bramkę wyjściową z boku i lekko za sobą, a partnera lub ścianę przed sobą w odległości 3–4 m.",
+        "Przed podaniem sprawdź przez ramię położenie bramki i ustaw ciało półbokiem.",
+        "Przyjmij piłkę nogą dalszą od podającego, kierując pierwszy kontakt w stronę wyjścia.",
+        "Dokończ obrót i przeprowadź piłkę przez bramkę; po kilku próbach przestaw wyjście na drugą stronę."
       ],
       "coaching_cues": [
         "Maksymalnie zawodnik i trener; brak dodatkowych uczestników.",
@@ -658,7 +678,9 @@
       "environment_options": [
         "ściana",
         "trener"
-      ]
+      ],
+      "description": "Przyjmij dalszą nogą i obróć się z piłką w stronę wyjścia, zamiast zatrzymywać ją pod sobą.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "tech_dribble_accel",
@@ -680,9 +702,10 @@
       "goal": "Po zwodzie wykonaj zdecydowane kolejne działanie.",
       "setup": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
       "steps": [
-        "Przed znacznikiem wykonaj jeden zwód, wyjdź z piłką w bok i zatrzymaj ją w wyznaczonym polu.",
-        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
-        "Obserwuj: Udane wyjścia / 12 prób"
+        "Ustaw pachołek 4 m od startu, a dwie małe strefy zatrzymania po skosie za nim.",
+        "Prowadź piłkę do pachołka; przed nim skróć ostatni kontakt, żeby piłka nie uciekła.",
+        "Przenieś bark i ciężar ciała w jedną stronę, po czym zewnętrzną częścią drugiej stopy wyprowadź piłkę w przeciwną.",
+        "Przyspiesz do wybranej strefy i zatrzymaj tam piłkę podeszwą; w kolejnej próbie odwróć kierunek zwodu."
       ],
       "coaching_cues": [
         "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
@@ -773,7 +796,9 @@
         "type": "autorskie opracowanie",
         "alignment_theme": "NMG: technika i rozumienie gry",
         "source_reference": "sources_and_rights.json"
-      }
+      },
+      "description": "Zmyśl ruchem ciała przy pachołku, a następnie wyjdź z piłką w przeciwną stronę i zmień tempo.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "tech_1v1_gate",
@@ -795,9 +820,10 @@
       "goal": "Ćwicz zwód i decyzję przeciw jednemu obrońcy.",
       "setup": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
       "steps": [
-        "Partner broni dwóch bramek początkowo pasywnie. Wybierz wolne wyjście i przeprowadź przez nie piłkę.",
-        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
-        "Obserwuj: Wygrane pojedynki / 8 prób"
+        "Ustaw dwie bramki po przeciwnych stronach końcowej linii pola około 6 × 6 m; partner staje między nimi.",
+        "Rozpocznij z piłką z drugiego końca pola i zbliż się do partnera krótkimi kontaktami.",
+        "Obserwuj jego ustawienie; zaznacz wyjście w jedną stronę i zaatakuj wolną bramkę.",
+        "Po przeprowadzeniu piłki lub jej utracie wróć na start; partner najpierw tylko zasłania drogę, a dopiero później próbuje lekko odebrać piłkę."
       ],
       "coaching_cues": [
         "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
@@ -891,7 +917,9 @@
         "type": "autorskie opracowanie",
         "alignment_theme": "NMG: technika i rozumienie gry",
         "source_reference": "sources_and_rights.json"
-      }
+      },
+      "description": "W pojedynku z partnerem rozpoznaj, której z dwóch bramek nie zasłania, i wyprowadź przez nią piłkę.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "tech_shield_ball",
@@ -914,9 +942,10 @@
       "goal": "Doskonal osłanianie piłki i wyjście spod presji.",
       "setup": "Wyznacz kwadrat 5×5 m; trener wywiera kontrolowany nacisk bez kontaktu siłowego.",
       "steps": [
-        "Ustaw ciało między piłką a trenerem.",
-        "Utrzymaj kontrolę przez 10–15 s, pracując nogą dalszą.",
-        "Na sygnał wyjdź z piłką przez wolną bramkę."
+        "Ustaw dwie bramki po bokach pola około 4 × 4 m; partner staje pół kroku za Tobą.",
+        "Ustaw się bokiem i utrzymuj piłkę przy dalszej nodze, z ciałem pomiędzy piłką a partnerem.",
+        "Przesuwaj piłkę krótkimi kontaktami przy zmianie strony nacisku; nie odpychaj partnera ręką.",
+        "Po kilku sekundach wybierz niezasłoniętą bramkę, obróć się z piłką i wyjdź przez nią; wróć do spokojnego ustawienia."
       ],
       "coaching_cues": [
         "Maksymalnie zawodnik i trener; brak dodatkowych uczestników.",
@@ -951,7 +980,9 @@
       ],
       "environment_options": [
         "trener"
-      ]
+      ],
+      "description": "Osłoń piłkę ciałem przed lekką presją partnera, a następnie obróć się do wolnego wyjścia.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "tech_passing_gates",
@@ -974,9 +1005,10 @@
       "goal": "Popraw precyzję podania do celu.",
       "setup": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
       "steps": [
-        "Ustaw okno przed ścianą. Podawaj przez nie i kontroluj powracającą piłkę obiema nogami.",
-        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
-        "Obserwuj: Celne podania / 20 prób"
+        "Ustaw dwa pachołki metr od siebie, około 1 m przed ścianą; stań 3 m przed nimi.",
+        "Podaj wewnętrzną częścią stopy przez środek okna, tak aby piłka wróciła po ziemi.",
+        "Przyjmij odbicie przed sobą i ponów podanie drugą nogą, nie przesuwając się bliżej celu.",
+        "Po kilku celnych próbach zrób krok w bok i znajdź nowy kąt podania przez to samo okno."
       ],
       "coaching_cues": [
         "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
@@ -1073,7 +1105,9 @@
         "type": "autorskie opracowanie",
         "alignment_theme": "NMG: technika i rozumienie gry",
         "source_reference": "sources_and_rights.json"
-      }
+      },
+      "description": "Posyłaj piłkę przez wąskie okno przed ścianą, a odbicie przygotuj do następnego dokładnego podania.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "tech_long_pass",
@@ -1097,9 +1131,10 @@
       "goal": "Doskonal celność dłuższych podań.",
       "setup": "Ustaw cel szerokości 2–3 m w odległości odpowiedniej do wieku; trener może odbierać podania.",
       "steps": [
-        "Wykonaj 6–8 podań do celu lub trenera.",
-        "Zmieniaj nogę i odległość bez utraty techniki.",
-        "Zapisz liczbę podań w celu."
+        "Wyznacz cel szerokości około 3 m w odległości 8–12 m; dobierz dystans, z którego nie musisz uderzać na siłę.",
+        "Zrób krótki nabieg, postaw nogę podporową obok piłki i skieruj biodra w stronę celu.",
+        "Uderz przez środek piłki usztywnioną stopą, kończąc ruch nogi w kierunku podania.",
+        "Sprawdź, czy piłka minęła cel bokiem, czy zatrzymała się za wcześnie; popraw tylko kierunek albo siłę i powtórz drugą nogą."
       ],
       "coaching_cues": [
         "Maksymalnie zawodnik i trener; brak dodatkowych uczestników.",
@@ -1134,7 +1169,9 @@
       "environment_options": [
         "samodzielnie",
         "trener"
-      ]
+      ],
+      "description": "Zagraj dłuższe podanie po ziemi do partnera lub wyznaczonego sektora, kontrolując kierunek i siłę.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "tech_finish_zones",
@@ -1157,9 +1194,10 @@
       "goal": "Popraw celność przed zwiększaniem siły.",
       "setup": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
       "steps": [
-        "Przetocz piłkę, przyjmij w bok i uderz do wyznaczonej części celu. Sprawdź, czy za celem nikogo nie ma.",
-        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
-        "Obserwuj: Trafienia / 12 prób"
+        "Zaznacz przy ziemi lewy i prawy sektor bramki; upewnij się, że bramka jest zamocowana i nikt nie stoi za celem.",
+        "Przetocz piłkę lekko przed siebie albo poproś partnera o spokojne podanie z przodu.",
+        "Przyjmij pierwszym kontaktem w bok poza linię pachołka, otwierając miejsce do uderzenia.",
+        "Drugim kontaktem uderz do wybranego sektora; następną próbę wykonaj w przeciwną stronę i drugą nogą."
       ],
       "coaching_cues": [
         "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
@@ -1252,7 +1290,9 @@
         "type": "autorskie opracowanie",
         "alignment_theme": "NMG: technika i rozumienie gry",
         "source_reference": "sources_and_rights.json"
-      }
+      },
+      "description": "Przyjmij piłkę w bok i oddaj strzał do wybranej części bramki, bez poprawiania jej kilkoma dodatkowymi kontaktami.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "tac_support_angle",
@@ -1274,9 +1314,10 @@
       "goal": "Naucz się tworzyć kąt wsparcia po podaniu.",
       "setup": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
       "steps": [
-        "Po podaniu do partnera przemieść się poza linię znacznika, pokaż nowy kąt i odbierz podanie zwrotne.",
-        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
-        "Obserwuj: Udane pokazania / 10 prób"
+        "Stań z partnerem około 5 m od siebie i ustaw pachołek pośrodku, lekko obok początkowej linii podania.",
+        "Podaj obok pachołka i od razu przemieść się w bok, zamiast biec za piłką wprost do partnera.",
+        "Zatrzymaj się tam, gdzie pachołek nie zasłania drogi między Wami, i pokaż ręką miejsce podania.",
+        "Odbierz piłkę półbokiem, skieruj ją pierwszym kontaktem do przodu i wróć na start z drugiej strony pachołka."
       ],
       "coaching_cues": [
         "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
@@ -1372,7 +1413,9 @@
         "type": "autorskie opracowanie",
         "alignment_theme": "NMG: gry zadaniowe, trening pozycyjny, formacyjny i struktura gry",
         "source_reference": "sources_and_rights.json"
-      }
+      },
+      "description": "Po podaniu wyjdź z cienia pachołka i pokaż partnerowi nową, otwartą linię do podania zwrotnego.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "tac_third_man",
@@ -1395,9 +1438,10 @@
       "goal": "Zrozum wbiegnięcie w wolny sektor po odegraniu bez udziału trzeciej osoby.",
       "setup": "Zaznacz role A, B i C trzema pachołkami; występują tylko zawodnik i trener, a trzecią pozycję zastępuje pusty sektor.",
       "steps": [
-        "Zawodnik podaje do trenera w punkcie B.",
-        "Trener odgrywa piłkę w wolny sektor C.",
-        "Zawodnik obiega znacznik i wbiega do sektora C, przyjmując podanie."
+        "Wyznacz start A, pozycję partnera B w odległości 4 m i sektor C po skosie, 3 m za znacznikiem.",
+        "Podaj z A do partnera w B i natychmiast rusz po zewnętrznej stronie znacznika.",
+        "Partner zagrywa po ziemi w sektor C przed Twój bieg, a nie w miejsce startu.",
+        "Dobiegnij do piłki, przyjmij w kierunku ruchu i wróć do A; potem ustaw C po drugiej stronie."
       ],
       "coaching_cues": [
         "Maksymalnie zawodnik i trener; brak dodatkowych uczestników.",
@@ -1433,7 +1477,9 @@
       ],
       "environment_options": [
         "trener"
-      ]
+      ],
+      "description": "Odegraj do partnera i obiegnij znacznik, żeby odebrać kolejne podanie w wolnym sektorze. To uproszczony ruch bez trzeciej osoby.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "tac_rondo_3v1",
@@ -1457,9 +1503,10 @@
       "goal": "Ćwicz skanowanie i ochronę piłki pod ograniczoną presją.",
       "setup": "Wyznacz kwadrat 6×6 m; trener jest jedynym obrońcą. Nie jest to rondo 3 na 1.",
       "steps": [
-        "Zawodnik prowadzi piłkę między czterema bokami kwadratu.",
-        "Trener zamyka wybrane wyjście, nie odbierając agresywnie piłki.",
-        "Zawodnik zmienia kierunek i wyprowadza piłkę wolnym bokiem."
+        "Zaznacz kwadrat około 5 × 5 m; Ty zaczynasz z piłką w środku, partner porusza się przy jego bokach.",
+        "Prowadź spokojnie i przed kolejnym kontaktem sprawdzaj, przy którym boku ustawił się partner.",
+        "Gdy partner zamknie wybrany bok, zmień kierunek i wyprowadź piłkę przez inny bok kwadratu.",
+        "Wróć do środka, a partner niech zamknie inne wyjście; bez wślizgów i przepychania."
       ],
       "coaching_cues": [
         "Maksymalnie zawodnik i trener; brak dodatkowych uczestników.",
@@ -1495,7 +1542,9 @@
       ],
       "environment_options": [
         "trener"
-      ]
+      ],
+      "description": "Prowadź piłkę w kwadracie i zmieniaj wyjście, gdy partner zamknie jeden z boków. Zadanie dla dwóch osób.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "tac_rondo_4v2",
@@ -1520,9 +1569,10 @@
       "goal": "Trenuj szybkie podanie, przyjęcie i orientację.",
       "setup": "Oznacz cztery cele na bezpiecznej ścianie i pole przyjęcia. Nie jest to rondo 4 na 2.",
       "steps": [
-        "Podaj kolejno do wskazanych celów na ścianie.",
-        "Po odbiciu przyjmij kierunkowo i zmień kąt ustawienia.",
-        "W drugiej serii losuj kolejność celów."
+        "Zaznacz na ścianie cztery cele na wysokości ziemi; ustaw się około 3 m od niej.",
+        "Podaj do pierwszego celu i przyjmij odbicie w bok, wychodząc z dotychczasowej linii podania.",
+        "Z nowego miejsca odegraj do kolejnego celu, przesuwając się po każdym przyjęciu.",
+        "Najpierw przejdź cele po kolei, a potem przed każdym podaniem sam wybierz inny numer niż poprzedni."
       ],
       "coaching_cues": [
         "Maksymalnie zawodnik i trener; brak dodatkowych uczestników.",
@@ -1557,7 +1607,9 @@
       ],
       "environment_options": [
         "ściana"
-      ]
+      ],
+      "description": "Zmieniaj kąt ustawienia po odbiciu od ściany i podawaj do jednego z czterech oznaczonych celów.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "tac_possession_4v4",
@@ -1581,9 +1633,10 @@
       "goal": "Doskonal kontrolę i wybór wolnej przestrzeni.",
       "setup": "Wyznacz kwadrat 8×8 m; trener jest jedynym przeciwnikiem. Nie rozgrywaj 4 na 4.",
       "steps": [
-        "Zawodnik utrzymuje piłkę 15–20 s pod lekką presją trenera.",
-        "Za każde kontrolowane wyjście do wolnego narożnika zdobądź punkt.",
-        "Po serii zmień stronę startową."
+        "Wyznacz kwadrat około 5 × 5 m z zaznaczonymi narożnikami; partner zaczyna za Twoimi plecami.",
+        "Osłoń piłkę i sprawdź, z której strony partner próbuje podejść.",
+        "Obróć się w przeciwną stronę i doprowadź piłkę do wolnego narożnika, nie wypuszczając jej poza linię.",
+        "Po punkcie wróć do środka i rozpocznij od innego ustawienia; partner stosuje tylko lekki nacisk, bez popychania."
       ],
       "coaching_cues": [
         "Maksymalnie zawodnik i trener; brak dodatkowych uczestników.",
@@ -1619,7 +1672,9 @@
       ],
       "environment_options": [
         "trener"
-      ]
+      ],
+      "description": "Utrzymuj piłkę pod lekką presją partnera i zdobywaj punkty za kontrolowane wyjście do wolnego narożnika.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "tac_transition_3v2",
@@ -1641,9 +1696,10 @@
       "goal": "Ćwicz szybką zmianę zachowania po stracie piłki.",
       "setup": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
       "steps": [
-        "Po sygnale oddaj piłkę partnerowi i wróć między niego a oznaczony cel. Partner nie podejmuje pojedynku.",
-        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
-        "Obserwuj: Poprawne ustawienia / 10 prób"
+        "Zaznacz bramkę z pachołków, stań z piłką około 5 m przed nią, a partner niech ustawi się z boku.",
+        "Na umówione hasło podaj piłkę partnerowi, traktując to jako stratę.",
+        "Od razu cofnij się po skosie między partnera a bramkę i ustaw się półbokiem.",
+        "Partner prowadzi spokojnie w stronę bramki; koryguj ustawienie małymi krokami, bez próby ostrego odbioru."
       ],
       "coaching_cues": [
         "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
@@ -1739,7 +1795,9 @@
         "type": "autorskie opracowanie",
         "alignment_theme": "NMG: gry zadaniowe, trening pozycyjny, formacyjny i struktura gry",
         "source_reference": "sources_and_rights.json"
-      }
+      },
+      "description": "Po umownej stracie piłki szybko wróć między przeciwnika a bramkę, zamiast śledzić go od tyłu.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "tac_press_cues",
@@ -1763,9 +1821,10 @@
       "goal": "Rozpoznawaj moment doskoku i kontroluj dystans.",
       "setup": "Trener stoi z piłką przy dwóch oznaczonych kierunkach wyjścia.",
       "steps": [
-        "Obserwuj dotknięcie piłki przez trenera.",
-        "Gdy trener wykona dłuższy kontakt lub odwróci się, doskocz pod kontrolą.",
-        "Zamknij jedną linię wyjścia bez faulu."
+        "Stań około 4 m od partnera z piłką; zaznacz po jego bokach dwa kierunki wyjścia.",
+        "Partner wykonuje krótkie kontakty, a od czasu do czasu wypuszcza piłkę dalej lub obraca się bokiem.",
+        "Na taki sygnał rusz po łuku, zasłaniając wyjście do środka, zamiast biec prosto na piłkę.",
+        "Przed partnerem skróć kroki i wyhamuj; dopiero po zatrzymaniu wróć na start i powtórz z drugiej strony."
       ],
       "coaching_cues": [
         "Maksymalnie zawodnik i trener; brak dodatkowych uczestników.",
@@ -1801,7 +1860,9 @@
       ],
       "environment_options": [
         "trener"
-      ]
+      ],
+      "description": "Rozpoznaj dłuższy kontakt partnera z piłką jako moment do doskoku i zamknij mu jedną stronę wyjścia.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "tac_defend_channel",
@@ -1823,9 +1884,10 @@
       "goal": "Ćwicz ustawienie ciała w obronie indywidualnej.",
       "setup": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
       "steps": [
-        "Atakujący prowadzi spokojnie. Obrońca utrzymuje dystans i ustawia ciało tak, by ograniczyć drogę do środka. Bez wślizgów.",
-        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
-        "Obserwuj: Skierowania na bok / 8 prób"
+        "Wyznacz korytarz około 5 × 8 m i ustal, który bok oznacza linię boczną boiska.",
+        "Partner prowadzi piłkę spokojnie, a Ty ustawiasz się 1–2 m przed nim, lekko bokiem.",
+        "Zasłoń drogę do środka i cofaj się krótkimi krokami, nie krzyżując nóg przy zmianie kierunku.",
+        "Gdy partner przyspieszy w stronę boku, przesuń się razem z nim; zakończ próbę na końcu korytarza, bez wślizgów."
       ],
       "coaching_cues": [
         "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
@@ -1922,7 +1984,9 @@
         "type": "autorskie opracowanie",
         "alignment_theme": "NMG: gry zadaniowe, trening pozycyjny, formacyjny i struktura gry",
         "source_reference": "sources_and_rights.json"
-      }
+      },
+      "description": "Ustawieniem ciała kieruj prowadzącego partnera ku linii bocznej, pozostawiając mniej miejsca na wejście do środka.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "tac_switch_play",
@@ -1947,9 +2011,10 @@
       "goal": "Ćwicz przenoszenie kierunku ataku i orientację.",
       "setup": "Ustaw dwa szerokie cele po lewej i prawej stronie ściany lub trenera.",
       "steps": [
-        "Rozpocznij z lewej strony i podaj do ściany lub trenera.",
-        "Przyjmij kierunkowo przez środek.",
-        "Zmień stronę i zagraj do prawego celu; powtórz odwrotnie."
+        "Zaznacz dwa cele na ścianie w odstępie około 3 m i stań naprzeciw lewego.",
+        "Podaj do lewego celu i przed odbiciem ustaw ciało otwarte w stronę prawego.",
+        "Przyjmij piłkę przez środek w prawo, wychodząc z linii pierwszego podania.",
+        "Zagraj do prawego celu, po czym wykonaj to samo w lewo; przyjmuj dalszą nogą względem kierunku podania."
       ],
       "coaching_cues": [
         "Maksymalnie zawodnik i trener; brak dodatkowych uczestników.",
@@ -1985,7 +2050,9 @@
       "environment_options": [
         "ściana",
         "trener"
-      ]
+      ],
+      "description": "Przyjęciem po odbiciu zmień stronę działania i skieruj kolejne podanie do przeciwnego celu.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "tac_positional_boxes",
@@ -2009,9 +2076,10 @@
       "goal": "Ćwicz poruszanie się między sektorami i wybór przestrzeni.",
       "setup": "Podziel pole na trzy sektory; trener może wskazywać wolny sektor.",
       "steps": [
-        "Prowadź piłkę w środkowym sektorze.",
-        "Na sygnał lub według własnej sekwencji wybierz jeden z dwóch sektorów bocznych.",
-        "Wejdź przyjęciem kierunkowym, a potem wróć do środka."
+        "Zaznacz trzy sąsiadujące pola około 3 × 3 m i rozpocznij prowadzenie w środkowym.",
+        "Przed zmianą pola unieś wzrok i wybierz lewy albo prawy sektor.",
+        "Obróć biodra w stronę wyjścia i jednym kontaktem skieruj piłkę do wybranego pola.",
+        "Doprowadź ją do dalszej krawędzi, zawróć do środka i w kolejnej próbie wybierz drugą stronę."
       ],
       "coaching_cues": [
         "Maksymalnie zawodnik i trener; brak dodatkowych uczestników.",
@@ -2047,7 +2115,9 @@
       "environment_options": [
         "samodzielnie",
         "trener"
-      ]
+      ],
+      "description": "Wybierz boczny sektor i wejdź do niego z piłką pierwszym kontaktem, zachowując gotowość do kolejnej akcji.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "tac_formation_build",
@@ -2071,9 +2141,10 @@
       "goal": "Doskonal pierwsze przyjęcie i decyzję przy rozpoczęciu akcji.",
       "setup": "Trener pełni rolę bramkarza; dwa znaczniki oznaczają kierunki rozegrania, bez dodatkowych graczy.",
       "steps": [
-        "Trener podaje piłkę do zawodnika.",
-        "Zawodnik skanuje przestrzeń, przyjmuje w otwartym ustawieniu.",
-        "Odgrywa do trenera lub przeprowadza piłkę przez wskazany sektor."
+        "Partner staje z piłką około 5 m przed Tobą; po obu swoich bokach ustaw bramki wyjściowe.",
+        "Zanim partner poda, sprawdź przez ramię przestrzeń za sobą i ustaw się półbokiem.",
+        "Przyjmij dalszą nogą w kierunku wybranej bramki, tak aby widzieć partnera i wyjście.",
+        "Przeprowadź piłkę przez bramkę albo odegraj do partnera, jeśli ten po podaniu zasłoni wybrane wyjście."
       ],
       "coaching_cues": [
         "Maksymalnie zawodnik i trener; brak dodatkowych uczestników.",
@@ -2109,7 +2180,9 @@
       ],
       "environment_options": [
         "trener"
-      ]
+      ],
+      "description": "Odbierz podanie od partnera w otwartym ustawieniu, jak przy rozpoczynaniu akcji od bramkarza.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "tac_formation_wide",
@@ -2133,9 +2206,10 @@
       "goal": "Ćwicz wybór sposobu minięcia jednego obrońcy na skrzydle.",
       "setup": "Wyznacz boczny korytarz 6×15 m; trener broni dostępu do końcowej bramki.",
       "steps": [
-        "Zawodnik przyjmuje podanie od trenera, który przechodzi do obrony.",
-        "Zawodnik wykonuje zwód i próbuje minąć trenera po zewnętrznej lub do środka.",
-        "Zakończ prowadzeniem przez bramkę."
+        "Zaznacz pole około 6 × 8 m i dwie bramki na jego końcu: jedną przy bocznej linii, drugą bliżej środka.",
+        "Partner podaje z przodu i po zagraniu przechodzi do lekkiej obrony.",
+        "Przyjmij w ruchu, spójrz na ustawienie partnera i zaznacz zwód barkiem.",
+        "Wyprowadź piłkę przez niezasłoniętą bramkę; następną próbę zacznij po drugiej stronie pola."
       ],
       "coaching_cues": [
         "Maksymalnie zawodnik i trener; brak dodatkowych uczestników.",
@@ -2171,7 +2245,9 @@
       ],
       "environment_options": [
         "trener"
-      ]
+      ],
+      "description": "Po przyjęciu na skrzydle wybierz minięcie partnera po linii lub wejście z piłką do środka.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "tac_counterpress",
@@ -2195,9 +2271,10 @@
       "goal": "Trenuj reakcję po stracie bez potrzeby zespołu.",
       "setup": "Wyznacz małe pole i dwie bramki; trener przejmuje piłkę na umówiony sygnał.",
       "steps": [
-        "Zawodnik prowadzi piłkę i celowo oddaje ją trenerowi.",
-        "Przez 3–5 s próbuje odzyskać piłkę, zamykając najbliższy kierunek.",
-        "Jeśli odzysk się nie uda, cofa się i ustawia między trenerem a bramką."
+        "Wyznacz małe pole z bramką za plecami i prowadź piłkę przed partnerem.",
+        "Podaj piłkę partnerowi jako umowną stratę i od razu zrób krótki doskok po łuku.",
+        "Przez 3–5 sekund próbuj zasłonić kierunek prowadzenia i odebrać piłkę samą pracą nóg, bez wślizgu.",
+        "Jeśli nie odzyskasz piłki, przerwij doskok i cofnij się między partnera a bramkę; wróć marszem na start."
       ],
       "coaching_cues": [
         "Maksymalnie zawodnik i trener; brak dodatkowych uczestników.",
@@ -2233,7 +2310,9 @@
       ],
       "environment_options": [
         "trener"
-      ]
+      ],
+      "description": "Po umownej stracie spróbuj szybko zamknąć najbliższe wyjście; jeśli odzysk się nie uda, wróć przed bramkę.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "tac_small_sided",
@@ -2257,9 +2336,10 @@
       "goal": "Rozwijaj decyzje i technikę w krótkiej grze 1 na 1.",
       "setup": "Ustaw pole 10×15 m i dwie małe bramki. To gra 1 na 1, nie 5 na 5.",
       "steps": [
-        "Trener podaje piłkę do zawodnika.",
-        "Zawodnik ma 15–25 s na zdobycie punktu przez bramkę.",
-        "Zmieniaj zadanie: słabsza noga, limit kontaktów lub określony zwód."
+        "Ustaw pole około 6 × 8 m i bramkę z dwóch pachołków na końcowej linii.",
+        "Ustal z partnerem jedno zadanie, na przykład zwód przed minięciem albo wyjście słabszą nogą.",
+        "Partner podaje i zaczyna bronić; przyjmij w ruchu i spróbuj przeprowadzić piłkę przez bramkę.",
+        "Zakończ próbę po bramce, stracie lub około 20 sekundach; omów wykonanie zadania, zanim ruszysz ponownie."
       ],
       "coaching_cues": [
         "Maksymalnie zawodnik i trener; brak dodatkowych uczestników.",
@@ -2295,7 +2375,9 @@
       ],
       "environment_options": [
         "trener"
-      ]
+      ],
+      "description": "Rozegraj krótki pojedynek do małej bramki, stosując jedno ustalone zadanie techniczne.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "tac_finish_after_combination",
@@ -2317,9 +2399,10 @@
       "goal": "Ćwicz zakończenie akcji po dwójkowej kombinacji.",
       "setup": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
       "steps": [
-        "Podaj do partnera, zmień pozycję i po podaniu zwrotnym uderz do celu.",
-        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
-        "Obserwuj: Celne uderzenia / 12 prób"
+        "Ustaw partnera około 4 m przed sobą, lekko z boku drogi do zamocowanej bramki; sprawdź, czy za nią nikogo nie ma.",
+        "Podaj do partnera i natychmiast rusz po skosie obok pachołka, zamiast zatrzymywać się po zagraniu.",
+        "Partner odgrywa po ziemi przed Twój bieg; ustaw stopę podporową obok nadchodzącej piłki.",
+        "Uderz do wybranego boku bramki, zatrzymaj akcję i powtórz ruch z drugiej strony."
       ],
       "coaching_cues": [
         "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
@@ -2416,7 +2499,9 @@
         "type": "autorskie opracowanie",
         "alignment_theme": "NMG: gry zadaniowe, trening pozycyjny, formacyjny i struktura gry",
         "source_reference": "sources_and_rights.json"
-      }
+      },
+      "description": "Podaj, przemieść się do podania zwrotnego i zakończ akcję strzałem z nowej pozycji.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "phy_dynamic_warmup",
@@ -2437,9 +2522,10 @@
       "goal": "Stopniowo przygotuj ciało do ruchu.",
       "setup": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
       "steps": [
-        "Wykonaj marsz, łagodny trucht, krążenia ramion i spokojne kroki boczne. Zwiększaj tempo stopniowo, bez bólu.",
-        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
-        "Obserwuj: Samopoczucie przed i po"
+        "Przejdź kilkanaście kroków marszem, swobodnie pracując ramionami, a następnie wróć lekkim truchtem.",
+        "Pokonaj ten sam odcinek krokiem dostawnym w jedną stronę, a z powrotem prowadź drugą nogą.",
+        "W marszu dodaj krążenia ramion i łagodne unoszenie kolan, bez wymuszania zakresu ruchu.",
+        "Zakończ spokojnym prowadzeniem piłki ze zmianami kierunku; podnoś tempo tylko wtedy, gdy ruch pozostaje swobodny i bez bólu."
       ],
       "coaching_cues": [
         "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
@@ -2520,7 +2606,9 @@
         "type": "autorskie opracowanie",
         "alignment_theme": "NMG: przygotowanie motoryczne; autorskie ćwiczenia ogólnorozwojowe",
         "source_reference": "sources_and_rights.json"
-      }
+      },
+      "description": "Stopniowo przejdź od spokojnego marszu do ruchów bocznych i lekkiego truchtu przed zadaniami z piłką.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "phy_coordination_ladder",
@@ -2541,9 +2629,10 @@
       "goal": "Ćwicz rytm i kontrolę stóp bez pośpiechu.",
       "setup": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
       "steps": [
-        "Przejdź między znacznikami przodem i bokiem, a następnie dodaj spokojne prowadzenie piłki.",
-        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
-        "Obserwuj: Przejścia bez dotknięcia / 6 prób"
+        "Ułóż 6 płaskich znaczników co około pół metra, tak aby można było swobodnie stawiać stopy między nimi.",
+        "Przejdź przodem, stawiając po dwie stopy w każdej luce; wróć poza ścieżką.",
+        "Ustaw się bokiem i pokonaj ścieżkę krokiem dostawnym, nie zahaczając stóp o znaczniki.",
+        "Na końcu przeprowadź piłkę slalomem między znacznikami, wolniej niż przy przejściu bez piłki."
       ],
       "coaching_cues": [
         "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
@@ -2624,7 +2713,9 @@
         "type": "autorskie opracowanie",
         "alignment_theme": "NMG: przygotowanie motoryczne; autorskie ćwiczenia ogólnorozwojowe",
         "source_reference": "sources_and_rights.json"
-      }
+      },
+      "description": "Przejdź prostą ścieżkę między znacznikami, zachowując rytm kroków, a potem pokonaj ją z piłką.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "phy_balance_single",
@@ -2643,10 +2734,10 @@
       "goal": "Popraw kontrolę postawy i równowagę.",
       "setup": "Zapewnij bezpieczną nawierzchnię, miejsce i odpowiednie obuwie. Młodsi zawodnicy powinni ćwiczyć pod nadzorem dorosłego.",
       "steps": [
-        "Zacznij od spokojnego przygotowania ruchowego.",
-        "Wykonuj niewielką liczbę jakościowych powtórzeń i odpoczywaj według samopoczucia.",
-        "Nie zwiększaj jednocześnie czasu, tempa i trudności.",
-        "Przerwij przy bólu, zawrotach głowy lub nietypowym osłabieniu."
+        "Stań obok ściany, której możesz się lekko przytrzymać, i oprzyj ciężar na jednej stopie.",
+        "Lekko ugnij kolano nogi podporowej, oderwij drugą stopę i patrz na nieruchomy punkt przed sobą.",
+        "Utrzymując biodra równo, dotknij wolną stopą podłoża przed sobą, z boku i z tyłu.",
+        "Odstaw obie stopy, odpocznij i zmień nogę; jeśli tracisz równowagę, skróć zasięg ruchu lub podeprzyj dłoń o ścianę."
       ],
       "coaching_cues": [
         "Kontrola i technika przed intensywnością.",
@@ -2678,7 +2769,9 @@
       ],
       "environment_options": [
         "samodzielnie"
-      ]
+      ],
+      "description": "Utrzymaj równowagę na jednej nodze, dodając spokojny ruch wolnej nogi bez przechylania tułowia.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "phy_squat_control",
@@ -2697,10 +2790,10 @@
       "goal": "Ćwicz podstawowy wzorzec ruchu bez dodatkowego ciężaru.",
       "setup": "Zapewnij bezpieczną nawierzchnię, miejsce i odpowiednie obuwie. Młodsi zawodnicy powinni ćwiczyć pod nadzorem dorosłego.",
       "steps": [
-        "Zacznij od spokojnego przygotowania ruchowego.",
-        "Wykonuj niewielką liczbę jakościowych powtórzeń i odpoczywaj według samopoczucia.",
-        "Nie zwiększaj jednocześnie czasu, tempa i trudności.",
-        "Przerwij przy bólu, zawrotach głowy lub nietypowym osłabieniu."
+        "Stań na szerokość bioder lub nieco szerzej, z całymi stopami opartymi na podłożu.",
+        "Wyciągnij ręce przed siebie i powoli ugnij biodra oraz kolana, jak przy siadaniu na krześle.",
+        "Zatrzymaj zejście w wygodnym, bezbolesnym zakresie; pięty pozostają na ziemi, a kolana podążają w kierunku palców.",
+        "Wróć do stania bez podskoku i rozpocznij kolejne powtórzenie dopiero po odzyskaniu stabilnej pozycji."
       ],
       "coaching_cues": [
         "Kontrola i technika przed intensywnością.",
@@ -2732,7 +2825,9 @@
       ],
       "environment_options": [
         "samodzielnie"
-      ]
+      ],
+      "description": "Wykonaj spokojny przysiad bez obciążenia, kontrolując ustawienie stóp, kolan i tułowia.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "phy_lunge_control",
@@ -2751,10 +2846,10 @@
       "goal": "Rozwijaj kontrolę kończyn i równowagę.",
       "setup": "Zapewnij bezpieczną nawierzchnię, miejsce i odpowiednie obuwie. Młodsi zawodnicy powinni ćwiczyć pod nadzorem dorosłego.",
       "steps": [
-        "Zacznij od spokojnego przygotowania ruchowego.",
-        "Wykonuj niewielką liczbę jakościowych powtórzeń i odpoczywaj według samopoczucia.",
-        "Nie zwiększaj jednocześnie czasu, tempa i trudności.",
-        "Przerwij przy bólu, zawrotach głowy lub nietypowym osłabieniu."
+        "Stań prosto, ustawiając stopy na szerokość bioder; zostaw wolne miejsce za sobą.",
+        "Cofnij jedną nogę o wygodny krok, pozostawiając przód stopy tylnej nogi na podłożu.",
+        "Powoli ugnij oba kolana, zachowując tułów pionowo i przednie kolano w linii stopy; nie schodź przez ból.",
+        "Odepchnij się przednią stopą, wróć do stabilnego stania i wykonaj wykrok drugą nogą."
       ],
       "coaching_cues": [
         "Kontrola i technika przed intensywnością.",
@@ -2786,7 +2881,9 @@
       ],
       "environment_options": [
         "samodzielnie"
-      ]
+      ],
+      "description": "Zrób wykrok w tył i wróć do stania bez chwiania się na boki ani odbijania z dolnej pozycji.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "phy_core_deadbug",
@@ -2807,10 +2904,10 @@
       "goal": "Utrzymuj kontrolę tułowia podczas ruchu kończyn.",
       "setup": "Zapewnij bezpieczną nawierzchnię, miejsce i odpowiednie obuwie. Młodsi zawodnicy powinni ćwiczyć pod nadzorem dorosłego.",
       "steps": [
-        "Zacznij od spokojnego przygotowania ruchowego.",
-        "Wykonuj niewielką liczbę jakościowych powtórzeń i odpoczywaj według samopoczucia.",
-        "Nie zwiększaj jednocześnie czasu, tempa i trudności.",
-        "Przerwij przy bólu, zawrotach głowy lub nietypowym osłabieniu."
+        "Połóż się na macie, unieś ręce nad barki i ugnij biodra oraz kolana mniej więcej do kąta prostego.",
+        "Zrób swobodny wydech i powoli opuść jedną rękę za głowę oraz przeciwną piętę w stronę podłogi.",
+        "Zatrzymaj ruch, zanim plecy zaczną się odrywać lub wyginać; oddychaj, nie wstrzymując powietrza.",
+        "Wróć do pozycji wyjściowej i zmień strony; ułatw zadanie, poruszając tylko nogą i pozostawiając ręce nieruchomo."
       ],
       "coaching_cues": [
         "Kontrola i technika przed intensywnością.",
@@ -2842,7 +2939,9 @@
       ],
       "environment_options": [
         "samodzielnie"
-      ]
+      ],
+      "description": "W leżeniu na plecach poruszaj przeciwną ręką i nogą, utrzymując tułów spokojnie na podłożu.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "phy_accel_5m",
@@ -2863,10 +2962,10 @@
       "goal": "Ćwicz krótkie przyspieszenie z pełną kontrolą.",
       "setup": "Zapewnij bezpieczną nawierzchnię, miejsce i odpowiednie obuwie. Młodsi zawodnicy powinni ćwiczyć pod nadzorem dorosłego.",
       "steps": [
-        "Zacznij od spokojnego przygotowania ruchowego.",
-        "Wykonuj niewielką liczbę jakościowych powtórzeń i odpoczywaj według samopoczucia.",
-        "Nie zwiększaj jednocześnie czasu, tempa i trudności.",
-        "Przerwij przy bólu, zawrotach głowy lub nietypowym osłabieniu."
+        "Po rozgrzewce ustaw start i metę w odstępie 5 m, a za metą zostaw przynajmniej kilka metrów wolnego miejsca.",
+        "Ustaw jedną nogę z przodu, lekko pochyl całe ciało i rozpocznij bieg od zdecydowanego pierwszego kroku.",
+        "Przyspiesz do mety, pracując ramionami przód–tył; nie prostuj tułowia gwałtownie po pierwszym kroku.",
+        "Za metą stopniowo skróć kroki i wróć marszem; kolejną próbę zacznij dopiero po swobodnym odzyskaniu oddechu."
       ],
       "coaching_cues": [
         "Kontrola i technika przed intensywnością.",
@@ -2898,7 +2997,9 @@
       ],
       "environment_options": [
         "samodzielnie"
-      ]
+      ],
+      "description": "Przećwicz kilka pierwszych kroków przyspieszenia na krótkim odcinku, z wyraźnym miejscem do spokojnego wyhamowania.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "phy_decel_control",
@@ -2919,10 +3020,10 @@
       "goal": "Ucz się kontrolować ciało przy zatrzymaniu.",
       "setup": "Zapewnij bezpieczną nawierzchnię, miejsce i odpowiednie obuwie. Młodsi zawodnicy powinni ćwiczyć pod nadzorem dorosłego.",
       "steps": [
-        "Zacznij od spokojnego przygotowania ruchowego.",
-        "Wykonuj niewielką liczbę jakościowych powtórzeń i odpoczywaj według samopoczucia.",
-        "Nie zwiększaj jednocześnie czasu, tempa i trudności.",
-        "Przerwij przy bólu, zawrotach głowy lub nietypowym osłabieniu."
+        "Zaznacz odcinek 5 m i linię hamowania; wybierz równe, nieśliskie podłoże.",
+        "Rusz spokojnym biegiem, a około dwa kroki przed linią zacznij skracać krok i obniżać biodra.",
+        "Zatrzymaj się w stabilnym ustawieniu na ugiętych nogach, bez zapadania kolan do środka.",
+        "Po zatrzymaniu odbij się w lewo lub w prawo i pokonaj kilka kroków; przy następnej próbie zmień stronę, nie zwiększając jeszcze prędkości."
       ],
       "coaching_cues": [
         "Kontrola i technika przed intensywnością.",
@@ -2954,7 +3055,9 @@
       ],
       "environment_options": [
         "samodzielnie"
-      ]
+      ],
+      "description": "Z umiarkowanego biegu wyhamuj przed linią, ustabilizuj pozycję i dopiero wtedy zmień kierunek.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "phy_shuttle_submax",
@@ -2975,10 +3078,10 @@
       "goal": "Buduj tolerancję powtarzalnego ruchu bez maksymalnej intensywności.",
       "setup": "Zapewnij bezpieczną nawierzchnię, miejsce i odpowiednie obuwie. Młodsi zawodnicy powinni ćwiczyć pod nadzorem dorosłego.",
       "steps": [
-        "Zacznij od spokojnego przygotowania ruchowego.",
-        "Wykonuj niewielką liczbę jakościowych powtórzeń i odpoczywaj według samopoczucia.",
-        "Nie zwiększaj jednocześnie czasu, tempa i trudności.",
-        "Przerwij przy bólu, zawrotach głowy lub nietypowym osłabieniu."
+        "Ustaw dwie linie w odległości około 8 m i przejdź trasę marszem, sprawdzając przyczepność podłoża.",
+        "Przebiegnij do dalszej linii w tempie pozwalającym swobodnie powiedzieć krótkie zdanie.",
+        "Przed linią skróć krok, dotknij jej stopą i zawróć bez gwałtownego skręcania na wyprostowanej nodze.",
+        "Wykonaj kilka przejść w tym samym rytmie, potem przejdź do marszu; nie traktuj zadania jako testu na wyczerpanie."
       ],
       "coaching_cues": [
         "Kontrola i technika przed intensywnością.",
@@ -3010,7 +3113,9 @@
       ],
       "environment_options": [
         "samodzielnie"
-      ]
+      ],
+      "description": "Biegaj między dwiema liniami w równym, umiarkowanym tempie, ćwicząc płynny nawrót zamiast maksymalnej szybkości.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "phy_jump_landing",
@@ -3029,10 +3134,10 @@
       "goal": "Ćwicz miękkie, stabilne lądowanie.",
       "setup": "Zapewnij bezpieczną nawierzchnię, miejsce i odpowiednie obuwie. Młodsi zawodnicy powinni ćwiczyć pod nadzorem dorosłego.",
       "steps": [
-        "Zacznij od spokojnego przygotowania ruchowego.",
-        "Wykonuj niewielką liczbę jakościowych powtórzeń i odpoczywaj według samopoczucia.",
-        "Nie zwiększaj jednocześnie czasu, tempa i trudności.",
-        "Przerwij przy bólu, zawrotach głowy lub nietypowym osłabieniu."
+        "Stań na równym, nieśliskim podłożu ze stopami na szerokość bioder.",
+        "Lekko ugnij kolana i wykonaj niski podskok pionowo, bez próby osiągania największej wysokości.",
+        "Wyląduj miękko na obu stopach, uginając biodra i kolana w kierunku palców stóp.",
+        "Zatrzymaj pozycję na dwie sekundy; jeśli się chwiejesz lub lądowanie boli, zrezygnuj z podskoku i przećwicz samo ugięcie nóg."
       ],
       "coaching_cues": [
         "Kontrola i technika przed intensywnością.",
@@ -3064,7 +3169,9 @@
       ],
       "environment_options": [
         "samodzielnie"
-      ]
+      ],
+      "description": "Po niewielkim podskoku wyląduj cicho na obu nogach i utrzymaj równowagę, zanim powtórzysz ruch.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "phy_mobility_reset",
@@ -3083,10 +3190,10 @@
       "goal": "Zakończ dzień lekkim ruchem bez dokładania obciążenia.",
       "setup": "Zapewnij bezpieczną nawierzchnię, miejsce i odpowiednie obuwie. Młodsi zawodnicy powinni ćwiczyć pod nadzorem dorosłego.",
       "steps": [
-        "Zacznij od spokojnego przygotowania ruchowego.",
-        "Wykonuj niewielką liczbę jakościowych powtórzeń i odpoczywaj według samopoczucia.",
-        "Nie zwiększaj jednocześnie czasu, tempa i trudności.",
-        "Przerwij przy bólu, zawrotach głowy lub nietypowym osłabieniu."
+        "Przejdź krótki odcinek spokojnym marszem, pozwalając oddechowi się wyrównać.",
+        "Stań w wykroku i delikatnie przesuń przednie kolano nad stopę, nie odrywając pięty.",
+        "Oprzyj dłonie na biodrach i wykonaj małe, powolne krążenia bioder w obie strony.",
+        "Na stojąco obróć barki łagodnie w lewo i w prawo; zakończ każdy ruch przed pojawieniem się bólu lub ciągnięcia wymagającego docisku."
       ],
       "coaching_cues": [
         "Kontrola i technika przed intensywnością.",
@@ -3118,7 +3225,9 @@
       ],
       "environment_options": [
         "samodzielnie"
-      ]
+      ],
+      "description": "Po wysiłku wykonaj łagodne ruchy bioder, stawów skokowych i tułowia, bez dociskania do granicy zakresu.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "phy_walking_recovery",
@@ -3137,10 +3246,10 @@
       "goal": "Wybierz lekki ruch zamiast kolejnej intensywnej sesji.",
       "setup": "Zapewnij bezpieczną nawierzchnię, miejsce i odpowiednie obuwie. Młodsi zawodnicy powinni ćwiczyć pod nadzorem dorosłego.",
       "steps": [
-        "Zacznij od spokojnego przygotowania ruchowego.",
-        "Wykonuj niewielką liczbę jakościowych powtórzeń i odpoczywaj według samopoczucia.",
-        "Nie zwiększaj jednocześnie czasu, tempa i trudności.",
-        "Przerwij przy bólu, zawrotach głowy lub nietypowym osłabieniu."
+        "Wybierz znaną, bezpieczną trasę, z której łatwo możesz wrócić, jeśli poczujesz zmęczenie.",
+        "Rozpocznij swobodnym krokiem i rozluźnij barki oraz dłonie.",
+        "Utrzymuj tempo pozwalające spokojnie rozmawiać; nie dodawaj podbiegów ani sprintów.",
+        "Wróć, zanim spacer zacznie być kolejnym wysiłkiem; jeśli jesteś wyraźnie osłabiony lub odczuwasz ból, wybierz odpoczynek i powiedz o tym dorosłemu."
       ],
       "coaching_cues": [
         "Kontrola i technika przed intensywnością.",
@@ -3172,7 +3281,9 @@
       ],
       "environment_options": [
         "samodzielnie"
-      ]
+      ],
+      "description": "Zamień dodatkowy trening na spokojny spacer, bez przyspieszeń i zadań kondycyjnych.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "men_pre_session_goal",
@@ -3193,9 +3304,10 @@
       "goal": "Wybierz jeden cel, na który masz wpływ.",
       "setup": "Kartka/ekran",
       "steps": [
-        "Zapisz jedno zachowanie, które chcesz dziś powtarzać, i sposób jego policzenia. Po treningu dopisz obserwację.",
-        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
-        "Obserwuj: Cel zapisany i podsumowany"
+        "Przypomnij sobie jedną sytuację z ostatniego treningu, którą chcesz rozegrać lepiej.",
+        "Zamień ją na działanie, na przykład: „Przed przyjęciem spojrzę przez ramię”, zamiast „Będę grać dobrze”.",
+        "Zapisz, jak rozpoznasz wykonanie: policz kilka sytuacji, w których spojrzałeś przed otrzymaniem piłki.",
+        "Po treningu dopisz jeden przykład udanej próby i jedną sytuację, w której chcesz spróbować ponownie."
       ],
       "coaching_cues": [
         "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
@@ -3276,7 +3388,9 @@
         "type": "autorskie opracowanie",
         "alignment_theme": "NMG: przygotowanie psychologiczne; autorskie ćwiczenia mentalne",
         "source_reference": "sources_and_rights.json"
-      }
+      },
+      "description": "Wybierz jedno zachowanie do przećwiczenia dzisiaj i po zajęciach sprawdź, czy rzeczywiście je powtarzałeś.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "men_post_session_reflection",
@@ -3297,9 +3411,10 @@
       "goal": "Zapisz mocną stronę i jedną rzecz do poprawy.",
       "setup": "Kartka/ekran",
       "steps": [
-        "Opisz jedno udane działanie, jedną trudność i jedną rzecz do przećwiczenia. Oddziel wynik od własnych zachowań.",
-        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
-        "Obserwuj: Trzy uzupełnione pola"
+        "Zapisz konkretną udaną akcję i opisz, co zrobiłeś, zamiast oceniać cały mecz jako dobry lub zły.",
+        "Wybierz jedną trudną sytuację i opisz ją bez etykiet typu „jestem słaby”.",
+        "Dopisz jedno działanie do przećwiczenia, na przykład przyjęcie dalszą nogą pod presją.",
+        "Przeczytaj trzy punkty i sprawdź, czy dotyczą Twoich zachowań, a nie tylko wyniku drużyny."
       ],
       "coaching_cues": [
         "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
@@ -3380,7 +3495,9 @@
         "type": "autorskie opracowanie",
         "alignment_theme": "NMG: przygotowanie psychologiczne; autorskie ćwiczenia mentalne",
         "source_reference": "sources_and_rights.json"
-      }
+      },
+      "description": "Podsumuj swój występ w trzech krótkich punktach: udane działanie, trudność i zadanie na następny trening.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "men_reset_after_error",
@@ -3401,9 +3518,10 @@
       "goal": "Po błędzie wróć uwagą do kolejnego działania.",
       "setup": "Kartka/ekran",
       "steps": [
-        "Przypomnij błąd. Zapisz neutralny opis, krótkie hasło powrotu do zadania i następną pomocną czynność.",
-        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
-        "Obserwuj: Zapisana kolejna czynność"
+        "Wybierz niedawną pomyłkę i opisz ją jednym neutralnym zdaniem, na przykład „podałem za plecy partnera”.",
+        "Zrób spokojny wydech i wybierz krótkie hasło, na przykład „następna akcja”.",
+        "Nazwij najbliższe pomocne działanie: wrócę do ustawienia, pokażę się do podania albo dam partnerowi informację.",
+        "Wyobraź sobie tę samą pomyłkę i przejdź kolejno przez wydech, hasło oraz wybrane działanie; nie odtwarzaj błędu w kółko."
       ],
       "coaching_cues": [
         "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
@@ -3484,7 +3602,9 @@
         "type": "autorskie opracowanie",
         "alignment_theme": "NMG: przygotowanie psychologiczne; autorskie ćwiczenia mentalne",
         "source_reference": "sources_and_rights.json"
-      }
+      },
+      "description": "Przygotuj krótką reakcję po błędzie, która pomaga wrócić do następnej akcji.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "men_confidence_evidence",
@@ -3505,9 +3625,10 @@
       "goal": "Zapisuj konkretne przykłady własnego postępu.",
       "setup": "Kartka/ekran",
       "steps": [
-        "Zapisz trzy konkretne działania z przygotowań, na których możesz oprzeć pewność przed meczem.",
-        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
-        "Obserwuj: Trzy konkretne przykłady"
+        "Zapisz trzy rzeczy, które faktycznie zrobiłeś, na przykład regularny trening, ćwiczenie słabszej nogi i przygotowanie sprzętu.",
+        "Do każdej dopisz konkretny przykład z ostatniego tygodnia.",
+        "Wybierz jeden przykład i ułóż zdanie: „Przygotowałem się przez…, więc w meczu spróbuję…”.",
+        "Przeczytaj zdanie przed wyjściem na rozgrzewkę; pozostaw miejsce na błędy i kolejne próby."
       ],
       "coaching_cues": [
         "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
@@ -3588,7 +3709,9 @@
         "type": "autorskie opracowanie",
         "alignment_theme": "NMG: przygotowanie psychologiczne; autorskie ćwiczenia mentalne",
         "source_reference": "sources_and_rights.json"
-      }
+      },
+      "description": "Oprzyj pewność przed meczem na konkretnych działaniach z przygotowań, a nie na obietnicy bezbłędnej gry.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "men_pre_match_routine",
@@ -3607,10 +3730,10 @@
       "goal": "Ustal prostą rutynę skupiającą uwagę na zadaniu.",
       "setup": "Zawodnik może zapisać odpowiedzi w dzienniku; nie wymuszaj dzielenia się prywatnymi notatkami.",
       "steps": [
-        "Zatrzymaj się na chwilę i opisz sytuację konkretnie.",
-        "Wskaż jedno działanie, na które masz wpływ.",
-        "Zapisz krótki wniosek bez etykietowania siebie.",
-        "Jeśli emocje są silne lub długotrwałe, porozmawiaj z zaufanym dorosłym."
+        "Zapisz trzy rzeczy do sprawdzenia przed wyjściem: strój, buty i picie.",
+        "Ustal z trenerem, kiedy zaczynasz rozgrzewkę i co robisz przed zbiórką drużyny.",
+        "Wybierz jedno krótkie hasło na mecz, na przykład „sprawdzaj za plecami”.",
+        "Po meczu zaznacz, które elementy rutyny pomogły, i zmień tylko jeden, jeśli był niepotrzebny lub przeszkadzał."
       ],
       "coaching_cues": [
         "Błąd jest informacją, nie etykietą.",
@@ -3642,7 +3765,9 @@
       ],
       "environment_options": [
         "samodzielnie"
-      ]
+      ],
+      "description": "Ułóż krótką, powtarzalną kolejność przygotowania przed meczem, aby wiedzieć, co robić po przyjeździe.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "men_controllable_goals",
@@ -3661,10 +3786,10 @@
       "goal": "Oddziel działania zależne od Ciebie od wyniku.",
       "setup": "Zawodnik może zapisać odpowiedzi w dzienniku; nie wymuszaj dzielenia się prywatnymi notatkami.",
       "steps": [
-        "Zatrzymaj się na chwilę i opisz sytuację konkretnie.",
-        "Wskaż jedno działanie, na które masz wpływ.",
-        "Zapisz krótki wniosek bez etykietowania siebie.",
-        "Jeśli emocje są silne lub długotrwałe, porozmawiaj z zaufanym dorosłym."
+        "Podziel kartkę na dwie kolumny: „moje działanie” i „poza moją kontrolą”.",
+        "Wpisz do drugiej wynik, decyzje sędziego lub wybór składu, jeśli to one zajmują Twoją uwagę.",
+        "Do pierwszej wpisz działania takie jak powrót po stracie, pokazanie się do podania i wspierający komunikat.",
+        "Wybierz jedno z tych działań na następny trening i po zajęciach zapisz sytuację, w której je wykonałeś."
       ],
       "coaching_cues": [
         "Błąd jest informacją, nie etykietą.",
@@ -3696,7 +3821,9 @@
       ],
       "environment_options": [
         "samodzielnie"
-      ]
+      ],
+      "description": "Oddziel to, na co masz wpływ podczas gry, od wyniku i decyzji innych osób.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "men_team_communication",
@@ -3709,16 +3836,16 @@
       },
       "duration_min": 8,
       "intensity": "low",
-      "solo": true,
+      "solo": false,
       "equipment": [],
       "space": "spokojne miejsce",
       "goal": "Ćwicz krótkie, konkretne komunikaty i wspieranie partnerów.",
       "setup": "Zawodnik może zapisać odpowiedzi w dzienniku; nie wymuszaj dzielenia się prywatnymi notatkami.",
       "steps": [
-        "Zatrzymaj się na chwilę i opisz sytuację konkretnie.",
-        "Wskaż jedno działanie, na które masz wpływ.",
-        "Zapisz krótki wniosek bez etykietowania siebie.",
-        "Jeśli emocje są silne lub długotrwałe, porozmawiaj z zaufanym dorosłym."
+        "Z partnerem wybierz trzy sytuacje: ma czas, ma rywala za plecami i może zagrać do Ciebie.",
+        "Ustalcie dla nich krótkie hasła, na przykład „czas”, „plecy” i „jestem z lewej”.",
+        "Wymieniajcie spokojne podania i wypowiadajcie wybrane hasło przed przyjęciem partnera, a nie po jego stracie.",
+        "Po kilku podaniach zapytaj partnera, który komunikat był czytelny, i popraw ten, który był spóźniony lub niejasny."
       ],
       "coaching_cues": [
         "Błąd jest informacją, nie etykietą.",
@@ -3741,16 +3868,19 @@
         "alignment_theme": "NMG: przygotowanie psychologiczne; autorskie ćwiczenia mentalne",
         "source_reference": "sources_and_rights.json"
       },
-      "participation_mode": "solo",
-      "participants_min": 1,
-      "participants_max": 1,
+      "participation_mode": "coach",
+      "participants_min": 2,
+      "participants_max": 2,
       "requires_team": false,
       "required_human_roles": [
-        "zawodnik"
+        "zawodnik",
+        "trener lub partner"
       ],
       "environment_options": [
-        "samodzielnie"
-      ]
+        "zawodnik i trener lub partner"
+      ],
+      "description": "Przećwicz krótkie komunikaty, które przekazują partnerowi użyteczną informację zamiast samej oceny.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "men_pressure_reflection",
@@ -3769,10 +3899,10 @@
       "goal": "Przeanalizuj trudną sytuację bez oceniania swojej wartości.",
       "setup": "Zawodnik może zapisać odpowiedzi w dzienniku; nie wymuszaj dzielenia się prywatnymi notatkami.",
       "steps": [
-        "Zatrzymaj się na chwilę i opisz sytuację konkretnie.",
-        "Wskaż jedno działanie, na które masz wpływ.",
-        "Zapisz krótki wniosek bez etykietowania siebie.",
-        "Jeśli emocje są silne lub długotrwałe, porozmawiaj z zaufanym dorosłym."
+        "Opisz, kiedy pojawiła się presja: przed wejściem na boisko, po stracie czy przy ocenie innych.",
+        "Dopisz, co wtedy pomyślałeś i co zrobiłeś, oddzielając myśl od tego, co naprawdę się wydarzyło.",
+        "Wybierz reakcję do przetestowania: spokojny wydech, krótkie hasło albo prośbę o konkretną wskazówkę.",
+        "Jeśli napięcie długo nie mija lub odbiera chęć do gry, pokaż notatkę zaufanemu dorosłemu i porozmawiaj o potrzebnym wsparciu."
       ],
       "coaching_cues": [
         "Błąd jest informacją, nie etykietą.",
@@ -3804,7 +3934,9 @@
       ],
       "environment_options": [
         "samodzielnie"
-      ]
+      ],
+      "description": "Przyjrzyj się jednej sytuacji presji i wybierz mały krok, który pomoże Ci poradzić sobie przy kolejnej próbie.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "v21_colour_turn",
@@ -3829,9 +3961,10 @@
       "goal": "Szybka reakcja i zmiana kierunku bez utraty piłki.",
       "setup": "Ustaw cztery kolorowe bramki na bokach kwadratu. Trener wywołuje kolor; solo użyj wcześniej przygotowanej sekwencji kolorów na kartce.",
       "steps": [
-        "Prowadź piłkę przez 20–30 sekund.",
-        "Na sygnał wykonaj zwrot i przejedź przez wskazaną bramkę.",
-        "Odpocznij 30–45 sekund; zrób 5–7 serii."
+        "Zaznacz cztery bramki różnymi kolorami wokół pola około 5 × 5 m; partner stoi poza polem.",
+        "Prowadź piłkę krótkimi kontaktami w środku, nie kierując się od razu do jednej z bramek.",
+        "Gdy partner nazwie kolor, odnajdź bramkę, wykonaj zwrot z piłką i przeprowadź ją przez wskazane wyjście.",
+        "Wróć do środka i poproś o nowy kolor; zmieniaj nogę, którą wykonujesz pierwszy kontakt po sygnale."
       ],
       "coaching_cues": [
         "Najpierw kontrola, potem tempo.",
@@ -3861,7 +3994,9 @@
       "environment_options": [
         "samodzielnie",
         "trener"
-      ]
+      ],
+      "description": "Prowadź w środku pola i na komendę partnera wykonaj zwrot do bramki oznaczonej wskazanym kolorem.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "v21_wall_gate_switch",
@@ -3887,9 +4022,10 @@
       "goal": "Popraw celność podania i ustawienie po odbiciu.",
       "setup": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
       "steps": [
-        "Po odbiciu od ściany przyjmij w kierunku przeciwnej bramki i podaj ponownie z nowego kąta.",
-        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
-        "Obserwuj: Udane zmiany / 12 prób"
+        "Ustaw dwie bramki po bokach stanowiska, około 3 m od ściany, i zacznij przy lewej.",
+        "Podaj po ziemi do ściany, ustawiając ciało otwarte w kierunku prawej bramki.",
+        "Przyjmij odbicie dalszą nogą w prawo i przeprowadź piłkę przez prawą bramkę.",
+        "Z nowego miejsca odegraj do ściany i wykonaj lustrzany ruch w lewo, bez zatrzymywania piłki pod ciałem."
       ],
       "coaching_cues": [
         "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
@@ -3984,7 +4120,9 @@
         "alignment_theme": "technika i decyzje w grze",
         "source_url": "https://www.thefa.com/bootroom/resources/coaching/coaching-players-during-covid-19-part-two",
         "source_reference": "sources_and_rights_v2.json"
-      }
+      },
+      "description": "Po podaniu o ścianę przyjmij w stronę przeciwnej bramki i odegraj z nowego kąta.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "v21_scan_number",
@@ -4009,9 +4147,10 @@
       "goal": "Wyrobić nawyk spojrzenia przez ramię przed kontaktem z piłką.",
       "setup": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
       "steps": [
-        "Partner pokazuje kolor przed podaniem. Spójrz za ramię, nazwij kolor i przyjmij w odpowiadającą mu stronę.",
-        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
-        "Obserwuj: Poprawne odczyty / 20 prób"
+        "Ustaw dwie bramki po swoich bokach i uzgodnij z partnerem, który kolor oznacza lewą, a który prawą stronę.",
+        "Stań półbokiem około 4 m od partnera; przed podaniem odwróć głowę tak, żeby odczytać pokazany kolor.",
+        "Powiedz kolor na głos, wróć wzrokiem do piłki i przyjmij w kierunku odpowiedniej bramki.",
+        "Po przejściu przez bramkę odegraj do partnera i wróć na środek; partner zmienia sygnał między próbami."
       ],
       "coaching_cues": [
         "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
@@ -4103,7 +4242,9 @@
         "alignment_theme": "technika i decyzje w grze",
         "source_url": "https://www.thefa.com/bootroom/resources/coaching/how-to-coach-passing-in-football",
         "source_reference": "sources_and_rights_v2.json"
-      }
+      },
+      "description": "Przed otrzymaniem piłki odczytaj sygnał partnera i skieruj przyjęcie do odpowiadającej mu strony.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "v21_first_touch_halfturn",
@@ -4129,10 +4270,10 @@
       "goal": "Przyjmować piłkę w kierunku wolnej przestrzeni.",
       "setup": "Stań lekko bokiem do ściany; oznacz bramkę wyjściową po lewej i prawej stronie.",
       "steps": [
-        "Podaj piłkę o ścianę.",
-        "Spójrz przez ramię i przyjmij dalszą nogą w półobrocie.",
-        "Wyprowadź piłkę przez bramkę, wróć i zmień stronę.",
-        "4 serie po 6 powtórzeń na stronę."
+        "Ustaw się 3–4 m od ściany, a małą bramkę zaznacz po skosie za sobą.",
+        "Podaj do ściany i przed odbiciem spójrz przez ramię w stronę bramki.",
+        "Obróć biodra półbokiem, przyjmij nogą dalszą od ściany i skieruj piłkę w stronę wyjścia.",
+        "Przeprowadź piłkę przez bramkę, wróć na start i po kilku próbach przełóż bramkę na drugą stronę."
       ],
       "coaching_cues": [
         "Nie zatrzymuj piłki pod sobą.",
@@ -4161,7 +4302,9 @@
       "environment_options": [
         "samodzielnie",
         "trener"
-      ]
+      ],
+      "description": "Odbierz piłkę dalszą nogą w półobrocie, aby pierwszym kontaktem przygotować ruch do przodu.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "v21_feint_exit",
@@ -4186,10 +4329,10 @@
       "goal": "Łączyć zmianę rytmu ze zwodem i wyjściem na wolną przestrzeń.",
       "setup": "Ustaw znacznik jako obrońcę i linię mety 5 m za nim.",
       "steps": [
-        "Podejdź wolno do znacznika.",
-        "Wykonaj zwód tułowiem i wyjdź piłką w przeciwną stronę.",
-        "Przyspiesz przez 5 m i zatrzymaj piłkę w strefie.",
-        "6–8 powtórzeń z pełną przerwą."
+        "Ustaw znacznik 3 m od startu i linię wyjścia 5 m za nim, z dodatkowym miejscem na hamowanie.",
+        "Prowadź do znacznika spokojnie, skracając ostatni kontakt przed zwodem.",
+        "Zaznacz ruch barkiem w lewo, po czym popchnij piłkę prawą stopą w prawo poza znacznik.",
+        "Przyspiesz do linii, stopniowo wyhamuj i wróć marszem; w następnej próbie odwróć strony."
       ],
       "coaching_cues": [
         "Zwód ma oszukać kierunkiem ciała.",
@@ -4218,7 +4361,9 @@
       "environment_options": [
         "samodzielnie",
         "trener"
-      ]
+      ],
+      "description": "Przy znaczniku udaj wejście w jedną stronę, a po wyjściu w drugą przyspiesz z piłką na krótkim odcinku.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "v21_coach_shadow_1v1",
@@ -4243,10 +4388,10 @@
       "goal": "Rozpoznawać wolną stronę i chronić piłkę.",
       "setup": "Wyznacz dwie bramki na przeciwległych bokach. Trener jest jedynym obrońcą i początkowo broni pasywnie.",
       "steps": [
-        "Zawodnik otrzymuje piłkę od trenera.",
-        "Ma 6 sekund na przejście z piłką przez jedną z bramek.",
-        "Trener stopniowo zwiększa presję, bez ostrego kontaktu.",
-        "3 serie po 5 prób."
+        "Wyznacz pole około 5 × 5 m z dwiema bramkami na przeciwnej krawędzi; partner zaczyna z piłką przed Tobą.",
+        "Partner podaje i spokojnie zbliża się, zasłaniając jedną stronę wyjścia.",
+        "Przyjmij z dala od partnera, osłoń piłkę barkiem i zmień kierunek do drugiej bramki.",
+        "Wyjdź przez bramkę albo zakończ próbę po kilku sekundach; wróć na start, a partner niech zamknie inną stronę."
       ],
       "coaching_cues": [
         "Osłoń piłkę ciałem.",
@@ -4275,7 +4420,9 @@
       ],
       "environment_options": [
         "trener"
-      ]
+      ],
+      "description": "Wyjdź z piłką z lekkiej presji partnera przez jedną z dwóch bramek, wybierając wolną stronę po przyjęciu.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "v21_wall_one_touch",
@@ -4301,9 +4448,10 @@
       "goal": "Poprawić szybkość przygotowania stopy i dokładność podań.",
       "setup": "Zaznacz szeroki cel na ścianie na wysokości niskiego podania.",
       "steps": [
-        "Rozpocznij 20 podań na dwa kontakty.",
-        "Wykonaj serię podań jednym kontaktem prawą i lewą nogą.",
-        "4 serie po 30 sekund, odpoczynek 45 sekund."
+        "Stań 2–3 m od ściany i zacznij od spokojnych podań na dwa kontakty.",
+        "Gdy odbicia są przewidywalne, odegraj prawą nogą bez zatrzymywania piłki i popraw ustawienie krótkimi krokami.",
+        "Przejdź do odbić lewą nogą, a następnie zmieniaj nogę po każdym podaniu.",
+        "Jeśli piłka odskakuje lub podskakuje, przyjmij ją, uspokój siłę zagrania i dopiero wtedy wróć do jednego kontaktu."
       ],
       "coaching_cues": [
         "Stopa podporowa stabilna.",
@@ -4332,7 +4480,9 @@
       "environment_options": [
         "samodzielnie",
         "trener"
-      ]
+      ],
+      "description": "Utrzymaj rytm podań jednym kontaktem o ścianę, dostosowując ustawienie stóp do każdego odbicia.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "v21_cutback_coach",
@@ -4358,10 +4508,10 @@
       "goal": "Ćwiczyć nabiegnięcie i wykończenie po podaniu wstecznym.",
       "setup": "Trener stoi z boku linii końcowej lub wyznaczonej strefy, zawodnik startuje kilka metrów dalej. Bez bramkarza.",
       "steps": [
-        "Zawodnik robi ruch od piłki i wraca do strefy strzału.",
-        "Trener podaje piłkę po ziemi do tyłu.",
-        "Zawodnik uderza do wyznaczonego sektora.",
-        "3 serie po 6 prób, zmiana strony."
+        "Partner ustawia się z piłką z boku zamocowanej bramki, bliżej linii końcowej; sprawdź, czy strefa strzału jest wolna.",
+        "Zacznij kilka metrów przed bramką, zrób ruch w jej stronę i zatrzymaj się poza linią podania.",
+        "Cofnij się po skosie do wolnego miejsca, a partner niech poda piłkę wstecz po ziemi.",
+        "Nabiegnij na podanie i skieruj strzał do ustalonego sektora; następną próbę rozpocznij z drugiego boku bramki."
       ],
       "coaching_cues": [
         "Sprawdź przestrzeń przed nabiegnięciem.",
@@ -4390,7 +4540,9 @@
       ],
       "environment_options": [
         "trener"
-      ]
+      ],
+      "description": "Wycofaj się z linii piłki i wejdź do podania wstecznego od partnera, kończąc akcję strzałem po ziemi.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "v21_tennis_two",
@@ -4415,10 +4567,10 @@
       "goal": "Doskonalić kontrolę piłki z powietrza i koordynację.",
       "setup": "Wyznacz dwa pola rozdzielone linią na ziemi; trener stoi w drugim polu.",
       "steps": [
-        "Rozpocznij piłką podaną z ręki.",
-        "Po maksymalnie jednym koźle odegraj piłkę nogą do pola trenera.",
-        "Możesz użyć jednego przyjęcia przed odegraniem.",
-        "Graj 3 rundy po 3 minuty."
+        "Wyznacz dwa sąsiadujące pola około 3 × 3 m rozdzielone linią; nie potrzebujesz podwyższonej siatki.",
+        "Partner rozpoczyna spokojnym podrzutem lub podaniem z ręki do Twojego pola.",
+        "Po najwyżej jednym odbiciu od ziemi przyjmij piłkę i odegraj ją nogą do pola partnera.",
+        "Po piłce poza polem zacznijcie wymianę od nowa; najpierw liczcie kolejne udane odbicia, zamiast rywalizować o wynik."
       ],
       "coaching_cues": [
         "Obserwuj tor lotu.",
@@ -4447,7 +4599,9 @@
       ],
       "environment_options": [
         "trener"
-      ]
+      ],
+      "description": "Przebijaj piłkę nogą do pola partnera po najwyżej jednym koźle, ćwicząc kontrolę siły i miejsca zagrania.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "v21_four_corner_challenge",
@@ -4473,10 +4627,10 @@
       "goal": "Urozmaicić trening przez mieszanie technik i krótkie cele.",
       "setup": "W każdym narożniku ustaw inną stację: slalom, zwrot, zatrzymanie, celne podanie o ścianę (lub przez bramkę).",
       "steps": [
-        "Wylosuj numer stacji.",
-        "Wykonaj zadanie i wróć prowadząc piłkę do środka.",
-        "Wylosuj kolejne zadanie; zrób 3 rundy po 4 stacje.",
-        "Między rundami odpocznij 60 sekund."
+        "Oznacz narożniki kwadratu około 6 × 6 m numerami 1–4 i rozpocznij z piłką w środku.",
+        "Wybierz numer i poprowadź tam piłkę: przy 1 zatrzymaj podeszwą, przy 2 wykonaj zwrot wewnętrzną częścią stopy.",
+        "Przy 3 przetocz piłkę podeszwą w bok, a przy 4 wykonaj zwód barkiem i wyjście; po każdym zadaniu wróć do środka.",
+        "Zalicz wszystkie cztery narożniki w zmienionej kolejności i w kolejnej rundzie wykonaj ruchy drugą nogą."
       ],
       "coaching_cues": [
         "Każda stacja wymaga dokładności.",
@@ -4506,7 +4660,9 @@
       "environment_options": [
         "samodzielnie",
         "trener"
-      ]
+      ],
+      "description": "Wykonuj cztery różne zadania z piłką w narożnikach i wracaj po każdym z nich do środka pola.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "v23_ex005",
@@ -4577,9 +4733,10 @@
       "goal": "Przećwicz zadanie: Wyjście z przyjęciem.",
       "setup": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
       "steps": [
-        "Podejdź do podania od partnera i przyjmij na bok, omijając nieruchomy znacznik imitujący presję.",
-        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
-        "Obserwuj: Udane wyjścia / 12 prób"
+        "Stań około 4 m od partnera, a pachołek ustaw metr przed sobą, lekko z boku linii podania.",
+        "Gdy partner zacznie podawać po ziemi, zrób krok w stronę piłki i ustaw ciało półbokiem.",
+        "Pierwszym kontaktem skieruj piłkę obok pachołka, po stronie dalszej od umownej presji.",
+        "Dostaw krok do piłki, odegraj do partnera i wróć na start; przy kolejnej próbie omiń znacznik z drugiej strony."
       ],
       "regression": "Wykonaj zadanie spokojnie, z pomocą trenera.",
       "progression": "Omów zmianę trudności z trenerem; nie dodawaj uczestników.",
@@ -4610,7 +4767,9 @@
         ],
         "source_catalog": "docs/offline_coach/import_sources_v1.json",
         "package": "baza_dziennika_pilkarza_v1"
-      }
+      },
+      "description": "Podejdź do podania i przyjęciem w bok omiń znacznik, zamiast czekać na piłkę w miejscu.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "v23_ex006",
@@ -4679,9 +4838,10 @@
       "goal": "Przećwicz zadanie: Zmiana kierunku przy pachołku.",
       "setup": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
       "steps": [
-        "Prowadź piłkę do znacznika, wykonaj zwrot i wróć inną linią. Zmieniaj nogę prowadzącą.",
-        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
-        "Obserwuj: Kontrolowane zwroty / 12 prób"
+        "Ustaw pachołek około 4 m od startu; podejdź do niego najpierw spokojnie, aby mieć miejsce na zwrot.",
+        "Prowadź piłkę prawą nogą i skróć ostatni kontakt, zostawiając piłkę tuż przed pachołkiem.",
+        "Wewnętrzną częścią prawej stopy skieruj piłkę w lewo i do tyłu, obracając biodra razem z nią.",
+        "Wróć obok linii dojścia i zatrzymaj piłkę na starcie; następną próbę wykonaj lewą nogą ze zwrotem w prawo."
       ],
       "regression": "Wykonaj zadanie spokojnie, z pomocą trenera.",
       "progression": "Omów zmianę trudności z trenerem; nie dodawaj uczestników.",
@@ -4712,7 +4872,9 @@
         ],
         "source_catalog": "docs/offline_coach/import_sources_v1.json",
         "package": "baza_dziennika_pilkarza_v1"
-      }
+      },
+      "description": "Doprowadź piłkę do pachołka, wykonaj zwrot o 180° i wróć po drugiej stronie, utrzymując ją blisko stopy.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "v23_ex010",
@@ -4781,9 +4943,10 @@
       "goal": "Przećwicz zadanie: Cień napastnika.",
       "setup": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
       "steps": [
-        "Partner porusza się między znacznikami. Utrzymuj ustawienie między nim a umowną bramką, bez kontaktu fizycznego.",
-        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
-        "Obserwuj: Utrzymane ustawienia / 10 prób"
+        "Zaznacz bramkę i linię ruchu partnera około 5 m przed nią; ustaw się pomiędzy nimi.",
+        "Partner porusza się wzdłuż linii w lewo i w prawo, początkowo marszem.",
+        "Przesuwaj się krótkimi krokami tak, aby nadal zasłaniać partnerowi drogę do środka bramki; obserwuj jego biodra.",
+        "Gdy partner zmieni kierunek, najpierw zatrzymaj ruch, potem dostaw nogę w drugą stronę; po krótkiej próbie zamieńcie się rolami."
       ],
       "regression": "Wykonaj zadanie spokojnie, z pomocą trenera.",
       "progression": "Omów zmianę trudności z trenerem; nie dodawaj uczestników.",
@@ -4814,7 +4977,9 @@
         ],
         "source_catalog": "docs/offline_coach/import_sources_v1.json",
         "package": "baza_dziennika_pilkarza_v1"
-      }
+      },
+      "description": "Podążaj za ruchem partnera bez piłki, utrzymując pozycję między nim a umowną bramką.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "v23_ex015",
@@ -4888,9 +5053,10 @@
       "goal": "Przećwicz zadanie: Podanie po prowadzeniu.",
       "setup": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
       "steps": [
-        "Wprowadź piłkę obok znacznika i zagraj do partnera przez wyznaczone okno.",
-        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
-        "Obserwuj: Celne podania / 12 prób"
+        "Ustaw pachołek 3 m od startu, a za nim okno szerokości około metra; partner czeka kilka metrów za oknem.",
+        "Prowadź piłkę do pachołka i ostatnim kontaktem przesuń ją lekko obok niego na nogę podającą.",
+        "Spójrz na partnera, postaw stopę podporową obok piłki i podaj po ziemi przez okno.",
+        "Partner odgrywa, a Ty wracasz na start; kolejną próbę rozpocznij po drugiej stronie pachołka i podaj drugą nogą."
       ],
       "regression": "Wykonaj zadanie spokojnie, z pomocą trenera.",
       "progression": "Omów zmianę trudności z trenerem; nie dodawaj uczestników.",
@@ -4921,7 +5087,9 @@
         ],
         "source_catalog": "docs/offline_coach/import_sources_v1.json",
         "package": "baza_dziennika_pilkarza_v1"
-      }
+      },
+      "description": "Po krótkim prowadzeniu przygotuj piłkę do podania przez okno i zagraj do partnera bez dodatkowego zatrzymania.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "v23_ex016",
@@ -4990,9 +5158,10 @@
       "goal": "Przećwicz zadanie: Ruch od i do piłki.",
       "setup": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
       "steps": [
-        "Odejdź od partnera, zmień kierunek i pokaż linię podania. Partner podaje dopiero po pokazaniu się.",
-        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
-        "Obserwuj: Podania w tempo / 10 prób"
+        "Stań około 4 m od partnera z piłką i ustaw znacznik lekko za sobą, jako punkt odejścia.",
+        "Zrób dwa kroki od piłki w stronę znacznika, obserwując partnera przez ramię.",
+        "Zmień kierunek i wyjdź po skosie poza linię znacznika; pokaż ręką, gdzie chcesz otrzymać podanie.",
+        "Partner podaje dopiero po Twoim ruchu; przyjmij w kierunku biegu, odegraj i rozpocznij kolejne odejście na drugą stronę."
       ],
       "regression": "Wykonaj zadanie spokojnie, z pomocą trenera.",
       "progression": "Omów zmianę trudności z trenerem; nie dodawaj uczestników.",
@@ -5023,7 +5192,9 @@
         ],
         "source_catalog": "docs/offline_coach/import_sources_v1.json",
         "package": "baza_dziennika_pilkarza_v1"
-      }
+      },
+      "description": "Odejdź od partnera, po czym zmień kierunek i pokaż się do podania w wolnym miejscu.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "v23_ex017",
@@ -5097,9 +5268,10 @@
       "goal": "Przećwicz zadanie: Odbiór i pierwsze podanie.",
       "setup": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
       "steps": [
-        "Partner spokojnie oddaje piłkę. Po przejęciu spójrz na cel i podaj do niego. To uproszczenie, bez realnego odbioru.",
-        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
-        "Obserwuj: Celne pierwsze podania / 12 prób"
+        "Ustaw partnera z piłką 3 m przed sobą i małą bramkę do podania kilka metrów po swojej prawej stronie.",
+        "Podejdź spokojnie; partner lekko przetacza piłkę w Twoim kierunku i pozwala Ci ją przejąć.",
+        "Przed kontaktem spójrz na bramkę, przejmij piłkę w jej stronę i kolejnym kontaktem podaj przez środek.",
+        "Odzyskaj piłkę, wróć do partnera i przestaw cel na lewą stronę, aby przejąć oraz podać drugą nogą."
       ],
       "regression": "Wykonaj zadanie spokojnie, z pomocą trenera.",
       "progression": "Omów zmianę trudności z trenerem; nie dodawaj uczestników.",
@@ -5130,7 +5302,9 @@
         ],
         "source_catalog": "docs/offline_coach/import_sources_v1.json",
         "package": "baza_dziennika_pilkarza_v1"
-      }
+      },
+      "description": "Po kontrolowanym przejęciu piłki od partnera od razu przygotuj celne pierwsze podanie. Bez pojedynku o odbiór.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "v23_ex019",
@@ -5200,9 +5374,10 @@
       "goal": "Przećwicz zadanie: Wybór wolnej bramki.",
       "setup": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
       "steps": [
-        "Partner zasłania jedno wyjście. Przed przyjęciem rozpoznaj wolną stronę i poprowadź tam piłkę.",
-        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
-        "Obserwuj: Trafne decyzje / 12 prób"
+        "Ustaw dwie bramki po bokach miejsca przyjęcia, a partnera z piłką około 4 m przed sobą.",
+        "Partner podaje, po czym robi krok w stronę jednej z bramek, umownie zamykając to wyjście.",
+        "Sprawdź jego ruch przed kontaktem i pierwszym przyjęciem skieruj piłkę do drugiej bramki.",
+        "Przeprowadź piłkę przez wolne wyjście, odegraj i wróć na środek; partner zmienia blokowaną stronę między próbami."
       ],
       "regression": "Wykonaj zadanie spokojnie, z pomocą trenera.",
       "progression": "Omów zmianę trudności z trenerem; nie dodawaj uczestników.",
@@ -5233,7 +5408,9 @@
         ],
         "source_catalog": "docs/offline_coach/import_sources_v1.json",
         "package": "baza_dziennika_pilkarza_v1"
-      }
+      },
+      "description": "Jeszcze przed przyjęciem rozpoznaj wyjście niezasłonięte przez partnera i od razu skieruj tam piłkę.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "v23_ex020",
@@ -5301,9 +5478,10 @@
       "goal": "Przećwicz zadanie: Komunikat przed podaniem.",
       "setup": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
       "steps": [
-        "Przed podaniem nazwij wybraną stronę. Partner potwierdza odbiór komunikatu i odgrywa piłkę.",
-        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
-        "Obserwuj: Zrozumiane komunikaty / 12 prób"
+        "Stań z partnerem około 4 m od siebie i ustalcie, co znaczy „lewa” oraz „prawa” z perspektywy odbierającego.",
+        "Przed podaniem powiedz wybraną stronę i poczekaj na krótkie potwierdzenie partnera.",
+        "Zagraj do wskazanej nogi, a partner niech przyjmie w tę stronę i przygotuje podanie zwrotne.",
+        "Przy odegraniu zamieńcie role; jeśli kierunki się pomyliły, ustalcie je ponownie, zamiast przyspieszać wymianę."
       ],
       "regression": "Wykonaj zadanie spokojnie, z pomocą trenera.",
       "progression": "Omów zmianę trudności z trenerem; nie dodawaj uczestników.",
@@ -5334,7 +5512,9 @@
         ],
         "source_catalog": "docs/offline_coach/import_sources_v1.json",
         "package": "baza_dziennika_pilkarza_v1"
-      }
+      },
+      "description": "Nazwij kierunek podania jeszcze przed zagraniem, a następnie sprawdź, czy partner zrozumiał komunikat.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "v23_ex021",
@@ -5395,9 +5575,10 @@
       "goal": "Przećwicz zadanie: Równowaga z piłką.",
       "setup": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
       "steps": [
-        "Przenoś ciężar ciała i zatrzymuj piłkę podeszwą naprzemiennie. Utrzymuj spokojne tempo i stabilność.",
-        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
-        "Obserwuj: Poprawne zatrzymania / 20 prób"
+        "Stań za piłką z lekko ugiętymi kolanami i dotknij jej prawą podeszwą bez stawania całym ciężarem na piłce.",
+        "Przetocz piłkę powoli w lewo, odstaw prawą stopę i zatrzymaj piłkę lewą podeszwą.",
+        "Powtórz ruch w prawo, przenosząc ciężar na nogę stojącą na ziemi.",
+        "Po opanowaniu ruchu zrób mały krok w przód przy każdym przetoczeniu; jeśli tracisz równowagę, wróć do pracy w miejscu."
       ],
       "regression": "Wykonaj zadanie spokojnie, z pomocą trenera.",
       "progression": "Omów zmianę trudności z trenerem; nie dodawaj uczestników.",
@@ -5423,7 +5604,9 @@
         ],
         "source_catalog": "docs/offline_coach/import_sources_v1.json",
         "package": "baza_dziennika_pilkarza_v1"
-      }
+      },
+      "description": "Zatrzymuj wolno toczącą się piłkę podeszwą, przenosząc ciężar między nogami bez chwiania tułowia.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "v23_ex024",
@@ -5493,9 +5676,10 @@
       "goal": "Przećwicz zadanie: Dokładność bez pośpiechu.",
       "setup": "Płaski bezpieczny teren; dostosuj rozstaw do możliwości",
       "steps": [
-        "Odbij piłkę i zatrzymaj ją w oznaczonym polu. Wybierz tempo pozwalające utrzymać jakość.",
-        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
-        "Obserwuj: Celne zatrzymania / 20 prób"
+        "Zaznacz kwadrat około 1 × 1 m w odległości 3 m od ściany i ustaw się w jego środku z piłką.",
+        "Podaj lekko po ziemi do ściany, a potem ustaw stopę na torze powracającej piłki.",
+        "Miękko cofnij stopę przy kontakcie, zatrzymując piłkę wewnątrz kwadratu, zamiast odbijać ją daleko od siebie.",
+        "W kolejnych próbach zmieniaj nogę; jeśli piłka wypada z pola, zmniejsz siłę podania i spróbuj ponownie w tym samym tempie."
       ],
       "regression": "Wykonaj zadanie spokojnie, z pomocą trenera.",
       "progression": "Omów zmianę trudności z trenerem; nie dodawaj uczestników.",
@@ -5526,7 +5710,9 @@
         ],
         "source_catalog": "docs/offline_coach/import_sources_v1.json",
         "package": "baza_dziennika_pilkarza_v1"
-      }
+      },
+      "description": "Dopasuj siłę podania o ścianę tak, aby zatrzymać odbicie w małym polu, bez gonienia uciekającej piłki.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "v23_ex029",
@@ -5587,9 +5773,10 @@
       "goal": "Przećwicz zadanie: Zrozumieć rolę wahadłowego.",
       "setup": "Kartka/ekran",
       "steps": [
-        "Narysuj własne ustawienie z piłką i po jej stracie. Zaznacz partnera, z którym musisz uzgodnić asekurację.",
-        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
-        "Obserwuj: Dwa szkice; omówienie z trenerem"
+        "Narysuj boisko z zaznaczonymi liniami i ustaw siebie jako wahadłowego przy wybranym boku.",
+        "Na pierwszym szkicu zaznacz pozycję z piłką drużyny oraz strzałkę ruchu, który tworzy opcję podania.",
+        "Na drugim zaznacz miejsce straty i własną drogę powrotu, a także partnera, z którym uzgadniasz asekurację.",
+        "Pokaż szkice trenerowi i sprawdź, czy odpowiadają zasadom Twojej drużyny; popraw jeden ruch, który rozumiałeś inaczej."
       ],
       "regression": "Wykonaj zadanie spokojnie, z pomocą trenera.",
       "progression": "Omów zmianę trudności z trenerem; nie dodawaj uczestników.",
@@ -5615,7 +5802,9 @@
         ],
         "source_catalog": "docs/offline_coach/import_sources_v1.json",
         "package": "baza_dziennika_pilkarza_v1"
-      }
+      },
+      "description": "Na dwóch prostych szkicach sprawdź, gdzie wahadłowy może dawać szerokość z piłką i jak wraca do obrony po stracie.",
+      "content_revision": "clear_steps_v1"
     },
     {
       "id": "v23_ex030",
@@ -5676,9 +5865,10 @@
       "goal": "Przećwicz zadanie: Współpraca między liniami.",
       "setup": "Kartka/ekran",
       "steps": [
-        "Zatrzymaj obraz przed podaniem. Wskaż możliwą linię podania i ruch partnera. Sprawdź pomysł z trenerem.",
-        "Praca spokojna, przerwy według potrzeby; liczba prób jest celem obserwacji, nie obowiązkową dawką.",
-        "Obserwuj: Trzy opisane sytuacje"
+        "Wybierz krótki fragment meczu i zatrzymaj obraz tuż przed podaniem, bez zgadywania na podstawie dalszej akcji.",
+        "Wskaż zawodnika z piłką, dwie najbliższe linie rywali i wolne miejsce pomiędzy nimi.",
+        "Narysuj możliwą linię podania oraz ruch odbierającego, który pozwoliłby się na niej pokazać.",
+        "Obejrzyj dalszą akcję i porównaj ją ze swoim pomysłem; jedną różnicę omów z trenerem, zamiast uznawać każdy inny wybór za błąd."
       ],
       "regression": "Wykonaj zadanie spokojnie, z pomocą trenera.",
       "progression": "Omów zmianę trudności z trenerem; nie dodawaj uczestników.",
@@ -5704,7 +5894,9 @@
         ],
         "source_catalog": "docs/offline_coach/import_sources_v1.json",
         "package": "baza_dziennika_pilkarza_v1"
-      }
+      },
+      "description": "Na zatrzymanym nagraniu znajdź podanie między liniami i ruch partnera, który może otworzyć drogę do piłki.",
+      "content_revision": "clear_steps_v1"
     }
   ],
   "new_exercises_v2_1": {

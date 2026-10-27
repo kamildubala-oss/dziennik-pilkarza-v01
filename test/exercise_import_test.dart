@@ -41,10 +41,11 @@ void main() {
     for (final e in library.where((e) => e['import_package'] == 'baza_dziennika_pilkarza_v1')) {
       final card = cards.singleWhere((d) => d.id == e['id']);
       expect(card.title, e['title']);
-      expect(card.steps.first, e['instructions']);
-      expect(card.description, contains('Uczestnicy: ${e['participants_max']}'));
-      expect(card.description, contains('Sprzęt:'));
-      expect(card.description, contains('Wiek: od ${e['min_age']} lat.'));
+      expect(card.steps, e['steps']);
+      expect(card.description, e['description']);
+      for (final label in ['Cel:', 'Sprzęt:', 'Przestrzeń:', 'Uczestnicy:', 'Wiek:']) {
+        expect(card.description, isNot(contains(label)));
+      }
       expect(card.durationMin, e['session_block_minutes']);
       expect(card.focus, isIn(['Prowadzenie', 'Strzał', 'Decyzyjność', 'Siła', 'Mentalność']));
       expect(card.source, isNot(contains('PZPN')));

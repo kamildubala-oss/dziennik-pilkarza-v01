@@ -186,18 +186,8 @@ class CoachService {
         Drill.fromJson({
           'id': e['id'], 'title': e['title'], 'focus': e['journal_focus'],
           'duration_min': e['duration_min'], 'intensity': e['intensity'],
-          'source': 'Ćwiczenie z bazy offline',
-          'description': <String>[
-            'Cel: ${e['goal']}',
-            'Uczestnicy: ${e['participants_max']}.',
-            'Sprzęt: ${(e['equipment'] as List).join(', ')}.',
-            'Przestrzeń: ${e['space']}.',
-            'Wiek: od ${e['min_age']} lat.',
-            if (e['source_intensity'] == 'none') 'Zadanie refleksyjne, bez obciążenia fizycznego.',
-            '${e['age_policy']}',
-            '${e['limitations']}',
-            'Dawkowanie i dopasowanie zadania omów z trenerem.',
-          ].join('\n\n'),
+          'source': 'Ćwiczenie autorskie',
+          'description': e['description'],
           'steps': e['steps'],
         }),
     ];

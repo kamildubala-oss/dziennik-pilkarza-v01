@@ -202,7 +202,7 @@ class PlanService {
         day['focus'] = _s(exercise['area']);
         day['duration_min'] = _i(exercise['duration_min']).clamp(1, 60);
         day['intensity'] = _s(exercise['intensity']);
-        day['description'] = _s(exercise['goal']);
+        day['description'] = _s(exercise['description'] ?? exercise['goal']);
         day['steps'] = (exercise['steps'] as List?)?.map(_s).toList() ?? <String>[];
         day['tip'] = _s(exercise['regression']);
       }
