@@ -876,7 +876,8 @@ class _DiaryScreenState extends State<DiaryScreen> {
 
   Widget _sessionCard(AppColors c, _Session s) {
     final type = s.isMatch ? 'match' : s.kind == 'club_training' ? 'club_training' : 'training';
-    final color = eventTypeColor(c, type);
+    final color = type == 'club_training' ? eventTypeColor(c, type)
+        : s.isMatch ? c.brandSecondary : c.brandTertiary;
     return GestureDetector(
       key: ValueKey('journal-entry-${s.id}'),
       behavior: HitTestBehavior.opaque,
@@ -902,7 +903,7 @@ class _DiaryScreenState extends State<DiaryScreen> {
             child: Icon(
               s.isMatch ? Icons.sports_soccer : s.kind == 'club_training' ? Icons.groups : Icons.directions_run,
               size: 18,
-              color: onEventTypeColor(type, color),
+              color: type == 'training' ? c.brandPrimary : onEventTypeColor(type, color),
             ),
           ),
           const SizedBox(width: Sp.md),
