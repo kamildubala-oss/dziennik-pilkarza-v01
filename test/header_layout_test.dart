@@ -16,16 +16,18 @@ void main() {
     CoachRuntime.reset();
   });
 
-  testWidgets('number is centered inside the torso for one and two digits', (tester) async {
+  testWidgets('number sits on the chest in home and profile jersey sizes', (tester) async {
+    for (final size in [44.0, 64.0]) {
     for (final number in [7, 21, 99]) {
       await tester.pumpWidget(MaterialApp(home: Scaffold(body: Center(
-        child: PlayerJersey(number: number, color: Colors.green, numberColor: Colors.white)))));
+        child: PlayerJersey(size: size, number: number, color: Colors.green, numberColor: Colors.white)))));
       final shirt = tester.getRect(find.byType(PlayerJersey));
       final text = tester.getRect(find.text('$number'));
       expect(text.center.dx, closeTo(shirt.center.dx, .5));
-      expect(text.center.dy, closeTo(shirt.top + shirt.height * .635, .5));
+      expect(text.center.dy, closeTo(shirt.top + shirt.height * .43, .5));
       expect(text.left, greaterThanOrEqualTo(shirt.left + shirt.width * .27));
       expect(text.right, lessThanOrEqualTo(shirt.left + shirt.width * .73));
+    }
     }
   });
 

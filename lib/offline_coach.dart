@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/services.dart';
 
-/// Autorska baza ćwiczeń v2.3, w całości dostępna bez sieci.
+/// Autorska baza ćwiczeń v2.4, w całości dostępna bez sieci.
 class OfflineCoach {
   OfflineCoach._();
   static List<Map<String, dynamic>>? _exercises;
@@ -37,16 +37,14 @@ class OfflineCoach {
     }
     final matches = list.where((e) {
       if (target == null) return true;
-      final combined = '${e['title']} ${e['area']} ${e['subarea']} ${e['goal']}'.toLowerCase();
+      final combined = '${e['title']} ${e['area']} ${e['subarea']} ${e['description']} ${e['goal']}'.toLowerCase();
       return combined.contains(target);
     }).toList();
     final choices = matches.isEmpty ? list : matches;
     final exercise = choices[DateTime.now().day % choices.length];
     final steps = (exercise['steps'] as List?)?.take(5).map((e) => '- $e').join('\n') ?? '';
     return 'Trener offline • ${exercise['title']} (${exercise['duration_min']} min)\n\n'
-        'Cel: ${exercise['goal']}\n\n$steps\n\n'
-        'Ułatwienie: ${exercise['regression']}\n'
-        'Wskazówka: ${exercise['coaching_cues'] is List && (exercise['coaching_cues'] as List).isNotEmpty ? (exercise['coaching_cues'] as List).first : 'Jakość przed intensywnością.'}\n\n'
+        '${exercise['description']}\n\n$steps\n\n'
         'Odpowiedź na podstawie lokalnej bazy ćwiczeń; bez wysyłania danych.';
   }
 }

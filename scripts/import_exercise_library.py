@@ -116,7 +116,8 @@ def merge(library, incoming):
         mapping.append({'incoming_id': source_id, 'canonical_id': canonical,
                         'action': 'merged' if previous else 'added'})
     result['exercises'] = list(by_id.values())
-    result['schema_version'] = '2.3.0'
+    result['schema_version'] = max(result.get('schema_version', '2.3.0'), '2.3.0',
+                                   key=lambda value: tuple(map(int, value.split('.'))))
     result['count'] = len(result['exercises'])
     result['title'] = f"Biblioteka {result['count']} ćwiczeń — maksymalnie zawodnik i trener"
     result['import_packages'] = list(dict.fromkeys(result.get('import_packages', []) + [PACKAGE]))

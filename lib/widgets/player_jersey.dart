@@ -25,7 +25,7 @@ class PlayerJersey extends StatelessWidget {
       child: CustomPaint(painter: _JerseyPainter(color),
         child: Stack(children: [
           Positioned(left: size * .27, right: size * .27,
-            top: size * .36, bottom: size * .09,
+            top: size * .24, bottom: size * .38,
             child: Center(child: FittedBox(fit: BoxFit.scaleDown,
               child: Text(number?.toString() ?? '–', maxLines: 1,
                 style: barlow(size: size * .42, height: 1, color: numberColor))))),
