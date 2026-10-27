@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dziennik_pilkarza/api.dart';
@@ -34,6 +35,8 @@ void main() {
       final match = tester.widget<Text>(find.text('Zapisz mecz'));
       expect(training.maxLines, 1);
       expect(match.maxLines, 1);
+      expect(tester.renderObject<RenderParagraph>(find.text('Zapisz trening')).didExceedMaxLines, false);
+      expect(tester.renderObject<RenderParagraph>(find.text('Zapisz mecz')).didExceedMaxLines, false);
       expect(training.style!.fontSize, match.style!.fontSize);
       final now = DateTime.now();
       if (now.weekday != 7) {
@@ -44,6 +47,8 @@ void main() {
         final planMatch = tester.widget<Text>(find.text('Zaplanuj mecz'));
         expect(planTraining.maxLines, 1);
         expect(planMatch.maxLines, 1);
+        expect(tester.renderObject<RenderParagraph>(find.text('Zaplanuj trening')).didExceedMaxLines, false);
+        expect(tester.renderObject<RenderParagraph>(find.text('Zaplanuj mecz')).didExceedMaxLines, false);
         expect(planTraining.style!.fontSize, training.style!.fontSize);
         expect(planMatch.style!.fontSize, training.style!.fontSize);
       }

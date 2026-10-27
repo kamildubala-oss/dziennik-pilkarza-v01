@@ -162,11 +162,11 @@ class _DiaryScreenState extends State<DiaryScreen> {
     final available = ((width - Sp.sm) / 2) - 2 * Sp.md - 22 - 8;
     final painter = TextPainter(
       text: TextSpan(text: 'Zaplanuj trening',
-        style: manrope(size: 14, weight: FontWeight.w700)),
+        style: manrope(size: 14, weight: FontWeight.w700, letterSpacing: 0)),
       textDirection: Directionality.of(context),
       textScaler: MediaQuery.textScalerOf(context),
     )..layout();
-    final size = (14 * available / painter.width).clamp(1.0, 14.0).toDouble();
+    final size = (14 * (available - 1) / painter.width).clamp(1.0, 14.0).toDouble();
     painter.dispose();
     return size;
   }
@@ -830,6 +830,7 @@ class _DiaryScreenState extends State<DiaryScreen> {
                 overflow: TextOverflow.ellipsis,
                 style: manrope(
                   size: fontSize,
+                  letterSpacing: 0,
                   weight: FontWeight.w700,
                   color: textColor,
                 ),
