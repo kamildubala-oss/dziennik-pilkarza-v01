@@ -67,9 +67,9 @@ void main() {
   });
 
   testWidgets('editing preserves legacy notes while hiding notes and type', (tester) async {
-    await Api.createMatch(date: todayIso(), opponent: 'Skra', result: '1:0',
+    await tester.runAsync(() => Api.createMatch(date: todayIso(), opponent: 'Skra', result: '1:0',
       minutesPlayed: 60, goals: 1, assists: 0, rating: 4,
-      wentWell: 'Podania', toImprove: '', notes: 'Dawna notatka');
+      wentWell: 'Podania', toImprove: '', notes: 'Dawna notatka'));
     final match = (await Api.listMatches()).single;
     await tester.pumpWidget(app(LogMatchScreen(editing: match, header: const Text('Typ'))));
     expect(find.text('Typ'), findsNothing);
