@@ -109,6 +109,7 @@ void main() {
 
   test('chat, analysis and seven day plan all use real generation path', () async {
     await note();
+    await note();
     var calls = 0;
     await http.runWithClient(() async {
       expect(await Api.chat('online', 'Jak trenować?'), 'Odpowiedź online');

@@ -25,10 +25,10 @@ class ProgressReport {
       : DateTime(today.year, today.month, today.day - period + 1);
     final since = start == null ? null : dateIso(start);
     final stats = await ProgressCalculator.calculate(asOf: now, since: since);
-    final length = start == null ? 0 : today.difference(start).inDays + 1;
+    final length = start == null ? 0 : DateTime.utc(today.year, today.month, today.day).difference(DateTime.utc(start.year, start.month, start.day)).inDays + 1;
     final previous = start == null ? null : await ProgressCalculator.calculate(asOf: now,
-      since: dateIso(start.subtract(Duration(days: length))),
-      until: dateIso(start.subtract(const Duration(days: 1))));
+      since: dateIso(DateTime(start.year, start.month, start.day - length)),
+      until: dateIso(DateTime(start.year, start.month, start.day - 1)));
     final entries = <Map<String, dynamic>>[
       for (final t in await LocalDb.list('trainings')) {...t, '_source': 'trainings'},
       for (final m in await LocalDb.list('matches')) {...m, '_source': 'matches'},

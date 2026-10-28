@@ -126,6 +126,7 @@ class CoachService {
       }
     }
 
+    if (sample.length < 2) spots.clear();
     final payload = <String, dynamic>{
       'weak_spots': spots,
       'generated_at': _nowIso(),

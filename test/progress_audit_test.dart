@@ -1,4 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter/material.dart';
+import 'package:dziennik_pilkarza/screens/progress_screen.dart';
+import 'package:dziennik_pilkarza/screens/log_session_screen.dart';
+import 'package:dziennik_pilkarza/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dziennik_pilkarza/api.dart';
 import 'package:dziennik_pilkarza/local_db.dart';
@@ -86,4 +90,34 @@ void main() {
     expect(earned['Pierwszy trening'], '2026-10-01');
     expect(earned['Pierwszy gol'], '2026-10-02');
   });
+  testWidgets('period selector filters metrics and a metric opens the shared activity editor', (tester) async {
+    await tester.runAsync(() async {
+      await Api.createTraining(date: todayIso(), durationMin: 45, focuses: ['Podania'],
+        intensity: 'medium', rating: 0, wentWell: '', toImprove: '', notes: '', kind: 'club_training');
+      final now = DateTime.now();
+      await Api.createTraining(date: dateIso(DateTime(now.year, now.month, now.day - 40)),
+        durationMin: 30, focuses: ['Strzał'], intensity: 'medium', rating: 5,
+        wentWell: '', toImprove: '', notes: '');
+    });
+    final selected = ValueNotifier(3);
+    await tester.pumpWidget(MaterialApp(theme: buildTheme(AppColors.dark, Brightness.dark),
+      home: Scaffold(body: ProgressScreen(selected: selected, index: 3))));
+    await tester.pumpAndSettle();
+    Finder metric(String label) => find.byKey(ValueKey('metric-$label'));
+    expect(find.descendant(of: metric('Treningi indywidualne'), matching: find.text('0')), findsOneWidget);
+    await tester.tap(find.text('Cała historia').first);
+    await tester.pumpAndSettle();
+    expect(find.descendant(of: metric('Treningi indywidualne'), matching: find.text('1')), findsOneWidget);
+    await tester.ensureVisible(metric('Treningi klubowe'));
+    await tester.tap(metric('Treningi klubowe'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.widgetWithText(ListTile, 'Trening klubowy'));
+    await tester.pumpAndSettle();
+    expect(find.byType(LogSessionScreen), findsOneWidget);
+    expect(find.text('Nad czym pracowałeś'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+    await tester.pumpWidget(const SizedBox());
+    selected.dispose();
+  });
+
 }
