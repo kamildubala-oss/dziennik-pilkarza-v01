@@ -178,8 +178,8 @@ class _DiaryScreenState extends State<DiaryScreen> {
         _Session(
           id: t.id,
           isMatch: false,
-          title: t.isClub ? 'Trening klubowy' : 'Trening indywidualny',
-          focus: t.focus,
+          title: t.kind == 'recovery' ? 'Regeneracja' : t.isClub ? 'Trening klubowy' : 'Trening indywidualny',
+          focus: t.kind == 'recovery' ? '' : t.focus,
           kind: t.kind,
           date: t.date,
           duration: t.durationMin,
@@ -875,8 +875,8 @@ class _DiaryScreenState extends State<DiaryScreen> {
   }
 
   Widget _sessionCard(AppColors c, _Session s) {
-    final type = s.isMatch ? 'match' : s.kind == 'club_training' ? 'club_training' : 'training';
-    final color = type == 'club_training' ? eventTypeColor(c, type)
+    final type = s.isMatch ? 'match' : s.kind == 'recovery' ? 'recovery' : s.kind == 'club_training' ? 'club_training' : 'training';
+    final color = (type == 'club_training' || type == 'recovery') ? eventTypeColor(c, type)
         : s.isMatch ? c.brandSecondary : c.brandTertiary;
     return GestureDetector(
       key: ValueKey('journal-entry-${s.id}'),
@@ -901,7 +901,7 @@ class _DiaryScreenState extends State<DiaryScreen> {
             ),
             alignment: Alignment.center,
             child: Icon(
-              s.isMatch ? Icons.sports_soccer : s.kind == 'club_training' ? Icons.groups : Icons.directions_run,
+              s.kind == 'recovery' ? Icons.spa_outlined : s.isMatch ? Icons.sports_soccer : s.kind == 'club_training' ? Icons.groups : Icons.directions_run,
               size: 18,
               color: type == 'training' ? c.brandPrimary : onEventTypeColor(type, color),
             ),
@@ -928,7 +928,7 @@ class _DiaryScreenState extends State<DiaryScreen> {
                 ],
                 const SizedBox(height: 2),
                 Text(
-                  '${first10(s.date)} · ${s.duration} min · ${s.rating > 0 ? 'ocena ${s.rating}/5' : 'bez oceny'}',
+                  '${first10(s.date)} · ${s.duration} min · ${s.kind == 'recovery' ? 'aktywny odpoczynek' : s.rating > 0 ? 'ocena ${s.rating}/5' : 'bez oceny'}',
                   style: manrope(size: 12, color: c.muted),
                 ),
                 if (s.wentWell.isNotEmpty) ...[

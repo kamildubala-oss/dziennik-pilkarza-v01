@@ -461,7 +461,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
         spacing: Sp.md,
         runSpacing: 6,
         children: [
-          for (final t in kEventTypes)
+          for (final t in kEventTypes.where((t) => t != 'note' || (_events.data ?? <EventItem>[]).any((e) => e.type == 'note')))
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -520,7 +520,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
             ? 'TRENING'
             : e.type == 'club_training'
                 ? 'KLUBOWY'
-                : 'NOTATKA';
+                : e.type == 'recovery' ? 'REGENERACJA' : 'NOTATKA';
 
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
@@ -546,7 +546,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 color: pillBg,
                 borderRadius: BorderRadius.circular(Rad.sm),
               ),
-              child: Text(
+              child: e.type == 'recovery' ? Icon(Icons.spa_outlined, size: 20, color: pillFg, semanticLabel: 'Regeneracja') : Text(
                 pillTxt,
                 style: manrope(
                   size: 10,

@@ -282,6 +282,7 @@ Color eventTypeColor(AppColors c, String type) {
       return const Color(0xFF3B82F6); // niebieski
     case 'match':
       return c.brandSecondary; // pomarańczowy
+    case 'recovery':
     case 'note':
       return const Color(0xFFA855F7); // fioletowy
     default:
@@ -301,7 +302,8 @@ const List<String> kEventTypes = <String>[
   'training',
   'club_training',
   'match',
-  'note',
+  'recovery',
+  'note', // Starsze wpisy zachowują swój typ i widoczność.
 ];
 
 String eventTypeLabel(String type) {
@@ -310,6 +312,8 @@ String eventTypeLabel(String type) {
       return 'Trening klubowy';
     case 'match':
       return 'Mecz';
+    case 'recovery':
+      return 'Regeneracja';
     case 'note':
       return 'Notatka';
     default:

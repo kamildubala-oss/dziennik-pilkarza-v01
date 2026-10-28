@@ -9,6 +9,8 @@ import '../resource.dart';
 import '../theme.dart';
 import '../utils.dart';
 import '../widgets/common.dart';
+import '../widgets/exercise_button.dart';
+import '../services/chat_window.dart';
 import '../widgets/card_snap_physics.dart';
 import '../services/drill_batch.dart';
 import 'drill_screen.dart';
@@ -301,7 +303,9 @@ class _CoachScreenState extends State<CoachScreen> {
                   child: SectionTitle('CZAT Z TRENEREM'),
                 ),
                 if (_messages.isEmpty) _quickCol(c),
-                ..._messages.map((m) => _bubble(c, m)),
+                if (_messages.where((m) => m.role == 'assistant').length > 4)
+                  Text('Ostatnie 4 odpowiedzi trenera', style: manrope(size: 11, color: c.muted)),
+                ..._messages.skip(visibleChatStart(_messages.map((m) => m.role).toList())).map((m) => _bubble(c, m)),
                 if (_sending) _typingBubble(c),
               ],
             ),
@@ -649,29 +653,7 @@ class _CoachScreenState extends State<CoachScreen> {
               style: manrope(size: 12, color: c.muted),
             ),
             const SizedBox(height: Sp.md),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-              decoration: BoxDecoration(
-                color: c.brandPrimary,
-                borderRadius: BorderRadius.circular(Rad.pill),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(Icons.menu_book_outlined, size: 14, color: c.onBrandPrimary),
-                  const SizedBox(width: 4),
-                  Flexible(child: Text(
-                    'Zobacz ćwiczenie',
-                    style: manrope(
-                      size: 10,
-                      weight: FontWeight.w800,
-                      letterSpacing: 0,
-                      color: c.onBrandPrimary,
-                    ),
-                  )),
-                ],
-              ),
-            ),
+            ExerciseButton(onTap: () => pushModal<void>(context, DrillScreen(drill: d))),
           ],
         ),
       ),

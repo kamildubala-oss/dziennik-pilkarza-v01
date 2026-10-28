@@ -49,7 +49,7 @@ class BackupService {
         for (final t in items)
           <dynamic>[
             first10(_s(t['date'])),
-            _s(t['kind']) == 'club_training' ? 'Klubowy' : 'Własny',
+            t['kind'] == 'recovery' ? 'Regeneracja' : _s(t['kind']) == 'club_training' ? 'Klubowy' : 'Własny',
             _s(t['focus']),
             _i(t['duration_min']),
             intensityLabel(_s(t['intensity'])),

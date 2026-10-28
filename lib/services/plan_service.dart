@@ -111,7 +111,7 @@ class PlanService {
           for (final entry in scheduled.entries) {
             for (final e in entry.value) {
               final type = _s(e['type']);
-              final label = type == 'match'
+              final label = type == 'recovery' ? 'Regeneracja' : type == 'match'
                   ? 'Mecz'
                   : type == 'club_training'
                       ? 'Trening klubowy'

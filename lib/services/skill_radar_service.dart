@@ -19,6 +19,7 @@ class SkillRadarService {
   static Map<String, int> areas(List<Map<String, dynamic>> trainings) {
     final counts = <String, int>{for (final k in focusToAxis.keys) k: 0};
     for (final t in trainings) {
+      if (t['kind'] == 'recovery') continue;
       for (final focus in focuses(t)) { counts[focus] = (counts[focus] ?? 0) + 1; }
     }
     return counts;
@@ -27,6 +28,7 @@ class SkillRadarService {
       List<Map<String, dynamic>> matches, {String? since}) {
     final counts = <String, int>{for (final a in axes) a: 0};
     for (final t in trainings) {
+      if (t['kind'] == 'recovery') continue;
       if (since != null && first10((t['date'] ?? '').toString()).compareTo(since) < 0) continue;
       final marked = focuses(t).map((f) => focusToAxis[f]).whereType<String>().toSet();
       for (final axis in marked) { counts[axis] = counts[axis]! + 1; }

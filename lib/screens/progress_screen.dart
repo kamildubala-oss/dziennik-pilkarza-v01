@@ -16,6 +16,8 @@ import '../resource.dart';
 import '../theme.dart';
 import '../utils.dart';
 import '../widgets/common.dart';
+import '../widgets/period_selector.dart';
+import '../widgets/exercise_button.dart';
 
 /// Zakładka "Postęp".
 class ProgressScreen extends StatefulWidget {
@@ -130,14 +132,11 @@ class _ProgressScreenState extends State<ProgressScreen> {
                 style: barlow(size: 34, color: c.onSurface),
               ),
             ),
-            Wrap(spacing: 6, runSpacing: 4, children: [
-              for (final option in {7: '7 dni', 30: '30 dni', -1: 'Sezon', 0: 'Cała historia'}.entries)
-                ChoiceChip(label: Text(option.value), selected: _period == option.key,
-                  onSelected: _report.isRefetching ? null : (_) async {
-                    setState(() => _period = option.key);
-                    await _report.refetch();
-                  }),
-            ]),
+            PeriodSelector(value: _period,
+              onChanged: _report.isLoading || _report.isRefetching ? null : (value) async {
+                setState(() => _period = value);
+                await _report.refetch();
+              }),
             if (_report.isRefetching) const LinearProgressIndicator(),
             if (_report.data != null) Padding(padding: const EdgeInsets.symmetric(vertical: 8),
               child: Text('${_report.data!.rangeLabel}${_period == -1 ? ' · sezon od 1 lipca' : ''}',
@@ -584,8 +583,8 @@ class _ProgressScreenState extends State<ProgressScreen> {
                   ),
                   const SizedBox(height: 2),
                   Text(w.insight, style: manrope(size: 14, height: 1.36, color: c.onSurface)),
-                  TextButton(onPressed: () => _showExercises(w.area),
-                    child: const Text('Zobacz ćwiczenia')),
+                  Padding(padding: const EdgeInsets.only(top: 8), child: ExerciseButton(
+                    onTap: () => _showExercises(w.area), label: 'Zobacz ćwiczenia')),
                 ],
               ),
             ),
@@ -650,6 +649,8 @@ class _ProgressScreenState extends State<ProgressScreen> {
       return ratings.isEmpty ? 'brak ocen' : '${(ratings.reduce((a, b) => a + b) / ratings.length).toStringAsFixed(1)} (${ratings.length} ocen)';
     }
     return [
+      TextButton.icon(onPressed: () => _showEntries('Regeneracje'), icon: const Icon(Icons.spa_outlined),
+        label: Text('Regeneracje: ${report.entries.where((e) => e['kind'] == 'recovery').length}')),
       Padding(padding: const EdgeInsets.only(top: 8), child: Text(
         'Samoocena: treningi ${average('trainings')} · mecze ${average('matches')}. '
         'To Twoje odczucia, nie pomiar umiejętności.', style: manrope(size: 11, color: c.muted))),
@@ -715,8 +716,9 @@ class _ProgressScreenState extends State<ProgressScreen> {
   Future<void> _showEntries(String title, {String? area}) async {
     final entries = (_report.data?.entries ?? <Map<String, dynamic>>[]).where((e) {
       if (area != null) return e['_source'] == 'trainings' && SkillRadarService.focuses(e).contains(area);
-      if (title == 'Treningi indywidualne') return e['_source'] == 'trainings' && e['kind'] != 'club_training';
+      if (title == 'Treningi indywidualne') return e['_source'] == 'trainings' && e['kind'] != 'club_training' && e['kind'] != 'recovery';
       if (title == 'Treningi klubowe') return e['_source'] == 'trainings' && e['kind'] == 'club_training';
+      if (title == 'Regeneracje') return e['kind'] == 'recovery';
       if (title == 'Mecze') return e['_source'] == 'matches';
       if (title == 'Gole') return ProgressCalculator.asInt(e['goals']) > 0;
       if (title == 'Asysty') return ProgressCalculator.asInt(e['assists']) > 0;
@@ -731,10 +733,11 @@ class _ProgressScreenState extends State<ProgressScreen> {
               final e = entries[i];
               final match = e['_source'] == 'matches';
               final club = e['kind'] == 'club_training';
-              final type = match ? 'match' : club ? 'club_training' : 'training';
-              return ListTile(leading: Icon(match ? Icons.sports_soccer : club ? Icons.groups : Icons.directions_run,
+              final recovery = e['kind'] == 'recovery';
+              final type = recovery ? 'recovery' : match ? 'match' : club ? 'club_training' : 'training';
+              return ListTile(leading: Icon(recovery ? Icons.spa_outlined : match ? Icons.sports_soccer : club ? Icons.groups : Icons.directions_run,
                   color: eventTypeColor(context.c, type)),
-                title: Text(match ? 'Mecz · ${e['opponent'] ?? ''}' : club ? 'Trening klubowy' : 'Trening indywidualny'),
+                title: Text(recovery ? 'Regeneracja' : match ? 'Mecz · ${e['opponent'] ?? ''}' : club ? 'Trening klubowy' : 'Trening indywidualny'),
                 subtitle: Text('${first10((e['date'] ?? '').toString())} · '
                   '${e[match ? 'minutes_played' : 'duration_min'] ?? 0} min'),
                 trailing: const Icon(Icons.edit_outlined), onTap: () => Navigator.pop(context, e));

@@ -14,6 +14,7 @@ part 'repositories/training_repo.dart';
 part 'repositories/calendar_repo.dart';
 part 'services/plan_service.dart';
 part 'services/coach_service.dart';
+part 'services/recovery_service.dart';
 part 'repositories/backup_service.dart';
 
 /// Błąd walidacji / operacji - analogiczny do błędów HTTP z dawnego backendu.
@@ -260,7 +261,7 @@ Map<String, dynamic> _withSteps(Map<String, dynamic> day) {
 /// dzisiejsze/przeszłe wydarzenia są już "wykonane" (done=true).
 bool _isUserScheduledActivity(Map<String, dynamic> e) {
   if (e['done'] == true) return false;
-  if (!const {'training', 'club_training', 'match'}.contains(_s(e['type']))) {
+  if (!const {'training', 'club_training', 'match', 'recovery'}.contains(_s(e['type']))) {
     return false;
   }
   final source = _s(e['source']);
@@ -421,7 +422,7 @@ class Api {
       'date', 'title', 'description', 'type', 'duration_min',
       'focus', 'focuses', 'intensity', 'rating',
       'opponent', 'result', 'minutes_played', 'goals', 'assists',
-      'went_well', 'to_improve', 'notes',
+      'went_well', 'to_improve', 'notes', 'steps', 'recovery_plan',
     ];
     return <String, dynamic>{
       for (final key in fields)
@@ -739,7 +740,7 @@ class Api {
       'id': LocalDb.newId(),
       'date': first10(d.date),
       'time': '',
-      'type': d.focus == 'Mecz'
+      'type': d.focus == 'Regeneracja' ? 'recovery' : d.focus == 'Mecz'
           ? 'match'
           : club
               ? 'club_training'
@@ -770,6 +771,14 @@ class Api {
     ];
     final notes = _s(t['notes']).trim();
     final club = _s(t['kind']) == 'club_training';
+    if (t['kind'] == 'recovery') {
+      final plan = t['recovery_plan'] is Map ? Map<String, dynamic>.from(t['recovery_plan'] as Map) : <String, dynamic>{};
+      return {'id': LocalDb.newId(), 'date': _s(t['date']), 'time': '', 'type': 'recovery',
+        'title': 'Regeneracja: ${_orDefault(plan['title'], 'Aktywny odpoczynek')}',
+        'description': _s(plan['description']), 'duration_min': _i(t['duration_min']),
+        'focus': 'Regeneracja', 'intensity': 'low', 'steps': RecoveryService.steps(plan),
+        'recovery_plan': plan, 'done': true, 'source': 'trainings', 'source_id': _s(t['id']), 'created_at': _nowIso()};
+    }
     return <String, dynamic>{
       'id': LocalDb.newId(),
       'date': _s(t['date']),
@@ -923,6 +932,12 @@ class Api {
   /// (model AI, a bez klucza - odpowiedź offline).
   /// Dane zawodnika dla trenera AI: profil, ostatnie treningi (także
   /// klubowe) i mecze z ocenami i notatkami oraz najbliższe plany.
+  static Future<Map<String, dynamic>> generateRecovery(String date, int minutes) => RecoveryService.generate(date, minutes);
+  static Future<Map<String, dynamic>?> recoveryRecord(String id) => RecoveryService.record(id);
+  static Future<EventItem> saveRecovery(Map<String, dynamic> plan,
+    {String? eventId, String? trainingId, bool complete = false}) =>
+      RecoveryService.save(plan, eventId: eventId, trainingId: trainingId, complete: complete);
+
   static Future<String> _playerContext() async {
     final profile = await LocalDb.getDoc('profile') ?? <String, dynamic>{};
     final trainings =
@@ -953,7 +968,7 @@ class Api {
     for (final t in lastT) {
       final club = _s(t['kind']) == 'club_training';
       b.writeln(
-          '- ${first10(_s(t['date']))} ${club ? 'TRENING KLUBOWY' : 'trening własny'}'
+          '- ${first10(_s(t['date']))} ${t['kind'] == 'recovery' ? 'REGENERACJA' : club ? 'TRENING KLUBOWY' : 'trening własny'}'
           '${_s(t['focus']).isNotEmpty ? ' (${_s(t['focus'])})' : ''}, '
           '${_i(t['duration_min'])} min, intensywność ${_s(t['intensity'])}, '
           '${_i(t['rating']) > 0 ? 'ocena ${_i(t['rating'])}/5' : 'bez oceny'}'

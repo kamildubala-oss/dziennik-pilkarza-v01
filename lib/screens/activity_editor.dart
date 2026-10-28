@@ -5,6 +5,7 @@ import '../models.dart';
 import 'add_event_screen.dart';
 import 'log_match_screen.dart';
 import 'log_session_screen.dart';
+import 'recovery_screen.dart';
 
 /// Wspólna ścieżka kalendarza, szczegółów i treningów klubowych.
 Future<Widget> activityEditor(EventItem event, {bool complete = false}) async {
@@ -13,6 +14,7 @@ Future<Widget> activityEditor(EventItem event, {bool complete = false}) async {
     if (training == null) {
       throw StateError('Nie znaleziono powiązanego treningu. Odśwież kalendarz.');
     }
+    if (training.kind == 'recovery') return RecoveryScreen(editingTraining: training);
     return LogSessionScreen(editing: training, kind: training.kind);
   }
   if (event.source == 'matches' && event.sourceId.isNotEmpty) {
@@ -22,6 +24,7 @@ Future<Widget> activityEditor(EventItem event, {bool complete = false}) async {
     }
     return LogMatchScreen(editing: match);
   }
+  if (event.type == 'recovery') return RecoveryScreen(event: event, complete: complete);
   if (event.done && event.type != 'note') {
     throw StateError('Brak powiązania z dziennikiem. Odśwież kalendarz.');
   }
