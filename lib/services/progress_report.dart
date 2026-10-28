@@ -52,7 +52,7 @@ class ProgressReport {
         planned[day] = focus.contains('odpoczynek') || focus.contains('regeneracj') || focus == 'rest';
       }
     }
-    final activeDays = entries.map((e) => first10((e['date'] ?? '').toString())).toSet();
+    final activeDays = entries.where((e) => e['kind'] != 'recovery').map((e) => first10((e['date'] ?? '').toString())).toSet();
     final fulfilled = planned.entries.where((d) => d.value ? !activeDays.contains(d.key) : activeDays.contains(d.key)).length;
     return ProgressReport(stats, previous, entries,
       SkillRadarService.areas(entries.where((e) => e['_source'] == 'trainings').toList()),

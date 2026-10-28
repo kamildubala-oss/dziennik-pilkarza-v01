@@ -280,8 +280,10 @@ class ChipOption extends StatelessWidget {
     required this.label,
     required this.selected,
     required this.onTap,
+    this.icon,
   });
 
+  final IconData? icon;
   final String label;
   final bool selected;
   final VoidCallback onTap;
@@ -302,7 +304,10 @@ class ChipOption extends StatelessWidget {
             width: 1,
           ),
         ),
-        child: Text(
+        child: Row(mainAxisSize: MainAxisSize.min, children: [
+          if (icon != null) ...[Icon(icon, size: 16, color: selected ? c.onBrandPrimary : c.onSurface),
+            const SizedBox(width: 5)],
+          Text(
           label,
           style: manrope(
             size: 13,
@@ -310,6 +315,7 @@ class ChipOption extends StatelessWidget {
             color: selected ? c.onBrandPrimary : c.onSurface,
           ),
         ),
+        ]),
       ),
     );
   }

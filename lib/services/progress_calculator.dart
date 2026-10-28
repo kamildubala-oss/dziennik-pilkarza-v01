@@ -39,7 +39,7 @@ class ProgressCalculator {
       'best_match_goals': AchievementService.maxGoals(matches),
       'has_top_rating': AchievementService.hasFiveStarRating(trainings, matches),
       'completed_plan_week': completedPlanWeek,
-      'total_trainings': trainings.length,
+      'total_trainings': trainings.where((t) => t['kind'] != 'recovery').length,
       'total_club_trainings': trainings.where((t) => t['kind'] == 'club_training').length,
       'rated_entries_count': ratings.length,
       'total_matches': matches.length,
@@ -53,7 +53,8 @@ class ProgressCalculator {
       'week_sessions': weekSessions,
       'week_session_types': <Map<String, int>>[
         for (var i = 6; i >= 0; i--) <String, int>{
-          'training': trainings.where((t) => day(t) == dayAgo(i) && t['kind'] != 'club_training').length,
+          'training': trainings.where((t) => day(t) == dayAgo(i) && t['kind'] != 'club_training' && t['kind'] != 'recovery').length,
+          'recovery': trainings.where((t) => day(t) == dayAgo(i) && t['kind'] == 'recovery').length,
           'club_training': trainings.where((t) => day(t) == dayAgo(i) && t['kind'] == 'club_training').length,
           'match': matches.where((m) => day(m) == dayAgo(i)).length,
         },

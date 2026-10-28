@@ -8,18 +8,20 @@ import '../utils.dart';
 import '../widgets/common.dart';
 import 'log_match_screen.dart';
 import 'log_session_screen.dart';
+import 'recovery_screen.dart';
 
 const List<String> _types = <String>[
   'training',
   'club_training',
   'match',
-  'note',
+  'recovery',
 ];
 
 String _typeLabel(String t) {
   if (t == 'training') return 'Trening';
   if (t == 'club_training') return 'Trening klubowy';
   if (t == 'match') return 'Mecz';
+  if (t == 'recovery') return 'Regeneracja';
   return 'Notatka';
 }
 
@@ -116,6 +118,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
           for (final t in _types)
             ChipOption(
               label: _typeLabel(t),
+              icon: t == 'recovery' ? Icons.spa_outlined : null,
               selected: _type == t,
               onTap: () => setState(() => _type = t),
             ),
@@ -128,6 +131,10 @@ class _AddEventScreenState extends State<AddEventScreen> {
   Widget build(BuildContext context) {
     // Te same formularze obsługują kalendarz (plan) i dziennik (wykonanie).
     // isPlanned określa, czy zapisujemy plan czy zrealizowaną aktywność.
+    if (_type == 'recovery') {
+      return RecoveryScreen(initialDate: _date.text, event: _e, complete: !widget.isPlanned,
+        header: _e == null ? _typeSelector() : null);
+    }
     if ((_type == 'training' || _type == 'club_training')) {
       return LogSessionScreen(
         key: ValueKey<String>(_type),

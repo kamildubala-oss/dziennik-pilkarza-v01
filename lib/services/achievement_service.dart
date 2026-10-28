@@ -47,7 +47,7 @@ class AchievementService {
         assists += asInt(entry['assists']);
         hatTrick = hatTrick || asInt(entry['goals']) >= 3;
       } else {
-        trainingCount++;
+        if (entry['kind'] != 'recovery') trainingCount++;
         minutes += asInt(entry['duration_min']);
       }
       topRating = topRating || asInt(entry['rating']) == 5;
@@ -115,7 +115,7 @@ class AchievementService {
     final now = asOf ?? DateTime.now();
     final today = dateIso(DateTime(now.year, now.month, now.day));
     final activities = <String>{
-      ...trainings.map((t) => day(t['date'])),
+      ...trainings.where((t) => t['kind'] != 'recovery').map((t) => day(t['date'])),
       ...matches.map((m) => day(m['date'])),
     };
 

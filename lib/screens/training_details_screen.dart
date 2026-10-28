@@ -66,7 +66,7 @@ class TrainingDetailsScreen extends StatefulWidget {
       steps: d.steps,
       tip: d.tip,
       date: first10(d.date),
-      type: d.focus == 'Mecz'
+      type: d.focus == 'Regeneracja' ? 'recovery' : d.focus == 'Mecz'
           ? 'match'
           : d.focus == 'Trening klubowy'
               ? 'club_training'
@@ -88,7 +88,7 @@ class TrainingDetailsScreen extends StatefulWidget {
 
   /// Zaplanowane wydarzenie z kalendarza.
   factory TrainingDetailsScreen.forEvent(EventItem e, {Key? key}) {
-    final kind = e.type == 'club_training'
+    final kind = e.type == 'recovery' ? 'REGENERACJA' : e.type == 'club_training'
         ? 'TRENING KLUBOWY'
         : e.type == 'match'
             ? 'MECZ'
@@ -262,7 +262,7 @@ class _TrainingDetailsScreenState extends State<TrainingDetailsScreen> {
       body: Column(
         children: [
           ModalHeader(
-            title: w.type == 'match' ? 'Mecz' : 'Trening',
+            title: w.type == 'recovery' ? 'Regeneracja' : w.type == 'match' ? 'Mecz' : 'Trening',
             onClose: () =>
                 Navigator.of(context).pop(_inCalendar != w.inCalendar),
           ),
@@ -385,7 +385,7 @@ class _TrainingDetailsScreenState extends State<TrainingDetailsScreen> {
                   else if (w.type != 'rest' && !w.done)
                     PrimaryButton(
                       label:
-                          w.type == 'match' ? 'Zapisz mecz' : 'Zapisz trening',
+                          w.type == 'recovery' ? 'Zapisz regenerację' : w.type == 'match' ? 'Zapisz mecz' : 'Zapisz trening',
                       marginTop: w.onAddToCalendar != null ? Sp.sm : Sp.xl,
                       onTap: _log,
                     ),
@@ -409,7 +409,7 @@ class _TrainingDetailsScreenState extends State<TrainingDetailsScreen> {
       child: Row(
         children: [
           Icon(
-            e.type == 'match'
+            e.type == 'recovery' ? Icons.spa_outlined : e.type == 'match'
                 ? Icons.sports_soccer
                 : e.type == 'club_training'
                     ? Icons.groups_outlined
