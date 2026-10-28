@@ -3,20 +3,19 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
 import '../api.dart';
+import '../local_db.dart';
+import '../services/progress_report.dart';
+import '../services/progress_calculator.dart';
+import '../services/skill_radar_service.dart';
+import '../services/achievement_service.dart';
+import 'activity_editor.dart';
+import 'drill_screen.dart';
 import '../services/coach_runtime.dart';
 import '../models.dart';
 import '../resource.dart';
 import '../theme.dart';
 import '../utils.dart';
 import '../widgets/common.dart';
-
-const List<String> _skillKeys = <String>[
-  'Technika',
-  'Strzał',
-  'Taktyka',
-  'Motoryka',
-  'Mentalność',
-];
 
 /// Zakładka "Postęp".
 class ProgressScreen extends StatefulWidget {
@@ -43,6 +42,21 @@ class _ProgressScreenState extends State<ProgressScreen> {
     _rebuild,
   );
 
+  int _period = 30;
+  late final Resource<ProgressReport> _report = Resource<ProgressReport>(
+    () => ProgressReport.load(_period), _rebuild);
+  Map<String, String> _earned = {};
+  String _fingerprint = '';
+  Future<void> _refresh() async {
+    await Future.wait([_progress.refetch(), _report.refetch(), _weak.refetch()]);
+    try {
+      final trainings = await LocalDb.list('trainings');
+      final matches = await LocalDb.list('matches');
+      final earned = AchievementService.earnedDates(await LocalDb.exportAll(), trainings, matches);
+      final fingerprint = ObservationSample.fingerprint(ObservationSample.latest(trainings, matches));
+      if (mounted) setState(() { _earned = earned; _fingerprint = fingerprint; });
+    } catch (_) { /* Główny Resource pokazuje błąd odczytu. */ }
+  }
   bool _analyzing = false;
   bool _badgesExpanded = false;
 
@@ -54,20 +68,20 @@ class _ProgressScreenState extends State<ProgressScreen> {
   void initState() {
     super.initState();
     widget.selected.addListener(_onTabChanged);
-    _progress.refetch();
-    _weak.refetch();
+    _refresh();
   }
 
   @override
   void dispose() {
     widget.selected.removeListener(_onTabChanged);
+    _report.dispose();
     _progress.dispose();
     _weak.dispose();
     super.dispose();
   }
 
   void _onTabChanged() {
-    if (widget.selected.value == widget.index) _progress.refetch();
+    if (widget.selected.value == widget.index) _refresh();
   }
 
   Future<void> _analyze() async {
@@ -88,12 +102,12 @@ class _ProgressScreenState extends State<ProgressScreen> {
   Widget build(BuildContext context) {
     final c = context.c;
     final top = MediaQuery.of(context).padding.top;
-    final stats = _progress.data;
+    final stats = _report.data?.stats;
 
     return RefreshIndicator(
       color: c.brandPrimary,
       backgroundColor: c.surfaceSecondary,
-      onRefresh: () => _progress.refetch(),
+      onRefresh: _refresh,
       child: SingleChildScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
         padding: EdgeInsets.fromLTRB(Sp.lg, top + Sp.md, Sp.lg, Sp.xxxl),
@@ -116,12 +130,29 @@ class _ProgressScreenState extends State<ProgressScreen> {
                 style: barlow(size: 34, color: c.onSurface),
               ),
             ),
-            if (_progress.isLoading)
+            Wrap(spacing: 6, runSpacing: 4, children: [
+              for (final option in {7: '7 dni', 30: '30 dni', -1: 'Sezon', 0: 'Cała historia'}.entries)
+                ChoiceChip(label: Text(option.value), selected: _period == option.key,
+                  onSelected: _report.isRefetching ? null : (_) async {
+                    setState(() => _period = option.key);
+                    await _report.refetch();
+                  }),
+            ]),
+            if (_report.isRefetching) const LinearProgressIndicator(),
+            if (_report.data != null) Padding(padding: const EdgeInsets.symmetric(vertical: 8),
+              child: Text('${_report.data!.rangeLabel}${_period == -1 ? ' · sezon od 1 lipca' : ''}',
+                style: manrope(size: 11, color: c.muted))),
+            if (_progress.isLoading || _report.isLoading)
               const Padding(
                 padding: EdgeInsets.only(top: 32),
                 child: Center(child: Spinner()),
               )
-            else
+            else if (_progress.error != null || _report.error != null)
+              _weakEmpty(c, title: 'Nie udało się wczytać statystyk',
+                sub: 'Pociągnij ekran w dół lub wybierz „Spróbuj ponownie”.'),
+            if (_progress.error != null || _report.error != null)
+              TextButton(onPressed: _refresh, child: const Text('Spróbuj ponownie'))
+            else if (!_progress.isLoading && !_report.isLoading)
               ..._content(c, stats),
           ],
         ),
@@ -137,7 +168,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
   }
 
   List<Widget> _content(AppColors c, Progress? stats) {
-    final week = stats?.weekSessions ?? <int>[0, 0, 0, 0, 0, 0, 0];
+    final week = _progress.data?.weekSessions ?? <int>[0, 0, 0, 0, 0, 0, 0];
     final maxV = math.max(1, week.isEmpty ? 1 : week.reduce(math.max));
     final avg = stats?.avgRating;
     final ratedCount = stats?.ratedEntriesCount ?? 0;
@@ -162,9 +193,10 @@ class _ProgressScreenState extends State<ProgressScreen> {
                 bg: c.brandPrimary,
                 icon: Icons.local_fire_department,
                 iconColor: c.onBrandPrimary,
-                value: '${stats?.streakDays ?? 0}',
+                value: '${_progress.data?.streakDays ?? 0}',
                 valueColor: c.onBrandPrimary,
                 label: 'DNI Z RZĘDU',
+                subtitle: 'Bieżąca seria · cała historia',
                 labelColor: c.onBrandPrimary,
               ),
             ),
@@ -177,7 +209,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                 iconColor: c.brandSecondary,
                 value: avg != null && avg > 0 ? avg.toStringAsFixed(1) : '—',
                 valueColor: c.onSurface,
-                label: 'ŚR. OCENA TRENINGÓW I MECZÓW',
+                label: 'SAMOOCENA TRENINGÓW I MECZÓW',
                 subtitle: ratedCount == 0
                     ? 'Ocena jest opcjonalna'
                     : 'Na podstawie $ratedCount ${ratedCount == 1 ? 'oceny' : 'ocen'}',
@@ -214,13 +246,13 @@ class _ProgressScreenState extends State<ProgressScreen> {
                         key: ValueKey('week-bar-$i'),
                         width: 18,
                         height: week[i] > 0 ? (week[i] / maxV) * 100 : 0,
-                        child: i < (stats?.weekSessionTypes.length ?? 0) && week[i] > 0
+                        child: i < (_progress.data?.weekSessionTypes.length ?? 0) && week[i] > 0
                             ? Column(
                                 children: [
                                   for (final type in kEventTypes.where((t) =>
-                                      (stats!.weekSessionTypes[i][t] ?? 0) > 0))
+                                      (_progress.data!.weekSessionTypes[i][t] ?? 0) > 0))
                                     Expanded(
-                                      flex: stats!.weekSessionTypes[i][type]!,
+                                      flex: _progress.data!.weekSessionTypes[i][type]!,
                                       child: ColoredBox(
                                         color: eventTypeColor(c, type),
                                         child: const SizedBox.expand(),
@@ -298,111 +330,72 @@ class _ProgressScreenState extends State<ProgressScreen> {
         },
       ),
 
-      // ---------- Mapa umiejętności ----------
-      Padding(
-        padding: const EdgeInsets.only(top: Sp.md, bottom: Sp.sm),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SectionTitle('AKTYWNOŚĆ W OBSZARACH'),
-            const SizedBox(height: 2),
-            Text(
-              'Jasna = cały czas · Mocna = ostatnie 2 tyg.',
-              style: manrope(size: 11, color: c.muted),
-            ),
-          ],
-        ),
-      ),
-      Container(
-        padding: const EdgeInsets.all(Sp.md),
-        decoration: BoxDecoration(
-          color: c.surfaceSecondary,
-          borderRadius: BorderRadius.circular(Rad.md),
-        ),
-        alignment: Alignment.center,
-        child: SizedBox(
-          width: 260,
-          height: 260,
-          child: CustomPaint(
-            painter: _RadarPainter(
-              values: _skillKeys
-                  .map((k) => (stats?.skillRadarRecent[k] ?? 0) / 100)
-                  .toList(),
-              shadowValues: _skillKeys
-                  .map((k) => (stats?.skillRadarAll[k] ?? 0) / 100)
-                  .toList(),
-              labels: _skillKeys,
-              gridColor: c.border,
-              brandColor: c.brandPrimary,
-              labelColor: c.muted,
-            ),
-          ),
-        ),
-      ),
+      ..._reportSections(c),
 
       // ---------- Słabe punkty (AI) ----------
       ..._weakSection(c),
 
       // ---------- Odznaki: realizacja i regeneracja zamiast treningu codziennie ----------
       _section('ODZNAKI'),
+      Text('Cała historia', style: manrope(size: 11, color: c.muted)),
       InkWell(
         borderRadius: BorderRadius.circular(Rad.md),
         onTap: () => setState(() => _badgesExpanded = !_badgesExpanded),
         child: Row(children: [
           Expanded(child: _badge(c,
-            active: (stats?.latestBadgeTitle ?? '').isNotEmpty,
+            active: (_progress.data?.latestBadgeTitle ?? '').isNotEmpty,
             icon: Icons.emoji_events,
-            title: (stats?.latestBadgeTitle ?? '').isNotEmpty
-              ? stats!.latestBadgeTitle : 'Twoja pierwsza odznaka czeka',
+            title: (_progress.data?.latestBadgeTitle ?? '').isNotEmpty
+              ? _progress.data!.latestBadgeTitle : 'Twoja pierwsza odznaka czeka',
             sub: _badgesExpanded ? 'Zwiń odznaki' : 'Dotknij, aby zobaczyć wszystkie odznaki')),
           Icon(_badgesExpanded ? Icons.expand_less : Icons.expand_more, color: c.muted),
         ]),
       ),
       if (_badgesExpanded) Column(
         children: withGap([
-          _badge(c, active: (stats?.totalTrainings ?? 0) >= 1,
+          _badge(c, active: (_progress.data?.totalTrainings ?? 0) >= 1,
               icon: Icons.sports_score, title: 'Pierwszy trening',
               sub: 'Pierwszy zapisany trening.'),
-          _badge(c, active: (stats?.totalTrainings ?? 0) >= 10,
+          _badge(c, active: (_progress.data?.totalTrainings ?? 0) >= 10,
               icon: Icons.directions_run, title: '10 treningów',
               sub: 'Rozwijasz systematyczność.'),
-          _badge(c, active: (stats?.totalTrainings ?? 0) >= 30,
+          _badge(c, active: (_progress.data?.totalTrainings ?? 0) >= 30,
               icon: Icons.fitness_center, title: '30 treningów',
               sub: 'Treningowa wytrwałość.'),
-          _badge(c, active: (stats?.totalTrainings ?? 0) >= 100,
+          _badge(c, active: (_progress.data?.totalTrainings ?? 0) >= 100,
               icon: Icons.military_tech, title: '100 treningów',
               sub: 'Długa droga, wielki postęp.'),
-          _badge(c, active: (stats?.totalMatches ?? 0) >= 1,
+          _badge(c, active: (_progress.data?.totalMatches ?? 0) >= 1,
               icon: Icons.sports_soccer, title: 'Pierwszy mecz',
               sub: 'Pierwszy zapisany występ.'),
-          _badge(c, active: (stats?.totalMatches ?? 0) >= 10,
+          _badge(c, active: (_progress.data?.totalMatches ?? 0) >= 10,
               icon: Icons.shield, title: '10 meczów',
               sub: 'Dziesięć sportowych doświadczeń.'),
-          _badge(c, active: (stats?.totalMinutes ?? 0) >= 300,
+          _badge(c, active: (_progress.data?.totalMinutes ?? 0) >= 300,
               icon: Icons.timer, title: '5 godzin aktywności',
               sub: '300 minut treningów i meczów.'),
-          _badge(c, active: (stats?.totalMinutes ?? 0) >= 1200,
+          _badge(c, active: (_progress.data?.totalMinutes ?? 0) >= 1200,
               icon: Icons.access_time_filled, title: '20 godzin aktywności',
               sub: '1200 minut systematycznej pracy.'),
-          _badge(c, active: (stats?.totalGoals ?? 0) >= 1,
+          _badge(c, active: (_progress.data?.totalGoals ?? 0) >= 1,
               icon: Icons.sports_score, title: 'Pierwszy gol',
               sub: 'Pierwsza bramka w dzienniku.'),
-          _badge(c, active: (stats?.totalGoals ?? 0) >= 5,
+          _badge(c, active: (_progress.data?.totalGoals ?? 0) >= 5,
               icon: Icons.emoji_events, title: 'Snajper',
               sub: '5 bramek łącznie.'),
-          _badge(c, active: (stats?.bestMatchGoals ?? 0) >= 3,
+          _badge(c, active: (_progress.data?.bestMatchGoals ?? 0) >= 3,
               icon: Icons.stars, title: 'Hat-trick',
               sub: '3 gole w jednym meczu.'),
-          _badge(c, active: (stats?.totalAssists ?? 0) >= 1,
+          _badge(c, active: (_progress.data?.totalAssists ?? 0) >= 1,
               icon: Icons.handshake, title: 'Pierwsza asysta',
               sub: 'Pomoc w zdobyciu bramki.'),
-          _badge(c, active: (stats?.totalAssists ?? 0) >= 10,
+          _badge(c, active: (_progress.data?.totalAssists ?? 0) >= 10,
               icon: Icons.group, title: '10 asyst',
               sub: 'Grasz zespołowo.'),
-          _badge(c, active: stats?.hasTopRating == true,
+          _badge(c, active: _progress.data?.hasTopRating == true,
               icon: Icons.star, title: 'Ocena 5/5',
               sub: 'Pierwsza najwyższa ocena.'),
-          _badge(c, active: stats?.completedPlanWeek == true,
+          _badge(c, active: _progress.data?.completedPlanWeek == true,
               icon: Icons.self_improvement, title: 'Tydzień według planu',
               sub: 'Realizacja aktywności i zaplanowanej regeneracji.'),
         ], height: Sp.sm),
@@ -431,7 +424,8 @@ class _ProgressScreenState extends State<ProgressScreen> {
                       child: Text(
                         '${CoachRuntime.sourceLabel(data.source)}\n'
                         'Utworzono: ${CoachRuntime.dateLabel(data.generatedAt)} · '
-                        '${data.noteCount} notatek',
+                        '${data.noteCount} obserwacji'
+                        '${data.rangeStart.isEmpty ? '' : '\nZakres: ${data.rangeStart} – ${data.rangeEnd}'}',
                         style: manrope(size: 11, color: c.muted),
                       ),
                     ),
@@ -483,11 +477,20 @@ class _ProgressScreenState extends State<ProgressScreen> {
           ],
         ),
       ),
+      if (data != null && (data.sampleFingerprint.isEmpty || data.sampleFingerprint != _fingerprint))
+        Padding(padding: const EdgeInsets.only(bottom: 8), child: Text(
+          'Obserwacje zmieniły się od ostatniej analizy. Odśwież wskazówki.',
+          style: manrope(size: 12, color: c.warning))),
+      Padding(padding: const EdgeInsets.only(bottom: 8), child: Text(
+        'Analiza obejmuje maksymalnie 50 najnowszych obserwacji z całej historii.',
+        style: manrope(size: 11, color: c.muted))),
       if (_weak.isLoading)
         const Padding(
           padding: EdgeInsets.symmetric(vertical: Sp.md),
           child: Center(child: Spinner()),
         )
+      else if (_weak.error != null)
+        _weakEmpty(c, title: 'Nie udało się wczytać analizy', sub: 'Odśwież ekran, aby spróbować ponownie.')
       else if (data == null)
         _weakEmpty(
           c,
@@ -495,12 +498,11 @@ class _ProgressScreenState extends State<ProgressScreen> {
           title: 'Brak analizy',
           sub: 'Dodaj obserwacje po treningach, aby otrzymać wskazówki',
         )
-      else if (data.weakSpots.isEmpty)
+      else if (data.weakSpots.isEmpty || data.noteCount < 2)
         _weakEmpty(
           c,
-          title: 'Zero słabych punktów!',
-          sub: 'Dodaj kilka notatek w polach „Co trzeba poprawić" żeby '
-              'trener miał z czym pracować.',
+          title: data.noteCount == 0 ? 'Brak obserwacji' : 'Za mało powtarzających się obserwacji',
+          sub: 'Zapisuj konkretne obserwacje w polu „Co trzeba poprawić?”. Pojedynczy wpis nie oznacza stałej trudności.',
         )
       else
         ...data.weakSpots.map((w) => _weakCard(c, w)),
@@ -581,10 +583,9 @@ class _ProgressScreenState extends State<ProgressScreen> {
                     ),
                   ),
                   const SizedBox(height: 2),
-                  Text(
-                    w.insight,
-                    style: manrope(size: 14, height: 1.36, color: c.onSurface),
-                  ),
+                  Text(w.insight, style: manrope(size: 14, height: 1.36, color: c.onSurface)),
+                  TextButton(onPressed: () => _showExercises(w.area),
+                    child: const Text('Zobacz ćwiczenia')),
                 ],
               ),
             ),
@@ -637,6 +638,136 @@ class _ProgressScreenState extends State<ProgressScreen> {
     );
   }
 
+  List<Widget> _reportSections(AppColors c) {
+    final report = _report.data;
+    if (report == null) return [];
+    final previous = report.previous;
+    final maxArea = math.max(1, report.areas.values.fold<int>(0, math.max));
+    String delta(int value, int before) => '${value - before >= 0 ? '+' : ''}${value - before}';
+    String average(String source) {
+      final ratings = report.entries.where((e) => e['_source'] == source)
+        .map((e) => ProgressCalculator.asInt(e['rating'])).where((r) => r >= 1 && r <= 5).toList();
+      return ratings.isEmpty ? 'brak ocen' : '${(ratings.reduce((a, b) => a + b) / ratings.length).toStringAsFixed(1)} (${ratings.length} ocen)';
+    }
+    return [
+      Padding(padding: const EdgeInsets.only(top: 8), child: Text(
+        'Samoocena: treningi ${average('trainings')} · mecze ${average('matches')}. '
+        'To Twoje odczucia, nie pomiar umiejętności.', style: manrope(size: 11, color: c.muted))),
+      if (previous != null) ...[
+        _section('PORÓWNANIE OKRESÓW'),
+        Text('W porównaniu z poprzednim okresem tej samej długości: '
+          '${delta(report.stats.totalTrainings + report.stats.totalMatches, previous.totalTrainings + previous.totalMatches)} aktywności, '
+          '${delta(report.stats.totalMinutes, previous.totalMinutes)} min. '
+          'Większa aktywność nie oznacza automatycznie lepszego rozwoju.',
+          style: manrope(size: 12, color: c.muted)),
+      ],
+      _section('AKTYWNOŚĆ W OBSZARACH'),
+      Text('Liczba treningów z zaznaczonym obszarem. Jeden trening może obejmować kilka obszarów. '
+        'Nie jest to ocena umiejętności ani podział minut.', style: manrope(size: 11, color: c.muted)),
+      const SizedBox(height: 8),
+      Container(padding: const EdgeInsets.all(Sp.md),
+        decoration: BoxDecoration(color: c.surfaceSecondary, borderRadius: BorderRadius.circular(Rad.md)),
+        child: Column(children: [for (final area in report.areas.entries)
+          Padding(padding: const EdgeInsets.symmetric(vertical: 5), child: InkWell(
+            onTap: () => _showEntries(area.key, area: area.key),
+            child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+              Row(children: [Expanded(child: Text(area.key, style: manrope(size: 12, color: c.onSurface))),
+                Text('${area.value}', style: manrope(size: 12, color: c.onSurface))]),
+              const SizedBox(height: 3),
+              LinearProgressIndicator(value: area.value / maxArea, color: c.brandPrimary,
+                backgroundColor: c.surfaceTertiary, semanticsLabel: '${area.key}: ${area.value} treningów'),
+            ]))),
+        ])),
+      _section('REALIZACJA PLANU TYGODNIA'),
+      Text(report.planDays == 0 ? 'Brak zakończonych dni planu w wybranym okresie.'
+        : '${report.fulfilledDays}/${report.planDays} zakończonych dni zgodnie z planem.',
+        style: manrope(size: 14, color: c.onSurface)),
+      Text('Dzień treningowy: zapisano aktywność. Regeneracja: brak zapisanej aktywności. '
+        'Dzisiejszy i przyszłe dni nie są oceniane. Zgodność dnia nie potwierdza wykonania wszystkich ćwiczeń.',
+        style: manrope(size: 11, color: c.muted)),
+      _section('CO IDZIE DOBRZE'),
+      if (report.strengths.isEmpty)
+        Text('Dodaj obserwacje w polu „Co było dobrze?”, aby wracać do swoich sukcesów.',
+          style: manrope(size: 12, color: c.muted))
+      else ...[
+        Text('Twoje ostatnie obserwacje z wybranego okresu', style: manrope(size: 11, color: c.muted)),
+        for (final entry in report.strengths.take(3)) ListTile(contentPadding: EdgeInsets.zero,
+          title: Text((entry['went_well'] ?? '').toString(), style: manrope(size: 13, color: c.onSurface)),
+          subtitle: Text(first10((entry['date'] ?? '').toString())),
+          trailing: const Icon(Icons.chevron_right), onTap: () => _editEntry(entry)),
+      ],
+    ];
+  }
+
+  Future<void> _editEntry(Map<String, dynamic> entry) async {
+    try {
+      final page = await activityEditor(EventItem.fromJson({...entry,
+        'source': entry['_source'], 'source_id': entry['id'], 'done': true}));
+      if (!mounted) return;
+      await Navigator.of(context).push(MaterialPageRoute(builder: (_) => page));
+      if (mounted) await _refresh();
+    } catch (_) {
+      if (mounted) ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Nie udało się otworzyć wpisu. Odśwież ekran.')));
+    }
+  }
+
+  Future<void> _showEntries(String title, {String? area}) async {
+    final entries = (_report.data?.entries ?? <Map<String, dynamic>>[]).where((e) {
+      if (area != null) return e['_source'] == 'trainings' && SkillRadarService.focuses(e).contains(area);
+      if (title == 'Treningi indywidualne') return e['_source'] == 'trainings' && e['kind'] != 'club_training';
+      if (title == 'Treningi klubowe') return e['_source'] == 'trainings' && e['kind'] == 'club_training';
+      if (title == 'Mecze') return e['_source'] == 'matches';
+      if (title == 'Gole') return ProgressCalculator.asInt(e['goals']) > 0;
+      if (title == 'Asysty') return ProgressCalculator.asInt(e['assists']) > 0;
+      return true;
+    }).toList();
+    final chosen = await showModalBottomSheet<Map<String, dynamic>>(context: context, isScrollControlled: true,
+      builder: (context) => SafeArea(child: SizedBox(height: MediaQuery.sizeOf(context).height * .7,
+        child: Column(children: [
+          Padding(padding: const EdgeInsets.all(16), child: Text('$title · ${entries.length} wpisów')),
+          Expanded(child: entries.isEmpty ? const Center(child: Text('Brak wpisów w wybranym okresie'))
+            : ListView.builder(itemCount: entries.length, itemBuilder: (context, i) {
+              final e = entries[i];
+              final match = e['_source'] == 'matches';
+              final club = e['kind'] == 'club_training';
+              final type = match ? 'match' : club ? 'club_training' : 'training';
+              return ListTile(leading: Icon(match ? Icons.sports_soccer : club ? Icons.groups : Icons.directions_run,
+                  color: eventTypeColor(context.c, type)),
+                title: Text(match ? 'Mecz · ${e['opponent'] ?? ''}' : club ? 'Trening klubowy' : 'Trening indywidualny'),
+                subtitle: Text('${first10((e['date'] ?? '').toString())} · '
+                  '${e[match ? 'minutes_played' : 'duration_min'] ?? 0} min'),
+                trailing: const Icon(Icons.edit_outlined), onTap: () => Navigator.pop(context, e));
+            })),
+        ]))));
+    if (chosen != null && mounted) await _editEntry(chosen);
+  }
+
+  Future<void> _showExercises(String area) async {
+    try {
+      final all = await Api.drills();
+      final terms = SkillRadarService.focusToAxis.entries.where((e) => e.value == area).map((e) => e.key.toLowerCase()).toList();
+      if (terms.isEmpty) terms.add(area.toLowerCase());
+      final drills = all.where((d) => terms.any((term) =>
+        '${d.focus} ${d.title}'.toLowerCase().contains(term))).take(7).toList();
+      if (!mounted) return;
+      final chosen = await showModalBottomSheet<Drill>(context: context, isScrollControlled: true,
+        builder: (context) => SafeArea(child: SizedBox(height: MediaQuery.sizeOf(context).height * .6,
+          child: Column(children: [
+            Padding(padding: const EdgeInsets.all(16), child: Text('Ćwiczenia · $area')),
+            Expanded(child: drills.isEmpty ? const Center(child: Text('Brak dopasowanych ćwiczeń w bibliotece'))
+              : ListView(children: [for (final d in drills) ListTile(title: Text(d.title),
+                subtitle: Text('${d.durationMin} min'), trailing: const Icon(Icons.chevron_right),
+                onTap: () => Navigator.pop(context, d))])),
+          ]))));
+      if (chosen != null && mounted) await Navigator.of(context).push(
+        MaterialPageRoute(builder: (_) => DrillScreen(drill: chosen)));
+    } catch (_) {
+      if (mounted) ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Nie udało się wczytać ćwiczeń. Spróbuj ponownie.')));
+    }
+  }
+
   Widget _metric(
     AppColors c,
     double width,
@@ -645,7 +776,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
     String label,
     String value,
   ) {
-    return Container(
+    return InkWell(onTap: () => _showEntries(label), child: Container(
       key: ValueKey('metric-$label'),
       width: width,
       height: height,
@@ -670,7 +801,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
           ),
         ], height: 4),
       ),
-    );
+    ));
   }
 
   Widget _badge(
@@ -680,6 +811,19 @@ class _ProgressScreenState extends State<ProgressScreen> {
     required String title,
     required String sub,
   }) {
+    final stats = _progress.data;
+    final targets = <String, List<int>>{
+      'Pierwszy trening': [stats?.totalTrainings ?? 0, 1], '10 treningów': [stats?.totalTrainings ?? 0, 10],
+      '30 treningów': [stats?.totalTrainings ?? 0, 30], '100 treningów': [stats?.totalTrainings ?? 0, 100],
+      'Pierwszy mecz': [stats?.totalMatches ?? 0, 1], '10 meczów': [stats?.totalMatches ?? 0, 10],
+      '5 godzin aktywności': [stats?.totalMinutes ?? 0, 300], '20 godzin aktywności': [stats?.totalMinutes ?? 0, 1200],
+      'Pierwszy gol': [stats?.totalGoals ?? 0, 1], 'Snajper': [stats?.totalGoals ?? 0, 5],
+      'Hat-trick': [stats?.bestMatchGoals ?? 0, 3], 'Pierwsza asysta': [stats?.totalAssists ?? 0, 1],
+      '10 asyst': [stats?.totalAssists ?? 0, 10],
+    };
+    final target = targets[title];
+    final detail = active && _earned.containsKey(title) ? 'Zdobyto: ${_earned[title]}'
+      : target == null ? '' : 'Postęp: ${math.min(target[0], target[1])}/${target[1]}';
     return Opacity(
       opacity: active ? 1 : 0.4,
       child: Container(
@@ -718,7 +862,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                     ),
                   ),
                   const SizedBox(height: 2),
-                  Text(sub, style: manrope(size: 12, color: c.muted)),
+                  Text('$sub${detail.isEmpty ? '' : '\n$detail'}', style: manrope(size: 12, color: c.muted)),
                 ],
               ),
             ),
@@ -727,121 +871,4 @@ class _ProgressScreenState extends State<ProgressScreen> {
       ),
     );
   }
-}
-
-/// Wykres radarowy (pajęczyna) - odpowiednik komponentu `RadarChart` z SVG.
-class _RadarPainter extends CustomPainter {
-  _RadarPainter({
-    required this.values,
-    required this.shadowValues,
-    required this.labels,
-    required this.gridColor,
-    required this.brandColor,
-    required this.labelColor,
-  });
-
-  final List<double> values;
-  final List<double> shadowValues;
-  final List<String> labels;
-  final Color gridColor;
-  final Color brandColor;
-  final Color labelColor;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final cx = size.width / 2;
-    final cy = size.height / 2;
-    final r = size.width / 2 - 32;
-    final n = values.length;
-
-    double angleFor(int i) => (math.pi * 2 * i) / n - math.pi / 2;
-
-    Path polygon(double Function(int) scaleFor) {
-      final path = Path();
-      for (var i = 0; i < n; i++) {
-        final a = angleFor(i);
-        final s = scaleFor(i);
-        final x = cx + math.cos(a) * r * s;
-        final y = cy + math.sin(a) * r * s;
-        if (i == 0) {
-          path.moveTo(x, y);
-        } else {
-          path.lineTo(x, y);
-        }
-      }
-      path.close();
-      return path;
-    }
-
-    final gridPaint = Paint()
-      ..color = gridColor
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 1;
-
-    for (final s in <double>[0.25, 0.5, 0.75, 1.0]) {
-      canvas.drawPath(polygon((_) => s), gridPaint);
-    }
-
-    for (var i = 0; i < n; i++) {
-      final a = angleFor(i);
-      canvas.drawLine(
-        Offset(cx, cy),
-        Offset(cx + math.cos(a) * r, cy + math.sin(a) * r),
-        gridPaint,
-      );
-    }
-
-    // Warstwa "cień" - cały czas.
-    final shadow = polygon((i) => math.max(0.02, shadowValues[i]));
-    canvas.drawPath(
-      shadow,
-      Paint()
-        ..color = brandColor.withAlpha(31) // 0.12
-        ..style = PaintingStyle.fill,
-    );
-    canvas.drawPath(
-      shadow,
-      Paint()
-        ..color = brandColor.withAlpha(102) // 0.4
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 1,
-    );
-
-    // Warstwa "mocna" - ostatnie 14 dni.
-    final recent = polygon((i) => math.max(0.02, values[i]));
-    canvas.drawPath(
-      recent,
-      Paint()
-        ..color = brandColor.withAlpha(102) // 0.4
-        ..style = PaintingStyle.fill,
-    );
-    canvas.drawPath(
-      recent,
-      Paint()
-        ..color = brandColor
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 2,
-    );
-
-    // Etykiety osi.
-    for (var i = 0; i < n; i++) {
-      final a = angleFor(i);
-      final lx = cx + math.cos(a) * (r + 18);
-      final ly = cy + math.sin(a) * (r + 18);
-      final tp = TextPainter(
-        text: TextSpan(
-          text: labels[i],
-          style: manrope(size: 10, weight: FontWeight.w700, color: labelColor),
-        ),
-        textDirection: TextDirection.ltr,
-      )..layout();
-      final baseline = tp.computeDistanceToActualBaseline(
-        TextBaseline.alphabetic,
-      );
-      tp.paint(canvas, Offset(lx - tp.width / 2, ly - baseline));
-    }
-  }
-
-  @override
-  bool shouldRepaint(covariant _RadarPainter old) => true;
 }

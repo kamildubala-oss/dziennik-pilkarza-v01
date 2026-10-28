@@ -84,8 +84,8 @@ void main() {
         'rating': 5,
       },
     ], <Map<String, dynamic>>[]);
-    expect(radar['Technika'], 6);
-    expect(radar['Strzał'], 6);
+    expect(radar['Technika'], 1);
+    expect(radar['Strzał'], 1);
     expect(radar['Taktyka'], 0);
   });
 }

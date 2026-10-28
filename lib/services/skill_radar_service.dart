@@ -1,42 +1,36 @@
 import '../utils.dart';
 
-/// Agreguje obszary umiejętności z wykonanych aktywności.
+/// Liczba treningów z danym obszarem. Samoocena nie zmienia aktywności.
 class SkillRadarService {
-  static const Map<String, String> focusToAxis = <String, String>{
-    'Prowadzenie': 'Technika',
-    'Strzał': 'Strzał',
-    'Decyzyjność': 'Taktyka',
-    'Siła': 'Motoryka',
-    'Mentalność': 'Mentalność',
+  static const Map<String, String> focusToAxis = {
+    'Prowadzenie': 'Technika', 'Strzał': 'Strzał', 'Decyzyjność': 'Taktyka',
+    'Siła': 'Motoryka', 'Mentalność': 'Mentalność', 'Gierka': 'Taktyka',
+    'Podania': 'Technika', 'Przyjęcie': 'Technika', 'Odbiór': 'Taktyka',
+    'Gra bez piłki': 'Taktyka', 'Fazy przejściowe': 'Taktyka', 'Szybkość': 'Motoryka',
   };
-  static const List<String> axes = <String>['Technika', 'Strzał', 'Taktyka', 'Motoryka', 'Mentalność'];
-
-  static double ratingWeight(dynamic r) {
-    // Bez oceny liczy się aktywność, bez premii ani kary za samoocenę.
-    if (r is! num || r < 1 || r > 5) return 1.0;
-    final v = r.toInt();
-    return 0.5 + (v - 1) * 0.175;
+  static double ratingWeight(dynamic rating) => 1.0;
+  static const axes = ['Technika', 'Strzał', 'Taktyka', 'Motoryka', 'Mentalność'];
+  static List<String> focuses(Map<String, dynamic> entry) {
+    final raw = entry['focuses'];
+    return (raw is List && raw.isNotEmpty ? raw.map((e) => e.toString())
+      : (entry['focus'] ?? '').toString().split(','))
+      .map((e) => e.trim()).where((e) => e.isNotEmpty).toSet().toList();
   }
-
-  static Map<String, int> calculate(List<Map<String, dynamic>> trainings, List<Map<String, dynamic>> matches, {String? since}) {
-    String str(dynamic v) => v == null ? '' : v.toString();
-    String day(Map<String, dynamic> e) => first10(str(e['date']));
-    final weights = <String, double>{for (final a in axes) a: 0.0};
+  static Map<String, int> areas(List<Map<String, dynamic>> trainings) {
+    final counts = <String, int>{for (final k in focusToAxis.keys) k: 0};
     for (final t in trainings) {
-      if (since != null && day(t).compareTo(since) < 0) continue;
-      final raw = t['focuses'];
-      final focuses = raw is List && raw.isNotEmpty ? raw.map(str).toList() : str(t['focus']).split(',').map((e) => e.trim()).toList();
-      final share = focuses.isEmpty ? 0.0 : 1.0 / focuses.length;
-      for (final focus in focuses) {
-        final axis = focusToAxis[focus];
-        if (axis != null) weights[axis] = weights[axis]! + ratingWeight(t['rating']) * share;
-      }
+      for (final focus in focuses(t)) { counts[focus] = (counts[focus] ?? 0) + 1; }
     }
-    for (final m in matches) {
-      if (since != null && day(m).compareTo(since) < 0) continue;
-      weights['Mentalność'] = weights['Mentalność']! + ratingWeight(m['rating']) * 0.5;
+    return counts;
+  }
+  static Map<String, int> calculate(List<Map<String, dynamic>> trainings,
+      List<Map<String, dynamic>> matches, {String? since}) {
+    final counts = <String, int>{for (final a in axes) a: 0};
+    for (final t in trainings) {
+      if (since != null && first10((t['date'] ?? '').toString()).compareTo(since) < 0) continue;
+      final marked = focuses(t).map((f) => focusToAxis[f]).whereType<String>().toSet();
+      for (final axis in marked) { counts[axis] = counts[axis]! + 1; }
     }
-    return <String, int>{for (final e in weights.entries) e.key: ((e.value / 10) * 100).toInt().clamp(0, 100).toInt()};
+    return counts;
   }
 }
-

@@ -97,7 +97,7 @@ void main() {
           home: Scaffold(body: ProgressScreen(selected: selected, index: 3))));
         await tester.pumpAndSettle();
         final streak = tester.getSize(find.byKey(const ValueKey('hero-DNI Z RZĘDU')));
-        final rating = tester.getSize(find.byKey(const ValueKey('hero-ŚR. OCENA TRENINGÓW I MECZÓW')));
+        final rating = tester.getSize(find.byKey(const ValueKey('hero-SAMOOCENA TRENINGÓW I MECZÓW')));
         expect(streak, rating);
         final sizes = [for (final label in ['Treningi indywidualne', 'Treningi klubowe', 'Mecze', 'Minuty', 'Gole', 'Asysty'])
           tester.getSize(find.byKey(ValueKey('metric-$label')))];

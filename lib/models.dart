@@ -428,6 +428,9 @@ class WeakSpotsPayload {
     required this.generatedAt,
     this.source = '',
     this.notice = '',
+    this.sampleFingerprint = '',
+    this.rangeStart = '',
+    this.rangeEnd = '',
     required this.noteCount,
   });
 
@@ -436,6 +439,7 @@ class WeakSpotsPayload {
   final String source;
   final String notice;
   final int noteCount;
+  final String sampleFingerprint, rangeStart, rangeEnd;
 
   factory WeakSpotsPayload.fromJson(Map<String, dynamic> j) {
     final raw = j['weak_spots'];
@@ -449,6 +453,8 @@ class WeakSpotsPayload {
       source: _asString(j['source']),
       notice: _asString(j['fallback_reason']),
       noteCount: _asInt(j['note_count']),
+      sampleFingerprint: _asString(j['sample_fingerprint']),
+      rangeStart: _asString(j['range_start']), rangeEnd: _asString(j['range_end']),
     );
   }
 }
