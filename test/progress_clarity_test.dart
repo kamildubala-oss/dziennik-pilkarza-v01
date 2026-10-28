@@ -85,4 +85,28 @@ void main() {
     await tester.pumpWidget(const SizedBox());
     selected.dispose();
   });
+  testWidgets('summary and all six metrics have equal sizes at narrow widths and larger text', (tester) async {
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    for (final width in [320.0, 390.0]) {
+      for (final scale in [1.0, 1.4]) {
+        await tester.binding.setSurfaceSize(Size(width, 850));
+        final selected = ValueNotifier(3);
+        await tester.pumpWidget(MaterialApp(theme: buildTheme(AppColors.dark, Brightness.dark),
+          builder: (context, child) => MediaQuery(data: MediaQuery.of(context).copyWith(
+            textScaler: TextScaler.linear(scale)), child: child!),
+          home: Scaffold(body: ProgressScreen(selected: selected, index: 3))));
+        await tester.pumpAndSettle();
+        final streak = tester.getSize(find.byKey(const ValueKey('hero-DNI Z RZĘDU')));
+        final rating = tester.getSize(find.byKey(const ValueKey('hero-ŚR. OCENA TRENINGÓW I MECZÓW')));
+        expect(streak, rating);
+        final sizes = [for (final label in ['Treningi indywidualne', 'Treningi klubowe', 'Mecze', 'Minuty', 'Gole', 'Asysty'])
+          tester.getSize(find.byKey(ValueKey('metric-$label')))];
+        for (final size in sizes) { expect(size, sizes.first); }
+        expect(tester.takeException(), isNull);
+        await tester.pumpWidget(const SizedBox());
+        selected.dispose();
+      }
+    }
+  });
+
 }

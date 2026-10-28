@@ -153,7 +153,8 @@ class _ProgressScreenState extends State<ProgressScreen> {
       // ---------- Streak + ocena ----------
       Padding(
         padding: const EdgeInsets.only(bottom: Sp.lg),
-        child: Row(
+        child: IntrinsicHeight(child: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Expanded(
               child: _heroCell(
@@ -184,7 +185,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
               ),
             ),
           ],
-        ),
+        )),
       ),
 
       // ---------- Ostatnie 7 dni ----------
@@ -263,19 +264,35 @@ class _ProgressScreenState extends State<ProgressScreen> {
       _section('METRYKI'),
       LayoutBuilder(
         builder: (context, constraints) {
-          final w = constraints.maxWidth * 0.315;
+          final w = (constraints.maxWidth - 2 * Sp.sm) / 3;
+          final labels = ['Treningi indywidualne', 'Treningi klubowe', 'Mecze', 'Minuty', 'Gole', 'Asysty'];
+          final values = ['${stats?.totalIndividualTrainings ?? 0}', '${stats?.totalClubTrainings ?? 0}',
+            '${stats?.totalMatches ?? 0}', '${stats?.totalMinutes ?? 0}',
+            '${stats?.totalGoals ?? 0}', '${stats?.totalAssists ?? 0}'];
+          double measure(String text, TextStyle style) {
+            final painter = TextPainter(text: TextSpan(text: text, style: DefaultTextStyle.of(context).style.merge(style)),
+              textDirection: Directionality.of(context), textScaler: MediaQuery.textScalerOf(context))
+              ..layout(maxWidth: w - 2 * Sp.md);
+            final height = painter.height;
+            painter.dispose();
+            return height;
+          }
+          final labelHeight = labels.map((text) => measure(text,
+            manrope(size: 10, weight: FontWeight.w700, letterSpacing: 1))).reduce(math.max);
+          final valueHeight = values.map((text) => measure(text, barlow(size: 22))).reduce(math.max);
+          final height = (2 * Sp.md + 18 + 8 + labelHeight + valueHeight).ceilToDouble();
           return Wrap(
             spacing: Sp.sm,
             runSpacing: Sp.sm,
             children: [
-              _metric(c, w, Icons.directions_run, 'Treningi indywidualne',
+              _metric(c, w, height, Icons.directions_run, 'Treningi indywidualne',
                 '${stats?.totalIndividualTrainings ?? 0}'),
-              _metric(c, w, Icons.groups, 'Treningi klubowe',
+              _metric(c, w, height, Icons.groups, 'Treningi klubowe',
                 '${stats?.totalClubTrainings ?? 0}'),
-              _metric(c, w, Icons.sports_soccer, 'Mecze', '${stats?.totalMatches ?? 0}'),
-              _metric(c, w, Icons.timer, 'Minuty', '${stats?.totalMinutes ?? 0}'),
-              _metric(c, w, Icons.gps_fixed, 'Gole', '${stats?.totalGoals ?? 0}'),
-              _metric(c, w, Icons.handshake, 'Asysty', '${stats?.totalAssists ?? 0}'),
+              _metric(c, w, height, Icons.sports_soccer, 'Mecze', '${stats?.totalMatches ?? 0}'),
+              _metric(c, w, height, Icons.timer, 'Minuty', '${stats?.totalMinutes ?? 0}'),
+              _metric(c, w, height, Icons.gps_fixed, 'Gole', '${stats?.totalGoals ?? 0}'),
+              _metric(c, w, height, Icons.handshake, 'Asysty', '${stats?.totalAssists ?? 0}'),
             ],
           );
         },
@@ -589,6 +606,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
     String? subtitle,
   }) {
     return Container(
+      key: ValueKey('hero-$label'),
       constraints: const BoxConstraints(minHeight: 110),
       padding: const EdgeInsets.all(Sp.md),
       decoration: BoxDecoration(
@@ -622,12 +640,15 @@ class _ProgressScreenState extends State<ProgressScreen> {
   Widget _metric(
     AppColors c,
     double width,
+    double height,
     IconData icon,
     String label,
     String value,
   ) {
     return Container(
+      key: ValueKey('metric-$label'),
       width: width,
+      height: height,
       padding: const EdgeInsets.all(Sp.md),
       decoration: BoxDecoration(
         color: c.surfaceSecondary,
