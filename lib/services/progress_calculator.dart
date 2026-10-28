@@ -10,10 +10,16 @@ class ProgressCalculator {
   static int asInt(dynamic value) => value is num ? value.toInt() : 0;
   static String asString(dynamic value) => value == null ? '' : value.toString();
 
-  static Future<Progress> calculate({DateTime? asOf}) async {
+  static Future<Progress> calculate({DateTime? asOf, String? since, String? until}) async {
     final now = asOf ?? DateTime.now();
-    final trainings = await LocalDb.list('trainings');
-    final matches = await LocalDb.list('matches');
+    bool included(Map<String, dynamic> e) {
+      final day = first10(asString(e['date']));
+      final parsed = DateTime.tryParse(day);
+      return parsed != null && dateIso(parsed) == day && day.compareTo(dateIso(now)) <= 0 &&
+        (since == null || day.compareTo(since) >= 0) && (until == null || day.compareTo(until) <= 0);
+    }
+    final trainings = (await LocalDb.list('trainings')).where(included).toList();
+    final matches = (await LocalDb.list('matches')).where(included).toList();
     final totalMinutes = trainings.fold<int>(0, (a, t) => a + asInt(t['duration_min'])) + matches.fold<int>(0, (a, m) => a + asInt(m['minutes_played']));
     final totalGoals = matches.fold<int>(0, (a, m) => a + asInt(m['goals']));
     final totalAssists = matches.fold<int>(0, (a, m) => a + asInt(m['assists']));
@@ -43,7 +49,7 @@ class ProgressCalculator {
       'streak_days': streak,
       'avg_rating': avgRating,
       'skill_radar_all': SkillRadarService.calculate(trainings, matches),
-      'skill_radar_recent': SkillRadarService.calculate(trainings, matches, since: dayAgo(14)),
+      'skill_radar_recent': SkillRadarService.calculate(trainings, matches, since: dayAgo(13)),
       'week_sessions': weekSessions,
       'week_session_types': <Map<String, int>>[
         for (var i = 6; i >= 0; i--) <String, int>{

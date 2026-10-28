@@ -12,6 +12,19 @@ class AchievementService {
   static String latestBadgeTitle(Map<String, dynamic> database,
       List<Map<String, dynamic>> trainings, List<Map<String, dynamic>> matches,
       {DateTime? asOf}) {
+    final dates = earnedDates(database, trainings, matches, asOf: asOf);
+    if (dates.isEmpty) return '';
+    var latest = '';
+    var date = '';
+    for (final entry in dates.entries) {
+      if (entry.value.compareTo(date) >= 0) { latest = entry.key; date = entry.value; }
+    }
+    return latest;
+  }
+
+  static Map<String, String> earnedDates(Map<String, dynamic> database,
+      List<Map<String, dynamic>> trainings, List<Map<String, dynamic>> matches,
+      {DateTime? asOf}) {
     final today = dateIso(asOf ?? DateTime.now());
     final entries = <Map<String, dynamic>>[
       ...trainings.map((e) => {...e, '_match': false}),
@@ -25,7 +38,7 @@ class AchievementService {
     var trainingCount = 0, matchCount = 0, minutes = 0, goals = 0, assists = 0;
     var hatTrick = false, topRating = false;
     final earned = <String>{};
-    var latest = '', latestDate = '';
+    final datesEarned = <String, String>{};
     for (final entry in entries) {
       if (entry['_match'] == true) {
         matchCount++;
@@ -48,8 +61,7 @@ class AchievementService {
       };
       for (final badge in conditions.entries) {
         if (badge.value && earned.add(badge.key)) {
-          latest = badge.key;
-          latestDate = day(entry['date']);
+          datesEarned[badge.key] = day(entry['date']);
         }
       }
     }
@@ -71,10 +83,8 @@ class AchievementService {
         firstCompletedWeek = iso;
       }
     }
-    if (firstCompletedWeek != null && firstCompletedWeek.compareTo(latestDate) >= 0) {
-      return 'Tydzień według planu';
-    }
-    return latest;
+    if (firstCompletedWeek != null) datesEarned['Tydzień według planu'] = firstCompletedWeek;
+    return datesEarned;
   }
 
   static int maxGoals(List<Map<String, dynamic>> matches) {

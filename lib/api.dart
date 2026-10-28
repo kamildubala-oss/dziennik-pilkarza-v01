@@ -8,6 +8,7 @@ import 'models.dart';
 import 'utils.dart';
 import 'services/progress_calculator.dart';
 import 'services/coach_runtime.dart';
+import 'services/progress_report.dart';
 
 part 'repositories/training_repo.dart';
 part 'repositories/calendar_repo.dart';

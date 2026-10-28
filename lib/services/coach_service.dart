@@ -12,30 +12,17 @@ class CoachService {
     final trainings = await LocalDb.list('trainings');
     final matches = await LocalDb.list('matches');
 
-    final notes = <String>[];
-    for (final t in trainings) {
-      final n = _s(t['to_improve']).trim();
-      if (n.isNotEmpty) {
-        final club = _s(t['kind']) == 'club_training';
-        notes.add('[${club ? 'Trening klubowy' : 'Trening'} '
-            '${first10(_s(t['date']))}'
-            '${_s(t['focus']).isNotEmpty ? ' · ${_s(t['focus'])}' : ''}] $n');
-      }
-    }
-    for (final m in matches) {
-      final n = _s(m['to_improve']).trim();
-      if (n.isNotEmpty) {
-        notes.add(
-          '[Mecz ${first10(_s(m['date']))} vs ${_s(m['opponent'])}] $n',
-        );
-      }
-    }
+    final sample = ObservationSample.latest(trainings, matches);
+    final notes = sample.map((e) =>
+      '[${e['_type']} ${first10(_s(e['date']))}] ${_s(e['to_improve']).trim()}').toList();
+    final fingerprint = ObservationSample.fingerprint(sample);
 
     if (notes.isEmpty) {
       final empty = <String, dynamic>{
         'weak_spots': <Map<String, dynamic>>[],
         'generated_at': _nowIso(),
         'note_count': 0,
+        'sample_fingerprint': fingerprint,
         'source': 'offline',
         'fallback_reason': 'Brak notatek „Co trzeba poprawić?” do analizy.',
       };
@@ -55,7 +42,7 @@ class CoachService {
             notes.length > 50 ? notes.sublist(notes.length - 50) : notes;
         final prompt =
             "Przeanalizuj poniższe notatki zawodnika z pola 'Co trzeba poprawić?' "
-            'i wskaż 2-5 powtarzających się słabych punktów:\n\n'
+            'i wskaż najwyżej 5 tematów obecnych w co najmniej dwóch różnych wpisach. Jeśli brak powtórzeń, zwróć pustą listę. Nie traktuj pojedynczej obserwacji jako słabego punktu:\n\n'
             '${last.map((n) => '- $n').join('\n')}';
         final raw = await Llm.complete(
           json: true,
@@ -99,8 +86,8 @@ class CoachService {
       // Wersja offline - zliczanie słów kluczowych.
       final tally = <String, int>{};
       void bump(String k) => tally[k] = (tally[k] ?? 0) + 1;
-      for (final n in notes) {
-        final l = n.toLowerCase();
+      for (final entry in sample) {
+        final l = _s(entry['to_improve']).toLowerCase();
         if (l.contains('strzał') || l.contains('strzelić')) bump('Strzał');
         if (l.contains('podani') ||
             l.contains('przyj') ||
@@ -129,6 +116,7 @@ class CoachService {
         });
       for (final area in sorted.take(5)) {
         final count = tally[area]!;
+        if (count < 2) continue;
         spots.add(<String, dynamic>{
           'area': area,
           'insight':
@@ -138,10 +126,14 @@ class CoachService {
       }
     }
 
+    if (sample.length < 2) spots.clear();
     final payload = <String, dynamic>{
       'weak_spots': spots,
       'generated_at': _nowIso(),
       'note_count': notes.length,
+      'sample_fingerprint': fingerprint,
+      'range_start': first10(_s(sample.first['date'])),
+      'range_end': first10(_s(sample.last['date'])),
       'source': source,
       'fallback_reason': notice,
     };

@@ -135,7 +135,7 @@ const String kWeakSpotsSystem =
     "Jesteś indywidualnym trenerem piłkarskim analizującym notatki młodego zawodnika z pola 'Co trzeba poprawić?'. "
     'Zidentyfikuj powtarzające się słabości i zwróć WYŁĄCZNIE poprawny JSON (bez markdown, komentarzy) o schemacie: '
     '{"weak_spots":[{"area":"Technika|Strzał|Taktyka|Motoryka|Mentalność|Inne","insight":"max 1 zdanie konkretnej obserwacji","priority":"low|medium|high"}]}'
-    ' Zwróć 2-5 pozycji, najważniejsze najpierw. Nie oceniaj dziecka – wskaż obszar i co z tym zrobić. '
+    ' Zwróć 0-5 pozycji, najważniejsze najpierw. Każdy temat musi wystąpić w co najmniej dwóch różnych wpisach; gdy brak powtórzeń, zwróć pustą listę. Nie oceniaj dziecka – wskaż obszar i co z tym zrobić. '
     "Opieraj się na obserwacjach zawodnika i ogólnych zasadach treningu. Pisz po polsku. Nie używaj emoji.";
 
 const Map<String, String> _drillTips = <String, String>{

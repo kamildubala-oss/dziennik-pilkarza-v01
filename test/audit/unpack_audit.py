@@ -108,3 +108,25 @@ for name in ALLOWED:
 
 print(f"Przygotowano {len(ALLOWED)} pliki źródłowe i 55 testów audytowych.")
 
+
+# W3 po naprawie klasyfikuje wyłącznie obserwację, nigdy nagłówek.
+# Dwa wpisy sprawdzają wymaganą powtarzalność tematu.
+path = OUT / "verify_gaps_test.dart"
+source = path.read_text(encoding="utf-8")
+a = source.index("  test('W3:")
+b = source.index("  test('W4:", a)
+replacement = """  test('W3: analiza pomija focus i wymaga powtarzających się obserwacji', () async {
+    await reset();
+    for (var i = 0; i < 2; i++) {
+      await Api.createTraining(
+        date: todayIso(), durationMin: 45, focuses: <String>['Strzał'],
+        intensity: 'medium', rating: 3, wentWell: '',
+        toImprove: 'ustawianie się przy stałych fragmentach', notes: '',
+      );
+    }
+    final w = await Api.analyzeWeakSpots();
+    expect(w.weakSpots.map((s) => s.area).toList(), ['Taktyka']);
+  });
+
+"""
+path.write_text(source[:a] + replacement + source[b:], encoding="utf-8")
