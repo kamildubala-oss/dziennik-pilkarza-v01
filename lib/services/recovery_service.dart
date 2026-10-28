@@ -119,6 +119,9 @@ class RecoveryService {
         'duration_min': minutes, 'focus': 'Regeneracja', 'intensity': 'low', 'steps': steps(plan),
         'recovery_plan': plan, 'planned': !complete, 'done': complete, 'created_at': old['created_at'] ?? _nowIso()};
       if (complete) {
+        if (_s(old['source']).isNotEmpty && old['source'] != 'trainings') {
+          event['planned_source'] = old['source'];
+        }
         var ti = linked.isEmpty ? -1 : trainings.indexWhere((e) => e['id'] == linked);
         if (linked.isNotEmpty && (ti < 0 || trainings[ti]['kind'] != 'recovery')) throw StateError('Nie znaleziono wykonanej regeneracji.');
         if (ti >= 0 && trainingId == null && old['done'] == true) return EventItem.fromJson(old);

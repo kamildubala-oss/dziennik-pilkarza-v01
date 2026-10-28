@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dziennik_pilkarza/api.dart';
+import 'package:dziennik_pilkarza/models.dart';
 import 'package:dziennik_pilkarza/local_db.dart';
 import 'package:dziennik_pilkarza/llm_settings.dart';
 import 'package:dziennik_pilkarza/screens/add_event_screen.dart';
@@ -106,6 +107,19 @@ void main() {
     await Api.deleteEvent(done.id);
     expect(await LocalDb.list('trainings'),isEmpty);
     expect(await LocalDb.list('events'),isEmpty);
+  });
+  test('weekly recovery retains its plan link after completion', () async {
+    final day = PlanDay(date:todayIso(), dayName:'Dzisiaj', focus:'Regeneracja',
+      title:'Aktywny odpoczynek',durationMin:20,intensity:'low',description:'Regeneracja',
+      steps:['Spokojny spacer','Mobilność']);
+    expect(await Api.addPlanDayToCalendar(day),isTrue);
+    final event=(await Api.listEvents()).single;
+    expect(event.type,'recovery');
+    final plan=await Api.generateRecovery(todayIso(),20);
+    await Api.saveRecovery(plan,eventId:event.id,complete:true);
+    expect(await Api.addPlanDayToCalendar(day),isFalse);
+    expect((await Api.listEvents()).length,1);
+    expect((await Api.listTrainings()).length,1);
   });
   test('legacy notes remain notes and future completion is rejected', () async {
     final note = await Api.createEvent(date:todayIso(),type:'note',title:'Stara notatka',description:'Zachowaj');
