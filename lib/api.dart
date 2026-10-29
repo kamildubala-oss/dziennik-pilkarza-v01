@@ -9,6 +9,7 @@ import 'utils.dart';
 import 'services/progress_calculator.dart';
 import 'services/coach_runtime.dart';
 import 'services/progress_report.dart';
+import 'services/match_stats.dart';
 
 part 'repositories/training_repo.dart';
 part 'repositories/calendar_repo.dart';
@@ -422,7 +423,7 @@ class Api {
       'date', 'title', 'description', 'type', 'duration_min',
       'focus', 'focuses', 'intensity', 'rating',
       'opponent', 'result', 'minutes_played', 'goals', 'assists',
-      'went_well', 'to_improve', 'notes', 'steps', 'recovery_plan',
+      'went_well', 'to_improve', 'notes', 'steps', 'recovery_plan', 'self_rating_10', 'extra_stats',
     ];
     return <String, dynamic>{
       for (final key in fields)
@@ -464,14 +465,17 @@ class Api {
     required String date,
     required String opponent,
     required String result,
-    required int minutesPlayed,
-    required int goals,
-    required int assists,
+    required int? minutesPlayed,
+    required int? goals,
+    required int? assists,
     required int rating,
     required String wentWell,
     required String toImprove,
     required String notes,
-  }) => TrainingRepo.updateMatch(id, date: date, opponent: opponent, result: result, minutesPlayed: minutesPlayed, goals: goals, assists: assists, rating: rating, wentWell: wentWell, toImprove: toImprove, notes: notes);
+    int? selfRating10,
+    bool clearSelfRating10 = false,
+    Map<String, int?>? extraStats,
+  }) => TrainingRepo.updateMatch(id, date: date, opponent: opponent, result: result, minutesPlayed: minutesPlayed, goals: goals, assists: assists, rating: rating, wentWell: wentWell, toImprove: toImprove, notes: notes, selfRating10: selfRating10, clearSelfRating10: clearSelfRating10, extraStats: extraStats);
 
   /// Ocena treningu klubowego (ocena, co było dobrze, co poprawić, notatki).
   /// Pierwsza ocena tworzy wpis treningu w dzienniku i oznacza trening
@@ -558,19 +562,21 @@ class Api {
     required String date,
     required String opponent,
     required String result,
-    required int minutesPlayed,
-    required int goals,
-    required int assists,
+    required int? minutesPlayed,
+    required int? goals,
+    required int? assists,
     required int rating,
     required String wentWell,
     required String toImprove,
     required String notes,
+    int? selfRating10,
+    Map<String, int?>? extraStats,
     String? plannedEventId,
     /// True, gdy zapisujemy przyszły plan (Kalendarz → Dodaj), a nie
     /// wykonaną już aktywność. Dzisiejsze planowane mecze nie są
     /// oznaczane jako wykonane.
     bool isPlanned = false,
-  }) => TrainingRepo.createMatch(date: date, opponent: opponent, result: result, minutesPlayed: minutesPlayed, goals: goals, assists: assists, rating: rating, wentWell: wentWell, toImprove: toImprove, notes: notes, plannedEventId: plannedEventId, isPlanned: isPlanned);
+  }) => TrainingRepo.createMatch(date: date, opponent: opponent, result: result, minutesPlayed: minutesPlayed, goals: goals, assists: assists, rating: rating, wentWell: wentWell, toImprove: toImprove, notes: notes, selfRating10: selfRating10, extraStats: extraStats, plannedEventId: plannedEventId, isPlanned: isPlanned);
 
   static Future<void> deleteMatch(String id) => TrainingRepo.deleteMatch(id);
 
@@ -811,10 +817,11 @@ class Api {
     final result = _s(m['result']).trim();
     final parts = <String>[
       if (result.isNotEmpty) 'wynik $result',
-      '${_i(m['minutes_played'])} min',
+      if (m['minutes_played'] != null) '${_i(m['minutes_played'])} min',
       if (_i(m['goals']) > 0) 'gole: ${_i(m['goals'])}',
       if (_i(m['assists']) > 0) 'asysty: ${_i(m['assists'])}',
-      if (_i(m['rating']) > 0) 'ocena ${_i(m['rating'])}/5',
+      if (m['self_rating_10'] != null) 'samoocena ${m['self_rating_10']}/10',
+      if (m['self_rating_10'] == null && _i(m['rating']) > 0) 'ocena ${_i(m['rating'])}/5',
     ];
     return <String, dynamic>{
       'id': LocalDb.newId(),
@@ -823,13 +830,14 @@ class Api {
       'type': 'match',
       'title': opponent.isEmpty ? 'Mecz' : 'Mecz z $opponent',
       'description': parts.join(', '),
-      'duration_min': _i(m['minutes_played']),
-      'minutes_played': _i(m['minutes_played']),
+      'duration_min': m['minutes_played'],
+      'minutes_played': m['minutes_played'],
       'opponent': _s(m['opponent']),
       'result': _s(m['result']),
-      'goals': _i(m['goals']),
-      'assists': _i(m['assists']),
+      'goals': m['goals'],
+      'assists': m['assists'],
       'rating': _i(m['rating']),
+      'self_rating_10': m['self_rating_10'], 'extra_stats': m['extra_stats'],
       'went_well': _s(m['went_well']),
       'to_improve': _s(m['to_improve']),
       'notes': _s(m['notes']),
@@ -982,8 +990,8 @@ class Api {
       b.writeln(
           '- ${first10(_s(m['date']))} vs ${_orDefault(m['opponent'], '?')}'
           '${_s(m['result']).isNotEmpty ? ' wynik ${_s(m['result'])}' : ''}, '
-          '${_i(m['minutes_played'])} min, gole ${_i(m['goals'])}, asysty ${_i(m['assists'])}, '
-          '${_i(m['rating']) > 0 ? 'ocena ${_i(m['rating'])}/5' : 'bez oceny'}'
+          'minuty=${m['minutes_played'] ?? 'brak danych'}, gole=${m['goals'] ?? 'brak danych'}, asysty=${m['assists'] ?? 'brak danych'}, '
+          '${m['self_rating_10'] != null ? 'samoocena ${m['self_rating_10']}/10' : _i(m['rating']) > 0 ? 'historyczna ocena ${_i(m['rating'])}/5' : 'bez oceny'}'
           '${clip(m['went_well']).isNotEmpty ? '; dobrze: ${clip(m['went_well'])}' : ''}'
           '${clip(m['to_improve']).isNotEmpty ? '; do poprawy: ${clip(m['to_improve'])}' : ''}'
           '${clip(m['notes']).isNotEmpty ? '; notatki: ${clip(m['notes'])}' : ''}');

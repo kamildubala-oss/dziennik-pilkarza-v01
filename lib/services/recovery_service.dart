@@ -45,6 +45,7 @@ class RecoveryService {
             'history_from': since, 'history_to': today, 'summary': summary,
             'activities': [for (final e in activities) {
               'date': e['date'], 'type': e['_type'], 'minutes': e['duration_min'] ?? e['minutes_played'],
+              'self_rating_10': e['self_rating_10'],
               'intensity': e['intensity'], 'rating': _i(e['rating']) > 0 ? e['rating'] : null,
               'went_well': clip(e['went_well']), 'to_improve': clip(e['to_improve']),
             }],

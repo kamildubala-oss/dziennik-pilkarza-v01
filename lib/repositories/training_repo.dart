@@ -179,21 +179,26 @@ class TrainingRepo {
     required String date,
     required String opponent,
     required String result,
-    required int minutesPlayed,
-    required int goals,
-    required int assists,
+    required int? minutesPlayed,
+    required int? goals,
+    required int? assists,
     required int rating,
     required String wentWell,
     required String toImprove,
     required String notes,
+    int? selfRating10,
+    bool clearSelfRating10 = false,
+    Map<String, int?>? extraStats,
   }) {
     _validateActivityDate(date, isPlanned: false);
-    _check(minutesPlayed >= 0 && minutesPlayed <= 180,
+    _check(minutesPlayed == null || (minutesPlayed >= 0 && minutesPlayed <= 180),
         'Czas meczu musi wynosić od 0 do 180 minut.');
-    _check(goals >= 0 && goals <= 20, 'Liczba goli musi wynosić od 0 do 20.');
-    _check(assists >= 0 && assists <= 20,
+    _check(goals == null || (goals >= 0 && goals <= 20), 'Liczba goli musi wynosić od 0 do 20.');
+    _check(assists == null || (assists >= 0 && assists <= 20),
         'Liczba asyst musi wynosić od 0 do 20.');
     _check(rating >= 0 && rating <= 5, 'rating must be between 0 (unrated) and 5');
+    _check(selfRating10 == null || selfRating10 >= 1 && selfRating10 <= 10, 'Samoocena musi wynosić od 1 do 10.');
+    _check(MatchStats.error(extraStats ?? {}) == null, MatchStats.error(extraStats ?? {}) ?? 'Nieprawidłowe statystyki.');
     return LocalDb.synchronized<MatchEntry>(() async {
       final items = await LocalDb.list('matches');
       final idx = items.indexWhere((m) => _s(m['id']) == id);
@@ -206,6 +211,8 @@ class TrainingRepo {
       m['goals'] = goals;
       m['assists'] = assists;
       m['rating'] = rating;
+      if (selfRating10 != null || clearSelfRating10) m['self_rating_10'] = selfRating10;
+      if (extraStats != null) m['extra_stats'] = extraStats;
       m['went_well'] = wentWell;
       m['to_improve'] = toImprove;
       m['notes'] = notes;
@@ -283,13 +290,15 @@ class TrainingRepo {
     required String date,
     required String opponent,
     required String result,
-    required int minutesPlayed,
-    required int goals,
-    required int assists,
+    required int? minutesPlayed,
+    required int? goals,
+    required int? assists,
     required int rating,
     required String wentWell,
     required String toImprove,
     required String notes,
+    int? selfRating10,
+    Map<String, int?>? extraStats,
     String? plannedEventId,
     /// True, gdy zapisujemy przyszły plan (Kalendarz → Dodaj), a nie
     /// wykonaną już aktywność. Dzisiejsze planowane mecze nie są
@@ -298,12 +307,14 @@ class TrainingRepo {
   }) async {
     _validateActivityDate(date, isPlanned: isPlanned);
     _check(
-      minutesPlayed >= 0 && minutesPlayed <= 180,
+      minutesPlayed == null || (minutesPlayed >= 0 && minutesPlayed <= 180),
       'minutes_played must be between 0 and 180',
     );
-    _check(goals >= 0 && goals <= 20, 'goals must be between 0 and 20');
-    _check(assists >= 0 && assists <= 20, 'assists must be between 0 and 20');
+    _check(goals == null || (goals >= 0 && goals <= 20), 'goals must be between 0 and 20');
+    _check(assists == null || (assists >= 0 && assists <= 20), 'assists must be between 0 and 20');
     _check(rating >= 0 && rating <= 5, 'rating must be between 0 (unrated) and 5');
+    _check(selfRating10 == null || selfRating10 >= 1 && selfRating10 <= 10, 'Samoocena musi wynosić od 1 do 10.');
+    _check(MatchStats.error(extraStats ?? {}) == null, MatchStats.error(extraStats ?? {}) ?? 'Nieprawidłowe statystyki.');
     final doc = <String, dynamic>{
       'id': LocalDb.newId(),
       'date': date,
@@ -313,6 +324,8 @@ class TrainingRepo {
       'goals': goals,
       'assists': assists,
       'rating': rating,
+      'self_rating_10': selfRating10,
+      'extra_stats': extraStats ?? {},
       'went_well': wentWell,
       'to_improve': toImprove,
       'notes': notes,

@@ -17,6 +17,8 @@ import '../theme.dart';
 import '../utils.dart';
 import '../widgets/common.dart';
 import '../widgets/period_selector.dart';
+import '../widgets/season_insights_panel.dart';
+import '../services/season_insights.dart';
 import '../widgets/exercise_button.dart';
 
 /// Zakładka "Postęp".
@@ -47,10 +49,11 @@ class _ProgressScreenState extends State<ProgressScreen> {
   int _period = 30;
   late final Resource<ProgressReport> _report = Resource<ProgressReport>(
     () => ProgressReport.load(_period), _rebuild);
+  late final Resource<SeasonInsights> _season = Resource<SeasonInsights>(() => SeasonInsights.load(_period), _rebuild);
   Map<String, String> _earned = {};
   String _fingerprint = '';
   Future<void> _refresh() async {
-    await Future.wait([_progress.refetch(), _report.refetch(), _weak.refetch()]);
+    await Future.wait([_progress.refetch(), _report.refetch(), _weak.refetch(), _season.refetch()]);
     try {
       final trainings = await LocalDb.list('trainings');
       final matches = await LocalDb.list('matches');
@@ -77,6 +80,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
   void dispose() {
     widget.selected.removeListener(_onTabChanged);
     _report.dispose();
+    _season.dispose();
     _progress.dispose();
     _weak.dispose();
     super.dispose();
@@ -135,7 +139,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
             PeriodSelector(value: _period,
               onChanged: _report.isLoading || _report.isRefetching ? null : (value) async {
                 setState(() => _period = value);
-                await _report.refetch();
+                await Future.wait([_report.refetch(), _season.refetch()]);
               }),
             if (_report.isRefetching) const LinearProgressIndicator(),
             if (_report.data != null) Padding(padding: const EdgeInsets.symmetric(vertical: 8),
@@ -208,7 +212,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                 iconColor: c.brandSecondary,
                 value: avg != null && avg > 0 ? avg.toStringAsFixed(1) : '—',
                 valueColor: c.onSurface,
-                label: 'SAMOOCENA TRENINGÓW I MECZÓW',
+                label: 'SAMOOCENA 1–5',
                 subtitle: ratedCount == 0
                     ? 'Ocena jest opcjonalna'
                     : 'Na podstawie $ratedCount ${ratedCount == 1 ? 'oceny' : 'ocen'}',
@@ -299,7 +303,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
           final labels = ['Treningi indywidualne', 'Treningi klubowe', 'Mecze', 'Minuty', 'Gole', 'Asysty'];
           final values = ['${stats?.totalIndividualTrainings ?? 0}', '${stats?.totalClubTrainings ?? 0}',
             '${stats?.totalMatches ?? 0}', '${stats?.totalMinutes ?? 0}',
-            '${stats?.totalGoals ?? 0}', '${stats?.totalAssists ?? 0}'];
+            _season.data == null || _season.data!.current.count == 0 ? '${stats?.totalGoals ?? 0}' : _season.data!.current.sum('goals').format(decimals:0), _season.data == null || _season.data!.current.count == 0 ? '${stats?.totalAssists ?? 0}' : _season.data!.current.sum('assists').format(decimals:0)];
           double measure(String text, TextStyle style) {
             final painter = TextPainter(text: TextSpan(text: text, style: DefaultTextStyle.of(context).style.merge(style)),
               textDirection: Directionality.of(context), textScaler: MediaQuery.textScalerOf(context))
@@ -322,13 +326,15 @@ class _ProgressScreenState extends State<ProgressScreen> {
                 '${stats?.totalClubTrainings ?? 0}'),
               _metric(c, w, height, Icons.sports_soccer, 'Mecze', '${stats?.totalMatches ?? 0}'),
               _metric(c, w, height, Icons.timer, 'Minuty', '${stats?.totalMinutes ?? 0}'),
-              _metric(c, w, height, Icons.gps_fixed, 'Gole', '${stats?.totalGoals ?? 0}'),
-              _metric(c, w, height, Icons.handshake, 'Asysty', '${stats?.totalAssists ?? 0}'),
+              _metric(c, w, height, Icons.gps_fixed, 'Gole', _season.data == null || _season.data!.current.count == 0 ? '${stats?.totalGoals ?? 0}' : _season.data!.current.sum('goals').format(decimals:0)),
+              _metric(c, w, height, Icons.handshake, 'Asysty', _season.data == null || _season.data!.current.count == 0 ? '${stats?.totalAssists ?? 0}' : _season.data!.current.sum('assists').format(decimals:0)),
             ],
           );
         },
       ),
 
+      if (_season.data != null && _season.error == null) SeasonInsightsPanel(data:_season.data!,onExercises:_showExercises)
+      else if (_season.error != null) _weakEmpty(c,title:'Nie udało się wczytać statystyk sezonu',sub:'Odśwież ekran, aby spróbować ponownie.'),
       ..._reportSections(c),
 
       // ---------- Słabe punkty (AI) ----------
@@ -739,7 +745,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                   color: eventTypeColor(context.c, type)),
                 title: Text(recovery ? 'Regeneracja' : match ? 'Mecz · ${e['opponent'] ?? ''}' : club ? 'Trening klubowy' : 'Trening indywidualny'),
                 subtitle: Text('${first10((e['date'] ?? '').toString())} · '
-                  '${e[match ? 'minutes_played' : 'duration_min'] ?? 0} min'),
+                  '${e[match ? 'minutes_played' : 'duration_min'] == null ? 'czas niepodany' : '${e[match ? 'minutes_played' : 'duration_min']} min'}'),
                 trailing: const Icon(Icons.edit_outlined), onTap: () => Navigator.pop(context, e));
             })),
         ]))));

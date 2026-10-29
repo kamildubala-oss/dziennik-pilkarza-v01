@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:shared_preferences/shared_preferences.dart';
+import 'services/match_stats.dart';
 
 /// Lokalna "baza danych" na telefonie (zastępuje MongoDB z backendu).
 /// Kolekcje i dokumenty zapisywane są jako JSON w `shared_preferences`.
@@ -201,6 +202,7 @@ class LocalDb {
   ) {
     if (!record.containsKey(key)) return; // Starsze wersje mogły nie mieć pola.
     final value = record[key];
+    if (value == null && (label.startsWith('matches') || label.startsWith('events'))) return;
     if (value is! num || !value.isFinite || value % 1 != 0 ||
         value < min || value > max) {
       throw FormatException('Nieprawidłowe pole $key w $label (dozwolone $min–$max).');
@@ -245,6 +247,13 @@ class LocalDb {
             _checkNumber(record, 'goals', 0, 20, label);
             _checkNumber(record, 'assists', 0, 20, label);
             _checkNumber(record, 'rating', 0, 5, label);
+            _checkNumber(record, 'self_rating_10', 1, 10, label);
+            final extra = record['extra_stats'];
+            if (extra != null && extra is! Map) throw FormatException('Nieprawidłowe statystyki meczu.');
+            if (extra is Map) {
+              final error = MatchStats.error(Map<String, dynamic>.from(extra));
+              if (error != null) throw FormatException(error);
+            }
           } else if (name == 'events') {
             _checkNumber(record, 'duration_min', 0, 600, label);
             _checkNumber(record, 'rating', 0, 5, label);

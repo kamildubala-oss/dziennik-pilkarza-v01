@@ -20,6 +20,7 @@ class _Session {
     required this.isMatch,
     required this.title,
     this.focus = '',
+    this.selfRating10,
     this.kind = 'training',
     required this.date,
     required this.duration,
@@ -28,13 +29,14 @@ class _Session {
     required this.toImprove,
   });
 
+  final int? selfRating10;
   final String id;
   final bool isMatch;
   final String title;
   final String focus;
   final String kind;
   final String date;
-  final int duration;
+  final int? duration;
   final int rating;
   final String wentWell;
   final String toImprove;
@@ -197,6 +199,7 @@ class _DiaryScreenState extends State<DiaryScreen> {
           title: 'Mecz vs ${m.opponent}',
           date: m.date,
           duration: m.minutesPlayed,
+          selfRating10: m.selfRating10,
           rating: m.rating,
           wentWell: m.wentWell,
           toImprove: m.toImprove,
@@ -928,7 +931,7 @@ class _DiaryScreenState extends State<DiaryScreen> {
                 ],
                 const SizedBox(height: 2),
                 Text(
-                  '${first10(s.date)} · ${s.duration} min · ${s.kind == 'recovery' ? 'aktywny odpoczynek' : s.rating > 0 ? 'ocena ${s.rating}/5' : 'bez oceny'}',
+                  '${first10(s.date)} · ${s.duration == null ? 'czas niepodany' : '${s.duration} min'} · ${s.kind == 'recovery' ? 'aktywny odpoczynek' : s.selfRating10 != null ? 'samoocena ${s.selfRating10}/10' : s.rating > 0 ? 'ocena ${s.rating}/5' : 'bez oceny'}',
                   style: manrope(size: 12, color: c.muted),
                 ),
                 if (s.wentWell.isNotEmpty) ...[

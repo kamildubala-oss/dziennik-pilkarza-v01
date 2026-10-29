@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../api.dart';
 import '../models.dart';
+import '../services/match_stats.dart';
 import '../services/user_errors.dart';
 import '../theme.dart';
 import '../utils.dart';
@@ -57,11 +58,11 @@ class _LogMatchScreenState extends State<LogMatchScreen> {
   late final TextEditingController _result =
       TextEditingController(text: _e?.result ?? (_sourceEvent?.details['result'] as String?) ?? '');
   late final TextEditingController _minutes =
-      TextEditingController(text: '${_e?.minutesPlayed ?? _sourceEvent?.details['minutes_played'] ?? 60}');
+      TextEditingController(text: '${_e?.minutesPlayed ?? _sourceEvent?.details['minutes_played'] ?? ''}');
   late final TextEditingController _goals =
-      TextEditingController(text: '${_e?.goals ?? _sourceEvent?.details['goals'] ?? 0}');
+      TextEditingController(text: '${_e?.goals ?? _sourceEvent?.details['goals'] ?? ''}');
   late final TextEditingController _assists =
-      TextEditingController(text: '${_e?.assists ?? _sourceEvent?.details['assists'] ?? 0}');
+      TextEditingController(text: '${_e?.assists ?? _sourceEvent?.details['assists'] ?? ''}');
   late final TextEditingController _wentWell =
       TextEditingController(text: _e?.wentWell ?? (_sourceEvent?.details['went_well'] as String?) ?? '');
   late final TextEditingController _toImprove =
@@ -73,10 +74,17 @@ class _LogMatchScreenState extends State<LogMatchScreen> {
       (widget.isPlanned || widget.editingEvent != null);
 
   late int _rating = _e != null && _e.rating >= 0 ? _e.rating : (_sourceEvent?.details['rating'] as int?) ?? 0;
+  late int? _selfRating10 = _e?.selfRating10 ?? MatchStats.value(_sourceEvent?.details['self_rating_10']);
+  late final Map<String, TextEditingController> _extra = {
+    for (final key in MatchStats.labels.keys) key: TextEditingController(
+      text: '${_e?.extraStats[key] ?? MatchStats.fromJson(_sourceEvent?.details['extra_stats'])[key] ?? ''}'),
+  };
+  Map<String, int?> get _extraValues => {for (final e in _extra.entries) e.key: int.tryParse(e.value.text.trim())};
   bool _saving = false;
 
   @override
   void dispose() {
+    for (final controller in _extra.values) { controller.dispose(); }
     _date.dispose();
     _opponent.dispose();
     _result.dispose();
@@ -88,12 +96,15 @@ class _LogMatchScreenState extends State<LogMatchScreen> {
     super.dispose();
   }
 
-  int _num(TextEditingController c) => int.parse(c.text.trim());
-
+  int? _num(TextEditingController c) => int.tryParse(c.text.trim());
+  String? _numberError(TextEditingController c, String label, int max) =>
+    c.text.trim().isEmpty ? null : numberFieldError(c.text, label, 0, max);
   bool get _fieldsValid => _planning || (
-      numberFieldError(_minutes.text, 'Minuty', 0, 180) == null &&
-      numberFieldError(_goals.text, 'Gole', 0, 20) == null &&
-      numberFieldError(_assists.text, 'Asysty', 0, 20) == null);
+      _numberError(_minutes, 'Minuty', 180) == null &&
+      _numberError(_goals, 'Gole', 20) == null &&
+      _numberError(_assists, 'Asysty', 20) == null &&
+      _extra.entries.every((e) => _numberError(e.value, MatchStats.labels[e.key]!, 2000) == null) &&
+      MatchStats.error(_extraValues) == null);
 
   Future<void> _save() async {
     if (_saving || !_fieldsValid) return;
@@ -128,6 +139,7 @@ class _LogMatchScreenState extends State<LogMatchScreen> {
           wentWell: _wentWell.text,
           toImprove: _toImprove.text,
           notes: _preservedNotes,
+          selfRating10: _selfRating10, clearSelfRating10: _selfRating10 == null, extraStats: _extraValues,
         );
         if (mounted) Navigator.of(context).pop(true);
         return;
@@ -143,6 +155,7 @@ class _LogMatchScreenState extends State<LogMatchScreen> {
         wentWell: _wentWell.text,
         toImprove: _toImprove.text,
         notes: _preservedNotes,
+        selfRating10: _selfRating10, extraStats: _extraValues,
         plannedEventId: widget.completingEvent?.id ?? widget.plannedEventId,
         isPlanned: widget.isPlanned,
       );
@@ -156,123 +169,63 @@ class _LogMatchScreenState extends State<LogMatchScreen> {
     }
   }
 
+  Widget _number(String label, TextEditingController controller, int max) => LabeledField(
+    label: label, child: AppTextField(controller: controller, keyboardType: TextInputType.number,
+      hint: '—', errorText: _numberError(controller, label, max), onChanged: (_) => setState(() {})));
+
   @override
   Widget build(BuildContext context) {
     final c = context.c;
-    return Scaffold(
-      backgroundColor: c.surface,
-      body: Column(
-        children: [
-          ModalHeader(
-            title: widget.title ?? (_e != null || widget.editingEvent != null
-                ? 'Edytuj mecz' : _planning ? 'Zaplanuj mecz' : 'Zapisz mecz'),
-            onClose: () => Navigator.of(context).pop(),
-          ),
-          Expanded(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.fromLTRB(Sp.lg, Sp.lg, Sp.lg, Sp.xxxl),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  if (widget.header != null && _e == null &&
-                      widget.editingEvent == null && widget.completingEvent == null) widget.header!,
-                  LabeledField(
-                    label: 'Data',
-                    child: DateField(controller: _date),
-                  ),
-                  LabeledField(
-                    label: 'Przeciwnik',
-                    child: AppTextField(
-                      controller: _opponent,
-                      hint: 'np. Legia U15',
-                    ),
-                  ),
-                  if (!_planning) ...[
-                  LabeledField(
-                    label: 'Wynik',
-                    child: AppTextField(controller: _result, hint: 'np. 3:1'),
-                  ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        child: LabeledField(
-                          label: 'Minuty',
-                          child: AppTextField(
-                            controller: _minutes,
-                            keyboardType: TextInputType.number,
-                            errorText: numberFieldError(_minutes.text, 'Minuty', 0, 180),
-                            onChanged: (_) => setState(() {}),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: Sp.sm),
-                      Expanded(
-                        child: LabeledField(
-                          label: 'Gole',
-                          child: AppTextField(
-                            controller: _goals,
-                            keyboardType: TextInputType.number,
-                            errorText: numberFieldError(_goals.text, 'Gole', 0, 20),
-                            onChanged: (_) => setState(() {}),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: Sp.sm),
-                      Expanded(
-                        child: LabeledField(
-                          label: 'Asysty',
-                          child: AppTextField(
-                            controller: _assists,
-                            keyboardType: TextInputType.number,
-                            errorText: numberFieldError(_assists.text, 'Asysty', 0, 20),
-                            onChanged: (_) => setState(() {}),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  LabeledField(
-                    label: 'Jak oceniasz swój mecz?',
-                    child: RatingStars(
-                      prompt: 'Oceń mecz',
-                      rating: _rating,
-                      onChanged: (n) => setState(() => _rating = n),
-                    ),
-                  ),
-                  LabeledField(
-                    label: 'Co było dobrze?',
-                    child: AppTextField(
-                      controller: _wentWell,
-                      multiline: true,
-                      minLines: 3,
-                    ),
-                  ),
-                  LabeledField(
-                    label: 'Co poprawić?',
-                    child: AppTextField(
-                      controller: _toImprove,
-                      multiline: true,
-                      minLines: 3,
-                    ),
-                  ),
-                  ],
-                  PrimaryButton(
-                    label: _saving
-                        ? 'Zapisywanie...'
-                        : _e != null || widget.editingEvent != null
-                            ? 'Zapisz zmiany'
-                            : widget.completingEvent != null
-                                ? 'Mecz wykonany'
-                                : _planning ? 'Zaplanuj mecz' : 'Zapisz mecz',
-                    onTap: _saving || !_fieldsValid ? null : _save,
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
+    return Scaffold(backgroundColor: c.surface, body: Column(children: [
+      ModalHeader(title: widget.title ?? (_e != null || widget.editingEvent != null
+        ? 'Edytuj mecz' : _planning ? 'Zaplanuj mecz' : 'Zapisz mecz'),
+        onClose: () => Navigator.of(context).pop()),
+      Expanded(child: SingleChildScrollView(
+        padding: const EdgeInsets.fromLTRB(Sp.lg, Sp.lg, Sp.lg, Sp.lg),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+          if (widget.header != null && _e == null && widget.editingEvent == null &&
+              widget.completingEvent == null) widget.header!,
+          LabeledField(label:'Data', child:DateField(controller:_date)),
+          LabeledField(label:'Przeciwnik', child:AppTextField(controller:_opponent, hint:'np. Legia U15')),
+          if (!_planning) ...[
+            LabeledField(label:'Wynik', child:AppTextField(controller:_result, hint:'np. 3:1 (opcjonalnie)')),
+            Row(crossAxisAlignment:CrossAxisAlignment.start, children:[
+              Expanded(child:_number('Minuty',_minutes,180)), const SizedBox(width:Sp.sm),
+              Expanded(child:_number('Gole',_goals,20)), const SizedBox(width:Sp.sm),
+              Expanded(child:_number('Asysty',_assists,20)),
+            ]),
+            Text('Puste pole = brak danych. Wpisz 0 tylko wtedy, gdy znasz wynik.',
+              style:manrope(size:11,color:c.muted)),
+            const SizedBox(height:Sp.md),
+            const FieldLabel('Jak oceniasz swój mecz?'),
+            Text('Samoocena 1–10 (opcjonalnie)', style:manrope(size:12,color:c.muted)),
+            Wrap(spacing:4,runSpacing:4,children:[
+              for (var n=1;n<=10;n++) Semantics(selected:_selfRating10==n,button:true,
+                child:ChoiceChip(label:Text('$n'),selected:_selfRating10==n,
+                  onSelected:(_) => setState(() => _selfRating10 = _selfRating10==n ? null : n))),
+            ]),
+            if (_selfRating10!=null) TextButton(onPressed:()=>setState(()=>_selfRating10=null),
+              child:const Text('Usuń samoocenę')),
+            if (_rating>0) Text('Zachowana historyczna ocena: $_rating/5. Nie jest przeliczana na skalę 1–10.',
+              style:manrope(size:11,color:c.muted)),
+            ExpansionTile(key:const ValueKey('extra-match-stats'),initiallyExpanded:false,maintainState:true,
+              tilePadding:EdgeInsets.zero,title:const Text('Dodatkowe statystyki'),
+              subtitle:const Text('Opcjonalne · możesz uzupełnić później'),
+              children:[
+                for (final e in MatchStats.labels.entries) _number(e.value,_extra[e.key]!,2000),
+                if (MatchStats.error(_extraValues)!=null) Text(MatchStats.error(_extraValues)!,
+                  style:manrope(size:12,color:c.error)),
+              ]),
+            LabeledField(label:'Co było dobrze?',child:AppTextField(controller:_wentWell,multiline:true,minLines:2,
+              hint:'Opcjonalnie — możesz dopisać później')),
+            LabeledField(label:'Co poprawić?',child:AppTextField(controller:_toImprove,multiline:true,minLines:2,
+              hint:'Opcjonalnie — jedna konkretna obserwacja')),
+          ],
+        ]))),
+      SafeArea(top:false,child:Padding(padding:const EdgeInsets.fromLTRB(Sp.lg,Sp.sm,Sp.lg,Sp.sm),
+        child:PrimaryButton(label:_saving ? 'Zapisywanie...' : _e!=null || widget.editingEvent!=null
+          ? 'Zapisz zmiany' : widget.completingEvent!=null ? 'Mecz wykonany' : _planning ? 'Zaplanuj mecz' : 'Zapisz mecz',
+          onTap:_saving || !_fieldsValid ? null : _save))),
+    ]));
   }
 }

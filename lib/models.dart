@@ -102,15 +102,19 @@ class MatchEntry {
     required this.toImprove,
     required this.notes,
     required this.createdAt,
+    this.selfRating10,
+    this.extraStats = const {},
   });
 
+  final int? selfRating10;
+  final Map<String, int?> extraStats;
   final String id;
   final String date;
   final String opponent;
   final String result;
-  final int minutesPlayed;
-  final int goals;
-  final int assists;
+  final int? minutesPlayed;
+  final int? goals;
+  final int? assists;
   /// 0 oznacza brak samooceny; wystawione oceny mają zakres 1–5.
   final int rating;
   final String wentWell;
@@ -123,10 +127,12 @@ class MatchEntry {
         date: _asString(j['date']),
         opponent: _asString(j['opponent']),
         result: _asString(j['result']),
-        minutesPlayed: _asInt(j['minutes_played']),
-        goals: _asInt(j['goals']),
-        assists: _asInt(j['assists']),
+        minutesPlayed: _asIntOrNull(j['minutes_played']),
+        goals: _asIntOrNull(j['goals']),
+        assists: _asIntOrNull(j['assists']),
         rating: _asInt(j['rating'], 0),
+        selfRating10: _asIntOrNull(j['self_rating_10']),
+        extraStats: j['extra_stats'] is Map ? {for (final e in (j['extra_stats'] as Map).entries) e.key.toString(): _asIntOrNull(e.value)} : {},
         wentWell: _asString(j['went_well']),
         toImprove: _asString(j['to_improve']),
         notes: _asString(j['notes']),

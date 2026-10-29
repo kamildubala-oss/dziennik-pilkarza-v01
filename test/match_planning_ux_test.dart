@@ -59,7 +59,8 @@ void main() {
     }), header: const Text('Typ'))));
     expect(find.text('Wynik'), findsOneWidget);
     expect(find.text('Minuty'), findsOneWidget);
-    expect(find.byType(RatingStars), findsOneWidget);
+    expect(find.byType(RatingStars), findsNothing);
+    expect(find.text('Samoocena 1–10 (opcjonalnie)'), findsOneWidget);
     expect(find.text('Co było dobrze?'), findsOneWidget);
     expect(find.text('Co poprawić?'), findsOneWidget);
     expect(find.text('Notatki'), findsNothing);
