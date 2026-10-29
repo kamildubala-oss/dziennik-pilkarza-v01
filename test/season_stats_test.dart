@@ -80,6 +80,11 @@ void main(){
     expect(event['self_rating_10'],9);expect(event['assists'],isNull);expect(event['extra_stats']['shots'],4);
     final csv=await Api.exportMatchesCsv();expect(csv,contains('Samoocena (1-10)'));expect(csv,contains('Strzały celne'));
     final raw=jsonDecode(await Api.exportBackup());expect(raw['data']['matches'][0]['assists'],isNull);
+    await Api.updateMatch(restored.id,date:todayIso(),opponent:'Skra',result:'',minutesPlayed:null,goals:null,assists:null,
+      rating:0,clearSelfRating10:true,extraStats:{'shots':null,'shots_on_target':null},wentWell:'',toImprove:'',notes:'');
+    final cleared=(await Api.listMatches()).single;
+    expect(cleared.selfRating10,isNull);expect(cleared.extraStats['shots'],isNull);expect(cleared.minutesPlayed,isNull);
+
   });
   test('invalid relationships and self-rating cannot enter through import',(){
     final backup={'app':'dziennik_pilkarza','version':1,'data':{'matches':[{

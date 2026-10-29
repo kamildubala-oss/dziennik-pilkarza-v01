@@ -95,7 +95,7 @@ class SeasonInsights {
     .take(3).map((e)=>'${first10(e['date'].toString())}: ${(e[key]??'').toString().trim()}').toList();
   String? get suggestedArea {
     final texts=observations.map((e)=>(e['to_improve']??'').toString().toLowerCase()).toList();
-    const terms={'Technika':['podani','przyję','prowadz'],'Strzał':['strzał','celność strza'],
+    const terms={'Technika':['poda','przyj','prowadz'],'Strzał':['strzał','celność strza'],
       'Taktyka':['ustaw','decyz','przechwyt'],'Motoryka':['szybko','wytrzym'],'Mentalność':['koncentr','pewno']};
     for(final e in terms.entries) { if(texts.where((text)=>e.value.any(text.contains)).length>=2)return e.key; }
     return null;
