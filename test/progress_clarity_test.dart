@@ -80,7 +80,7 @@ void main() {
       home: Scaffold(body: ProgressScreen(selected: selected, index: 3))));
     await tester.pumpAndSettle();
     expect(find.text('Ocena jest opcjonalna'), findsOneWidget);
-    expect(find.text('—'), findsOneWidget);
+    expect(find.text('—'), findsWidgets);
     expect(find.text('0.0'), findsNothing);
     await tester.pumpWidget(const SizedBox());
     selected.dispose();
@@ -97,7 +97,7 @@ void main() {
           home: Scaffold(body: ProgressScreen(selected: selected, index: 3))));
         await tester.pumpAndSettle();
         final streak = tester.getSize(find.byKey(const ValueKey('hero-DNI Z RZĘDU')));
-        final rating = tester.getSize(find.byKey(const ValueKey('hero-SAMOOCENA TRENINGÓW I MECZÓW')));
+        final rating = tester.getSize(find.byKey(const ValueKey('hero-SAMOOCENA 1–5')));
         expect(streak, rating);
         final sizes = [for (final label in ['Treningi indywidualne', 'Treningi klubowe', 'Mecze', 'Minuty', 'Gole', 'Asysty'])
           tester.getSize(find.byKey(ValueKey('metric-$label')))];

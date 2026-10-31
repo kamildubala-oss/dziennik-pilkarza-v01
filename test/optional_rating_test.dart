@@ -85,8 +85,9 @@ void main() {
       home: const LogMatchScreen(),
     ));
     await tester.pumpAndSettle();
-    expect(tester.widget<RatingStars>(find.byType(RatingStars)).rating, 0);
-    expect(find.text('Oceń mecz (opcjonalnie)'), findsOneWidget);
+    expect(find.byType(RatingStars), findsNothing);
+    expect(tester.widgetList<ChoiceChip>(find.byType(ChoiceChip)).every((c) => !c.selected), isTrue);
+    expect(find.text('Samoocena 1–10 (opcjonalnie)'), findsOneWidget);
     final save = find.byType(PrimaryButton);
     await tester.ensureVisible(save);
     await tester.runAsync(() async {
@@ -95,6 +96,7 @@ void main() {
     });
     await tester.pumpAndSettle();
     expect((await Api.listMatches()).single.rating, 0);
+    expect((await Api.listMatches()).single.selfRating10, isNull);
   });
 
   testWidgets('rating can be consciously selected and cleared', (tester) async {
